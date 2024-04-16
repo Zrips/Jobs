@@ -40,6 +40,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 
 import net.Zrips.CMILib.CMILib;
 import net.Zrips.CMILib.Container.CMIList;
+import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Enchants.CMIEnchantment;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
@@ -900,7 +901,9 @@ public class GeneralConfigManager {
 
         c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer", "All blocks will be protected X sec after player places it on ground.");
         useGlobalTimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Use", c.getC().getBoolean("ExploitProtections.General.GlobalBlockTimer.use", true));
+        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Timer", "Time in seconds. This can only be positive number");
         globalblocktimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Timer", c.getC().getInt("ExploitProtections.General.GlobalBlockTimer.timer", 3));
+        globalblocktimer = CMINumber.clamp(globalblocktimer, 1, 99999);
 
         c.addComment("ExploitProtections.General.PlaceAndBreak.SilkTouchProtection", "Enable silk touch protection.",
             "With this enabled players wont get paid for broken blocks from restrictedblocks list with silk touch tool.");

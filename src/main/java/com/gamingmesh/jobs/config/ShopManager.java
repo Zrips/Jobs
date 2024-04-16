@@ -260,10 +260,12 @@ public class ShopManager {
                         Jobs.getJobsDAO().savePoints(jPlayer);
                         player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", item.getPointPrice()));
                     }
+                    
                     if (item.getVaultPrice() > 0) {
                         jPlayer.withdraw(item.getVaultPrice());
                         player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", Jobs.getEconomy().getEconomy().format(item.getVaultPrice())));
                     }
+                    
                     openShopGui(player, page);
                 }
             };
