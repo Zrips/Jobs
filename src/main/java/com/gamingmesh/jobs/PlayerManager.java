@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -69,7 +70,6 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
-import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
@@ -232,29 +232,51 @@ public class PlayerManager {
         JobsPlayer jPlayer = playersUUIDCache.get(player.getUniqueId());
 
         if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
-            if (jPlayer != null)
-                jPlayer = Jobs.getJobsDAO().loadFromDao(jPlayer);
-            else
-                jPlayer = Jobs.getJobsDAO().loadFromDao(player);
 
             if (Jobs.getGCManager().MultiServerCompatability()) {
-                jPlayer.setArchivedJobs(Jobs.getJobsDAO().getArchivedJobs(jPlayer));
-                jPlayer.setPaymentLimit(Jobs.getJobsDAO().getPlayersLimits(jPlayer));
-                jPlayer.setPoints(Jobs.getJobsDAO().getPlayerPoints(jPlayer));
+                CompletableFuture<JobsPlayer> future = CompletableFuture.supplyAsync(() -> {
+                    JobsPlayer jobsPlayer = playersUUIDCache.get(player.getUniqueId());
+                    jobsPlayer = jobsPlayer == null ? new JobsPlayer(player) : jobsPlayer;
+                    loadPlayer(jobsPlayer);
+                    return jobsPlayer;
+                });
+                future.thenAccept(this::finalizeJoinPlayer);
+                return;
             }
 
-            // Lets load quest progression
-            PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(player.getUniqueId());
-            if (info != null) {
-                jPlayer.setDoneQuests(info.getQuestsDone());
-                jPlayer.setQuestProgressionFromString(info.getQuestProgression());
-            }
+            jPlayer = jPlayer == null ? new JobsPlayer(player) : jPlayer;
+            jPlayer = Jobs.getJobsDAO().loadFromDao(jPlayer);
 
-            Jobs.getJobsDAO().loadLog(jPlayer);
+            loadPlayer(jPlayer);
         }
 
+        finalizeJoinPlayer(jPlayer);
+    }
+
+    private static void loadPlayer(JobsPlayer jPlayer) {
+
+        Jobs.getJobsDAO().loadFromDao(jPlayer);
+
+        if (Jobs.getGCManager().MultiServerCompatability()) {
+            jPlayer.setArchivedJobs(Jobs.getJobsDAO().getArchivedJobs(jPlayer));
+            jPlayer.setPaymentLimit(Jobs.getJobsDAO().getPlayersLimits(jPlayer));
+            jPlayer.setPoints(Jobs.getJobsDAO().getPlayerPoints(jPlayer));
+        }
+
+        // Lets load quest progression
+        PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(jPlayer.getUniqueId());
+        if (info != null) {
+            jPlayer.setDoneQuests(info.getQuestsDone());
+            jPlayer.setQuestProgressionFromString(info.getQuestProgression());
+        }
+
+        Jobs.getJobsDAO().loadLog(jPlayer);
+    }
+
+    private void finalizeJoinPlayer(JobsPlayer jPlayer) {
+
         addPlayer(jPlayer);
-        autoJoinJobs(player);
+        autoJoinJobs(jPlayer.getPlayer());
         jPlayer.onConnect();
         jPlayer.reloadHonorific();
         Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
@@ -488,9 +510,9 @@ public class PlayerManager {
 
         Jobs.takeSlot(job);
         Jobs.getSignUtil().updateAllSign(job);
-        
+
         job.modifyTotalPlayerWorking(1);
-        
+
         jPlayer.maxJobsEquation = CMINumber.clamp(getMaxJobs(jPlayer), 0, 9999);
 
         // Removing from cached item boost for recalculation
@@ -535,7 +557,7 @@ public class PlayerManager {
         jPlayer.getLeftTimes().remove(jPlayer.getUniqueId());
 
         Jobs.getSignUtil().updateAllSign(job);
-        
+
         job.modifyTotalPlayerWorking(-1);
 
         // Removing from cached item boost for recalculation
@@ -832,7 +854,7 @@ public class PlayerManager {
             message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
             message = message.replace("%titlename%", levelUpEvent.getNewTitle()
                 .getChatColor().toString() + levelUpEvent.getNewTitle().getName());
-            
+
             message = Language.updateJob(message, job);
 
             if (Jobs.getGCManager().isBroadcastingSkillups() || Jobs.getGCManager().TitleChangeActionBar || Jobs.getGCManager().TitleChangeChat) {

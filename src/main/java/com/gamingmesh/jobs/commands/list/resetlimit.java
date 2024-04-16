@@ -11,9 +11,9 @@ public class resetlimit implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-        if (args.length != 1) {
+        
+        if (args.length != 1) 
             return false;
-        }
 
         if (args[0].equalsIgnoreCase("all")) {
             for (JobsPlayer jPlayer : Jobs.getPlayerManager().getPlayersCache().values()) {

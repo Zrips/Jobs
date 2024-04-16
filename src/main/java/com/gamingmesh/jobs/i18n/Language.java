@@ -53,9 +53,9 @@ public class Language {
 
     public static String updateJob(String text, Job job) {
         return text
-            .replaceAll("\\[jobname\\]|%jobname%", job.getName())
-            .replaceAll("\\[jobdisplayname\\]|%jobdisplayname%", job.getDisplayName())
-            .replaceAll("\\[jobfullname\\]|%jobfullname%", job.getJobFullName());
+            .replaceAll("(\\[|%)jobname(\\]|%)", job.getName())
+            .replaceAll("(\\[|%)jobdisplayname(\\]|%)", job.getDisplayName())
+            .replaceAll("(\\[|%)jobfullname(\\]|%)", job.getJobFullName());
     }
 
     public static void sendMessage(CommandSender sender, String key, Object... variables) {

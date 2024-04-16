@@ -9,7 +9,6 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Time.CMITimeManager;
 import net.Zrips.CMILib.Time.timeModifier;
@@ -97,23 +96,26 @@ public class boost implements Cmd {
                         }
                     }
                     Language.sendMessage(sender, "command.boost.output.allreset");
-                } else {
-                    for (Job one : Jobs.getJobs()) {
-                        one.addBoost(type, 0);
-                    }
-                    Language.sendMessage(sender, "command.boost.output.alltypereset", "%type%", type.getDisplayName());
+                    return true;
                 }
-            } else {
-                if (type == null) {
-                    for (CurrencyType curr : CurrencyType.values()) {
-                        job.addBoost(curr, 0);
-                    }
-                    Language.sendMessage(sender, "command.boost.output.jobsboostreset", job);
-                } else {
-                    job.addBoost(type, 0);
-                    Language.sendMessage(sender, "command.boost.output.jobstypeboostreset", job, "%type%", type.getDisplayName());
+
+                for (Job one : Jobs.getJobs()) {
+                    one.addBoost(type, 0);
                 }
+                Language.sendMessage(sender, "command.boost.output.alltypereset", "%type%", type.getDisplayName());
+                return true;
             }
+
+            if (type == null) {
+                for (CurrencyType curr : CurrencyType.values()) {
+                    job.addBoost(curr, 0);
+                }
+                Language.sendMessage(sender, "command.boost.output.jobsboostreset", job);
+                return true;
+            }
+
+            job.addBoost(type, 0);
+            Language.sendMessage(sender, "command.boost.output.jobstypeboostreset", job, "%type%", type.getDisplayName());
             return true;
         }
 
