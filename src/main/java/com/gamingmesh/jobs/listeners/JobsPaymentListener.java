@@ -417,20 +417,12 @@ public final class JobsPaymentListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void breakTest(BlockBreakEvent event) {
-
-        CMIMessages.consoleMessage("break" + 1);
-    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        CMIMessages.consoleMessage("" + 1);
         final Block block = event.getBlock();
 
         if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
             return;
-        CMIMessages.consoleMessage("" + 2);
 
         Player player = event.getPlayer();
 
@@ -440,17 +432,14 @@ public final class JobsPaymentListener implements Listener {
         // check if player is riding
         if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
             return;
-        CMIMessages.consoleMessage("" + 3);
 
         // check if in creative
         if (!payIfCreative(player))
             return;
 
-        CMIMessages.consoleMessage("" + 4);
         if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
             return;
 
-        CMIMessages.consoleMessage("" + 5);
         BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 
         FastPayment fp = Jobs.FASTPAYMENT.get(player.getUniqueId());
@@ -463,11 +452,10 @@ public final class JobsPaymentListener implements Listener {
 
             Jobs.FASTPAYMENT.remove(player.getUniqueId());
         }
-        CMIMessages.consoleMessage("" + 6);
+
         if (!payForItemDurabilityLoss(player))
             return;
 
-        CMIMessages.consoleMessage("" + 7);
         // Protection for block break with silktouch
         if (Jobs.getGCManager().useSilkTouchProtection) {
             ItemStack item = CMIItemStack.getItemInMainHand(player);
@@ -480,8 +468,6 @@ public final class JobsPaymentListener implements Listener {
                 }
             }
         }
-        CMIMessages.consoleMessage("" + 8);
-
         // Better implementation?
         // Prevent money duplication when breaking plant blocks
         /*Material brokenBlock = block.getRelative(BlockFace.DOWN).getType();
@@ -738,7 +724,8 @@ public final class JobsPaymentListener implements Listener {
             // when we trying to craft tipped arrow effects
             if (currentItem != null && currentItem.getItemMeta() instanceof PotionMeta) {
                 PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
-                Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
+                if (Version.isCurrentEqualOrHigher(Version.v1_9_R1))
+                    Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
             } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
                 Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
             } else if (currentItem != null) {
@@ -808,7 +795,8 @@ public final class JobsPaymentListener implements Listener {
 
                     if (resultStack.getItemMeta() instanceof PotionMeta) {
                         PotionMeta potion = (PotionMeta) resultStack.getItemMeta();
-                        Jobs.action(jPlayer, new PotionItemActionInfo(resultStack, type, potion.getBasePotionData().getType()));
+                        if (Version.isCurrentEqualOrHigher(Version.v1_9_R1))
+                            Jobs.action(jPlayer, new PotionItemActionInfo(resultStack, type, potion.getBasePotionData().getType()));
                     } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
                         Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), type));
                     } else {
@@ -1090,7 +1078,6 @@ public final class JobsPaymentListener implements Listener {
 
         Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));
     }
-
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToFurnace(InventoryMoveItemEvent event) {
@@ -1660,7 +1647,8 @@ public final class JobsPaymentListener implements Listener {
             return;
 
         if (currentItem.getItemMeta() instanceof PotionMeta) {
-            Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.EAT, ((PotionMeta) currentItem.getItemMeta()).getBasePotionData().getType()));
+            if (Version.isCurrentEqualOrHigher(Version.v1_9_R1))
+                Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.EAT, ((PotionMeta) currentItem.getItemMeta()).getBasePotionData().getType()));
         } else {
             Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.EAT));
         }
