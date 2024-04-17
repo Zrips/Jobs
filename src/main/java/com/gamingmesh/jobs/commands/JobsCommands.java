@@ -486,7 +486,7 @@ public class JobsCommands implements CommandExecutor {
 
         String message = Jobs.getLanguage().getMessage("command.stats.output.message",
             "%joblevel%", level,
-            jobProg,
+            jobProg.getJob(),
             "%jobxp%", Math.round(exp * 100.0) / 100.0,
             "%jobmaxxp%", maxExperience);
         return " " + jobProgressMessage(maxExperience, exp) + " " + message;
