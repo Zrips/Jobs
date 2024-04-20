@@ -437,7 +437,7 @@ public class JobsCommands implements CommandExecutor {
     public String jobStatsMessage(JobProgression jobProg, JobsPlayer jPlayer, boolean progressBar) {
 
         boolean isMaxLevelReached = jobProg.getLevel() >= (jPlayer == null ? jobProg.getJob().getMaxLevel() : jPlayer.getMaxJobLevelAllowed(jobProg.getJob()));
-        String path = "command.stats.output." + (isMaxLevelReached ? "max-level" : "message");
+        String path = "command.stats.output." + (isMaxLevelReached ? "maxLevel" : "Level");
 
         Title title = Jobs.getTitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
         String message = Jobs.getLanguage().getMessage(path,
@@ -462,14 +462,14 @@ public class JobsCommands implements CommandExecutor {
         StringBuilder message = new StringBuilder();
         int percentage = (int) ((current * 50.0) / max);
         for (int i = 0; i < percentage; i++) {
-            message.append(Jobs.getLanguage().getMessage("command.stats.bar2"));
+            message.append(Jobs.getLanguage().getMessage("command.stats.barFull"));
         }
 
         if (50 - percentage < 0)
             percentage = 50;
 
         for (int i = 0; i < 50 - percentage; i++) {
-            message.append(Jobs.getLanguage().getMessage("command.stats.bar1"));
+            message.append(Jobs.getLanguage().getMessage("command.stats.barEmpty"));
         }
         return message.toString();
     }
