@@ -462,7 +462,8 @@ public final class JobsPaymentListener implements Listener {
 
             if (item.getType() != Material.AIR && Jobs.getBpManager().isInBp(block)) {
                 for (Enchantment one : item.getEnchantments().keySet()) {
-                    if (CMIEnchantment.get(one).equalEnum(CMIEnchantEnum.SILK_TOUCH)) {
+                    CMIEnchantment enchant = CMIEnchantment.get(one);
+                    if (enchant != null && enchant.equalEnum(CMIEnchantEnum.SILK_TOUCH)) {
                         return;
                     }
                 }
