@@ -1410,12 +1410,12 @@ public class JobsPlayer {
      */
     @Deprecated
     public int getMaxBrewingStandsAllowed() {
-        Double maxV = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxbrewingstands");
+        double maxV = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxbrewingstands");
 
         if (maxV == 0)
-            maxV = (double) Jobs.getGCManager().getBrewingStandsMaxDefault();
+            maxV = Jobs.getGCManager().getBrewingStandsMaxDefault();
 
-        return maxV.intValue();
+        return (int) maxV;
     }
 
     /**

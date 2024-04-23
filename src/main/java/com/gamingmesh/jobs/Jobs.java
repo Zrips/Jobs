@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,7 +159,7 @@ public final class Jobs extends JavaPlugin {
     private GuiManager guiManager;
 
     private static JobsDAO dao;
-    private static List<Job> jobs = new ArrayList<Job>();
+    private static List<Job> jobs = new ArrayList<>();
     private static Job noneJob;
     private static Map<Job, Integer> usedSlots = new WeakHashMap<>();
 
@@ -551,8 +550,7 @@ public final class Jobs extends JavaPlugin {
         Map<Integer, Map<String, Log>> playersLogs = dao.getAllLogs();
         Map<Integer, ArchivedJobs> playersArchives = dao.getAllArchivedJobs();
         Map<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
-        for (Iterator<PlayerInfo> it = temp.values().iterator(); it.hasNext();) {
-            PlayerInfo one = it.next();
+        for (PlayerInfo one : temp.values()) {
             int id = one.getID();
             JobsPlayer jPlayer = getPlayerManager().getJobsPlayerOffline(
                 one,
