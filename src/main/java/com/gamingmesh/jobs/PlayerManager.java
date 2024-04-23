@@ -328,7 +328,6 @@ public class PlayerManager {
 
         playersUUID.values().removeIf(jPlayer -> jPlayer.isSaved() && !jPlayer.isOnline());
 
-        System.out.println("Saved all players");
         Jobs.getBpManager().saveCache();
     }
 
