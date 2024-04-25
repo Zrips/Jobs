@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.hooks;
 
+import com.gamingmesh.jobs.hooks.blockTracker.BlockTrackerManager;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,6 +26,7 @@ public class HookManager {
     private static WorldGuardManager worldGuardManager;
     private static StackMobHandler stackMobHandler;
     private static WildStackerHandler wildStackerHandler;
+	private static BlockTrackerManager blockTrackerManager;
 
     private static final Jobs PLUGIN = JavaPlugin.getPlugin(Jobs.class);
 
@@ -38,6 +40,7 @@ public class HookManager {
 	setMythicManager();
 	setStackMobHandler();
 	setWildStackerHandler();
+	setBlockTrackerManager();
     }
 
     public static StackMobHandler getStackMobHandler() {
@@ -86,6 +89,14 @@ public class HookManager {
     public static boolean checkMythicMobs() {
 	return Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.check();
     }
+
+	public static BlockTrackerManager getBlockTrackerManager() {
+		if (blockTrackerManager == null) {
+			blockTrackerManager = new BlockTrackerManager();
+		}
+
+		return blockTrackerManager;
+	}
 
     private static boolean setWorldGuard() {
 	if (JobsHook.WorldGuard.isEnabled()) {
@@ -145,4 +156,10 @@ public class HookManager {
 	    wildStackerHandler = new WildStackerHandler();
 	}
     }
+
+	private static void setBlockTrackerManager() {
+		if (JobsHook.BlockTracker.isEnabled()) {
+			blockTrackerManager = new BlockTrackerManager();
+	}
+	}
 }
