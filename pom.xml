@@ -234,14 +234,6 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/libs/PyroFishingPro-4.9.1.jar</systemPath>
 		</dependency>
-		<!-- PyroLib -->
-		<dependency>
-			<groupId>me.pyrolib</groupId>
-			<artifactId>pyrolib</artifactId>
-			<version>1.4.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/PyroLib-1.4.0.jar</systemPath>
-		</dependency>
 	</dependencies>
 	<repositories>
 		<!-- MythicMobs -->

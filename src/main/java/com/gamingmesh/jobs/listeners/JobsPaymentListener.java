@@ -417,11 +417,6 @@ public final class JobsPaymentListener implements Listener {
         if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
             return;
 
-        // Checks whether the broken block has been tracked by BlockTracker
-        if (JobsHook.BlockTracker.isEnabled()) {
-            if (HookManager.getBlockTrackerManager().isTracked(block)) return;
-        }
-
         Player player = event.getPlayer();
 
         // Remove block owner ships
