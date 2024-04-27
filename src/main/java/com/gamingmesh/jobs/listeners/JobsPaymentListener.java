@@ -26,6 +26,8 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.gamingmesh.jobs.actions.*;
+import com.gamingmesh.jobs.hooks.pyroFishingPro.PyroFishingProManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -92,15 +94,6 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import com.bgsoftware.wildstacker.api.enums.StackSplit;
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.actions.BlockActionInfo;
-import com.gamingmesh.jobs.actions.BlockCollectInfo;
-import com.gamingmesh.jobs.actions.CustomKillInfo;
-import com.gamingmesh.jobs.actions.EnchantActionInfo;
-import com.gamingmesh.jobs.actions.EntityActionInfo;
-import com.gamingmesh.jobs.actions.ExploreActionInfo;
-import com.gamingmesh.jobs.actions.ItemActionInfo;
-import com.gamingmesh.jobs.actions.ItemNameActionInfo;
-import com.gamingmesh.jobs.actions.PotionItemActionInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.ExploreRespond;
@@ -557,6 +550,12 @@ public final class JobsPaymentListener implements Listener {
                 }
             }
 
+            if (JobsHook.PyroFishingPro.isEnabled()) {
+                if(PyroFishingProManager.getLastFish() != null) {
+                    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProManager.getLastFish(), ActionType.PYROFISHINGPRO));
+                }
+                return;
+            }
             Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH), event.getCaught());
         }
     }
