@@ -226,6 +226,14 @@
 			<!--			 Temporary solution for replacing repository -->
 			<systemPath>${basedir}/libs/mypet-3.11-20210318.180552-1.jar</systemPath>
 		</dependency>
+		<!-- PyroFishingPro -->
+		<dependency>
+			<groupId>me.arsmagica</groupId>
+			<artifactId>pyrofishingpro</artifactId>
+			<version>4.9.1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/PyroFishingPro-4.9.1.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<!-- MythicMobs -->
