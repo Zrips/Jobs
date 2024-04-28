@@ -440,6 +440,12 @@ exampleJob:
     legacy_raw_fish:
       income: 20.0
       experience: 25.0
+  # Catching CUSTOM fish of the PyroFishingPro plugin
+  PyroFishingPro:
+    CustomTier:
+      income: 1.0
+      points: 1.0
+      experience: 1.0
   # Repairing items
   Repair:
     wood_sword:

@@ -10,7 +10,8 @@ public enum JobsHook {
     WildStacker,
     WorldGuard,
     MythicMobs,
-    mcMMO;
+    mcMMO,
+    PyroFishingPro;
 
     private Boolean enabled;
     private Boolean present;
