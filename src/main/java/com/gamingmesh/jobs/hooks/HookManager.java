@@ -26,8 +26,8 @@ public class HookManager {
     private static WorldGuardManager worldGuardManager;
     private static StackMobHandler stackMobHandler;
     private static WildStackerHandler wildStackerHandler;
-	private static BlockTrackerManager blockTrackerManager;
-	private static PyroFishingProManager pyroFishingProManager;
+    private static BlockTrackerManager blockTrackerManager;
+    private static PyroFishingProManager pyroFishingProManager;
 
     private static final Jobs PLUGIN = JavaPlugin.getPlugin(Jobs.class);
 
@@ -36,13 +36,13 @@ public class HookManager {
     public static void loadHooks() {
         pm = PLUGIN.getServer().getPluginManager();
 
-	setMyPetManager();
-	setWorldGuard();
-	setMythicManager();
-	setStackMobHandler();
-	setWildStackerHandler();
-	setBlockTrackerManager();
-	setPyroFishingProManager();
+        setMyPetManager();
+        setWorldGuard();
+        setMythicManager();
+        setStackMobHandler();
+        setWildStackerHandler();
+        setBlockTrackerManager();
+        setPyroFishingProManager();
     }
 
     public static StackMobHandler getStackMobHandler() {
@@ -88,24 +88,24 @@ public class HookManager {
         return MythicManager;
     }
 
-	public static PyroFishingProManager getPyroFishingProManager() {
-		if(pyroFishingProManager == null)
-			pyroFishingProManager = new PyroFishingProManager();
+    public static PyroFishingProManager getPyroFishingProManager() {
+        if (pyroFishingProManager == null)
+            pyroFishingProManager = new PyroFishingProManager();
 
-		return pyroFishingProManager;
-	}
+        return pyroFishingProManager;
+    }
 
     public static boolean checkMythicMobs() {
         return Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.check();
     }
 
-	public static BlockTrackerManager getBlockTrackerManager() {
-		if (blockTrackerManager == null) {
-			blockTrackerManager = new BlockTrackerManager();
-		}
+    public static BlockTrackerManager getBlockTrackerManager() {
+        if (blockTrackerManager == null) {
+            blockTrackerManager = new BlockTrackerManager();
+        }
 
-		return blockTrackerManager;
-	}
+        return blockTrackerManager;
+    }
 
     private static boolean setWorldGuard() {
         if (JobsHook.WorldGuard.isEnabled()) {
@@ -160,14 +160,15 @@ public class HookManager {
         }
     }
 
-	private static void setBlockTrackerManager() {
-		if (JobsHook.BlockTracker.isEnabled()) {
-			blockTrackerManager = new BlockTrackerManager();
-	}
-    
-	private static void setPyroFishingProManager() {
-		if (JobsHook.PyroFishingPro.isEnabled()) {
-			pyroFishingProManager = new PyroFishingProManager();
-		}
-	}
+    private static void setBlockTrackerManager() {
+        if (JobsHook.BlockTracker.isEnabled()) {
+            blockTrackerManager = new BlockTrackerManager();
+        }
+    }
+
+    private static void setPyroFishingProManager() {
+        if (JobsHook.PyroFishingPro.isEnabled()) {
+            pyroFishingProManager = new PyroFishingProManager();
+        }
+    }
 }
