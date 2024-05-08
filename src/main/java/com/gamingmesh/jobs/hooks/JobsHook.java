@@ -12,6 +12,7 @@ public enum JobsHook {
     MythicMobs,
     mcMMO,
     BlockTracker;
+    PyroFishingPro;
 
     private Boolean enabled;
     private Boolean present;

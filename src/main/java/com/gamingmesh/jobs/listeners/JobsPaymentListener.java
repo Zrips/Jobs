@@ -26,6 +26,8 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.gamingmesh.jobs.actions.*;
+import com.gamingmesh.jobs.hooks.pyroFishingPro.PyroFishingProManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -92,15 +94,6 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import com.bgsoftware.wildstacker.api.enums.StackSplit;
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.actions.BlockActionInfo;
-import com.gamingmesh.jobs.actions.BlockCollectInfo;
-import com.gamingmesh.jobs.actions.CustomKillInfo;
-import com.gamingmesh.jobs.actions.EnchantActionInfo;
-import com.gamingmesh.jobs.actions.EntityActionInfo;
-import com.gamingmesh.jobs.actions.ExploreActionInfo;
-import com.gamingmesh.jobs.actions.ItemActionInfo;
-import com.gamingmesh.jobs.actions.ItemNameActionInfo;
-import com.gamingmesh.jobs.actions.PotionItemActionInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.ExploreRespond;
@@ -252,7 +245,7 @@ public final class JobsPaymentListener implements Listener {
     public void onCowMilking(PlayerInteractEntityEvent event) {
         Entity entity = event.getRightClicked();
 
-        CMIEntityType type = CMIEntityType.getByType(entity.getType());
+        CMIEntityType type = CMIEntityType.get(entity.getType());
 
         if (type != CMIEntityType.COW && type != CMIEntityType.MUSHROOM_COW && type != CMIEntityType.GOAT)
             return;
@@ -264,7 +257,7 @@ public final class JobsPaymentListener implements Listener {
             return;
         }
 
-        if (itemInHand.getType() == Material.BOWL && entity.getType() != EntityType.MUSHROOM_COW) {
+        if (itemInHand.getType() == Material.BOWL && type != CMIEntityType.MUSHROOM_COW) {
             return;
         }
 
@@ -555,6 +548,13 @@ public final class JobsPaymentListener implements Listener {
                     && mcMMOPlayer.getFishingManager().isExploitingFishing(event.getHook().getLocation().toVector())) {
                     return;
                 }
+            }
+
+            if (JobsHook.PyroFishingPro.isEnabled()) {
+                if(PyroFishingProManager.lastFish != null) {
+                    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProManager.lastFish, ActionType.PYROFISHINGPRO));
+                }
+                return;
             }
 
             Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH), event.getCaught());
@@ -1667,11 +1667,14 @@ public final class JobsPaymentListener implements Listener {
         if (!Jobs.getGCManager().canPerformActionInWorld(e))
             return;
 
-        EntityType type = event.getEntityType();
-        if (type != EntityType.PRIMED_TNT && type != EntityType.MINECART_TNT && type != CMIEntityType.ENDER_CRYSTAL.getType())
+        CMIEntityType type = CMIEntityType.get(event.getEntityType());
+        
+        
+        
+        if (type != CMIEntityType.TNT && type != CMIEntityType.TNT_MINECART && type != CMIEntityType.ENDER_CRYSTAL)
             return;
 
-        if (!Jobs.getGCManager().isUseTntFinder() && type != CMIEntityType.ENDER_CRYSTAL.getType())
+        if (!Jobs.getGCManager().isUseTntFinder() && type != CMIEntityType.ENDER_CRYSTAL)
             return;
 
         double closest = 60.0;
@@ -1703,7 +1706,7 @@ public final class JobsPaymentListener implements Listener {
         if (jPlayer == null)
             return;
 
-        if (!Jobs.getGCManager().isUseTntFinder() && type == CMIEntityType.ENDER_CRYSTAL.getType()) {
+        if (!Jobs.getGCManager().isUseTntFinder() && type == CMIEntityType.ENDER_CRYSTAL) {
             UUID eUUID = e.getUniqueId();
             Entity killed = punchedEndCrystals.getIfPresent(eUUID);
 
