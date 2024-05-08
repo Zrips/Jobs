@@ -36,7 +36,6 @@ import net.Zrips.CMILib.Items.CMIAsyncHead;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
 @SuppressWarnings("deprecation")
@@ -260,12 +259,12 @@ public class ShopManager {
                         Jobs.getJobsDAO().savePoints(jPlayer);
                         player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", item.getPointPrice()));
                     }
-                    
+
                     if (item.getVaultPrice() > 0) {
                         jPlayer.withdraw(item.getVaultPrice());
                         player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", Jobs.getEconomy().getEconomy().format(item.getVaultPrice())));
                     }
-                    
+
                     openShopGui(player, page);
                 }
             };
@@ -518,14 +517,14 @@ public class ShopManager {
 
                             String potionData = "";
                             if (itemSection.contains("potion-type")) {
-                                PotionType type;
+                                PotionType type = null;
                                 try {
                                     type = PotionType.valueOf(itemSection.getString("potion-type", "speed").toUpperCase());
                                 } catch (IllegalArgumentException ex) {
-                                    type = PotionType.SPEED;
                                 }
 
-                                potionData += type.toString() + ":false:false";
+                                if (type != null)
+                                    potionData += type.toString() + ":false:false";
                             }
 
                             String itemSring = mat.toString();

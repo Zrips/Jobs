@@ -252,7 +252,7 @@ public final class JobsPaymentListener implements Listener {
     public void onCowMilking(PlayerInteractEntityEvent event) {
         Entity entity = event.getRightClicked();
 
-        CMIEntityType type = CMIEntityType.getByType(entity.getType());
+        CMIEntityType type = CMIEntityType.get(entity.getType());
 
         if (type != CMIEntityType.COW && type != CMIEntityType.MUSHROOM_COW && type != CMIEntityType.GOAT)
             return;
@@ -264,7 +264,7 @@ public final class JobsPaymentListener implements Listener {
             return;
         }
 
-        if (itemInHand.getType() == Material.BOWL && entity.getType() != EntityType.MUSHROOM_COW) {
+        if (itemInHand.getType() == Material.BOWL && type != CMIEntityType.MUSHROOM_COW) {
             return;
         }
 
@@ -1661,11 +1661,14 @@ public final class JobsPaymentListener implements Listener {
         if (!Jobs.getGCManager().canPerformActionInWorld(e))
             return;
 
-        EntityType type = event.getEntityType();
-        if (type != EntityType.PRIMED_TNT && type != EntityType.MINECART_TNT && type != CMIEntityType.ENDER_CRYSTAL.getType())
+        CMIEntityType type = CMIEntityType.get(event.getEntityType());
+        
+        
+        
+        if (type != CMIEntityType.TNT && type != CMIEntityType.TNT_MINECART && type != CMIEntityType.ENDER_CRYSTAL)
             return;
 
-        if (!Jobs.getGCManager().isUseTntFinder() && type != CMIEntityType.ENDER_CRYSTAL.getType())
+        if (!Jobs.getGCManager().isUseTntFinder() && type != CMIEntityType.ENDER_CRYSTAL)
             return;
 
         double closest = 60.0;
@@ -1697,7 +1700,7 @@ public final class JobsPaymentListener implements Listener {
         if (jPlayer == null)
             return;
 
-        if (!Jobs.getGCManager().isUseTntFinder() && type == CMIEntityType.ENDER_CRYSTAL.getType()) {
+        if (!Jobs.getGCManager().isUseTntFinder() && type == CMIEntityType.ENDER_CRYSTAL) {
             UUID eUUID = e.getUniqueId();
             Entity killed = punchedEndCrystals.getIfPresent(eUUID);
 

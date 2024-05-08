@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>5.2.2.5</version>
+	<version>5.2.3.0</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
@@ -17,32 +17,16 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>io.papermc.paper</groupId>
-			<artifactId>paper-api</artifactId>
-			<version>1.20.4-R0.1-SNAPSHOT</version>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>1.20.6-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.ow2.asm</groupId>
-					<artifactId>asm-commons</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.google.code.findbugs</groupId>
-					<artifactId>jsr305</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.googlecode.json-simple</groupId>
-					<artifactId>json-simple</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.ow2.asm</groupId>
-					<artifactId>asm</artifactId>
-				</exclusion>
-			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot</artifactId>
+			<version>1.20.6-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.mojang</groupId>
@@ -54,9 +38,7 @@
 		<dependency>
 			<groupId>com.gmail.nossr50.mcMMO</groupId>
 			<artifactId>mcMMO</artifactId>
-			<version>2.1.175-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/mcMMO-2.1.175-SNAPSHOT.jar</systemPath>
+			<version>2.2.004</version>
 		</dependency>
 		<!-- Vault -->
 		<dependency>
@@ -77,36 +59,10 @@
 		</dependency>
 		<!-- MythicMobs -->
 		<dependency>
-			<groupId>io.lumine.xikage</groupId>
-			<artifactId>MythicMobs</artifactId>
-			<version>4.11.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>io.lumine</groupId>
 			<artifactId>Mythic-Dist</artifactId>
-			<version>5.1.0-SNAPSHOT</version>
+			<version>5.6.1</version>
 			<scope>provided</scope>
-		</dependency>
-		<!-- WorldGuard old version -->
-		<dependency>
-			<groupId>com.sk89q</groupId>
-			<artifactId>worldguard</artifactId>
-			<version>6.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.sk89q</groupId>
-					<artifactId>commandbook</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.bukkit</groupId>
-					<artifactId>bukkit</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sk89q.spigot</groupId>
-					<artifactId>bukkit-classloader-check</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<!-- WorldGuard new version -->
 		<dependency>
@@ -195,27 +151,21 @@
 		</dependency>
 		<!-- CMILib -->
 		<dependency>
-			<groupId>net.Zrips</groupId>
+			<groupId>com.github.Zrips</groupId>
 			<artifactId>CMILib</artifactId>
-			<version>latest</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/CMILib1.4.6.2.jar</systemPath>
+			<version>1.4.7.4</version>
 		</dependency>
 		<!--		 WildStacker -->
 		<dependency>
 			<groupId>com.bgsoftware</groupId>
 			<artifactId>WildStackerAPI</artifactId>
-			<version>latest</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/WildStackerAPI-2023.2.jar</systemPath>
+			<version>3.8.0</version>
 		</dependency>
 		<!-- StackMob -->
 		<dependency>
-			<groupId>com.github.Nathat23</groupId>
-			<artifactId>StackMob-5</artifactId>
-			<version>5.5.3</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/StackMob-5.5.3.jar</systemPath>
+			<groupId>uk.antiperson.stackmob</groupId>
+			<artifactId>StackMob</artifactId>
+			<version>5.8.2</version>
 		</dependency>
 		<!-- MyPet -->
 		<dependency>
@@ -224,10 +174,14 @@
 			<version>3.11-SNAPSHOT</version>
 			<scope>system</scope>
 			<!--			 Temporary solution for replacing repository -->
-			<systemPath>${basedir}/libs/mypet-3.11-20210318.180552-1.jar</systemPath>
+			<systemPath>${basedir}/libs/mypet-3.12.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<repositories>
+		<repository>
+			<id>CodeMC</id>
+			<url>https://repo.codemc.org/repository/maven-public/</url>
+		</repository>
 		<!-- MythicMobs -->
 		<repository>
 			<id>nexus</id>
@@ -243,20 +197,23 @@
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
-		<!-- papermc -->
 		<repository>
-			<id>papermc</id>
-			<url>https://papermc.io/repo/repository/maven-public/</url>
+			<id>neetgames</id>
+			<url>https://nexus.neetgames.com/repository/maven-releases/</url>
 		</repository>
 		<repository>
-			<id>minecraft-repo</id>
-			<url>https://libraries.minecraft.net/</url>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
 		<!-- PlaceholderAPI -->
 		<repository>
 			<id>placeholderapi</id>
 			<url>
 				https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+		</repository>
+		<repository>
+			<id>bg-repo</id>
+			<url>https://repo.bg-software.com/repository/api/</url>
 		</repository>
 		<!-- MyPet -->
 		<!--<repository> <id>mypet-repo</id> <url>https://repo.mypet-plugin.de/</url> 
@@ -281,14 +238,6 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-				<configuration>
-					<outputDirectory>D:/MC/Server 1.20/plugins</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
