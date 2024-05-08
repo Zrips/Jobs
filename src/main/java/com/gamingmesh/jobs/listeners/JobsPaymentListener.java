@@ -418,8 +418,8 @@ public final class JobsPaymentListener implements Listener {
             return;
 
         // Checks whether the broken block has been tracked by BlockTracker
-        if (JobsHook.BlockTracker.isEnabled()) {
-            if (HookManager.getBlockTrackerManager().isTracked(block)) return;
+        if (JobsHook.BlockTracker.isEnabled() && Jobs.getGCManager().useBlockProtectionBlockTracker && HookManager.getBlockTrackerManager().isTracked(block)) {
+            return;
         }
 
         Player player = event.getPlayer();
@@ -437,7 +437,6 @@ public final class JobsPaymentListener implements Listener {
 
         if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
             return;
-
 
         BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 
@@ -551,7 +550,7 @@ public final class JobsPaymentListener implements Listener {
             }
 
             if (JobsHook.PyroFishingPro.isEnabled()) {
-                if(PyroFishingProManager.lastFish != null) {
+                if (PyroFishingProManager.lastFish != null) {
                     Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProManager.lastFish, ActionType.PYROFISHINGPRO));
                 }
                 return;
@@ -1668,9 +1667,7 @@ public final class JobsPaymentListener implements Listener {
             return;
 
         CMIEntityType type = CMIEntityType.get(event.getEntityType());
-        
-        
-        
+
         if (type != CMIEntityType.TNT && type != CMIEntityType.TNT_MINECART && type != CMIEntityType.ENDER_CRYSTAL)
             return;
 

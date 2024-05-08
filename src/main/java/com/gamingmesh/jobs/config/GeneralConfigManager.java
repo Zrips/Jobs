@@ -93,7 +93,7 @@ public class GeneralConfigManager {
 
     private FireworkEffect fireworkEffect;
 
-    public boolean ignoreOreGenerators, useBlockProtection, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
+    public boolean ignoreOreGenerators, useBlockProtection, useBlockProtectionBlockTracker, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
         SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
         PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps, informOnPaymentDisable,
         BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
@@ -884,7 +884,11 @@ public class GeneralConfigManager {
             "Enable blocks protection, like ore, from exploiting by placing and destroying same block again and again.",
             "Modify restrictedBlocks.yml for blocks you want to protect");
         useBlockProtection = c.get("ExploitProtections.General.PlaceAndBreak.Enabled", c.getC().getBoolean("ExploitProtections.General.PlaceAndBreakProtection", true));
-
+        
+        c.addComment("ExploitProtections.General.PlaceAndBreak.BlockTracker.Enabled",
+            "Should we use BlockTracker plugin instead of built in block tracker");
+        useBlockProtectionBlockTracker = c.get("ExploitProtections.General.PlaceAndBreak.BlockTracker.Enabled", false);
+        
         c.addComment("ExploitProtections.General.PlaceAndBreak.IgnoreOreGenerators",
             "Enabling this we will ignore blocks generated in ore generators, liko stone, coublestone and obsidian. You can still use timer on player placed obsidian block");
         ignoreOreGenerators = c.get("ExploitProtections.General.PlaceAndBreak.IgnoreOreGenerators", true);

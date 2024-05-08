@@ -1019,7 +1019,7 @@ public final class Jobs extends JavaPlugin {
         List<JobProgression> progression = jPlayer.getJobProgression();
         int numjobs = progression.size();
 
-        if (!isBpOk(jPlayer, info, block, true))
+        if (!Jobs.getGCManager().useBlockProtectionBlockTracker && !isBpOk(jPlayer, info, block, true))
             return;
 
         // no job
