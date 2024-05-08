@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.hooks;
 
+import com.gamingmesh.jobs.hooks.blockTracker.BlockTrackerManager;
 import com.gamingmesh.jobs.hooks.pyroFishingPro.PyroFishingProManager;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,6 +26,7 @@ public class HookManager {
     private static WorldGuardManager worldGuardManager;
     private static StackMobHandler stackMobHandler;
     private static WildStackerHandler wildStackerHandler;
+	private static BlockTrackerManager blockTrackerManager;
 	private static PyroFishingProManager pyroFishingProManager;
 
     private static final Jobs PLUGIN = JavaPlugin.getPlugin(Jobs.class);
@@ -39,6 +41,7 @@ public class HookManager {
 	setMythicManager();
 	setStackMobHandler();
 	setWildStackerHandler();
+	setBlockTrackerManager();
 	setPyroFishingProManager();
     }
 
@@ -96,6 +99,14 @@ public class HookManager {
         return Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.check();
     }
 
+	public static BlockTrackerManager getBlockTrackerManager() {
+		if (blockTrackerManager == null) {
+			blockTrackerManager = new BlockTrackerManager();
+		}
+
+		return blockTrackerManager;
+	}
+
     private static boolean setWorldGuard() {
         if (JobsHook.WorldGuard.isEnabled()) {
             worldGuardManager = new WorldGuardManager();
@@ -149,6 +160,11 @@ public class HookManager {
         }
     }
 
+	private static void setBlockTrackerManager() {
+		if (JobsHook.BlockTracker.isEnabled()) {
+			blockTrackerManager = new BlockTrackerManager();
+	}
+    
 	private static void setPyroFishingProManager() {
 		if (JobsHook.PyroFishingPro.isEnabled()) {
 			pyroFishingProManager = new PyroFishingProManager();

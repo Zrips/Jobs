@@ -410,12 +410,17 @@ public final class JobsPaymentListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         final Block block = event.getBlock();
 
         if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
             return;
+
+        // Checks whether the broken block has been tracked by BlockTracker
+        if (JobsHook.BlockTracker.isEnabled()) {
+            if (HookManager.getBlockTrackerManager().isTracked(block)) return;
+        }
 
         Player player = event.getPlayer();
 
@@ -432,6 +437,7 @@ public final class JobsPaymentListener implements Listener {
 
         if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
             return;
+
 
         BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 
