@@ -108,7 +108,6 @@ import com.gamingmesh.jobs.stuff.Util;
 import com.gamingmesh.jobs.stuff.VersionChecker;
 import com.gamingmesh.jobs.stuff.complement.Complement;
 import com.gamingmesh.jobs.stuff.complement.Complement1;
-import com.gamingmesh.jobs.stuff.complement.Complement2;
 import com.gamingmesh.jobs.stuff.complement.JobsChatEvent;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
@@ -766,12 +765,7 @@ public final class Jobs extends JavaPlugin {
             HookManager.loadHooks();
             registerListeners();
 
-            if (Version.isCurrentEqualOrHigher(Version.v1_16_R3) && kyoriSupported) {
-                complement = new Complement2();
-                //getServer().getPluginManager().registerEvents(new KyoriChatEvent(this), this);
-            } else {
-                complement = new Complement1();
-            }
+            complement = new Complement1();
 
             if (HookVault.isVaultEnable()) {
                 // register economy
