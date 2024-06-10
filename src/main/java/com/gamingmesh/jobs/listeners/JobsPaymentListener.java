@@ -1723,6 +1723,11 @@ public final class JobsPaymentListener implements Listener {
         }
     }
 
+    private boolean holdsItem(Player player) {
+        return CMIItemStack.getItemInMainHand(player) != null && !CMIItemStack.getItemInMainHand(player).getType().equals(Material.AIR) ||
+            CMIItemStack.getItemInOffHand(player) != null && !CMIItemStack.getItemInOffHand(player).getType().equals(Material.AIR);
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         final Block block = event.getClickedBlock();
@@ -1739,8 +1744,10 @@ public final class JobsPaymentListener implements Listener {
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
         Material hand = CMIItemStack.getItemInMainHand(p).getType();
 
-        if (event.useInteractedBlock() != org.bukkit.event.Event.Result.DENY
-            && event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && !p.isSneaking()) {
+        if (event.useInteractedBlock() != org.bukkit.event.Event.Result.DENY &&
+            event.getAction() == Action.RIGHT_CLICK_BLOCK &&
+            jPlayer != null &&
+            (!p.isSneaking() || !holdsItem(p))) {
             if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
                 if (cmat == CMIMaterial.COMPOSTER) {
                     org.bukkit.block.data.Levelled level = (org.bukkit.block.data.Levelled) block.getBlockData();
@@ -1752,9 +1759,7 @@ public final class JobsPaymentListener implements Listener {
 
                     if (cmat == CMIMaterial.SWEET_BERRY_BUSH) {
                         Ageable age = (Ageable) block.getBlockData();
-                        if (age.getAge() == 2 && hand != CMIMaterial.BONE_MEAL.getMaterial()) {
-                            Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.SWEET_BERRIES, ActionType.COLLECT, age.getAge()), block);
-                        } else if (age.getAge() == 3) {
+                        if (age.getAge() == 2 && hand != CMIMaterial.BONE_MEAL.getMaterial() || age.getAge() == 3) {
                             Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.SWEET_BERRIES, ActionType.COLLECT, age.getAge()), block);
                         }
                     } else {
