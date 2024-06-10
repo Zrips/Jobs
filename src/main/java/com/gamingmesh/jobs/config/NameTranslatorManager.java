@@ -434,15 +434,18 @@ public class NameTranslatorManager {
 
             ConfigurationSection enchSection = c.getC().getConfigurationSection("EnchantList");
             for (Enchantment one : Enchantment.values()) {
-                String enchName = "Unknown";
+                String enchName = "";
                 try {
                     enchName = CMIEnchantment.getName(one);
                 } catch (Throwable e) {
                     // If enchant check failed we can skip this entirely
                     continue;
                 }
-                if (enchName.equals("Unknown"))
+
+                if (enchName.isEmpty()) {
+                    CMIMessages.consoleMessage("Could not identify enchantment: " + one.toString());
                     continue;
+                }
 
                 String name = enchName;
 
