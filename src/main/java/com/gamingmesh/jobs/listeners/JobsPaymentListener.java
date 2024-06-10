@@ -124,6 +124,7 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMC;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -518,6 +519,7 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
+
         Player player = event.getPlayer();
 
         if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
@@ -549,10 +551,8 @@ public final class JobsPaymentListener implements Listener {
                 }
             }
 
-            if (JobsHook.PyroFishingPro.isEnabled()) {
-                if (PyroFishingProManager.lastFish != null) {
-                    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProManager.lastFish, ActionType.PYROFISHINGPRO));
-                }
+            if (JobsHook.PyroFishingPro.isEnabled() && PyroFishingProManager.getFish() != null) {
+                Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProManager.getFish(), ActionType.PYROFISHINGPRO), event.getCaught());
                 return;
             }
 
@@ -1111,26 +1111,7 @@ public final class JobsPaymentListener implements Listener {
         if (block == null || !Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
             return;
 
-        final Block finalBlock = block;
-        plugin.getBlockOwnerShip(CMIMaterial.get(finalBlock)).ifPresent(os -> {
-            if (os.disable(finalBlock) && Jobs.getGCManager().informOnPaymentDisable) {
-
-                UUID uuid = plugin.getBlockOwnerShip(CMIMaterial.get(finalBlock)).get().getOwnerByLocation(finalBlock.getLocation());
-                Player player = Bukkit.getPlayer(uuid);
-                if (player == null || !player.isOnline())
-                    return;
-
-                JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-                String lc = CMILocation.toString(finalBlock.getLocation());
-
-                if (!jPlayer.hasBlockOwnerShipInform(lc)) {
-                    CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
-                        "[type]", CMIMaterial.get(finalBlock).getName(),
-                        "[location]", LC.Location_Full.getLocale(finalBlock.getLocation())));
-                    jPlayer.addBlockOwnerShipInform(lc);
-                }
-            }
-        });
+        processItemMove(block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1143,26 +1124,33 @@ public final class JobsPaymentListener implements Listener {
 
         final BrewingStand stand = (BrewingStand) event.getDestination().getHolder();
 
-        if (Jobs.getGCManager().canPerformActionInWorld(stand.getWorld()))
-            plugin.getBlockOwnerShip(CMIMaterial.get(stand.getBlock())).ifPresent(os -> {
-                if (os.disable(stand.getBlock()) && Jobs.getGCManager().informOnPaymentDisable) {
+        if (!Jobs.getGCManager().canPerformActionInWorld(stand.getWorld()))
+            return;
 
-                    UUID uuid = plugin.getBlockOwnerShip(CMIMaterial.get(stand.getBlock())).get().getOwnerByLocation(stand.getLocation());
-                    Player player = Bukkit.getPlayer(uuid);
-                    if (player == null || !player.isOnline())
-                        return;
+        processItemMove(stand.getBlock());
+    }
 
-                    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-                    String lc = CMILocation.toString(stand.getLocation());
+    private void processItemMove(Block block) {
+        plugin.getBlockOwnerShip(CMIMaterial.get(block)).ifPresent(os -> {
+            if (!os.disable(block) || !Jobs.getGCManager().informOnPaymentDisable)
+                return;
 
-                    if (!jPlayer.hasBlockOwnerShipInform(lc)) {
-                        CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
-                            "[type]", CMIMaterial.get(stand.getBlock()).getName(),
-                            "[location]", LC.Location_Full.getLocale(stand.getLocation())));
-                        jPlayer.addBlockOwnerShipInform(lc);
-                    }
-                }
-            });
+            UUID uuid = plugin.getBlockOwnerShip(CMIMaterial.get(block)).get().getOwnerByLocation(block.getLocation());
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null || !player.isOnline())
+                return;
+
+            JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+            String lc = CMILocation.toString(block.getLocation());
+
+            if (jPlayer.hasBlockOwnerShipInform(lc))
+                return;
+
+            CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
+                "[type]", CMIMaterial.get(block).getName(),
+                "[location]", LC.Location_Full.getLocale(block.getLocation())));
+            jPlayer.addBlockOwnerShipInform(lc);
+        });
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

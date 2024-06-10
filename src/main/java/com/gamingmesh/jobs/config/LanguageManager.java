@@ -384,6 +384,8 @@ public class LanguageManager {
             c.get("command.info.output.mmkill.none", "%jobname% does not get money for killing Mythic monsters.");
             c.get("command.info.output.fish.info", "&eFish");
             c.get("command.info.output.fish.none", "%jobname% does not get money from fishing.");
+            c.get("command.info.output.pyrofishingpro.info", "&eFish");
+            c.get("command.info.output.pyrofishingpro.none", "%jobname% does not get money from fishing.");
             c.get("command.info.output.craft.info", "&eCraft");
             c.get("command.info.output.craft.none", "%jobname% does not get money from crafting.");
             c.get("command.info.output.smelt.info", "&eSmelt");

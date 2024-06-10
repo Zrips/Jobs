@@ -1306,7 +1306,7 @@ public final class Jobs extends JavaPlugin {
             }
 
             //need to update bp
-            if (block != null) {
+            if (block != null && !Jobs.getGCManager().useBlockProtectionBlockTracker) {
                 BlockProtection bp = getBpManager().getBp(block.getLocation());
                 if (bp != null)
                     bp.setPaid(true);
