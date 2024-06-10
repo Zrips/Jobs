@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.CurrencyType;
-import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.FileHandler.ConfigReader;
@@ -51,8 +50,10 @@ public class LanguageManager {
         languages.add("en");
 
         File customLocaleFile = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + ls + ".yml");
-        if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
+
+        if (customLocaleFile.exists() && !ls.equalsIgnoreCase("en")) {
             languages.add(ls);
+        }
 
         for (String lang : languages) {
             File f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
@@ -99,10 +100,10 @@ public class LanguageManager {
             c.get("general.info.blocks.smoker", "Smoker");
             c.get("general.info.blocks.blastfurnace", "Blast furnace");
             c.get("general.info.blocks.brewingstand", "Brewing stand");
-            
+
             c.get("general.info.join", "&eClick to join job");
             c.get("general.info.leave", "&cClick to leave job");
-            
+
             c.get("general.admin.error", "&cThere was an error in the command.");
             c.get("general.admin.success", "&eYour command has been performed.");
             c.get("general.error.noHelpPage", "&cThere is no help page by this number!");
@@ -116,7 +117,6 @@ public class LanguageManager {
             c.get("general.error.reenabledBlock", "&eReenabled ownership");
             c.get("general.error.noRegistration", "&cYou've reached max [block] count!");
             c.get("general.error.blockDisabled", "&6Payments from &e[type] &6got disabled. &2[location]");
-            
 
             c.get("command.help.output.cmdUsage", "&2Usage: &7[command]");
             c.get("command.help.output.label", "Jobs");
@@ -138,10 +138,10 @@ public class LanguageManager {
             c.get("command.boost.output.boostadded", "&aBoost of &e%boost% &aadded for &e%jobname%!");
             c.get("command.boost.output.infostats", "&c-----> &a%type% rate x%boost% enabled&c <-------");
             c.get("command.boost.output.boostStats", "&6%payments% &e%jobname%");
-            
+
             c.get("command.boost.output.jobsboostreset", "&aBoost of &e%boost% &aadded for &e%jobname%!");
             c.get("command.boost.output.jobstypeboostreset", "&aBoost of &e%boost% &aadded for &e%jobname%!");
-            
+
             c.get("command.schedule.help.info", "Enables the given scheduler");
             c.get("command.schedule.help.args", "enable [scheduleName] [untilTime]");
             Jobs.getGCManager().getCommandArgs().put("schedule", Arrays.asList("enable", "[scheduleName]", "[untilTime]"));
@@ -649,12 +649,12 @@ public class LanguageManager {
             c.get("command.toggle.output.paid.points", "&6[points] points");
             c.get("command.toggle.output.on", "&aToggled: &aON");
             c.get("command.toggle.output.off", "&aToggled: &4OFF");
-            
+
             c.get("command.howmuch.help.info", "Check potential payment by target entity or block");
             c.get("command.howmuch.help.args", "");
             c.get("command.version.output.payment", "&e[job] &f[action] &7[target] [exp] [money] [points]");
             c.get("command.version.output.nopayment", "&7Can't find any payments ([target])");
-            
+
             c.get("command.version.help.info", "Plugin version information");
             c.get("command.version.help.args", "");
             c.get("command.version.output.jobsVersion", "&eJobs: &6[version]");
