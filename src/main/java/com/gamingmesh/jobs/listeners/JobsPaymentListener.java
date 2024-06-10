@@ -26,8 +26,6 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import com.gamingmesh.jobs.actions.*;
-import com.gamingmesh.jobs.hooks.pyroFishingPro.PyroFishingProManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -94,6 +92,16 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import com.bgsoftware.wildstacker.api.enums.StackSplit;
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.actions.BlockActionInfo;
+import com.gamingmesh.jobs.actions.BlockCollectInfo;
+import com.gamingmesh.jobs.actions.CustomKillInfo;
+import com.gamingmesh.jobs.actions.EnchantActionInfo;
+import com.gamingmesh.jobs.actions.EntityActionInfo;
+import com.gamingmesh.jobs.actions.ExploreActionInfo;
+import com.gamingmesh.jobs.actions.ItemActionInfo;
+import com.gamingmesh.jobs.actions.ItemNameActionInfo;
+import com.gamingmesh.jobs.actions.PotionItemActionInfo;
+import com.gamingmesh.jobs.actions.PyroFishingProInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.ExploreRespond;
@@ -105,6 +113,7 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip.ownershipFeedback;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.hooks.JobsHook;
+import com.gamingmesh.jobs.hooks.pyroFishingPro.PyroFishingProManager;
 import com.gamingmesh.jobs.stuff.Util;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -124,7 +133,6 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMC;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -1776,7 +1784,8 @@ public final class JobsPaymentListener implements Listener {
         boolean isBrewingStand = cmat == CMIMaterial.BREWING_STAND || cmat == CMIMaterial.LEGACY_BREWING_STAND;
         boolean isFurnace = cmat == CMIMaterial.FURNACE || cmat == CMIMaterial.LEGACY_BURNING_FURNACE;
 
-        if (isFurnace || cmat == CMIMaterial.SMOKER || cmat == CMIMaterial.BLAST_FURNACE || isBrewingStand) {
+        if ((isFurnace || cmat == CMIMaterial.SMOKER || cmat == CMIMaterial.BLAST_FURNACE || isBrewingStand)) {
+
             BlockOwnerShip blockOwner = plugin.getBlockOwnerShip(cmat).orElse(null);
             if (blockOwner == null) {
                 return;
@@ -1806,9 +1815,11 @@ public final class JobsPaymentListener implements Listener {
                 if (report)
                     CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.noRegistration", "[block]", name));
             } else if (done == ownershipFeedback.newReg && jPlayer != null && jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) > 0) {
+
                 CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.newRegistration", "[block]", name,
                     "[current]", blockOwner.getTotal(jPlayer.getUniqueId()),
                     "[max]", jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) == 0 ? "-" : jPlayer.getMaxOwnerShipAllowed(blockOwner.getType())));
+
             } else if (done == ownershipFeedback.reenabled && jPlayer != null) {
                 CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.reenabledBlock"));
             }

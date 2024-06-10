@@ -238,3 +238,6 @@ permissions:
   jobs.hidegtop:
     description: Prevent player to be shown in the global jobs top
     default: false
+  jobs.noownershiptakeover:
+    description: Will not take over existing block ownership 
+    default: op

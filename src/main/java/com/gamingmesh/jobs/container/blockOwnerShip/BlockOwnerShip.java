@@ -127,6 +127,10 @@ public class BlockOwnerShip {
 
         if (ownerUUID != null && !ownerUUID.equals(player.getUniqueId())) {
             if (Jobs.getGCManager().blockOwnershipTakeOver) {
+                
+                if (Jobs.getPermissionManager().hasPermission(jPlayer, "jobs.noownershiptakeover"))
+                    return ownershipFeedback.invalid;
+                
                 // Removing ownership to record new player
                 this.remove(ownerUUID, CMILocation.toString(block.getLocation(), ":", true, true));
                 block.removeMetadata(metadataName, plugin);

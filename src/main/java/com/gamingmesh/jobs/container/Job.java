@@ -211,6 +211,7 @@ public class Job {
 
         return totalPlayers;
     }
+
     /**
      * 
      * @param change the amount to change
