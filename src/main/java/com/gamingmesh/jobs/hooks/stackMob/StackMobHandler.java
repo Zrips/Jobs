@@ -1,7 +1,5 @@
 package com.gamingmesh.jobs.hooks.stackMob;
 
-import java.util.Collection;
-
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,8 +12,8 @@ public class StackMobHandler {
         return getPlugin().getEntityManager().isStackedEntity(entity);
     }
 
-    public Collection<StackEntity> getStackEntities() {
-        return getPlugin().getEntityManager().getStackEntities();
+    public StackEntity getStackEntity(LivingEntity entity) {
+        return getPlugin().getEntityManager().getStackEntity(entity);
     }
 
     public StackMob getPlugin() {

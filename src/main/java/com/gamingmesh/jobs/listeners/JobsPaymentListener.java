@@ -133,9 +133,11 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMC;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import uk.antiperson.stackmob.entity.StackEntity;
 
 public final class JobsPaymentListener implements Listener {
 
@@ -349,10 +351,11 @@ public final class JobsPaymentListener implements Listener {
                     Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
                 }
             } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(sheep)) {
-                for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
-                    if (stacked.getEntity().getType() == sheep.getType()) {
-                        Jobs.action(jDamager, new CustomKillInfo(((Sheep) stacked.getEntity()).getColor().name(), ActionType.SHEAR));
-                    }
+
+                StackEntity stack = HookManager.getStackMobHandler().getStackEntity(sheep);
+                if (stack != null) {
+                    Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
+                    return;
                 }
             }
         }
@@ -615,10 +618,11 @@ public final class JobsPaymentListener implements Listener {
                     Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
                 }
             } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(animal)) {
-                for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
-                    if (stacked.getEntity().getType() == animal.getType()) {
-                        Jobs.action(jDamager, new EntityActionInfo(stacked.getEntity(), ActionType.TAME));
-                    }
+
+                StackEntity stack = HookManager.getStackMobHandler().getStackEntity(animal);
+                if (stack != null) {
+                    Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
+                    return;
                 }
             }
         }
@@ -1407,10 +1411,10 @@ public final class JobsPaymentListener implements Listener {
                     Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
                 }
             } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(lVictim)) {
-                for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
-                    if (stacked.getEntity().getType() == lVictim.getType()) {
-                        Jobs.action(jDamager, new EntityActionInfo(stacked.getEntity(), ActionType.KILL), killer, stacked.getEntity());
-                    }
+                StackEntity stack = HookManager.getStackMobHandler().getStackEntity(lVictim);
+                if (stack != null) {
+                    Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
+                    return;
                 }
             }
         }
