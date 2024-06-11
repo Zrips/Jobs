@@ -484,7 +484,7 @@ public class JobsCommands implements CommandExecutor {
         double exp = jPlayer.getExpAfterRejoin(jobProg, level);
         int maxExperience = jobProg.getMaxExperience(level);
 
-        String message = Jobs.getLanguage().getMessage("command.stats.output.message",
+        String message = Jobs.getLanguage().getMessage("command.stats.output.Level",
             "%joblevel%", level,
             jobProg.getJob(),
             "%jobxp%", Math.round(exp * 100.0) / 100.0,
