@@ -46,6 +46,7 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Time.CMITimeManager;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 import net.Zrips.CMILib.Version.Schedulers.CMITask;
@@ -447,6 +448,7 @@ public class JobsPlayer {
     }
 
     public void reloadLimits() {
+
         for (CurrencyType type : CurrencyType.values()) {
             reload(type);
         }
@@ -478,18 +480,19 @@ public class JobsPlayer {
     public int getJobCount() {
         return getJobCount(true);
     }
+
     public int getJobCount(boolean includeIgnoredMaxJobs) {
-        
+
         if (includeIgnoredMaxJobs)
             return progression.size();
-        
+
         int count = 0;
         for (JobProgression one : progression) {
             if (one.getJob().isIgnoreMaxJobs())
                 continue;
             count++;
         }
-        
+
         return count;
     }
 
@@ -997,6 +1000,8 @@ public class JobsPlayer {
     public void setSaved(boolean isSaved) {
         if (!isSaved && !isOnline())
             Jobs.getPlayerManager().addPlayer(this);
+        if (!Jobs.fullyLoaded)
+            return;
         this.isSaved = isSaved;
     }
 
@@ -1376,6 +1381,7 @@ public class JobsPlayer {
 
     public void addDoneQuest(final Job job) {
         doneQuests++;
+
         setSaved(false);
 
         if (questSignUpdateShed == null) {

@@ -115,6 +115,7 @@ import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
@@ -1102,8 +1103,9 @@ public final class Jobs extends JavaPlugin {
             if (info.getType() == ActionType.BREAK && block != null)
                 getBpManager().remove(block);
 
-            if (pointAmount != 0D)
+            if (pointAmount != 0D) {
                 jPlayer.setSaved(false);
+            }
 
             Map<CurrencyType, Double> payments = new HashMap<>();
             if (income != 0D)

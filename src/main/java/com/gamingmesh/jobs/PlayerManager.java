@@ -440,10 +440,10 @@ public class PlayerManager {
                     }
 
                     jPlayer.progression.add(new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience()));
-                    jPlayer.reloadMaxExperience();
-                    jPlayer.reloadLimits();
                 }
             }
+            jPlayer.reloadMaxExperience();
+            jPlayer.reloadLimits();
         }
 
         if (points != null)

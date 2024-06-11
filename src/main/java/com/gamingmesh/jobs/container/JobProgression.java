@@ -25,6 +25,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Container.CMINumber;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Time.CMITimeManager;
 
 public class JobProgression {
@@ -37,10 +38,10 @@ public class JobProgression {
     private long leftOn = 0;
 
     public JobProgression(Job job, JobsPlayer jPlayer, int level, double experience) {
-	this.job = job;
-	this.jPlayer = jPlayer;
-	this.experience = experience;
-	this.level = level;
+        this.job = job;
+        this.jPlayer = jPlayer;
+        this.experience = experience;
+        this.level = level;
     }
 
     /**
@@ -49,7 +50,7 @@ public class JobProgression {
      * @return false if the job cannot
      */
     public boolean canLevelUp() {
-	return experience >= maxExperience;
+        return experience >= maxExperience;
     }
 
     /**
@@ -58,7 +59,7 @@ public class JobProgression {
      * @return false if the job cannot
      */
     public boolean canLevelDown() {
-	return experience < 0;
+        return experience < 0;
     }
 
     /**
@@ -66,7 +67,7 @@ public class JobProgression {
      * @return the job
      */
     public Job getJob() {
-	return job;
+        return job;
     }
 
     /**
@@ -75,9 +76,9 @@ public class JobProgression {
      */
     public void setJob(Job job) {
 //		synchronized (jPlayer.saveLock) {
-	jPlayer.setSaved(false);
-	this.job = job;
-	reloadMaxExperienceAndCheckLevelUp();
+        jPlayer.setSaved(false);
+        this.job = job;
+        reloadMaxExperienceAndCheckLevelUp();
 //		}
     }
 
@@ -86,7 +87,7 @@ public class JobProgression {
      * @return the experiece in this job
      */
     public double getExperience() {
-	return experience;
+        return experience;
     }
 
     /**
@@ -95,10 +96,10 @@ public class JobProgression {
      * @return - job level up
      */
     public boolean addExperience(double experience) {
-	jPlayer.setSaved(false);
-	this.experience += experience;
-	lastExperience = getLastExperience() + experience;
-	return checkLevelUp();
+        jPlayer.setSaved(false);
+        this.experience += experience;
+        lastExperience = getLastExperience() + experience;
+        return checkLevelUp();
     }
 
     /**
@@ -107,9 +108,9 @@ public class JobProgression {
      * @return - job level up
      */
     public boolean setExperience(double experience) {
-	jPlayer.setSaved(false);
-	this.experience = experience;
-	return checkLevelUp();
+        jPlayer.setSaved(false);
+        this.experience = experience;
+        return checkLevelUp();
     }
 
     /**
@@ -118,10 +119,10 @@ public class JobProgression {
      * @return - job level up
      */
     public boolean takeExperience(double experience) {
-	jPlayer.setSaved(false);
-	this.experience -= experience;
-	lastExperience = getLastExperience() + experience;
-	return checkLevelUp();
+        jPlayer.setSaved(false);
+        this.experience -= experience;
+        lastExperience = getLastExperience() + experience;
+        return checkLevelUp();
     }
 
     /**
@@ -129,7 +130,7 @@ public class JobProgression {
      * @return the experience needed to level up
      */
     public int getMaxExperience() {
-	return maxExperience;
+        return maxExperience;
     }
 
     /**
@@ -137,7 +138,7 @@ public class JobProgression {
      * @return the level of this job
      */
     public int getLevel() {
-	return level;
+        return level;
     }
 
     /**
@@ -145,9 +146,9 @@ public class JobProgression {
      * @return the level of this job
      */
     public String getLevelFormatted() {
-	if (Jobs.getGCManager().RomanNumbers)
-	    return CMINumber.toRoman(level);	
-	return String.valueOf(level);
+        if (Jobs.getGCManager().RomanNumbers)
+            return CMINumber.toRoman(level);
+        return String.valueOf(level);
     }
 
     /**
@@ -157,26 +158,26 @@ public class JobProgression {
      * @return true if this progression can level up
      */
     public boolean setLevel(int level) {
-	jPlayer.setSaved(false);
-	this.level = level;
-	return reloadMaxExperienceAndCheckLevelUp();
+        jPlayer.setSaved(false);
+        this.level = level;
+        return reloadMaxExperienceAndCheckLevelUp();
     }
 
     /**
      * Reloads max experience
      */
     public void reloadMaxExperience() {
-	Map<String, Double> param = new HashMap<>();
-	param.put("joblevel", (double) level);
-	param.put("numjobs", (double) jPlayer.getJobProgression().size());
-	maxExperience = (int) job.getMaxExp(param);
+        Map<String, Double> param = new HashMap<>();
+        param.put("joblevel", (double) level);
+        param.put("numjobs", (double) jPlayer.getJobProgression().size());
+        maxExperience = (int) job.getMaxExp(param);
     }
 
     public int getMaxExperience(int level) {
-	Map<String, Double> param = new HashMap<>();
-	param.put("joblevel", (double) level);
-	param.put("numjobs", (double) jPlayer.getJobProgression().size());
-	return (int) job.getMaxExp(param);
+        Map<String, Double> param = new HashMap<>();
+        param.put("joblevel", (double) level);
+        param.put("numjobs", (double) jPlayer.getJobProgression().size());
+        return (int) job.getMaxExp(param);
     }
 
     /**
@@ -184,31 +185,31 @@ public class JobProgression {
      * @returns if level up was performed
      */
     private boolean checkLevelUp() {
-	if (level == 1 && experience < 0)
-	    experience = 0;
+        if (level == 1 && experience < 0)
+            experience = 0;
 
-	if (experience < 0)
-	    return checkLevelDown();
+        if (experience < 0)
+            return checkLevelDown();
 
-	boolean ret = false;
-	while (canLevelUp()) {
-	    // Don't level up at max level
-	    if (job.getMaxLevel() > 0 && level >= jPlayer.getMaxJobLevelAllowed(job))
-		break;
+        boolean ret = false;
+        while (canLevelUp()) {
+            // Don't level up at max level
+            if (job.getMaxLevel() > 0 && level >= jPlayer.getMaxJobLevelAllowed(job))
+                break;
 
-	    level++;
-	    experience -= maxExperience;
+            level++;
+            experience -= maxExperience;
 
-	    ret = true;
-	    reloadMaxExperience();
-	    jPlayer.reloadLimits();
-	}
+            ret = true;
+            reloadMaxExperience();
+            jPlayer.reloadLimits();
+        }
 
-	// At max level
-	if (experience > maxExperience)
-	    experience = maxExperience;
+        // At max level
+        if (experience > maxExperience)
+            experience = maxExperience;
 
-	return ret;
+        return ret;
     }
 
     /**
@@ -216,26 +217,26 @@ public class JobProgression {
      * @returns if level down was performed
      */
     private boolean checkLevelDown() {
-	boolean ret = false;
-	while (canLevelDown()) {
-	    if (
-		// Don't level down at 1
-		level <= 1 ||
-		!Jobs.getGCManager().AllowDelevel
-	    ) {
-		experience = 0;
+        boolean ret = false;
+        while (canLevelDown()) {
+            if (
+            // Don't level down at 1
+            level <= 1 ||
+                !Jobs.getGCManager().AllowDelevel) {
+                experience = 0;
 
-		break;
-	    }
+                break;
+            }
 
-	    level--;
-	    experience += getMaxExperience(level);
+            level--;
+            experience += getMaxExperience(level);
 
-	    ret = true;
-	    reloadMaxExperience();
-	    jPlayer.reloadLimits();
-	}
-	return ret;
+            ret = true;
+            reloadMaxExperience();
+
+            jPlayer.reloadLimits();
+        }
+        return ret;
     }
 
     /**
@@ -244,37 +245,37 @@ public class JobProgression {
      * @return if leveled up
      */
     private boolean reloadMaxExperienceAndCheckLevelUp() {
-	reloadMaxExperience();
-	return checkLevelUp();
+        reloadMaxExperience();
+        return checkLevelUp();
     }
 
     public Long getLeftOn() {
-	return leftOn;
+        return leftOn;
     }
 
     public JobProgression setLeftOn(Long leftOn) {
-	this.leftOn = leftOn;
-	return this;
+        this.leftOn = leftOn;
+        return this;
     }
 
     public boolean canRejoin() {
-	if (leftOn == 0 || leftOn + job.getRejoinCd() < System.currentTimeMillis())
-	    return true;
+        if (leftOn == 0 || leftOn + job.getRejoinCd() < System.currentTimeMillis())
+            return true;
 
-	org.bukkit.entity.Player player = jPlayer != null ? jPlayer.getPlayer() : null;
-	return player != null && player.hasPermission("jobs.rejoinbypass");
+        org.bukkit.entity.Player player = jPlayer != null ? jPlayer.getPlayer() : null;
+        return player != null && player.hasPermission("jobs.rejoinbypass");
     }
 
     public String getRejoinTimeMessage() {
-	return leftOn == 0 ? "" : CMITimeManager.to24hourShort(leftOn + job.getRejoinCd() - System.currentTimeMillis());
+        return leftOn == 0 ? "" : CMITimeManager.to24hourShort(leftOn + job.getRejoinCd() - System.currentTimeMillis());
     }
 
     public double getLastExperience() {
-	return lastExperience;
+        return lastExperience;
     }
 
     public void setLastExperience(double lastExperience) {
-	this.lastExperience = lastExperience;
+        this.lastExperience = lastExperience;
     }
 
 }
