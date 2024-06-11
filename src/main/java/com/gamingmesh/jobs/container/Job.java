@@ -294,7 +294,7 @@ public class Job {
     }
 
     public ItemStack getGuiItem() {
-        return guiItem == null ? null : guiItem.getGuiItem();
+        return guiItem == null ? CMIMaterial.STONE.newItemStack() : guiItem.getGuiItem();
     }
 
     public int getGuiSlot() {
