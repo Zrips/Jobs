@@ -32,6 +32,7 @@ import java.util.function.BiPredicate;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.stuff.Util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -614,6 +615,13 @@ public class Job {
 
     public void setBossbar(String bossbar) {
         this.bossbar = bossbar;
+
+        // Need to reset boss bar cache for all online players in case jobs config file was reloaded
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+            if (jPlayer != null)
+                jPlayer.clearBossMaps();
+        }
     }
 
     public Parser getMoneyEquation() {
