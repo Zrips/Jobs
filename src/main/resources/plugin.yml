@@ -12,8 +12,6 @@ softdepend: [Vault, Essentials, MythicMobs, WorldGuard, MyPet, PlaceholderAPI, E
 commands:
   jobs:
     description: Jobs
-    usage: /jobs
-
 permissions:
   jobs.*:
     description: Grants access to all Jobs commands
