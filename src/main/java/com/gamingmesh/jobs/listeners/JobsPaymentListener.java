@@ -557,7 +557,6 @@ public final class JobsPaymentListener implements Listener {
             // check is mcMMO enabled
             if (JobsHook.mcMMO.isEnabled()) {
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
                 // check is the fishing being exploited. If yes, prevent payment.
                 if (mcMMOPlayer != null && ExperienceConfig.getInstance().isFishingExploitingPrevented()
                     && mcMMOPlayer.getFishingManager().isExploitingFishing(event.getHook().getLocation().toVector())) {

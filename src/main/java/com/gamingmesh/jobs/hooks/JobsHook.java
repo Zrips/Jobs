@@ -18,18 +18,14 @@ public enum JobsHook {
     private Boolean present;
 
     public boolean isEnabled() {
-	if (enabled == null) {
-	    enabled = JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager().isPluginEnabled(name());
-	}
-
+	if (enabled == null) 
+	    enabled = JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager().isPluginEnabled(name());	
 	return enabled;
     }
 
     public boolean isPresent() {
-	if (present == null) {
-	    present = JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager().getPlugin(name()) != null;
-	}
-
+	if (present == null) 
+	    present = JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager().getPlugin(name()) != null;	
 	return present;
     }
 }
