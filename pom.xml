@@ -253,8 +253,12 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-					<outputDirectory>D:\MC\Server 1.20.5\plugins\</outputDirectory>
+					<outputDirectory>${basedir}/build/jar</outputDirectory>
 				</configuration>
+				<!-- This should be kept local -->
+				<!--<configuration>
+					<outputDirectory>D:\MC\Server 1.20.5\plugins\</outputDirectory>
+				</configuration>-->
 			</plugin>
 		</plugins>
 	</build>
