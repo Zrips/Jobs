@@ -9,9 +9,13 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.ActionInfo;
+import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
+import com.gamingmesh.jobs.container.JobsPlayer;
 
+import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.CMIBlock;
 import net.Zrips.CMILib.Container.CMIBlock.Bisect;
 import net.Zrips.CMILib.Items.CMIMaterial;
@@ -22,7 +26,7 @@ public class BlockProtectionManager {
     private final HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> map = new HashMap<>();
     private final ConcurrentHashMap<World, ConcurrentHashMap<String, BlockProtection>> tempCache = new ConcurrentHashMap<>();
 
-    public HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> getMap() {
+    public HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> getMap2() {
         return map;
     }
 
@@ -106,9 +110,7 @@ public class BlockProtectionManager {
 
         // If timer is under 2 hours, we can run scheduler to remove it when time comes
         if (time > -1 && (time - System.currentTimeMillis()) / 1000 < 60 * 60 * 2)
-            Bp.setScheduler(CMIScheduler.get().runAtLocationLater(loc, () -> {
-                remove(loc);
-            }, (time - System.currentTimeMillis()) / 50));
+            Bp.setScheduler(CMIScheduler.runAtLocationLater(loc, () -> remove(loc), (time - System.currentTimeMillis()) / 50));
 
         Bpm.put(v, Bp);
         chunks.put(chunk, Bpm);
@@ -230,5 +232,84 @@ public class BlockProtectionManager {
 
     public boolean isInBp(Block block) {
         return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.containsKey(CMIMaterial.get(block));
+    }
+    
+    
+    public boolean isBpOk(JobsPlayer player, ActionInfo info, Block block, boolean inform) {
+        if (block == null || !Jobs.getGCManager().useBlockProtection)
+            return true;
+
+        if (info.getType() == ActionType.BREAK) {
+            if (block.hasMetadata("JobsExploit")) {
+                //player.sendMessage("This block is protected using Rukes' system!");
+                return false;
+            }
+
+            BlockProtection bp = getBp(block.getLocation());
+            if (bp != null) {
+                long time = bp.getTime();
+                Integer cd = getBlockDelayTime(block);
+
+                if (time == -1L) {
+                    remove(block);
+                    return false;
+                }
+
+                if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
+                    remove(block);
+                    return true;
+                }
+
+                if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
+                    if (inform && player.canGetPaid(info)) {
+                        int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
+                        CMIActionBar.send(player.getPlayer(), Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
+                    }
+
+                    return false;
+                }
+
+                add(block, cd);
+
+                if ((cd == null || cd == 0) && Jobs.getGCManager().useGlobalTimer) {
+                    add(block, Jobs.getGCManager().globalblocktimer);
+                }
+
+            } else if (Jobs.getGCManager().useGlobalTimer) {
+                add(block, Jobs.getGCManager().globalblocktimer);
+            }
+        } else if (info.getType() == ActionType.PLACE) {
+            BlockProtection bp = getBp(block.getLocation());
+            if (bp != null) {
+                Long time = bp.getTime();
+                Integer cd = getBlockDelayTime(block);
+                if (time != -1L) {
+                    if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
+                        add(block, cd);
+                        return true;
+                    }
+
+                    if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
+                        if (inform && player.canGetPaid(info)) {
+                            int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
+                            CMIActionBar.send(player.getPlayer(), Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
+                        }
+
+                        add(block, cd);
+                        return false;
+                    }
+
+                    // Lets add protection in any case
+                    add(block, cd);
+                } else if (bp.isPaid() && bp.getTime() == -1L && cd != null && cd == -1) {
+                    add(block, cd);
+                    return false;
+                } else
+                    add(block, cd);
+            } else
+                add(block, getBlockDelayTime(block));
+        }
+
+        return true;
     }
 }

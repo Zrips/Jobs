@@ -2465,6 +2465,9 @@ public abstract class JobsDAO {
      * @param jobBlockProtection - the information getting saved
      */
     public void loadBlockProtection() {
+        if (Jobs.getGCManager().useNewBlockProtection)
+            return;
+        
         JobsConnection conn = getConnection();
         if (conn == null)
             return;

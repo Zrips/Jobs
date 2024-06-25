@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>5.2.3.0</version>
+	<version>5.2.4.0</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
@@ -150,11 +150,11 @@
 			</exclusions>
 		</dependency>
 		<!-- CMILib -->
-		<dependency>
-			<groupId>com.github.Zrips</groupId>
-			<artifactId>CMILib</artifactId>
-			<version>1.4.7.4</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.github.Zrips</groupId>-->
+<!--			<artifactId>CMILib</artifactId>-->
+<!--			<version>1.4.7.4</version>-->
+<!--		</dependency>-->
 		<!--		 WildStacker -->
 		<dependency>
 			<groupId>com.bgsoftware</groupId>
@@ -183,6 +183,14 @@
 			<version>4.9.1</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/libs/PyroFishingPro-4.9.1.jar</systemPath>
+		</dependency>
+		<!-- CMILib -->
+		<dependency>
+			<groupId>net.Zrips</groupId>
+			<artifactId>CMILib</artifactId>
+			<version>1.5.0.2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/CMILib1.5.0.2.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<repositories>
@@ -246,14 +254,6 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-				<configuration>
-					<outputDirectory>D:\MC\Server 1.20.5\plugins\</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>

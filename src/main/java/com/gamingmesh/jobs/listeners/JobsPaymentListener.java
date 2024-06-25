@@ -473,7 +473,7 @@ public final class JobsPaymentListener implements Listener {
         if (Jobs.getGCManager().useSilkTouchProtection) {
             ItemStack item = CMIItemStack.getItemInMainHand(player);
 
-            if (item.getType() != Material.AIR && Jobs.getBpManager().isInBp(block)) {
+            if (item.getType() != Material.AIR && Jobs.getExploitManager().isInProtection(block)) {
                 for (Enchantment one : item.getEnchantments().keySet()) {
                     CMIEnchantment enchant = CMIEnchantment.get(one);
                     if (enchant != null && enchant.equalEnum(CMIEnchantEnum.SILK_TOUCH)) {

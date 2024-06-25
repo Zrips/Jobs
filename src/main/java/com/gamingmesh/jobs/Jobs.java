@@ -50,6 +50,7 @@ import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.BlockProtectionManager;
 import com.gamingmesh.jobs.config.BossBarManager;
 import com.gamingmesh.jobs.config.ConfigManager;
+import com.gamingmesh.jobs.config.ExploitProtectionManager;
 import com.gamingmesh.jobs.config.ExploreManager;
 import com.gamingmesh.jobs.config.GeneralConfigManager;
 import com.gamingmesh.jobs.config.LanguageManager;
@@ -139,6 +140,7 @@ public final class Jobs extends JavaPlugin {
     private static ShopManager shopManager;
     private static Loging loging;
     private static BlockProtectionManager bpManager;
+    private static ExploitProtectionManager exploitManager;
     private static JobsManager dbManager;
     private static ConfigManager configManager;
     private static GeneralConfigManager gConfigManager;
@@ -292,6 +294,12 @@ public final class Jobs extends JavaPlugin {
         if (bpManager == null)
             bpManager = new BlockProtectionManager();
         return bpManager;
+    }
+
+    public static ExploitProtectionManager getExploitManager() {
+        if (exploitManager == null)
+            exploitManager = new ExploitProtectionManager();
+        return exploitManager;
     }
 
     public static JobsManager getDBManager() {
@@ -1020,8 +1028,10 @@ public final class Jobs extends JavaPlugin {
         List<JobProgression> progression = jPlayer.getJobProgression();
         int numjobs = progression.size();
 
-        if (!Jobs.getGCManager().useBlockProtectionBlockTracker && !isBpOk(jPlayer, info, block, true))
+        CMIDebug.it();
+        if (!Jobs.getGCManager().useBlockProtectionBlockTracker && !Jobs.getExploitManager().isProtectionValidAddIfNotExists(jPlayer, info, block, true))
             return;
+        CMIDebug.d(CMIDebug.getIT(), "ms");
 
         // no job
         if (numjobs == 0) {
@@ -1100,8 +1110,12 @@ public final class Jobs extends JavaPlugin {
             if (income == 0D && pointAmount == 0D)
                 return;
 
-            if (info.getType() == ActionType.BREAK && block != null)
-                getBpManager().remove(block);
+            if (info.getType() == ActionType.BREAK && block != null) {
+                if (getGCManager().useNewBlockProtection)
+                    getExploitManager().remove(block);
+                else
+                    getBpManager().remove(block);
+            }
 
             if (pointAmount != 0D) {
                 jPlayer.setSaved(false);
@@ -1309,7 +1323,11 @@ public final class Jobs extends JavaPlugin {
 
             //need to update bp
             if (block != null && !Jobs.getGCManager().useBlockProtectionBlockTracker) {
-                BlockProtection bp = getBpManager().getBp(block.getLocation());
+                BlockProtection bp = null;
+                if (Jobs.getGCManager().useNewBlockProtection) {
+                    getExploitManager().setPaid(block, true);
+                } else
+                    bp = getBpManager().getBp(block.getLocation());
                 if (bp != null)
                     bp.setPaid(true);
             }
@@ -1318,83 +1336,6 @@ public final class Jobs extends JavaPlugin {
         }
     }
 
-    private static boolean isBpOk(JobsPlayer player, ActionInfo info, Block block, boolean inform) {
-        if (block == null || !gConfigManager.useBlockProtection)
-            return true;
-
-        if (info.getType() == ActionType.BREAK) {
-            if (block.hasMetadata("JobsExploit")) {
-                //player.sendMessage("This block is protected using Rukes' system!");
-                return false;
-            }
-
-            BlockProtection bp = getBpManager().getBp(block.getLocation());
-            if (bp != null) {
-                long time = bp.getTime();
-                Integer cd = getBpManager().getBlockDelayTime(block);
-
-                if (time == -1L) {
-                    getBpManager().remove(block);
-                    return false;
-                }
-
-                if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
-                    getBpManager().remove(block);
-                    return true;
-                }
-
-                if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
-                    if (inform && player.canGetPaid(info)) {
-                        int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
-                        CMIActionBar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
-                    }
-
-                    return false;
-                }
-
-                getBpManager().add(block, cd);
-
-                if ((cd == null || cd == 0) && gConfigManager.useGlobalTimer) {
-                    getBpManager().add(block, gConfigManager.globalblocktimer);
-                }
-
-            } else if (gConfigManager.useGlobalTimer) {
-                getBpManager().add(block, gConfigManager.globalblocktimer);
-            }
-        } else if (info.getType() == ActionType.PLACE) {
-            BlockProtection bp = getBpManager().getBp(block.getLocation());
-            if (bp != null) {
-                Long time = bp.getTime();
-                Integer cd = getBpManager().getBlockDelayTime(block);
-                if (time != -1L) {
-                    if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
-                        getBpManager().add(block, cd);
-                        return true;
-                    }
-
-                    if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
-                        if (inform && player.canGetPaid(info)) {
-                            int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
-                            CMIActionBar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
-                        }
-
-                        getBpManager().add(block, cd);
-                        return false;
-                    }
-
-                    // Lets add protection in any case
-                    getBpManager().add(block, cd);
-                } else if (bp.isPaid() && bp.getTime() == -1L && cd != null && cd == -1) {
-                    getBpManager().add(block, cd);
-                    return false;
-                } else
-                    getBpManager().add(block, cd);
-            } else
-                getBpManager().add(block, getBpManager().getBlockDelayTime(block));
-        }
-
-        return true;
-    }
 
     private static int getPlayerExperience(Player player) {
         return (expToLevel(player.getLevel()) + Math.round(deltaLevelToExp(player.getLevel()) * player.getExp()));
