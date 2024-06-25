@@ -1028,10 +1028,8 @@ public final class Jobs extends JavaPlugin {
         List<JobProgression> progression = jPlayer.getJobProgression();
         int numjobs = progression.size();
 
-        CMIDebug.it();
         if (!Jobs.getGCManager().useBlockProtectionBlockTracker && !Jobs.getExploitManager().isProtectionValidAddIfNotExists(jPlayer, info, block, true))
             return;
-        CMIDebug.d(CMIDebug.getIT(), "ms");
 
         // no job
         if (numjobs == 0) {
@@ -1335,7 +1333,6 @@ public final class Jobs extends JavaPlugin {
             expiredJobs.forEach(j -> getPlayerManager().leaveJob(jPlayer, j));
         }
     }
-
 
     private static int getPlayerExperience(Player player) {
         return (expToLevel(player.getLevel()) + Math.round(deltaLevelToExp(player.getLevel()) * player.getExp()));

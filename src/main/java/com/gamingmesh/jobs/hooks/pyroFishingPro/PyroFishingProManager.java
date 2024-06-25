@@ -26,7 +26,6 @@ public class PyroFishingProManager implements Listener {
     }
 
     public static String getFish() {
-        CMIDebug.d("Get fish", time + 60 < System.currentTimeMillis(), lastFish);
         if (time + 60 < System.currentTimeMillis())
             return null;
         return lastFish;

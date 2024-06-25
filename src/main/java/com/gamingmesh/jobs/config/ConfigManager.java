@@ -833,6 +833,12 @@ public class ConfigManager {
             meta = "ALL";
             // case for ":all" identifier
             type = (actionType == ActionType.SHEAR && myKey.startsWith("color")) ? "color" : CMIMaterial.getGeneralMaterialName(type);
+            
+            CMIEntityType entity = CMIEntityType.get(type);
+            if (entity != null) {
+		type = entity.toString();
+	    }
+            
         }
 
         if (actionType == ActionType.TNTBREAK)

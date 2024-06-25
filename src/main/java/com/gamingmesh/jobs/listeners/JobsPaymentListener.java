@@ -44,6 +44,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Sheep;
+import org.bukkit.entity.MushroomCow;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -313,16 +314,20 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityShear(PlayerShearEntityEvent event) {
+
         Player player = event.getPlayer();
 
-        if (!(event.getEntity() instanceof Sheep) || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+        if (!(event.getEntity() instanceof Sheep) && !(event.getEntity() instanceof MushroomCow) || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
             return;
 
-        Sheep sheep = (Sheep) event.getEntity();
+        Entity entity = event.getEntity();
+
+        if (!(entity instanceof LivingEntity))
+            return;
 
         // mob spawner, no payment or experience
-        if (!Jobs.getGCManager().payNearSpawner() && sheep.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
-            sheep.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+        if (!Jobs.getGCManager().payNearSpawner() && entity.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+            entity.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
             return;
         }
 
@@ -342,25 +347,36 @@ public final class JobsPaymentListener implements Listener {
 
         // pay
         JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
-        if (jDamager == null || sheep.getColor() == null)
+        if (jDamager == null)
             return;
+
+        String typeString = null;
+
+        if (event.getEntity() instanceof Sheep) {
+            Sheep sheep = (Sheep) event.getEntity();
+            if (sheep.getColor() == null)
+                return;
+            typeString = sheep.getColor().name();
+        } else if (event.getEntity() instanceof MushroomCow) {
+            typeString = CMIEntityType.get(entity).toString();
+        }
 
         if (Jobs.getGCManager().payForStackedEntities) {
             if (JobsHook.WildStacker.isEnabled() && !StackSplit.SHEEP_SHEAR.isEnabled()) {
-                for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount(sheep) - 1; i++) {
-                    Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
+                for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount((LivingEntity) entity) - 1; i++) {
+                    Jobs.action(jDamager, new CustomKillInfo(typeString, ActionType.SHEAR));
                 }
-            } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(sheep)) {
-
-                StackEntity stack = HookManager.getStackMobHandler().getStackEntity(sheep);
+            } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked((LivingEntity) entity)) {
+                StackEntity stack = HookManager.getStackMobHandler().getStackEntity((LivingEntity) entity);
                 if (stack != null) {
-                    Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
+                    Jobs.action(jDamager, new CustomKillInfo(typeString, ActionType.SHEAR));
                     return;
                 }
             }
         }
 
-        Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
+        Jobs.action(jDamager, new CustomKillInfo(typeString, ActionType.SHEAR));
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
