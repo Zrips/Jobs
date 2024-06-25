@@ -423,6 +423,8 @@ public class LanguageManager {
             c.get("command.info.output.bake.none", "%jobname% does not get money for cooking foods.");
             c.get("command.info.output.bucket.info", "&eBucket");
             c.get("command.info.output.bucket.none", "%jobname% does not get money for bucketing.");
+            c.get("command.info.output.brush.info", "&eBrush");
+            c.get("command.info.output.brush.none", "%jobname% does not get money for brushing blocks.");
 
             c.get("command.playerinfo.help.info", "Show how much each job is getting paid and for what on another player.");
             c.get("command.playerinfo.help.args", "[playername] [jobname] [action]");

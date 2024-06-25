@@ -410,6 +410,11 @@ public class ConfigManager {
         cfg.addComment(pt + ".Brew", "Brewing miscellaneous items");
         generate(cfg, pt + ".Brew.nether_stalk");
         generate(cfg, pt + ".Brew.redstone");
+        
+        cfg.addComment(pt + ".Brush", "Brushing blocks and getting items from them");
+        generate(cfg, pt + ".Brush.suspicious_sand");
+        generate(cfg, pt + ".Brush.suspicious_gravel");
+        generate(cfg, pt + ".Brush.coal");
 
         cfg.addComment(pt + ".Explore", "Explore options. Each number represents players number in exploring that chunk",
             "1 means that player is first in this chunk, 2 is second and so on",
@@ -614,6 +619,7 @@ public class ConfigManager {
         case STRIPLOGS:
         case BUCKET:
         case COLLECT:
+        case BRUSH:
             material = CMIMaterial.get(myKey + (subType));
 
             if (material == CMIMaterial.NONE)
