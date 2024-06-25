@@ -292,6 +292,9 @@ public class LanguageManager {
             c.get("command.entitylist.help.info", "Shows all possible entities that can be used with the plugin.");
             c.get("command.entitylist.help.args", "");
 
+            c.get("command.recalculatepermissions.help.info", "Reset players permission cache");
+            c.get("command.recalculatepermissions.help.args", "(playername)");
+            
             c.get("command.stats.help.info", "Show the level you are in each job you are part of.");
             c.get("command.stats.help.args", "[playername]");
             Jobs.getGCManager().getCommandArgs().put("stats", Arrays.asList("[playername]"));
