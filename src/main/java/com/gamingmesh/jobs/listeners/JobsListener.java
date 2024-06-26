@@ -128,9 +128,12 @@ public class JobsListener implements Listener {
         if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
             return;
 
-        if (Jobs.getGCManager().useNewBlockProtection)
+        if (CMIMaterial.isWater(event.getBlock().getType()))
+            return;
+        
+        if (Jobs.getGCManager().useNewBlockProtection) {
             Jobs.getExploitManager().remove(event.getToBlock());
-        else
+        } else
             Jobs.getBpManager().remove(event.getToBlock());
     }
 
