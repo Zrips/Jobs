@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
 
+@Deprecated
 public class ExploreChunk {
 
     private List<Integer> playerIds = new ArrayList<>();

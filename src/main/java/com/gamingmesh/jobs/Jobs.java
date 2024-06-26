@@ -49,6 +49,7 @@ import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.BlockProtectionManager;
 import com.gamingmesh.jobs.config.BossBarManager;
+import com.gamingmesh.jobs.config.ChunkExplorationManager;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.config.ExploitProtectionManager;
 import com.gamingmesh.jobs.config.ExploreManager;
@@ -133,13 +134,16 @@ public final class Jobs extends JavaPlugin {
     private static SignUtil signManager;
     private static ScheduleManager scheduleManager;
     private static NameTranslatorManager nameTranslatorManager;
+    @Deprecated
     private static ExploreManager exploreManager;
+    private static ChunkExplorationManager chunkExplorationManager;
     private static TitleManager titleManager;
     private static RestrictedBlockManager rbManager;
     private static RestrictedAreaManager raManager;
     private static BossBarManager bbManager;
     private static ShopManager shopManager;
     private static Loging loging;
+    @Deprecated
     private static BlockProtectionManager bpManager;
     private static ExploitProtectionManager exploitManager;
     private static JobsManager dbManager;
@@ -405,10 +409,17 @@ public final class Jobs extends JavaPlugin {
         return getExploreManager();
     }
 
+    @Deprecated
     public static ExploreManager getExploreManager() {
         if (exploreManager == null)
             exploreManager = new ExploreManager();
         return exploreManager;
+    }
+
+    public static ChunkExplorationManager getChunkExplorationManager() {
+        if (chunkExplorationManager == null)
+            chunkExplorationManager = new ChunkExplorationManager();
+        return chunkExplorationManager;
     }
 
     /**
@@ -786,7 +797,8 @@ public final class Jobs extends JavaPlugin {
             }
 
             dao.loadBlockProtection();
-            getExploreManager().load();
+            if (!getGCManager().useNewExploration)
+                getExploreManager().load();
             getCommandManager().fillCommands();
             getDBManager().getDB().triggerTableIdUpdate();
 
@@ -820,7 +832,7 @@ public final class Jobs extends JavaPlugin {
 
         if (Version.isCurrentEqualOrHigher(Version.v1_20_R1)) {
             pm.registerEvents(new PlayerSignEdit1_20Listeners(), getInstance());
-            pm.registerEvents(new JobsPayment1_20Listener(), getInstance());            
+            pm.registerEvents(new JobsPayment1_20Listener(), getInstance());
         }
 
         if (getGCManager().useBlockProtection) {

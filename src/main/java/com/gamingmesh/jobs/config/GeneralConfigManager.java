@@ -93,7 +93,8 @@ public class GeneralConfigManager {
 
     private FireworkEffect fireworkEffect;
 
-    public boolean ignoreOreGenerators, useBlockProtection, useNewBlockProtection, useBlockProtectionBlockTracker, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
+    public boolean ignoreOreGenerators, useBlockProtection, useNewBlockProtection, useNewExploration, useBlockProtectionBlockTracker, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil,
+        PayForEachCraft, SignsEnabled,
         SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
         PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps, informOnPaymentDisable,
         BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
@@ -423,6 +424,12 @@ public class GeneralConfigManager {
         UseAsWhiteListWorldList = c.get("Optimizations.DisabledWorlds.UseAsWhiteList", false);
         DisabledWorldsList = c.get("Optimizations.DisabledWorlds.List", Arrays.asList("Example", "Worlds"));
         CMIList.toLowerCase(DisabledWorldsList);
+        
+        if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+            c.addComment("Optimizations.Explore.NewMethod",
+                "Do you want to use new exploration tracking method. Only for 1.14+ servers");
+            useNewExploration = c.get("Optimizations.Explore.NewMethod", true);
+        }
 
         c.addComment("Optimizations.Explore.Compact",
             "By setting this to true when there is max amount of players explored a chunk then it will be marked as fully explored and exact players who explored it will not be saved to save some memory");

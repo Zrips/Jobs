@@ -813,6 +813,10 @@ public class ConfigManager {
 
             Jobs.getExploreManager().setExploreEnabled();
             Jobs.getExploreManager().setPlayerAmount(amount);
+            
+            Jobs.getChunkExplorationManager().setExploreEnabled();
+	    Jobs.getChunkExplorationManager().setPlayerAmount(amount);
+	    
         } else if (actionType == ActionType.CRAFT) {
             if (myKey.startsWith("!")) {
                 type = myKey.substring(1, myKey.length());

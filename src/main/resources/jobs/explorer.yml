@@ -47,7 +47,20 @@ Explorer:
     '5':
       income: 0.1
       points: 0.1
-      experience: 0.1
+      experience: 0.1  
+  Brush:
+    'suspicious_sand':
+      income: 5
+      points: 5
+      experience: 5
+    'suspicious_gravel':
+      income: 6
+      points: 6
+      experience: 6
+    coal:
+      income: 10
+      points: 10
+      experience: 10   
   Kill:
     Player:
       income: 7.5

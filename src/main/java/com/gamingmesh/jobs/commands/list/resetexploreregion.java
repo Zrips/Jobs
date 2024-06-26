@@ -28,7 +28,10 @@ public class resetexploreregion implements Cmd {
             return true;
         }
 
-        Jobs.getExploreManager().resetRegion(worldName);
+        if (Jobs.getGCManager().useNewExploration) {
+            Jobs.getChunkExplorationManager().resetRegion(worldName);
+        } else
+            Jobs.getExploreManager().resetRegion(worldName);
         Language.sendMessage(sender, "command.resetexploreregion.output.reseted", "%worldname%", worldName);
         return true;
     }

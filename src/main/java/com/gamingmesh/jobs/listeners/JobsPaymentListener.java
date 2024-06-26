@@ -134,6 +134,7 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMC;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -1875,7 +1876,7 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onExplore(JobsChunkChangeEvent event) {
-        if (!Jobs.getExploreManager().isExploreEnabled())
+        if (!Jobs.getChunkExplorationManager().isExploreEnabled())
             return;
 
         Player player = event.getPlayer();
@@ -1910,7 +1911,12 @@ public final class JobsPaymentListener implements Listener {
         if (jPlayer == null)
             return;
 
-        ExploreRespond respond = Jobs.getExploreManager().chunkRespond(jPlayer.getUserId(), event.getNewChunk());
+        ExploreRespond respond = null;
+
+        if (Jobs.getGCManager().useNewExploration)
+            respond = Jobs.getChunkExplorationManager().chunkRespond(jPlayer.getUserId(), event.getNewChunk());
+        else
+            respond = Jobs.getExploreManager().chunkRespond(jPlayer.getUserId(), event.getNewChunk());
 
         if (!respond.isNewChunk())
             return;

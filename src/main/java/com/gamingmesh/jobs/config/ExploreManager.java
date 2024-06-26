@@ -2,12 +2,16 @@ package com.gamingmesh.jobs.config;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.Nullable;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ExploreChunk;
@@ -15,10 +19,13 @@ import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.JobsWorld;
 import com.gamingmesh.jobs.dao.JobsDAO.ExploreDataTableFields;
+import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Messages.CMIMessages;
+import net.Zrips.CMILib.PersistentData.CMIChunkPersistentDataContainer;
 
+@Deprecated
 public class ExploreManager {
 
     private final Map<String, Map<String, ExploreRegion>> worlds = new HashMap<>();
@@ -40,6 +47,31 @@ public class ExploreManager {
 
     public void setExploreEnabled() {
         exploreEnabled = true;
+    }
+
+    public List<Integer> getVisitors(Chunk chunk) {
+
+        Map<String, ExploreRegion> exploreRegion = worlds.get(chunk.getWorld().getName());
+
+        if (exploreRegion == null)
+            return null;
+
+        int RegionX = (int) Math.floor(chunk.getX() / 32D);
+        int RegionZ = (int) Math.floor(chunk.getZ() / 32D);
+        ExploreRegion region = exploreRegion.get(RegionX + ":" + RegionZ);
+        if (region == null)
+            return null;
+
+        ExploreChunk echunk = region.getChunk(chunk);
+
+        if (echunk == null)
+            return null;
+
+        if (Jobs.getGCManager().ExploreCompact && echunk.isFullyExplored()) {
+            return Collections.emptyList();
+        }
+
+        return echunk.getPlayers();
     }
 
     public void load() {
