@@ -148,8 +148,6 @@ public class JobsListener implements Listener {
         if (CMIMaterial.isWater(event.getBlock().getType()))
             return;
 
-        CMIDebug.d(event.getBlock().getType(), event.getToBlock().getType());
-
         Jobs.getExploitManager().remove(event.getToBlock());
     }
 

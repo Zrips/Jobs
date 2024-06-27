@@ -42,20 +42,7 @@ public class bp implements Cmd {
 
         final List<Block> changedBlocks = new ArrayList<>();
 
-        if (Jobs.getGCManager().useNewBlockProtection) {
-
-//            if (Version.isTestServer()) {
-//                CMIDebug.d("Filling test blocks");
-//                for (int x = 0; x < 16; x++) {
-//                    for (int y = 72; y < 150; y++) {
-//                        for (int z = 0; z < 16; z++) {
-//                            Block block = loc.getChunk().getBlock(x, y, z);
-//                            Jobs.getExploitManager().addProtection(block, CMINumber.random(1, 10));
-//                        }
-//                    }
-//                }
-//            }
-            
+        if (Jobs.getGCManager().useNewBlockProtection) {            
             for (int x = -10; x < 10; x++) {
                 for (int y = -10; y < 10; y++) {
                     for (int z = -10; z < 10; z++) {
