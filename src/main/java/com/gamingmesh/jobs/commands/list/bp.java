@@ -3,7 +3,6 @@ package com.gamingmesh.jobs.commands.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -15,8 +14,10 @@ import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.i18n.Language;
 
+import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -42,6 +43,19 @@ public class bp implements Cmd {
         final List<Block> changedBlocks = new ArrayList<>();
 
         if (Jobs.getGCManager().useNewBlockProtection) {
+
+//            if (Version.isTestServer()) {
+//                CMIDebug.d("Filling test blocks");
+//                for (int x = 0; x < 16; x++) {
+//                    for (int y = 72; y < 150; y++) {
+//                        for (int z = 0; z < 16; z++) {
+//                            Block block = loc.getChunk().getBlock(x, y, z);
+//                            Jobs.getExploitManager().addProtection(block, CMINumber.random(1, 10));
+//                        }
+//                    }
+//                }
+//            }
+            
             for (int x = -10; x < 10; x++) {
                 for (int y = -10; y < 10; y++) {
                     for (int z = -10; z < 10; z++) {
@@ -58,10 +72,9 @@ public class bp implements Cmd {
                         changedBlocks.add(l.getBlock());
 
                         if (Version.isCurrentEqualOrHigher(Version.v1_15_R1)) {
-                            player.sendBlockChange(l, (time == -1 ? CMIMaterial.BLACK_STAINED_GLASS : CMIMaterial.WHITE_STAINED_GLASS)
-                                .getMaterial().createBlockData());
+                            player.sendBlockChange(l, (time == -1 ? CMIMaterial.BLACK_STAINED_GLASS : CMIMaterial.WHITE_STAINED_GLASS).getMaterial().createBlockData());
                         } else {
-                             if (time == -1)
+                            if (time == -1)
                                 player.sendBlockChange(l, CMIMaterial.RED_STAINED_GLASS.getMaterial(), (byte) 15);
                             else
                                 player.sendBlockChange(l, CMIMaterial.RED_STAINED_GLASS.getMaterial(), (byte) 0);

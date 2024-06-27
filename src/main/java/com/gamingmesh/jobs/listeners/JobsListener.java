@@ -58,6 +58,7 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -118,23 +119,38 @@ public class JobsListener implements Listener {
         return time > 100;
     }
 
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onChunkUnload(ChunkUnloadEvent event) {
+        Jobs.getExploitManager().removePDC(event.getChunk());
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onChunkUnload(JobsChunkChangeEvent event) {
+        Jobs.getExploitManager().cleanChunk(event.getOldChunk());
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockFromToEvent(BlockFromToEvent event) {
 
         if (!Jobs.getGCManager().useBlockProtection)
             return;
+
         if (!Jobs.getGCManager().ignoreOreGenerators)
             return;
+
         if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+            return;
+
+        // Ignoring air blocks
+        if (CMIMaterial.isAir(event.getToBlock().getType()))
             return;
 
         if (CMIMaterial.isWater(event.getBlock().getType()))
             return;
-        
-        if (Jobs.getGCManager().useNewBlockProtection) {
-            Jobs.getExploitManager().remove(event.getToBlock());
-        } else
-            Jobs.getBpManager().remove(event.getToBlock());
+
+        CMIDebug.d(event.getBlock().getType(), event.getToBlock().getType());
+
+        Jobs.getExploitManager().remove(event.getToBlock());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

@@ -295,6 +295,7 @@ public final class Jobs extends JavaPlugin {
         return loging;
     }
 
+    @Deprecated
     public static BlockProtectionManager getBpManager() {
         if (bpManager == null)
             bpManager = new BlockProtectionManager();
@@ -1043,8 +1044,12 @@ public final class Jobs extends JavaPlugin {
         List<JobProgression> progression = jPlayer.getJobProgression();
         int numjobs = progression.size();
 
-        if (!Jobs.getGCManager().useBlockProtectionBlockTracker && !Jobs.getExploitManager().isProtectionValidAddIfNotExists(jPlayer, info, block, true))
+        CMIDebug.it();
+        if (!Jobs.getGCManager().useBlockProtectionBlockTracker && !Jobs.getExploitManager().isProtectionValidAddIfNotExists(jPlayer, info, block, true)) {
+            CMIDebug.d(CMIDebug.getIT(), "ms");
             return;
+        }
+            CMIDebug.d(CMIDebug.getIT(), "ms");
 
         // no job
         if (numjobs == 0) {

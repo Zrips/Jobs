@@ -222,19 +222,16 @@ public class BlockProtectionManager {
         return (int) Math.floor(x / 32D) + ":" + (int) Math.floor(z / 32D);
     }
 
+    @Deprecated
     public Integer getBlockDelayTime(Block block) {
-        Integer time = Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(CMIMaterial.get(block));
-        if (time == null && Jobs.getGCManager().useGlobalTimer) {
-            time = Jobs.getGCManager().globalblocktimer;
-        }
-        return time;
+        return Jobs.getExploitManager().getBlockProtectionTime(block);
     }
 
+    @Deprecated
     public boolean isInBp(Block block) {
         return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.containsKey(CMIMaterial.get(block));
     }
-    
-    
+
     public boolean isBpOk(JobsPlayer player, ActionInfo info, Block block, boolean inform) {
         if (block == null || !Jobs.getGCManager().useBlockProtection)
             return true;
@@ -248,7 +245,7 @@ public class BlockProtectionManager {
             BlockProtection bp = getBp(block.getLocation());
             if (bp != null) {
                 long time = bp.getTime();
-                Integer cd = getBlockDelayTime(block);
+                Integer cd = Jobs.getExploitManager().getBlockProtectionTime(info.getType(), block);
 
                 if (time == -1L) {
                     remove(block);
@@ -271,18 +268,14 @@ public class BlockProtectionManager {
 
                 add(block, cd);
 
-                if ((cd == null || cd == 0) && Jobs.getGCManager().useGlobalTimer) {
-                    add(block, Jobs.getGCManager().globalblocktimer);
-                }
+            } else
+                add(block, Jobs.getExploitManager().getBlockProtectionTime(info.getType(), block));
 
-            } else if (Jobs.getGCManager().useGlobalTimer) {
-                add(block, Jobs.getGCManager().globalblocktimer);
-            }
         } else if (info.getType() == ActionType.PLACE) {
             BlockProtection bp = getBp(block.getLocation());
             if (bp != null) {
                 Long time = bp.getTime();
-                Integer cd = getBlockDelayTime(block);
+                Integer cd = Jobs.getExploitManager().getBlockProtectionTime(info.getType(), block);
                 if (time != -1L) {
                     if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
                         add(block, cd);
@@ -307,7 +300,7 @@ public class BlockProtectionManager {
                 } else
                     add(block, cd);
             } else
-                add(block, getBlockDelayTime(block));
+                add(block, Jobs.getExploitManager().getBlockProtectionTime(info.getType(), block));
         }
 
         return true;

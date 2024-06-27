@@ -74,7 +74,7 @@ public class GeneralConfigManager {
     private String getSelectionTool, DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
 
     public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime, blockOwnershipRange,
-        globalblocktimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
+        globalblocktimer, globalBlockBreakTimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
         SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays, BlastFurnacesMaxDefault, SmokersMaxDefault,
         levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
         SoundTitleChangePitch, ToplistInScoreboardInterval;
@@ -95,7 +95,7 @@ public class GeneralConfigManager {
 
     public boolean ignoreOreGenerators, useBlockProtection, useNewBlockProtection, useNewExploration, useBlockProtectionBlockTracker, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil,
         PayForEachCraft, SignsEnabled,
-        SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
+        SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useGlobalBreakTimer, useSilkTouchProtection, UseCustomNames,
         PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps, informOnPaymentDisable,
         BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
         boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, boostedItemsSlotSpecific, multiplyBoostedExtraValues, addPermissionBoost,
@@ -424,7 +424,7 @@ public class GeneralConfigManager {
         UseAsWhiteListWorldList = c.get("Optimizations.DisabledWorlds.UseAsWhiteList", false);
         DisabledWorldsList = c.get("Optimizations.DisabledWorlds.List", Arrays.asList("Example", "Worlds"));
         CMIList.toLowerCase(DisabledWorldsList);
-        
+
         if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
             c.addComment("Optimizations.Explore.NewMethod",
                 "Do you want to use new exploration tracking method. Only for 1.14+ servers");
@@ -918,11 +918,19 @@ public class GeneralConfigManager {
         		+ " once you have broken the block in one place.");
         allowBreakPaymentForOreGenerators = c.get("ExploitProtections.General.AllowBreakPaymentForOreGenerators", false);*/
 
-        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer", "All blocks will be protected X seconds after player places/breaks it");
-        useGlobalTimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Use", true);
-        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Timer", "Time in seconds. This can only be positive number");
-        globalblocktimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Timer", 3);
-        globalblocktimer = CMINumber.clamp(globalblocktimer, 1, 99999);
+        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Place", "All blocks will be protected X seconds after player places it");
+        useGlobalTimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Place.Use", c.getC().getBoolean("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Use", true));
+        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Place.Timer",
+            "Time in seconds. This can only be positive number and no higher than 900",
+            "If higher timers are needed then it can be defined in restrictedBlocks.yml file for each specific block");
+        globalblocktimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Place.Timer", c.getC().getInt("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Timer", 3));
+        globalblocktimer = CMINumber.clamp(globalblocktimer, 1, 900);
+        useGlobalBreakTimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Break.Use", true);
+        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Break.Timer",
+            "Time in seconds. This can only be positive number and no higher than 60",
+            "This is only to prevent player from placing blocks into same place and getting paid once more");
+        globalBlockBreakTimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Break.Timer", 3);
+        globalBlockBreakTimer = CMINumber.clamp(globalBlockBreakTimer, 1, 60);
 
         c.addComment("ExploitProtections.General.PlaceAndBreak.SilkTouchProtection", "Enable silk touch protection.",
             "With this enabled players wont get paid for broken blocks from restrictedblocks list with silk touch tool.");
