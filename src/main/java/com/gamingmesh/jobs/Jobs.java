@@ -842,6 +842,9 @@ public final class Jobs extends JavaPlugin {
 
         pm.registerEvents(new JobsChatEvent(getInstance()), getInstance());
 
+        if(HookManager.checkPyroFishingPro()) {
+            HookManager.getPyroFishingProManager().registerListener();
+        }
         if (HookManager.getMcMMOManager().CheckmcMMO()) {
             HookManager.setMcMMOlistener();
         }
