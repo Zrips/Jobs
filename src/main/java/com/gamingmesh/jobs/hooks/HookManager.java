@@ -102,6 +102,10 @@ public class HookManager {
         return Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.check();
     }
 
+    public static boolean checkPyroFishingPro() {
+        return pyroFishingProManager != null;
+    }
+
     public static BlockTrackerManager getBlockTrackerManager() {
         if (blockTrackerManager == null) {
             blockTrackerManager = new BlockTrackerManager();
