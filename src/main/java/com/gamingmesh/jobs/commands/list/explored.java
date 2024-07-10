@@ -1,14 +1,12 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.util.Map;
+import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.container.ExploreChunk;
-import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.i18n.Language;
 
@@ -24,34 +22,24 @@ public class explored implements Cmd {
         }
 
         Player player = (Player) sender;
-        Map<String, ExploreRegion> exploreRegion = Jobs.getExploreManager().getWorlds().get(player.getWorld().getName());
 
-        if (exploreRegion == null) {
+        List<Integer> players = null;
+
+        if (Jobs.getGCManager().useNewExploration) {
+            players = Jobs.getChunkExplorationManager().getVisitors(player.getLocation().getChunk());
+        } else {
+            players = Jobs.getExploreManager().getVisitors(player.getLocation().getChunk());
+        }
+
+        if (players == null) {
             Language.sendMessage(sender, "command.explored.error.noexplore");
             return true;
         }
 
-        int RegionX = (int) Math.floor(player.getLocation().getChunk().getX() / 32D);
-        int RegionZ = (int) Math.floor(player.getLocation().getChunk().getZ() / 32D);
-        ExploreRegion region = exploreRegion.get(RegionX + ":" + RegionZ);
-        if (region == null) {
+        if (players.isEmpty()) {
             Language.sendMessage(sender, "command.explored.error.noexplore");
             return true;
         }
-
-        ExploreChunk chunk = region.getChunk(player.getLocation().getChunk());
-
-        if (chunk == null) {
-            Language.sendMessage(sender, "command.explored.error.noexplore");
-            return true;
-        }
-
-        if (Jobs.getGCManager().ExploreCompact && chunk.isFullyExplored()) {
-            Language.sendMessage(sender, "command.explored.fullExplore");
-            return true;
-        }
-
-        java.util.List<Integer> players = chunk.getPlayers();
 
         for (int i = 0; i < players.size(); i++) {
             PlayerInfo ji = Jobs.getPlayerManager().getPlayerInfo(players.get(i));

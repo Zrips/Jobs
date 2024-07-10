@@ -15,7 +15,7 @@ public class PyroFishingProManager implements Listener {
 
     public PyroFishingProManager() {
         this.jobs = Jobs.getInstance();
-        jobs.getServer().getPluginManager().registerEvents(this, jobs);
+        registerListener();
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -28,5 +28,9 @@ public class PyroFishingProManager implements Listener {
         if (time + 60 < System.currentTimeMillis())
             return null;
         return lastFish;
+    }
+
+    public void registerListener() {
+        jobs.getServer().getPluginManager().registerEvents(this, jobs);
     }
 }

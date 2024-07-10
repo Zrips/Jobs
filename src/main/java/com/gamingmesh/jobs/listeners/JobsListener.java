@@ -58,6 +58,7 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -118,16 +119,36 @@ public class JobsListener implements Listener {
         return time > 100;
     }
 
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onChunkUnload(ChunkUnloadEvent event) {
+        Jobs.getExploitManager().removePDC(event.getChunk());
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onChunkUnload(JobsChunkChangeEvent event) {
+        Jobs.getExploitManager().cleanChunk(event.getOldChunk());
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockFromToEvent(BlockFromToEvent event) {
 
         if (!Jobs.getGCManager().useBlockProtection)
             return;
+
         if (!Jobs.getGCManager().ignoreOreGenerators)
             return;
+
         if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
             return;
-        Jobs.getBpManager().remove(event.getToBlock());
+
+        // Ignoring air blocks
+        if (CMIMaterial.isAir(event.getToBlock().getType()))
+            return;
+
+        if (CMIMaterial.isWater(event.getBlock().getType()))
+            return;
+
+        Jobs.getExploitManager().remove(event.getToBlock());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -401,14 +422,24 @@ public class JobsListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCropGrown(final BlockGrowEvent event) {
         if (Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld())) {
-            CMIScheduler.get().runAtLocationLater(event.getBlock().getLocation(), () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
+            CMIScheduler.runAtLocationLater(event.getBlock().getLocation(), () -> {
+                if (Jobs.getGCManager().useNewBlockProtection)
+                    Jobs.getExploitManager().remove(event.getBlock());
+                else
+                    Jobs.getBpManager().remove(event.getBlock());
+            }, 1L);
         }
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onTreeGrown(final StructureGrowEvent event) {
         if (!event.getBlocks().isEmpty() && Jobs.getGCManager().canPerformActionInWorld(event.getBlocks().get(0).getWorld())) {
-            CMIScheduler.get().runAtLocationLater(event.getBlocks().get(0).getLocation(), () -> event.getBlocks().forEach(blockState -> Jobs.getBpManager().remove(blockState.getBlock())), 1L);
+            CMIScheduler.runAtLocationLater(event.getBlocks().get(0).getLocation(), () -> event.getBlocks().forEach(blockState -> {
+                if (Jobs.getGCManager().useNewBlockProtection)
+                    Jobs.getExploitManager().remove(blockState.getBlock());
+                else
+                    Jobs.getBpManager().remove(blockState.getBlock());
+            }), 1L);
         }
     }
 

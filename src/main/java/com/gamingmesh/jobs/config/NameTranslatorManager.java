@@ -125,25 +125,9 @@ public class NameTranslatorManager {
             case KILL:
             case MILK:
             case TAME:
-                for (NameList one : listOfEntities) {
-                    String ids = one.getId() + ":" + one.getMeta();
-
-                    if (!one.getMeta().isEmpty() && !one.getId().equals("0") && ids.equalsIgnoreCase(id + ":" + meta)) {
-                        return one.getName();
-                    }
-
-                    ids = one.getId();
-
-                    if (!one.getId().equals("0") && ids.equalsIgnoreCase(Integer.toString(id))) {
-                        return one.getName();
-                    }
-
-                    ids = one.getMinecraftName();
-
-                    if (ids.equalsIgnoreCase(name)) {
-                        return one.getName();
-                    }
-                }
+                String entityName = getEntityName(id, meta, name);
+                if (entityName != null)
+                    return entityName;
                 break;
             case ENCHANT:
                 String mName = materialName;
@@ -186,6 +170,10 @@ public class NameTranslatorManager {
                     }
                 }
 
+                entityName = getEntityName(id, meta, name);
+                if (entityName != null)
+                    return entityName;
+
                 return name == null ? "nocolor" : Arrays.stream(name.split("\\s|:|-"))
                     .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
                     .collect(Collectors.joining(" ")); // returns capitalized word (from this -> To This)
@@ -201,6 +189,29 @@ public class NameTranslatorManager {
             }
 
         return materialName;
+    }
+
+    private String getEntityName(int id, String meta, String name) {
+        for (NameList one : listOfEntities) {
+            String ids = one.getId() + ":" + one.getMeta();
+
+            if (!one.getMeta().isEmpty() && !one.getId().equals("0") && ids.equalsIgnoreCase(id + ":" + meta)) {
+                return one.getName();
+            }
+
+            ids = one.getId();
+
+            if (!one.getId().equals("0") && ids.equalsIgnoreCase(Integer.toString(id))) {
+                return one.getName();
+            }
+
+            ids = one.getMinecraftName();
+
+            if (ids.equalsIgnoreCase(name)) {
+                return one.getName();
+            }
+        }
+        return null;
     }
 
     public void readFile() {

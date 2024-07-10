@@ -292,6 +292,9 @@ public class LanguageManager {
             c.get("command.entitylist.help.info", "Shows all possible entities that can be used with the plugin.");
             c.get("command.entitylist.help.args", "");
 
+            c.get("command.recalculatepermissions.help.info", "Reset players permission cache");
+            c.get("command.recalculatepermissions.help.args", "(playername)");
+            
             c.get("command.stats.help.info", "Show the level you are in each job you are part of.");
             c.get("command.stats.help.args", "[playername]");
             Jobs.getGCManager().getCommandArgs().put("stats", Arrays.asList("[playername]"));
@@ -420,6 +423,8 @@ public class LanguageManager {
             c.get("command.info.output.bake.none", "%jobname% does not get money for cooking foods.");
             c.get("command.info.output.bucket.info", "&eBucket");
             c.get("command.info.output.bucket.none", "%jobname% does not get money for bucketing.");
+            c.get("command.info.output.brush.info", "&eBrush");
+            c.get("command.info.output.brush.none", "%jobname% does not get money for brushing blocks.");
 
             c.get("command.playerinfo.help.info", "Show how much each job is getting paid and for what on another player.");
             c.get("command.playerinfo.help.args", "[playername] [jobname] [action]");

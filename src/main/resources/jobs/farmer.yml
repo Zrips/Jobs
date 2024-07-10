@@ -160,6 +160,10 @@ Farmer:
       income: 4.0
       points: 4.0
       experience: 5.0
+    mushroom_cow:
+      income: 4.0
+      points: 4.0
+      experience: 5.0  
   Milk:
     Cow:
       income: 5.0

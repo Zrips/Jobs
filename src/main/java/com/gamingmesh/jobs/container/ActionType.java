@@ -45,7 +45,8 @@ public enum ActionType {
     CUSTOMKILL("custom-kill"),
     COLLECT(),
     BAKE(),
-    BUCKET();
+    BUCKET(),
+    BRUSH();
 
     private String name;
 

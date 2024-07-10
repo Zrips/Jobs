@@ -2465,6 +2465,9 @@ public abstract class JobsDAO {
      * @param jobBlockProtection - the information getting saved
      */
     public void loadBlockProtection() {
+        if (Jobs.getGCManager().useNewBlockProtection)
+            return;
+
         JobsConnection conn = getConnection();
         if (conn == null)
             return;
@@ -2552,6 +2555,9 @@ public abstract class JobsDAO {
         if (!Jobs.getExploreManager().isExploreEnabled())
             return;
 
+        if (Jobs.getGCManager().useNewExploration)
+            return;
+
         JobsConnection conn = getConnection();
         if (conn == null)
             return;
@@ -2577,7 +2583,7 @@ public abstract class JobsDAO {
                 int id = jobsWorld == null ? 0 : jobsWorld.getId();
                 if (id == 0)
                     continue;
-                
+
                 for (Entry<String, ExploreRegion> region : worlds.getValue().entrySet()) {
                     for (Entry<Short, ExploreChunk> oneChunk : region.getValue().getChunks().entrySet()) {
                         ExploreChunk chunk = oneChunk.getValue();
@@ -2615,6 +2621,9 @@ public abstract class JobsDAO {
 
     public void updateExplore() {
         if (!Jobs.getExploreManager().isExploreEnabled())
+            return;
+
+        if (Jobs.getGCManager().useNewExploration)
             return;
 
         JobsConnection conn = getConnection();
@@ -2669,6 +2678,9 @@ public abstract class JobsDAO {
         if (!Jobs.getExploreManager().isExploreEnabled())
             return;
 
+        if (Jobs.getGCManager().useNewExploration)
+            return;
+
         JobsConnection conn = getConnection();
         if (conn == null)
             return;
@@ -2720,6 +2732,9 @@ public abstract class JobsDAO {
         if (!Jobs.getExploreManager().isExploreEnabled())
             return false;
 
+        if (Jobs.getGCManager().useNewExploration)
+            return false;
+        
         JobsConnection conn = getConnection();
         if (conn == null)
             return false;

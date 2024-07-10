@@ -73,7 +73,7 @@ public class GeneralConfigManager {
     private String getSelectionTool, DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
 
     public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime, blockOwnershipRange,
-        globalblocktimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
+        globalblocktimer, globalBlockBreakTimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
         SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays, BlastFurnacesMaxDefault, SmokersMaxDefault,
         levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
         SoundTitleChangePitch, ToplistInScoreboardInterval;
@@ -92,8 +92,9 @@ public class GeneralConfigManager {
 
     private FireworkEffect fireworkEffect;
 
-    public boolean ignoreOreGenerators, useBlockProtection, useBlockProtectionBlockTracker, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
-        SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
+    public boolean ignoreOreGenerators, useBlockProtection, useNewBlockProtection, useNewExploration, useBlockProtectionBlockTracker, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil,
+        PayForEachCraft, SignsEnabled,
+        SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useGlobalBreakTimer, useSilkTouchProtection, UseCustomNames,
         PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps, informOnPaymentDisable,
         BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
         boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, boostedItemsSlotSpecific, multiplyBoostedExtraValues, addPermissionBoost,
@@ -422,6 +423,12 @@ public class GeneralConfigManager {
         UseAsWhiteListWorldList = c.get("Optimizations.DisabledWorlds.UseAsWhiteList", false);
         DisabledWorldsList = c.get("Optimizations.DisabledWorlds.List", Arrays.asList("Example", "Worlds"));
         CMIList.toLowerCase(DisabledWorldsList);
+
+        if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+            c.addComment("Optimizations.Explore.NewMethod",
+                "Do you want to use new exploration tracking method. Only for 1.14+ servers");
+            useNewExploration = c.get("Optimizations.Explore.NewMethod", true);
+        }
 
         c.addComment("Optimizations.Explore.Compact",
             "By setting this to true when there is max amount of players explored a chunk then it will be marked as fully explored and exact players who explored it will not be saved to save some memory");
@@ -883,16 +890,24 @@ public class GeneralConfigManager {
             "Enable blocks protection, like ore, from exploiting by placing and destroying same block again and again.",
             "Modify restrictedBlocks.yml for blocks you want to protect");
         useBlockProtection = c.get("ExploitProtections.General.PlaceAndBreak.Enabled", c.getC().getBoolean("ExploitProtections.General.PlaceAndBreakProtection", true));
-        
+
+        if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+            c.addComment("ExploitProtections.General.PlaceAndBreak.NewMethod",
+                "Should we use new block protection method", "In most cases this is more efficient way to check for break/place protection and doesn't involve any cache or data saving into database",
+                "Only works with 1.14+ servers");
+            useNewBlockProtection = c.get("ExploitProtections.General.PlaceAndBreak.NewMethod", true);
+        }
+
         c.addComment("ExploitProtections.General.PlaceAndBreak.BlockTracker.Enabled",
             "Should we use BlockTracker plugin instead of built in block tracker");
         useBlockProtectionBlockTracker = c.get("ExploitProtections.General.PlaceAndBreak.BlockTracker.Enabled", false);
-        
+
         c.addComment("ExploitProtections.General.PlaceAndBreak.IgnoreOreGenerators",
             "Enabling this we will ignore blocks generated in ore generators, liko stone, coublestone and obsidian. You can still use timer on player placed obsidian block");
         ignoreOreGenerators = c.get("ExploitProtections.General.PlaceAndBreak.IgnoreOreGenerators", true);
 
         c.addComment("ExploitProtections.General.PlaceAndBreak.KeepDataFor",
+            "Only applies when old method is used",
             "For how long in days to keep block protection data in data base", "This will clean block data which ones have -1 as cooldown value",
             "Data base cleanup will be performed on each server startup", "This cant be more then 14 days");
         BlockProtectionDays = c.get("ExploitProtections.General.PlaceAndBreak.KeepDataFor", c.getC().getInt("ExploitProtections.General.KeepDataFor", 14));
@@ -902,15 +917,23 @@ public class GeneralConfigManager {
         		+ " once you have broken the block in one place.");
         allowBreakPaymentForOreGenerators = c.get("ExploitProtections.General.AllowBreakPaymentForOreGenerators", false);*/
 
-        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer", "All blocks will be protected X sec after player places it on ground.");
-        useGlobalTimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Use", c.getC().getBoolean("ExploitProtections.General.GlobalBlockTimer.use", true));
-        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Timer", "Time in seconds. This can only be positive number");
-        globalblocktimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Timer", c.getC().getInt("ExploitProtections.General.GlobalBlockTimer.timer", 3));
-        globalblocktimer = CMINumber.clamp(globalblocktimer, 1, 99999);
+        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Place", "All blocks will be protected X seconds after player places it");
+        useGlobalTimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Place.Use", c.getC().getBoolean("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Use", true));
+        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Place.Timer",
+            "Time in seconds. This can only be positive number and no higher than 900",
+            "If higher timers are needed then it can be defined in restrictedBlocks.yml file for each specific block");
+        globalblocktimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Place.Timer", c.getC().getInt("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Timer", 3));
+        globalblocktimer = CMINumber.clamp(globalblocktimer, 1, 900);
+        useGlobalBreakTimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Break.Use", true);
+        c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Break.Timer",
+            "Time in seconds. This can only be positive number and no higher than 60",
+            "This is only to prevent player from placing blocks into same place and getting paid once more");
+        globalBlockBreakTimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Break.Timer", 3);
+        globalBlockBreakTimer = CMINumber.clamp(globalBlockBreakTimer, 1, 60);
 
         c.addComment("ExploitProtections.General.PlaceAndBreak.SilkTouchProtection", "Enable silk touch protection.",
             "With this enabled players wont get paid for broken blocks from restrictedblocks list with silk touch tool.");
-        useSilkTouchProtection = c.get("ExploitProtections.General.PlaceAndBreak.SilkTouchProtection", c.getC().getBoolean("ExploitProtections.General.SilkTouchProtection", false));
+        useSilkTouchProtection = c.get("ExploitProtections.General.PlaceAndBreak.SilkTouchProtection", false);
 
         c.addComment("ExploitProtections.General.MonsterDamage.Use", "This section controls how much damage player should do to monster for player to get paid",
             "This prevents from killing monsters in one hit when they suffer in example fall damage");

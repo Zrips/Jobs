@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -18,7 +16,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.commands.list.gtop;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
 
@@ -50,7 +47,7 @@ public class SignUtil {
         Map<String, jobsSign> sub = signsByType.get(jSign.getIdentifier().toLowerCase());
         if (sub != null) {
             sub.remove(jSign.locToBlockString());
-        }
+        } 
 
         return true;
     }

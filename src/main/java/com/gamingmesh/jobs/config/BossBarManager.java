@@ -140,20 +140,17 @@ public class BossBarManager {
         bar.setVisible(true);
 
         if (oldOne != null)
-            oldOne.setScheduler(CMIScheduler.get().runTaskLater(new Runnable() {
-                @Override
-                public void run() {
-                    for (BossBarInfo one : player.getBossBarInfo()) {
-                        if (!one.getPlayerName().equalsIgnoreCase(player.getName()))
-                            continue;
+            oldOne.setScheduler(CMIScheduler.runTaskLater(() -> {
+                for (BossBarInfo one : player.getBossBarInfo()) {
+                    if (!one.getPlayerName().equalsIgnoreCase(player.getName()))
+                        continue;
 
-                        if (!one.getJobName().equalsIgnoreCase(jobProg.getJob().getName()))
-                            continue;
+                    if (!one.getJobName().equalsIgnoreCase(jobProg.getJob().getName()))
+                        continue;
 
-                        BossBar tempBar = one.getBar();
-                        tempBar.setVisible(false);
-                        break;
-                    }
+                    BossBar tempBar = one.getBar();
+                    tempBar.setVisible(false);
+                    break;
                 }
             }, Jobs.getGCManager().BossBarTimer * 20L));
 

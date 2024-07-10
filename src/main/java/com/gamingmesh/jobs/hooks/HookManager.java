@@ -17,6 +17,7 @@ import com.gamingmesh.jobs.hooks.stackMob.StackMobHandler;
 import com.gamingmesh.jobs.hooks.wildStacker.WildStackerHandler;
 
 import net.Zrips.CMILib.Messages.CMIMessages;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class HookManager {
 
@@ -36,13 +37,15 @@ public class HookManager {
     public static void loadHooks() {
         pm = PLUGIN.getServer().getPluginManager();
 
-        setMyPetManager();
-        setWorldGuard();
-        setMythicManager();
-        setStackMobHandler();
-        setWildStackerHandler();
-        setBlockTrackerManager();
-        setPyroFishingProManager();
+        CMIScheduler.runTask(() -> {
+            setMyPetManager();
+            setWorldGuard();
+            setMythicManager();
+            setStackMobHandler();
+            setWildStackerHandler();
+            setBlockTrackerManager();
+            setPyroFishingProManager();
+        });
     }
 
     public static StackMobHandler getStackMobHandler() {
@@ -99,6 +102,10 @@ public class HookManager {
         return Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.check();
     }
 
+    public static boolean checkPyroFishingPro() {
+        return pyroFishingProManager != null;
+    }
+
     public static BlockTrackerManager getBlockTrackerManager() {
         if (blockTrackerManager == null) {
             blockTrackerManager = new BlockTrackerManager();
@@ -110,7 +117,7 @@ public class HookManager {
     private static boolean setWorldGuard() {
         if (JobsHook.WorldGuard.isEnabled()) {
             worldGuardManager = new WorldGuardManager();
-            CMIMessages.consoleMessage("&eWorldGuard detected.");
+            CMIMessages.consoleMessage("&e" + JobsHook.WorldGuard + " detected.");
             return true;
         }
 
@@ -144,31 +151,35 @@ public class HookManager {
     private static void setMyPetManager() {
         if (JobsHook.MyPet.isEnabled()) {
             myPetManager = new MyPetManager();
-            CMIMessages.consoleMessage("&eMyPet detected.");
+            CMIMessages.consoleMessage("&e" + JobsHook.MyPet + " detected.");
         }
     }
 
     private static void setStackMobHandler() {
         if (JobsHook.StackMob.isEnabled()) {
             stackMobHandler = new StackMobHandler();
+            CMIMessages.consoleMessage("&e" + JobsHook.StackMob + " detected.");
         }
     }
 
     private static void setWildStackerHandler() {
         if (JobsHook.WildStacker.isEnabled()) {
             wildStackerHandler = new WildStackerHandler();
+            CMIMessages.consoleMessage("&e" + JobsHook.WildStacker + " detected.");
         }
     }
 
     private static void setBlockTrackerManager() {
         if (JobsHook.BlockTracker.isEnabled()) {
             blockTrackerManager = new BlockTrackerManager();
+            CMIMessages.consoleMessage("&e" + JobsHook.BlockTracker + " detected.");
         }
     }
 
     private static void setPyroFishingProManager() {
         if (JobsHook.PyroFishingPro.isEnabled()) {
             pyroFishingProManager = new PyroFishingProManager();
+            CMIMessages.consoleMessage("&e" + JobsHook.PyroFishingPro + " detected.");
         }
     }
 }
