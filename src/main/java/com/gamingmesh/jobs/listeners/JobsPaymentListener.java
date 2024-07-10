@@ -1378,7 +1378,7 @@ public final class JobsPaymentListener implements Listener {
 
             if (uuid != null)
                 pDamager = Bukkit.getPlayer(uuid);
-        } else if (isTameable) { // Checking if killer is tamed animal
+        } else if (isTameable && Jobs.getGCManager().tameablesPayout) { // Checking if killer is tamed animal
             Tameable t = (Tameable) killer;
 
             if (t.isTamed() && t.getOwner() instanceof Player)

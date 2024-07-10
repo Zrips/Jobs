@@ -16,7 +16,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class JobsPayment1_20Listener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onEntityBucketed(BlockDropItemEvent event) {
+    public void onBlockDropItem(BlockDropItemEvent event) {
 
         Player player = event.getPlayer();
 
