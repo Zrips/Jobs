@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.Gui;
 import org.bukkit.inventory.ItemStack;
 
 import net.Zrips.CMILib.Container.CMINumber;
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class GuiItem {
 
@@ -10,7 +11,7 @@ public class GuiItem {
     private int guiSlot = -1;
 
     public ItemStack getGuiItem() {
-        return guiItem;
+        return guiItem == null ? CMIMaterial.STONE.newItemStack() : guiItem;
     }
 
     public GuiItem setGuiItem(ItemStack guiItem) {
