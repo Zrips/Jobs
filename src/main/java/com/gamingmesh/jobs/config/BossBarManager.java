@@ -39,17 +39,13 @@ public class BossBarManager {
         if (Version.getCurrent().isLower(Version.v1_9_R1) || !Jobs.getGCManager().BossBarsMessageByDefault)
             return;
 
-        if (!ToggleBarHandling.getBossBarToggle().getOrDefault(player.getUniqueId().toString(), true))
+        if (!ToggleBarHandling.getBossBarToggle().getOrDefault(player.getUniqueId(), true))
             return;
 
-        if (Jobs.getGCManager().isBossBarAsync()) {
-            CMIScheduler.get().runTaskAsynchronously(() -> ShowJobProgressionInTask(player, jobProg, expGain));
-        } else {
-            ShowJobProgressionInTask(player, jobProg, expGain);
-        }
+        showJobProgressionInTask(player, jobProg, expGain);
     }
 
-    private synchronized void ShowJobProgressionInTask(final JobsPlayer player, final JobProgression jobProg, double expGain) {
+    private static synchronized void showJobProgressionInTask(final JobsPlayer player, final JobProgression jobProg, double expGain) {
         BossBar bar = null;
         BossBarInfo oldOne = null;
         for (BossBarInfo one : player.getBossBarInfo()) {
@@ -76,54 +72,7 @@ public class BossBarManager {
             "%gain%", gain);
 
         if (bar == null) {
-            BarColor color = getColor(jobProg.getJob());
-            if (color == null) {
-                switch (player.getBossBarInfo().size()) {
-                case 1:
-                    color = BarColor.GREEN;
-                    break;
-                case 2:
-                    color = BarColor.RED;
-                    break;
-                case 3:
-                    color = BarColor.WHITE;
-                    break;
-                case 4:
-                    color = BarColor.YELLOW;
-                    break;
-                case 5:
-                    color = BarColor.PINK;
-                    break;
-                case 6:
-                    color = BarColor.PURPLE;
-                    break;
-                default:
-                    color = BarColor.BLUE;
-                    break;
-                }
-            }
-            BarStyle style;
-            switch (Jobs.getGCManager().SegmentCount) {
-            case 1:
-                style = BarStyle.SOLID;
-                break;
-            case 6:
-                style = BarStyle.SEGMENTED_6;
-                break;
-            case 10:
-                style = BarStyle.SEGMENTED_10;
-                break;
-            case 12:
-                style = BarStyle.SEGMENTED_12;
-                break;
-            case 20:
-                style = BarStyle.SEGMENTED_20;
-                break;
-            default:
-                style = BarStyle.SOLID;
-                break;
-            }
-            bar = Bukkit.createBossBar(message, color, style);
+            bar = initBossBar(player, jobProg, message);
         } else
             bar.setTitle(message);
 
@@ -155,6 +104,57 @@ public class BossBarManager {
             }, Jobs.getGCManager().BossBarTimer * 20L));
 
         jobProg.setLastExperience(0D);
+    }
+
+    private static BossBar initBossBar(final JobsPlayer player, final JobProgression jobProg, String message) {
+        BarColor color = getColor(jobProg.getJob());
+        if (color == null) {
+            switch (player.getBossBarInfo().size()) {
+            case 1:
+                color = BarColor.GREEN;
+                break;
+            case 2:
+                color = BarColor.RED;
+                break;
+            case 3:
+                color = BarColor.WHITE;
+                break;
+            case 4:
+                color = BarColor.YELLOW;
+                break;
+            case 5:
+                color = BarColor.PINK;
+                break;
+            case 6:
+                color = BarColor.PURPLE;
+                break;
+            default:
+                color = BarColor.BLUE;
+                break;
+            }
+        }
+        BarStyle style;
+        switch (Jobs.getGCManager().SegmentCount) {
+        case 1:
+            style = BarStyle.SOLID;
+            break;
+        case 6:
+            style = BarStyle.SEGMENTED_6;
+            break;
+        case 10:
+            style = BarStyle.SEGMENTED_10;
+            break;
+        case 12:
+            style = BarStyle.SEGMENTED_12;
+            break;
+        case 20:
+            style = BarStyle.SEGMENTED_20;
+            break;
+        default:
+            style = BarStyle.SOLID;
+            break;
+        }
+        return Bukkit.createBossBar(message, color, style);
     }
 
     private static BarColor getColor(Job job) {

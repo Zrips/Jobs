@@ -1,6 +1,8 @@
 
 package com.gamingmesh.jobs.commands.list;
 
+import java.util.UUID;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -28,34 +30,31 @@ public class toggle implements Cmd {
         }
 
         Player player = (Player) sender;
-        String playerUUID = player.getUniqueId().toString();
+        UUID playerUUID = player.getUniqueId();
 
         if (isActionbar) {
-            Boolean ex = ToggleBarHandling.getActionBarToggle().get(playerUUID);
+            boolean ex = ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID, Jobs.getGCManager().ActionBarsMessageByDefault);
 
-            if (ex == null || ex.booleanValue()) {
-                ToggleBarHandling.getActionBarToggle().put(playerUUID, false);
+            if (ex) {
                 Language.sendMessage(sender, "command.toggle.output.off");
             } else {
-                ToggleBarHandling.getActionBarToggle().put(playerUUID, true);
                 Language.sendMessage(sender, "command.toggle.output.on");
             }
+            ToggleBarHandling.getActionBarToggle().put(playerUUID, !ex);
         }
 
         if (isBossbar) {
-            Boolean ex = ToggleBarHandling.getBossBarToggle().get(playerUUID);
+            boolean ex = ToggleBarHandling.getBossBarToggle().getOrDefault(playerUUID, Jobs.getGCManager().BossBarsMessageByDefault);
 
-            if (ex == null || ex.booleanValue()) {
-                ToggleBarHandling.getBossBarToggle().put(playerUUID, false);
+            if (ex) {
                 Language.sendMessage(sender, "command.toggle.output.off");
-
                 JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player.getUniqueId());
                 if (jPlayer != null)
                     jPlayer.hideBossBars();
             } else {
-                ToggleBarHandling.getBossBarToggle().put(playerUUID, true);
                 Language.sendMessage(sender, "command.toggle.output.on");
             }
+            ToggleBarHandling.getBossBarToggle().put(playerUUID, !ex);
         }
 
         return true;

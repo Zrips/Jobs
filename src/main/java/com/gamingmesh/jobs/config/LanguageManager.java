@@ -648,10 +648,11 @@ public class LanguageManager {
             c.get("command.toggle.help.args", "actionbar/bossbar");
             Jobs.getGCManager().getCommandArgs().put("toggle", Arrays.asList("actionbar%%bossbar"));
             c.get("command.toggle.output.turnedoff", "&4This feature is turned off!");
-            c.get("command.toggle.output.paid.main", "&aYou got:");
-            c.get("command.toggle.output.paid.money", "&e[amount] money");
-            c.get("command.toggle.output.paid.exp", "&7[exp] exp");
-            c.get("command.toggle.output.paid.points", "&6[points] points");
+            
+            c.get("command.toggle.output.paid.ACmoney", "&e+[amount]$ ");
+            c.get("command.toggle.output.paid.ACexp", "&7+[exp]XP ");
+            c.get("command.toggle.output.paid.ACpoints", "&6+[points]pts ");
+            
             c.get("command.toggle.output.on", "&aToggled: &aON");
             c.get("command.toggle.output.off", "&aToggled: &4OFF");
 

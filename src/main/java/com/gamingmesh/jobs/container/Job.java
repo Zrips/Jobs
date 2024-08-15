@@ -351,7 +351,6 @@ public class Job {
                 if (!info.isInLevelRange(level)) {
                     break;
                 }
-
                 return info;
             }
 

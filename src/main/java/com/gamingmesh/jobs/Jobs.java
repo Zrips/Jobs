@@ -45,6 +45,7 @@ import com.gamingmesh.jobs.Placeholders.Placeholder;
 import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
+import com.gamingmesh.jobs.api.JobsInstancePaymentEvent;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.BlockProtectionManager;
@@ -70,7 +71,6 @@ import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.Convert;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
-import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
@@ -101,6 +101,7 @@ import com.gamingmesh.jobs.listeners.JobsPayment1_16Listener;
 import com.gamingmesh.jobs.listeners.JobsPayment1_20Listener;
 import com.gamingmesh.jobs.listeners.JobsPayment1_9Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
+import com.gamingmesh.jobs.listeners.JobsPaymentVisualizationListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.listeners.PlayerSignEdit1_20Listeners;
 import com.gamingmesh.jobs.selection.SelectionManager;
@@ -115,10 +116,8 @@ import com.gamingmesh.jobs.stuff.complement.JobsChatEvent;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
-import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
@@ -821,6 +820,7 @@ public final class Jobs extends JavaPlugin {
 
         pm.registerEvents(new JobsListener(getInstance()), getInstance());
         pm.registerEvents(new JobsPaymentListener(getInstance()), getInstance());
+        pm.registerEvents(new JobsPaymentVisualizationListener(getInstance()), getInstance());
 
         if (Version.isCurrentEqualOrHigher(Version.v1_9_R1))
             pm.registerEvents(new JobsPayment1_9Listener(), getInstance());
@@ -842,7 +842,7 @@ public final class Jobs extends JavaPlugin {
 
         pm.registerEvents(new JobsChatEvent(getInstance()), getInstance());
 
-        if(HookManager.checkPyroFishingPro()) {
+        if (HookManager.checkPyroFishingPro()) {
             HookManager.getPyroFishingProManager().registerListener();
         }
         if (HookManager.getMcMMOManager().CheckmcMMO()) {
@@ -1071,8 +1071,7 @@ public final class Jobs extends JavaPlugin {
 
             Boost boost = getPlayerManager().getFinalBonus(jPlayer, noneJob);
 
-            JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income,
-                pointAmount, block, ent, victim, info);
+            JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income, 0, pointAmount, block, ent, victim, info);
             Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
             // If event is canceled, don't do anything
             if (jobsPrePaymentEvent.isCancelled()) {
@@ -1145,6 +1144,8 @@ public final class Jobs extends JavaPlugin {
             if (pointAmount != 0D)
                 payments.put(CurrencyType.POINTS, pointAmount);
 
+            // FinalPayment event
+            CMIScheduler.runTaskAsynchronously(() -> Bukkit.getServer().getPluginManager().callEvent(new JobsInstancePaymentEvent(jPlayer.getPlayer(), payments)));
             economy.pay(jPlayer, payments);
 
             if (gConfigManager.LoggingUse) {
@@ -1207,17 +1208,18 @@ public final class Jobs extends JavaPlugin {
 
                 Boost boost = getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
 
-                JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), income,
-                    pointAmount, block, ent, victim, info);
+                JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), income, expAmount, pointAmount, block, ent, victim, info);
 
                 Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
                 // If event is canceled, don't do anything
                 if (jobsPrePaymentEvent.isCancelled()) {
                     income = 0D;
                     pointAmount = 0D;
+                    expAmount = 0D;
                 } else {
                     income = jobsPrePaymentEvent.getAmount();
                     pointAmount = jobsPrePaymentEvent.getPoints();
+                    expAmount = jobsPrePaymentEvent.getExp();
                 }
 
                 // Calculate income
@@ -1296,22 +1298,10 @@ public final class Jobs extends JavaPlugin {
                     continue;
 
                 // JobsPayment event
-                JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount,
-                    block, ent, victim, info);
+                JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount, block, ent, victim, info);
                 Bukkit.getServer().getPluginManager().callEvent(jobsExpGainEvent);
                 // If event is canceled, don't do anything
                 expAmount = jobsExpGainEvent.isCancelled() ? 0D : jobsExpGainEvent.getExp();
-
-                try {
-                    if (expAmount != 0D && gConfigManager.BossBarEnabled)
-                        if (gConfigManager.BossBarShowOnEachAction)
-                            bbManager.ShowJobProgression(jPlayer, prog, expAmount);
-                        else
-                            jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                    CMIMessages.consoleMessage("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
-                }
 
                 Map<CurrencyType, Double> payments = new HashMap<>();
                 if (income != 0D)
@@ -1321,8 +1311,10 @@ public final class Jobs extends JavaPlugin {
                 if (expAmount != 0D)
                     payments.put(CurrencyType.EXP, expAmount);
 
-                FASTPAYMENT.put(jPlayer.getUniqueId(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), payments), prog
-                    .getJob()));
+                FASTPAYMENT.put(jPlayer.getUniqueId(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), payments), prog.getJob()));
+
+                // FinalPayment event
+                CMIScheduler.runTaskAsynchronously(() -> Bukkit.getServer().getPluginManager().callEvent(new JobsInstancePaymentEvent(jPlayer.getPlayer(), payments)));
 
                 economy.pay(jPlayer, payments);
                 int oldLevel = prog.getLevel();

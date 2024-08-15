@@ -220,12 +220,6 @@ public class BufferedEconomy {
                     else
                         CMIScheduler.get().runTaskLater(new BufferedPaymentTask(this, economy, payment), i);
 
-                    // Show players payment stuff
-                    showPayment(payment);
-
-                    if (Version.getCurrent().isHigher(Version.v1_8_R3) && payment.getOfflinePlayer().isOnline()) {
-                        Jobs.getBBManager().ShowJobProgression(Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId()));
-                    }
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
@@ -242,7 +236,6 @@ public class BufferedEconomy {
      */
     @Deprecated
     public void showActionBar(BufferedPayment payment) {
-        showPayment(payment);
     }
 
     /**
@@ -250,43 +243,7 @@ public class BufferedEconomy {
      * 
      * @param payment {@link BufferedPayment}
      */
+    @Deprecated
     public void showPayment(BufferedPayment payment) {
-        if (payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline()
-            || !payment.containsPayment())
-            return;
-
-        UUID playerUUID = payment.getOfflinePlayer().getUniqueId();
-        Player abp = Bukkit.getPlayer(playerUUID);
-        if (abp == null) {
-            return;
-        }
-
-        String message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
-        double money = payment.get(CurrencyType.MONEY);
-        if (money != 0D) {
-            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(),
-                money));
-        }
-
-        double points = payment.get(CurrencyType.POINTS);
-        if (points != 0D) {
-            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(),
-                points));
-        }
-
-        double exp = payment.get(CurrencyType.EXP);
-        if (exp != 0D) {
-            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(),
-                exp));
-        }
-
-        // Whether or not to show this on player actionbar or on chat
-        boolean showInActionbar = ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID.toString(),
-            Jobs.getGCManager().ActionBarsMessageByDefault);
-        if (showInActionbar) {
-            CMIActionBar.send(abp, message);
-        } else if (!Jobs.getGCManager().aBarSilentMode) {
-            abp.sendMessage(message);
-        }
     }
 }

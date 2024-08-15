@@ -1,7 +1,12 @@
 package com.gamingmesh.jobs.api;
 
 import com.gamingmesh.jobs.container.ActionInfo;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -13,8 +18,7 @@ import org.bukkit.event.Cancellable;
  */
 public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable {
     private OfflinePlayer offlinePlayer;
-    private double money;
-    private double points;
+    Map<CurrencyType, Double> amounts = new HashMap<>();
     private Job job;
     private Block block;
     private Entity entity;
@@ -24,22 +28,27 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
 
     @Deprecated
     public JobsPrePaymentEvent(OfflinePlayer offlinePlayer, Job job, double money, double points) {
-	this.job = job;
-	this.offlinePlayer = offlinePlayer;
-	this.money = money;
-	this.points = points;
+        this.job = job;
+        this.offlinePlayer = offlinePlayer;
+        amounts.put(CurrencyType.MONEY, money);
+        amounts.put(CurrencyType.POINTS, points);
     }
 
-    public JobsPrePaymentEvent(OfflinePlayer offlinePlayer, Job job, double money, double points, Block block,
-	Entity entity, LivingEntity living, ActionInfo info) {
-	this.job = job;
-	this.offlinePlayer = offlinePlayer;
-	this.money = money;
-	this.points = points;
-	this.block = block;
-	this.entity = entity;
-	this.living = living;
-	this.info = info;
+    @Deprecated
+    public JobsPrePaymentEvent(OfflinePlayer offlinePlayer, Job job, double money, double points, Block block, Entity entity, LivingEntity living, ActionInfo info) {
+        this(offlinePlayer, job, money, 0, points, block, entity, living, info);
+    }
+
+    public JobsPrePaymentEvent(OfflinePlayer offlinePlayer, Job job, double money, double exp, double points, Block block, Entity entity, LivingEntity living, ActionInfo info) {
+        this.job = job;
+        this.offlinePlayer = offlinePlayer;
+        amounts.put(CurrencyType.MONEY, money);
+        amounts.put(CurrencyType.EXP, exp);
+        amounts.put(CurrencyType.POINTS, points);
+        this.block = block;
+        this.entity = entity;
+        this.living = living;
+        this.info = info;
     }
 
     /**
@@ -48,7 +57,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
      * @return {@link OfflinePlayer}
      */
     public OfflinePlayer getPlayer() {
-	return offlinePlayer;
+        return offlinePlayer;
     }
 
     /**
@@ -57,7 +66,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
      * @return expected income before calculations
      */
     public double getAmount() {
-	return money;
+        return amounts.getOrDefault(CurrencyType.MONEY, 0D);
     }
 
     /**
@@ -66,7 +75,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
      * @return expected points before calculations
      */
     public double getPoints() {
-	return points;
+        return amounts.getOrDefault(CurrencyType.POINTS, 0D);
     }
 
     /**
@@ -75,7 +84,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
      * @return {@link Job}
      */
     public Job getJob() {
-	return job;
+        return job;
     }
 
     /**
@@ -84,7 +93,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
      * @param money new amount
      */
     public void setAmount(double money) {
-	this.money = money;
+        amounts.put(CurrencyType.MONEY, money);
     }
 
     /**
@@ -93,7 +102,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
      * @param points
      */
     public void setPoints(double points) {
-	this.points = points;
+        amounts.put(CurrencyType.POINTS, points);
     }
 
     /**
@@ -102,7 +111,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
      * @return {@link Block}
      */
     public Block getBlock() {
-	return block;
+        return block;
     }
 
     /**
@@ -113,7 +122,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
      * @return {@link Entity}
      */
     public Entity getEntity() {
-	return entity;
+        return entity;
     }
 
     /**
@@ -122,7 +131,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
      * @return {@link LivingEntity}
      */
     public LivingEntity getLivingEntity() {
-	return living;
+        return living;
     }
 
     /**
@@ -131,16 +140,34 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
      * @return {@link ActionInfo}
      */
     public ActionInfo getActionInfo() {
-	return info;
+        return info;
     }
 
     @Override
     public boolean isCancelled() {
-	return cancelled;
+        return cancelled;
     }
 
     @Override
     public void setCancelled(boolean cancelled) {
-	this.cancelled = cancelled;
+        this.cancelled = cancelled;
+    }
+
+    /**
+     * Returns the amount of expected exp.
+     * 
+     * @return expected exp before calculations
+     */
+    public double getExp() {
+        return amounts.getOrDefault(CurrencyType.EXP, 0D);
+    }
+
+    /**
+     * Sets a new exp amount before calculations.
+     * 
+     * @param exp
+     */
+    public void setExp(double exp) {
+        amounts.put(CurrencyType.EXP, exp);
     }
 }

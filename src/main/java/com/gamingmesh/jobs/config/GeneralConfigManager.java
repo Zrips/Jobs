@@ -104,15 +104,17 @@ public class GeneralConfigManager {
         applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useMinimumOveralExp, useBreederFinder,
         CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
         LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
-        EmptyServerAccountActionBar, ActionBarsMessageByDefault, aBarSilentMode, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
+        EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
         JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames, hideItemAttributes,
         DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UsePerPermissionForLeaving,
         EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, MonsterDamageIgnoreBosses, useMaxPaymentCurve, blockOwnershipTakeOver,
         hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel, RomanNumbers,
-        BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
+        BossBarEnabled = false, BossBarsMessageByDefault = false, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
         LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
-        payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false, preventShopItemEnchanting;
+        payForEachVTradeItem, allowEnchantingBoostedItems, preventShopItemEnchanting;
+
+    public int ActionBarsMessageKeepFor;
 
     public boolean jobsshopenabled;
     public boolean DailyQuestsEnabled;
@@ -410,12 +412,6 @@ public class GeneralConfigManager {
         c.addComment("Optimizations.RomanNumbers", "Enabling this option some places will indicate players level as XIV instead of 14", "Only or player levels");
         RomanNumbers = c.get("Optimizations.RomanNumbers", false);
 
-//	c.addComment("Optimizations.UseLocalOfflinePlayersData", "With this set to true, offline player data will be taken from local player data files",
-//	    "This will eliminate small lag spikes when request is being send to mojangs servers for offline players data",
-//	    "Theroticali this should work without issues, but if you havving some, just disable",
-//	    "But then you can feal some small (100-200ms) lag spikes while performings some jobs commands");
-//	LocalOfflinePlayersData = c.get("Optimizations.UseLocalOfflinePlayersData", true);
-
         c.addComment("Optimizations.DisabledWorlds.Use", "By setting this to true, Jobs plugin will be disabled in given worlds",
             "Only commands can be performed from disabled worlds with jobs.disabledworld.commands permission node");
         DisabledWorldsUse = c.get("Optimizations.DisabledWorlds.Use", false);
@@ -425,9 +421,9 @@ public class GeneralConfigManager {
         DisabledWorldsList = c.get("Optimizations.DisabledWorlds.List", Arrays.asList("Example", "Worlds"));
         CMIList.toLowerCase(DisabledWorldsList);
 
-        if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+        if (Version.isCurrentEqualOrHigher(Version.v1_16_R1)) {
             c.addComment("Optimizations.Explore.NewMethod",
-                "Do you want to use new exploration tracking method. Only for 1.14+ servers");
+                "Do you want to use new exploration tracking method. Only for 1.16+ servers");
             useNewExploration = c.get("Optimizations.Explore.NewMethod", true);
         }
 
@@ -993,8 +989,10 @@ public class GeneralConfigManager {
         c.addComment("ActionBars.Messages.EnabledByDefault", "When this set to true player will see action bar messages by default",
             "When false, players will see chat messages instead.");
         ActionBarsMessageByDefault = c.get("ActionBars.Messages.EnabledByDefault", true);
-        c.addComment("ActionBars.Messages.SilentMode", "If true, should we mute the payment messages from appearing in chat if actionbar is disabled?");
-        aBarSilentMode = c.get("ActionBars.Messages.SilentMode", false);
+        c.addComment("ActionBars.Messages.KeepFor", "Time in seconds action bar will remain visible if enabled",
+            "This time is used to define for how long we will accumulate payments to be shown in action bar",
+            "If no payments are being issued in defined time then it will reset to 0 and remain hidden");
+        ActionBarsMessageKeepFor = c.get("ActionBars.Messages.KeepFor", 5);
 
         if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
             c.addComment("BossBar.Enabled", "Enables BossBar feature", "Works only from 1.9 mc version");
@@ -1003,16 +1001,10 @@ public class GeneralConfigManager {
             c.addComment("BossBar.Messages.EnabledByDefault", "When this set to true player will see Bossbar messages by default");
             BossBarsMessageByDefault = c.get("BossBar.Messages.EnabledByDefault", true);
 
-            c.addComment("BossBar.ShowOnEachAction", "If enabled boss bar will update after each action",
-                "If disabled, BossBar will update only on each payment. This can save some server resources");
-            BossBarShowOnEachAction = c.get("BossBar.ShowOnEachAction", false);
             c.addComment("BossBar.SegmentCount", "Defines in how many parts bossbar will be split visually", "Valid options: 1, 6, 10, 12, 20");
             SegmentCount = c.get("BossBar.SegmentCount", 1);
-            c.addComment("BossBar.Timer", "How long in sec to show BossBar for player",
-                "If you have disabled ShowOnEachAction, then keep this number higher than payment interval for better experience");
-            BossBarTimer = c.get("BossBar.Timer", economyBatchDelay + 1);
-            c.addComment("BossBar.Async", "If enabled, bossbar creation and management will be asynchronous.", "This avoids TPS drops when the ShowOnEachAction option is activated.");
-            bossBarAsync = c.get("BossBar.Async", false);
+            c.addComment("BossBar.Timer", "How long in sec to show BossBar for player");
+            BossBarTimer = c.get("BossBar.Timer", 5);
         }
 
         c.addComment("ShowActionBars", "You can enable/disable message shown for players in action bar");
@@ -1312,10 +1304,6 @@ public class GeneralConfigManager {
 
     public boolean isInformDuplicates() {
         return InformDuplicates;
-    }
-
-    public boolean isBossBarAsync() {
-        return bossBarAsync;
     }
 
     public boolean isDailyQuestsUseGUI() {

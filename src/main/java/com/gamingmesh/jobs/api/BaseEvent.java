@@ -7,12 +7,19 @@ public class BaseEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
+    public BaseEvent(boolean async) {
+        super(async);
+    }
+
+    public BaseEvent() {
+    }
+
     @Override
     public HandlerList getHandlers() {
-	return handlers;
+        return handlers;
     }
 
     public static HandlerList getHandlerList() {
-	return handlers;
+        return handlers;
     }
 }
