@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
@@ -150,11 +150,11 @@
 			</exclusions>
 		</dependency>
 		<!-- CMILib -->
-<!--		<dependency>-->
-<!--			<groupId>com.github.Zrips</groupId>-->
-<!--			<artifactId>CMILib</artifactId>-->
-<!--			<version>1.4.7.4</version>-->
-<!--		</dependency>-->
+		<!--		<dependency>-->
+		<!--			<groupId>com.github.Zrips</groupId>-->
+		<!--			<artifactId>CMILib</artifactId>-->
+		<!--			<version>1.4.7.4</version>-->
+		<!--		</dependency>-->
 		<!--		 WildStacker -->
 		<dependency>
 			<groupId>com.bgsoftware</groupId>
@@ -232,7 +232,7 @@
 			<url>https://repo.bg-software.com/repository/api/</url>
 		</repository>
 		<!-- MyPet -->
-		<!--<repository> <id>mypet-repo</id> <url>https://repo.mypet-plugin.de/</url> 
+		<!--<repository> <id>mypet-repo</id> <url>https://repo.mypet-plugin.de/</url>
 			</repositor> -->
 	</repositories>
 	<!-- Builds Plugin -->

@@ -46,7 +46,6 @@ import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 
@@ -107,7 +106,7 @@ public class GeneralConfigManager {
         EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
         JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames, hideItemAttributes,
         DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UsePerPermissionForLeaving,
-        EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, MonsterDamageIgnoreBosses, useMaxPaymentCurve, blockOwnershipTakeOver,
+        EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, MonsterDamageIgnoreBosses, tameablesPayout, useMaxPaymentCurve, blockOwnershipTakeOver,
         hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel, RomanNumbers,
         BossBarEnabled = false, BossBarsMessageByDefault = false, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
@@ -938,7 +937,10 @@ public class GeneralConfigManager {
         MonsterDamagePercentage = c.get("ExploitProtections.General.MonsterDamage.Percentage", 60);
         c.addComment("ExploitProtections.General.MonsterDamage.IgnoreBosses", "When enabled we will avoid checking damage done to ender dragon, wither and warden",
             "This can help out in case you have server with custom damage sources which might not be registered and payouts might not be given out");
-        MonsterDamageIgnoreBosses = c.get("ExploitProtections.General.MonsterDamage.IgnoreBosses", true);
+        MonsterDamageIgnoreBosses = c.get("ExploitProtections.General.MonsterDamage.IgnoreBosses", true); // TODO
+
+        c.addComment("ExploitProtections.General.TameablesPayout", "Should tamed animals payout to their owners?");
+        tameablesPayout = c.get("ExploitProtections.General.TameablesPayout", true);
 
         c.addComment("ExploitProtections.McMMO", "McMMO abilities");
         c.addComment("ExploitProtections.McMMO.TreeFellerMultiplier", "Players will get part of money from cutting trees with treefeller ability enabled.",
