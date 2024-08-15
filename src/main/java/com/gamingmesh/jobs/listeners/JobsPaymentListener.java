@@ -760,7 +760,7 @@ public final class JobsPaymentListener implements Listener {
             // when we trying to craft tipped arrow effects
             if (currentItem != null && currentItem.getItemMeta() instanceof PotionMeta) {
                 PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
-                if (Version.isCurrentEqualOrHigher(Version.v1_9_R1))
+                if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && potion.getBasePotionData() != null)
                     Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
             } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
                 Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
@@ -831,7 +831,7 @@ public final class JobsPaymentListener implements Listener {
 
                     if (resultStack.getItemMeta() instanceof PotionMeta) {
                         PotionMeta potion = (PotionMeta) resultStack.getItemMeta();
-                        if (Version.isCurrentEqualOrHigher(Version.v1_9_R1))
+                        if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && potion.getBasePotionData() != null)
                             Jobs.action(jPlayer, new PotionItemActionInfo(resultStack, type, potion.getBasePotionData().getType()));
                     } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
                         Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), type));
@@ -1672,8 +1672,8 @@ public final class JobsPaymentListener implements Listener {
         if (currentItem == null)
             return;
 
-        if (currentItem.getItemMeta() instanceof PotionMeta) {
-            if (Version.isCurrentEqualOrHigher(Version.v1_9_R1))
+        if (currentItem.getItemMeta() instanceof PotionMeta) { 
+            if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && ((PotionMeta) currentItem.getItemMeta()).getBasePotionData() != null)
                 Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.EAT, ((PotionMeta) currentItem.getItemMeta()).getBasePotionData().getType()));
         } else {
             Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.EAT));
