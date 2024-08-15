@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import net.Zrips.CMILib.Items.CMIAsyncHead;
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class ShopItem {
 
@@ -37,9 +38,10 @@ public class ShopItem {
 //    private boolean useCurrentPlayer = false;
 
     private String iconString;
-    
+
     public CMIItemStack getIcon(Player player, CMIAsyncHead ahead) {
-        return CMIItemStack.deserialize(iconString.replace("[player]", player.getName()), ahead);
+        CMIItemStack stack = CMIItemStack.deserialize(iconString.replace("[player]", player.getName()), ahead);
+        return stack == null ? CMIMaterial.STONE.newCMIItemStack() : stack;
     }
 
     public ShopItem(String nodeName) {
