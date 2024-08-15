@@ -27,20 +27,6 @@ public final class JobsPayment1_9Listener implements Listener {
         event.setResult(null);
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onBoostedItemEnchantEvent(final PrepareAnvilEvent event) {
-        if (!Jobs.getGCManager().preventBoostedItemEnchanting)
-            return;
-
-        if (!ItemBoostManager.isBoostedJobsItem(event.getInventory().getContents()[0]))
-            return;
-
-        if (!CMIMaterial.get(event.getInventory().getContents()[1]).equals(CMIMaterial.ENCHANTED_BOOK))
-            return;
-
-        event.setResult(null);
-    }
-
     @EventHandler
     public void onPlayerHandSwap(PlayerSwapHandItemsEvent event) {
         Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
