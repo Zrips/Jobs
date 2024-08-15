@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.JobsItemType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -36,15 +37,28 @@ import net.Zrips.CMILib.Items.CMIAsyncHead;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
+import net.Zrips.CMILib.NBT.CMINBT;
 
-@SuppressWarnings("deprecation")
 public class ShopManager {
 
     private final List<ShopItem> list = new ArrayList<>();
 
+    private static final String jobsShopItem = "JobsShopItem";
+
     public List<ShopItem> getShopItemList() {
         return list;
+    }
+
+    public boolean isShopItem(ItemStack item) {
+        return item != null && new CMINBT(item).hasNBT(jobsShopItem);
+    }
+
+    public static ItemStack applyNBT(ItemStack item, String node) {
+        if (item == null)
+            return null;
+        return (ItemStack) new CMINBT(item).setString(jobsShopItem, node);
     }
 
     private List<ShopItem> getItemsByPage(int page) {
@@ -249,6 +263,7 @@ public class ShopManager {
                                 GiveItem.giveItemForPlayer(player, item);
                             }
                         };
+
                         CMIItemStack citem = one.getItemStack(player, ahead);
                         if (citem != null && !ahead.isAsyncHead())
                             GiveItem.giveItemForPlayer(player, citem.getItemStack());
@@ -455,7 +470,7 @@ public class ShopManager {
                         CMIMessages.consoleMessage("&cInvalid ItemStack for boosted item (" + itemString + ")");
                         continue;
                     }
-                    JobItems jitem = new JobItems("");
+                    JobItems jitem = new JobItems("").setType(JobsItemType.Shop);
                     jitem.setItemString(itemString);
                     items.add(jitem);
                 }
@@ -542,7 +557,7 @@ public class ShopManager {
                             if (!enchants.toString().isEmpty())
                                 itemSring += ";" + enchants.toString();
 
-                            JobItems jitem = new JobItems(oneItemName.toLowerCase());
+                            JobItems jitem = new JobItems(oneItemName.toLowerCase()).setType(JobsItemType.Shop);
 
                             jitem.setItemString(itemSring);
 

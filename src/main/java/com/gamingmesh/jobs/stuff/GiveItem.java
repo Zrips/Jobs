@@ -12,10 +12,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public final class GiveItem {
 
+    @Deprecated
     public static void giveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore,
         java.util.Map<Enchantment, Integer> enchants) {
         ItemStack itemStack = CMIMaterial.get(id, meta).newItemStack();
@@ -57,6 +59,7 @@ public final class GiveItem {
     public static void giveItemForPlayer(Player player, ItemStack item) {
         if (player == null)
             return;
+
         CMIScheduler.runAtEntity(player, () -> {
             player.getInventory().addItem(item);
             player.updateInventory();

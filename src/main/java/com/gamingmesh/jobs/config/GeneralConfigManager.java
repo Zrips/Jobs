@@ -111,7 +111,7 @@ public class GeneralConfigManager {
         BossBarEnabled = false, BossBarsMessageByDefault = false, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
         LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
-        payForEachVTradeItem, allowEnchantingBoostedItems, preventShopItemEnchanting;
+        payForEachVTradeItem, allowEnchantingBoostedItems, preventShopItemEnchanting, preventBoostedItemEnchanting;
 
     public int ActionBarsMessageKeepFor;
 
@@ -482,6 +482,9 @@ public class GeneralConfigManager {
 
         c.addComment("prevent-shop-item-enchanting", "Prevent players to enchant items from the shop in the anvil with enchanted books");
         preventShopItemEnchanting = c.get("prevent-shop-item-enchanting", true);
+
+        c.addComment("prevent-boosted-item-enchanting", "Prevent players to enchant boosted jobs items in the anvil with enchanted books");
+        preventBoostedItemEnchanting = c.get("prevent-boosted-item-enchanting", c.getC().getBoolean("prevent-shop-item-enchanting", true));
 
         c.addComment("jobs-shop-enabled", "Enables or disables jobs shop");
         jobsshopenabled = c.get("jobs-shop-enabled", true);

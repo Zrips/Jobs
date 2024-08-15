@@ -23,8 +23,13 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import com.gamingmesh.jobs.ItemBoostManager;
+import com.gamingmesh.jobs.JobsItemType;
+import com.gamingmesh.jobs.config.ShopManager;
+
 import net.Zrips.CMILib.Items.CMIAsyncHead;
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class JobItems {
 
@@ -39,6 +44,8 @@ public class JobItems {
     private int fromLevel = 0;
     private int untilLevel = Integer.MAX_VALUE;
 
+    private JobsItemType type = JobsItemType.Unknown;
+
     public JobItems(String node) {
         this.node = node;
     }
@@ -48,7 +55,24 @@ public class JobItems {
     }
 
     public CMIItemStack getItemStack(Player player, CMIAsyncHead ahead) {
-        return CMIItemStack.deserialize(itemString.replace("[player]", player == null ? "" : player.getName()), ahead);
+        CMIItemStack item = CMIItemStack.deserialize(itemString.replace("[player]", player == null ? "" : player.getName()), ahead);
+
+        if (item != null) {
+            switch (this.getType()) {
+            case Boosted:
+                item.setItemStack(ItemBoostManager.applyNBT(item.getItemStack(), getNode()));
+                break;
+            case Shop:
+                item.setItemStack(ShopManager.applyNBT(item.getItemStack(), getNode()));
+                break;
+            case Unknown:
+                break;
+            default:
+                break;
+            }
+        }
+
+        return item;
     }
 
     public BoostMultiplier getBoost() {
@@ -91,7 +115,7 @@ public class JobItems {
     }
 
     public CMIItemStack getItem() {
-        return CMIItemStack.deserialize(itemString);
+        return this.getItemStack(null, null);
     }
 
     public void setItemString(String itemString) {
@@ -100,6 +124,15 @@ public class JobItems {
 
     public void setBoostMultiplier(BoostMultiplier boostMultiplier) {
         this.boostMultiplier = boostMultiplier;
+    }
+
+    public JobsItemType getType() {
+        return type;
+    }
+
+    public JobItems setType(JobsItemType type) {
+        this.type = type;
+        return this;
     }
 
 }
