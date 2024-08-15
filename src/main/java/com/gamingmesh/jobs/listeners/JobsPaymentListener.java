@@ -134,7 +134,6 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMC;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -1306,7 +1305,7 @@ public final class JobsPaymentListener implements Listener {
 
         if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent)) {
             killer = entityLastDamager.getIfPresent(event.getEntity().getUniqueId());
-        } else if(event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+        } else if (event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
             killer = event.getEntity().getLastDamageCause().getDamageSource().getCausingEntity();
         } else {
             killer = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
@@ -1672,7 +1671,7 @@ public final class JobsPaymentListener implements Listener {
         if (currentItem == null)
             return;
 
-        if (currentItem.getItemMeta() instanceof PotionMeta) { 
+        if (currentItem.getItemMeta() instanceof PotionMeta) {
             if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && ((PotionMeta) currentItem.getItemMeta()).getBasePotionData() != null)
                 Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.EAT, ((PotionMeta) currentItem.getItemMeta()).getBasePotionData().getType()));
         } else {
@@ -1929,9 +1928,6 @@ public final class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChunkUnload(ChunkUnloadEvent event) {
         for (Entity entity : event.getChunk().getEntities()) {
-            if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) && entity.isPersistent())
-                break;
-
             entity.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
         }
     }
