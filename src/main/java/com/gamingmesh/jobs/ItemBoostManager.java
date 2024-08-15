@@ -111,7 +111,7 @@ public final class ItemBoostManager {
 
             jitem.setJobs(jobs);
             jitem.setBoostMultiplier(b);
-            
+
             if (cfg.getC().isInt(one + ".levelFrom"))
                 jitem.setFromLevel(cfg.get(one + ".levelFrom", 0));
 
@@ -197,8 +197,8 @@ public final class ItemBoostManager {
                 }
                 jitem.setItemString(itemString);
             }
-
-            ITEMS.put(node, jitem);
+            if (jitem.getItem() != null)
+                ITEMS.put(node, jitem);
         }
 
         cfg.save();
