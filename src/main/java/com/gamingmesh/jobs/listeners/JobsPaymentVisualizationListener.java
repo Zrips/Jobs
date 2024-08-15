@@ -125,15 +125,15 @@ public class JobsPaymentVisualizationListener implements Listener {
 
         StringBuilder message = new StringBuilder();
 
-        double money = payment.get(CurrencyType.MONEY);
+        double money = payment.getOrDefault(CurrencyType.MONEY, 0D);
         if (money != 0D)
             message.append(Jobs.getLanguage().getMessage("command.toggle.output.paid.ACmoney", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), money)));
 
-        double exp = payment.get(CurrencyType.EXP);
+        double exp = payment.getOrDefault(CurrencyType.EXP, 0D);
         if (exp != 0D)
             message.append(Jobs.getLanguage().getMessage("command.toggle.output.paid.ACexp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), exp)));
 
-        double points = payment.get(CurrencyType.POINTS);
+        double points = payment.getOrDefault(CurrencyType.POINTS, 0D);
         if (points != 0D)
             message.append(Jobs.getLanguage().getMessage("command.toggle.output.paid.ACpoints", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points)));
 
