@@ -79,6 +79,7 @@ public class Placeholder {
         user_jmexp_$1("jname/number"),
         user_jprogress_$1("jname/number"),
         user_jexp_rounded_$1("jname/number"),
+        user_jexp_int_$1("jname/number"),
         user_jmaxexp_$1("jname/number"),
         user_jexpunf_$1("jname/number"),
         user_jmaxexpunf_$1("jname/number"),
@@ -530,6 +531,8 @@ public class Placeholder {
                     return j == null ? "" : Jobs.getCommandManager().jobProgressMessage(j.getMaxExperience(), j.getExperience());
                 case user_jexp_rounded_$1:
                     return j == null ? "0" : fFormat.format(j.getExperience());
+                case user_jexp_int_$1:
+                    return j == null ? "0" : Integer.toString((int) j.getExperience());
                 case user_jmaxexp_$1:
                     return j == null ? "0" : format.format(j.getMaxExperience());
                 case user_jexpunf_$1:
