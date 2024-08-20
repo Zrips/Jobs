@@ -416,6 +416,7 @@ public class Placeholder {
 
     DecimalFormat dFormat = new DecimalFormat("00.0");
     DecimalFormat fFormat = new DecimalFormat("##.###");
+    NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 
     public String getValue(UUID uuid, JobsPlaceHolders placeHolder, String value) {
         if (placeHolder == null)
@@ -424,8 +425,6 @@ public class Placeholder {
         JobsPlayer user = uuid == null ? null : Jobs.getPlayerManager().getJobsPlayer(uuid);
         // Placeholders by JobsPlayer object
         if (user != null) {
-            NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
-
             switch (placeHolder) {
             case user_dailyquests_pending:
                 Integer pendingQuests = (int) user.getQuestProgressions().stream().filter(q -> !q.isCompleted()).count();
