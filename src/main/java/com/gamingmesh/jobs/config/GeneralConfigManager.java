@@ -37,8 +37,10 @@ import org.bukkit.inventory.ItemStack;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
+import com.gamingmesh.jobs.container.MessageToggleState;
 
 import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.Container.CMIArray;
 import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Enchants.CMIEnchantment;
@@ -103,15 +105,17 @@ public class GeneralConfigManager {
         applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useMinimumOveralExp, useBreederFinder,
         CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
         LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
-        EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
+        EmptyServerAccountActionBar, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
         JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames, hideItemAttributes,
         DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UsePerPermissionForLeaving,
         EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, MonsterDamageIgnoreBosses, tameablesPayout, useMaxPaymentCurve, blockOwnershipTakeOver,
         hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel, RomanNumbers,
-        BossBarEnabled = false, BossBarsMessageByDefault = false, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
+        BossBarEnabled = false, ActionBarEnabled, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
         LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
         payForEachVTradeItem, allowEnchantingBoostedItems, preventShopItemEnchanting;
+    public MessageToggleState BossBarsMessageDefault = MessageToggleState.Rapid;
+    public MessageToggleState ActionBarsMessageDefault = MessageToggleState.Rapid;
 
     public int ActionBarsMessageKeepFor;
 
@@ -988,10 +992,13 @@ public class GeneralConfigManager {
             "Only works when fix-at-max-level is set to false");
         levelLossPercentageFromMax = c.get("old-job.level-loss-from-max-level", levelLossPercentage);
 
-        c.addComment("ActionBars.Messages.EnabledByDefault", "When this set to true player will see action bar messages by default",
-            "When false, players will see chat messages instead.");
-        ActionBarsMessageByDefault = c.get("ActionBars.Messages.EnabledByDefault", true);
-        c.addComment("ActionBars.Messages.KeepFor", "Time in seconds action bar will remain visible if enabled",
+        c.addComment("ActionBars.Enabled", "Enables ActionBar messages");
+        ActionBarEnabled = c.get("ActionBars.Enabled", true);
+
+        c.addComment("ActionBars.Messages.DefaultState", "States of action bar messages", "Valid options: " + MessageToggleState.toCommaSeparatedString());
+        ActionBarsMessageDefault = MessageToggleState.getByName(c.get("ActionBars.Messages.DefaultState", MessageToggleState.Rapid.toString()));
+
+        c.addComment("ActionBars.Messages.KeepFor", "Time in seconds action bar will remain visible if rapid state is enabled",
             "This time is used to define for how long we will accumulate payments to be shown in action bar",
             "If no payments are being issued in defined time then it will reset to 0 and remain hidden");
         ActionBarsMessageKeepFor = c.get("ActionBars.Messages.KeepFor", 5);
@@ -1000,8 +1007,8 @@ public class GeneralConfigManager {
             c.addComment("BossBar.Enabled", "Enables BossBar feature", "Works only from 1.9 mc version");
             BossBarEnabled = c.get("BossBar.Enabled", true);
 
-            c.addComment("BossBar.Messages.EnabledByDefault", "When this set to true player will see Bossbar messages by default");
-            BossBarsMessageByDefault = c.get("BossBar.Messages.EnabledByDefault", true);
+            c.addComment("BossBar.Messages.DefaultState", "When this set to true player will see Bossbar messages by default");
+            BossBarsMessageDefault = MessageToggleState.getByName(c.get("BossBar.Messages.DefaultState", MessageToggleState.Rapid.toString()));
 
             c.addComment("BossBar.SegmentCount", "Defines in how many parts bossbar will be split visually", "Valid options: 1, 6, 10, 12, 20");
             SegmentCount = c.get("BossBar.SegmentCount", 1);

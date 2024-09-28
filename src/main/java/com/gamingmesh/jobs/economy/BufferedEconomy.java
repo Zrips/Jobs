@@ -177,7 +177,7 @@ public class BufferedEconomy {
                             economy.depositPlayer(serverTaxesAccount, taxesAmount);
                         }
 
-                        if (Jobs.getGCManager().ActionBarsMessageByDefault && serverTaxesAccount.isOnline()) {
+                        if (serverTaxesAccount.isOnline()) {
                             CMIActionBar.send(Bukkit.getPlayer(serverAccountName),
                                 Jobs.getLanguage().getMessage("message.taxes", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), totalAmount)));
                         }

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.MessageToggleState;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 
@@ -33,28 +34,23 @@ public class toggle implements Cmd {
         UUID playerUUID = player.getUniqueId();
 
         if (isActionbar) {
-            boolean ex = ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID, Jobs.getGCManager().ActionBarsMessageByDefault);
-
-            if (ex) {
-                Language.sendMessage(sender, "command.toggle.output.off");
-            } else {
-                Language.sendMessage(sender, "command.toggle.output.on");
-            }
-            ToggleBarHandling.getActionBarToggle().put(playerUUID, !ex);
+            MessageToggleState ex = ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID, Jobs.getGCManager().ActionBarsMessageDefault).getNext();
+            Language.sendMessage(sender, "command.toggle.output." + ex.toString());
+            ToggleBarHandling.getActionBarToggle().put(playerUUID, ex);
         }
 
         if (isBossbar) {
-            boolean ex = ToggleBarHandling.getBossBarToggle().getOrDefault(playerUUID, Jobs.getGCManager().BossBarsMessageByDefault);
+            MessageToggleState ex = ToggleBarHandling.getBossBarToggle().getOrDefault(playerUUID, Jobs.getGCManager().BossBarsMessageDefault).getNext();
 
-            if (ex) {
-                Language.sendMessage(sender, "command.toggle.output.off");
+            Language.sendMessage(sender, "command.toggle.output." + ex.toString());
+
+            if (ex.equals(MessageToggleState.Off)) {
                 JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player.getUniqueId());
                 if (jPlayer != null)
                     jPlayer.hideBossBars();
-            } else {
-                Language.sendMessage(sender, "command.toggle.output.on");
             }
-            ToggleBarHandling.getBossBarToggle().put(playerUUID, !ex);
+
+            ToggleBarHandling.getBossBarToggle().put(playerUUID, ex);
         }
 
         return true;

@@ -10,11 +10,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.YmlMaker;
+import com.gamingmesh.jobs.container.MessageToggleState;
+
+import net.Zrips.CMILib.Container.CMINumber;
 
 public class ToggleBarHandling {
 
-    static Map<UUID, Boolean> actionBarToggle = new HashMap<>();
-    static Map<UUID, Boolean> bossBarToggle = new HashMap<>();
+    static Map<UUID, MessageToggleState> actionBarToggle = new HashMap<>();
+    static Map<UUID, MessageToggleState> bossBarToggle = new HashMap<>();
 
     public static void load() {
         YmlMaker f = new YmlMaker(Jobs.getFolder(), "actionBarBossbar.yml");
@@ -28,28 +31,43 @@ public class ToggleBarHandling {
 
             if (section != null) {
                 for (String one : section.getKeys(false)) {
-                    boolean boo = section.getBoolean(one);
-                    if (boo)
-                        continue;
+
+                    MessageToggleState state = MessageToggleState.Rapid;
+
+                    if (section.isBoolean(one)) {
+                        if (!section.getBoolean(one))
+                            state = MessageToggleState.Off;
+                    } else if (section.isInt(one)) {
+                        int id = section.getInt(one);
+                        state = MessageToggleState.getFromID(id);
+                    }
 
                     try {
-                        bossBarToggle.put(UUID.fromString(one), boo);
+                        bossBarToggle.put(UUID.fromString(one), state);
                     } catch (Throwable e) {
                     }
                 }
             }
         }
 
-        if (Jobs.getGCManager().ActionBarsMessageByDefault) {
+        if (Jobs.getGCManager().ActionBarEnabled) {
             ConfigurationSection section = config.getConfigurationSection("actionBar");
 
             if (section != null) {
                 for (String one : section.getKeys(false)) {
-                    boolean boo = section.getBoolean(one);
-                    if (boo)
-                        continue;
+
+                    MessageToggleState state = MessageToggleState.Rapid;
+
+                    if (section.isBoolean(one)) {
+                        if (!section.getBoolean(one))
+                            state = MessageToggleState.Off;
+                    } else if (section.isInt(one)) {
+                        int id = section.getInt(one);
+                        state = MessageToggleState.getFromID(id);
+                    }
+
                     try {
-                        actionBarToggle.put(UUID.fromString(one), boo);
+                        actionBarToggle.put(UUID.fromString(one), state);
                     } catch (Throwable e) {
                     }
                 }
@@ -79,22 +97,20 @@ public class ToggleBarHandling {
             config.set("bossBar", null);
 
             if (!bossBarToggle.isEmpty()) {
-                for (Entry<UUID, Boolean> one : bossBarToggle.entrySet()) {
-                    if (!one.getValue()) {
+                for (Entry<UUID, MessageToggleState> one : bossBarToggle.entrySet()) {
+                    if (!one.getValue().equals(Jobs.getGeneralConfigManager().BossBarsMessageDefault)) {
                         config.set("bossBar." + one.getKey().toString(), one.getValue());
                     }
                 }
             }
         }
 
-        if (Jobs.getGCManager().ActionBarsMessageByDefault) {
-            config.set("actionBar", null);
+        config.set("actionBar", null);
 
-            if (!actionBarToggle.isEmpty()) {
-                for (Entry<UUID, Boolean> one : actionBarToggle.entrySet()) {
-                    if (!one.getValue()) {
-                        config.set("actionBar." + one.getKey().toString(), one.getValue());
-                    }
+        if (!actionBarToggle.isEmpty()) {
+            for (Entry<UUID, MessageToggleState> one : actionBarToggle.entrySet()) {
+                if (!one.getValue().equals(Jobs.getGeneralConfigManager().ActionBarsMessageDefault)) {
+                    config.set("actionBar." + one.getKey().toString(), one.getValue());
                 }
             }
         }
@@ -105,11 +121,23 @@ public class ToggleBarHandling {
         f.saveConfig();
     }
 
-    public static Map<UUID, Boolean> getActionBarToggle() {
+    public static Map<UUID, MessageToggleState> getActionBarToggle() {
         return actionBarToggle;
     }
 
-    public static Map<UUID, Boolean> getBossBarToggle() {
+    public static Map<UUID, MessageToggleState> getBossBarToggle() {
         return bossBarToggle;
+    }
+
+    public static MessageToggleState getActionBarState(UUID uuid) {
+        synchronized (actionBarToggle) {
+            return actionBarToggle.getOrDefault(uuid, Jobs.getGCManager().ActionBarsMessageDefault);
+        }
+    }
+
+    public static MessageToggleState getBossBarState(UUID uuid) {
+        synchronized (bossBarToggle) {
+            return bossBarToggle.getOrDefault(uuid, Jobs.getGCManager().BossBarsMessageDefault);
+        }
     }
 }

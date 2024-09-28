@@ -658,8 +658,9 @@ public class LanguageManager {
             c.get("command.toggle.output.paid.ACexp", "&7+[exp]XP ");
             c.get("command.toggle.output.paid.ACpoints", "&6+[points]pts ");
 
-            c.get("command.toggle.output.on", "&aToggled: &aON");
-            c.get("command.toggle.output.off", "&aToggled: &4OFF");
+            c.get("command.toggle.output.Rapid", "&aToggled: &7Rapid");
+            c.get("command.toggle.output.Batched", "&aToggled: &fBatched");
+            c.get("command.toggle.output.Off", "&aToggled: &6Off");
 
             c.get("command.howmuch.help.info", "Check potential payment by target entity or block");
             c.get("command.howmuch.help.args", "");

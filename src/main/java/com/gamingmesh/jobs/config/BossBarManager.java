@@ -10,6 +10,7 @@ import com.gamingmesh.jobs.container.BossBarInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.MessageToggleState;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 
 import net.Zrips.CMILib.Version.Version;
@@ -36,10 +37,10 @@ public class BossBarManager {
     }
 
     public void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
-        if (Version.getCurrent().isLower(Version.v1_9_R1) || !Jobs.getGCManager().BossBarsMessageByDefault)
+        if (Version.getCurrent().isLower(Version.v1_9_R1) || Jobs.getGCManager().BossBarsMessageDefault.equals(MessageToggleState.Off))
             return;
 
-        if (!ToggleBarHandling.getBossBarToggle().getOrDefault(player.getUniqueId(), true))
+        if (ToggleBarHandling.getBossBarToggle().getOrDefault(player.getUniqueId(), MessageToggleState.Rapid).equals(MessageToggleState.Off))
             return;
 
         showJobProgressionInTask(player, jobProg, expGain);

@@ -33,6 +33,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsInstancePaymentEvent;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
+import com.gamingmesh.jobs.container.MessageToggleState;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 
@@ -97,12 +98,17 @@ public class JobsPaymentVisualizationListener implements Listener {
     public void onJobsPaymentEvent(JobsPaymentEvent event) {
         if (event.isCancelled())
             return;
-        showPayment(event);
+        showBatchedActionBarChatMessage(event);
     }
 
-    private static void showPayment(JobsPaymentEvent event) {
+    private static void showBatchedActionBarChatMessage(JobsPaymentEvent event) {
 
         if (event.getPlayer() == null || !event.getPlayer().isOnline() || event.getPayment().isEmpty())
+            return;
+
+        MessageToggleState state = ToggleBarHandling.getActionBarState(event.getPlayer().getUniqueId());
+
+        if (state.equals(MessageToggleState.Rapid))
             return;
 
         UUID playerUUID = event.getPlayer().getUniqueId();
@@ -110,25 +116,42 @@ public class JobsPaymentVisualizationListener implements Listener {
         if (abp == null)
             return;
 
-        if (ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID, Jobs.getGCManager().ActionBarsMessageByDefault))
+        if (!Jobs.getGeneralConfigManager().ActionBarEnabled) {
+            String message = generateDelayedMessage(event.getPayment());
+            if (!message.isEmpty())
+                abp.sendMessage(message);
             return;
+        }
 
-        String message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
-        double money = event.getPayment().get(CurrencyType.MONEY);
-        if (money != 0D)
-            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), money));
+        if (state.equals(MessageToggleState.Batched)) {
+            String message = generateDelayedMessage(event.getPayment());
+            if (!message.isEmpty())
+                CMIActionBar.send(abp, message);
+            return;
+        }
 
-        double points = event.getPayment().get(CurrencyType.POINTS);
-        if (points != 0D)
-            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
-
-        double exp = event.getPayment().get(CurrencyType.EXP);
-        if (exp != 0D)
-            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), exp));
+        String message = generateDelayedMessage(event.getPayment());
 
         if (!message.isEmpty())
             abp.sendMessage(message);
+    }
 
+    private static String generateDelayedMessage(Map<CurrencyType, Double> payment) {
+
+        String message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
+        double money = payment.get(CurrencyType.MONEY);
+        if (money != 0D)
+            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), money));
+
+        double points = payment.get(CurrencyType.POINTS);
+        if (points != 0D)
+            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+
+        double exp = payment.get(CurrencyType.EXP);
+        if (exp != 0D)
+            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), exp));
+
+        return message;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -140,11 +163,40 @@ public class JobsPaymentVisualizationListener implements Listener {
         if (!Version.getCurrent().isHigher(Version.v1_8_R3))
             return;
 
+        // Whether or not to show this on player actionbar or on chat
+        MessageToggleState state = ToggleBarHandling.getBossBarState(event.getPlayer().getUniqueId());
+
+        if (!state.equals(MessageToggleState.Rapid))
+            return;
+
+        Jobs.getBBManager().ShowJobProgression(Jobs.getPlayerManager().getJobsPlayer(event.getPlayer().getUniqueId()));
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onJobsPaymentEventBossBar(JobsPaymentEvent event) {
+        if (event.isCancelled())
+            return;
+        
+        if (event.getPlayer() == null || !event.getPlayer().isOnline())
+            return;
+
+        if (!Version.getCurrent().isHigher(Version.v1_8_R3))
+            return;
+
+        // Whether or not to show this on player actionbar or on chat
+        MessageToggleState state = ToggleBarHandling.getBossBarState(event.getPlayer().getUniqueId());
+
+        if (!state.equals(MessageToggleState.Batched))
+            return;
+
         Jobs.getBBManager().ShowJobProgression(Jobs.getPlayerManager().getJobsPlayer(event.getPlayer().getUniqueId()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJobsInstancePaymentActionBarEvent(JobsInstancePaymentEvent event) {
+
+        if (!Jobs.getGeneralConfigManager().ActionBarEnabled)
+            return;
 
         if (event.getPlayer() == null || !event.getPlayer().isOnline())
             return;
@@ -155,9 +207,9 @@ public class JobsPaymentVisualizationListener implements Listener {
             return;
 
         // Whether or not to show this on player actionbar or on chat
-        boolean showInActionbar = ToggleBarHandling.getActionBarToggle().getOrDefault(player.getUniqueId(), Jobs.getGCManager().ActionBarsMessageByDefault);
+        MessageToggleState state = ToggleBarHandling.getActionBarState(event.getPlayer().getUniqueId());
 
-        if (!showInActionbar)
+        if (!state.equals(MessageToggleState.Rapid))
             return;
 
         paymentCache cached = getPaymentCache(player.getUniqueId(), event.getPayment());
