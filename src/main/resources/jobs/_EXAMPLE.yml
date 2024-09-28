@@ -128,8 +128,8 @@ exampleJob:
       #   - This is defined in same way as any generic payable job action.
       #   - You can use multiple names separated by commas "," to avoid creating many rows.
       # [amount] is how many times player should perform this action to complete quest
-      - Break;oak_log;300
-      - Place;stone,cobblestone;5
+      - "Break;oak_log;300"
+      - "Place;stone,cobblestone;5"
 
       # Command list to be performed after quest is finished.
       # Use [playerName] to insert players name who finished that quest
