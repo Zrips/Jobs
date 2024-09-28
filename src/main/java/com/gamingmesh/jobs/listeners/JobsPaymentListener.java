@@ -1301,12 +1301,13 @@ public final class JobsPaymentListener implements Listener {
             return;
 
         LivingEntity lVictim = event.getEntity();
-        Entity killer;
+        Entity killer = null;
 
         if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent)) {
             killer = entityLastDamager.getIfPresent(event.getEntity().getUniqueId());
         } else if (event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
-            killer = event.getEntity().getLastDamageCause().getDamageSource().getCausingEntity();
+            if (event.getEntity().getLastDamageCause().getDamageSource() != null)
+                killer = event.getEntity().getLastDamageCause().getDamageSource().getCausingEntity();
         } else {
             killer = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
         }
