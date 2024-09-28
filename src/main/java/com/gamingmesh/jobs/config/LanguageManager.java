@@ -229,9 +229,9 @@ public class LanguageManager {
             c.get("command.editpoints.help.info", "Edit player's points.");
             c.get("command.editpoints.help.args", "set/add/take [playername] [amount]");
             Jobs.getGCManager().getCommandArgs().put("editpoints", Arrays.asList("set%%add%%take", "[playername]"));
-            c.get("command.editpoints.output.set", "&ePlayers (&6%playerdisplayname%&e) points was set to &6%amount%");
-            c.get("command.editpoints.output.add", "&ePlayer (&6%playerdisplayname%&e) got additional &6%amount% &epoints. Now they have &6%total%");
-            c.get("command.editpoints.output.take", "&ePlayer (&6%playerdisplayname%&e) lost &6%amount% &epoints. Now they have &6%total%");
+            c.get("command.editpoints.output.set", "&ePlayers (&6%playerdisplayname%&e) points were set to &6%amount%");
+            c.get("command.editpoints.output.add", "&ePlayer (&6%playerdisplayname%&e) got &6%amount% &epoints. Balance &6%total%");
+            c.get("command.editpoints.output.take", "&ePlayer (&6%playerdisplayname%&e) lost &6%amount% &epoints. Balance &6%total%");
 
             c.get("command.editjobs.help.info", "Edit current jobs.");
             c.get("command.editjobs.help.args", "");
