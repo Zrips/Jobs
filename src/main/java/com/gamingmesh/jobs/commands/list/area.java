@@ -1,7 +1,8 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.config.RestrictedAreaManager;
 import com.gamingmesh.jobs.container.CuboidArea;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.RestrictedArea;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.i18n.Language;
@@ -101,17 +103,17 @@ public class area implements Cmd {
 
         if (args.length == 1 && args[0].equalsIgnoreCase("info")) {
 
-            List<RestrictedArea> areas = Jobs.getRestrictedAreaManager().getRestrictedAreasByLoc(player.getLocation());
+            Set<RestrictedArea> areas = Jobs.getRestrictedAreaManager().getByLocation(player.getLocation());
 
-            String msg = "";
+            StringBuilder msg = new StringBuilder();
 
             for (RestrictedArea area : areas) {
-                if (!msg.isEmpty())
-                    msg += ", ";
-                msg += area.getName();
+                if (!msg.toString().isEmpty())
+                    msg.append(LC.info_ListSpliter.getLocale());
+                msg.append(area.getName());
             }
 
-            if (msg.isEmpty()) {
+            if (msg.toString().isEmpty()) {
                 Language.sendMessage(sender, "command.area.output.noAreasByLoc");
                 return true;
             }
@@ -119,7 +121,7 @@ public class area implements Cmd {
             return true;
         }
 
-        if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
+        if (args.length == 0 || args.length == 1 && args[0].equalsIgnoreCase("list")) {
 
             java.util.Map<String, RestrictedArea> areas = Jobs.getRestrictedAreaManager().getRestrictedAreas();
             if (areas.isEmpty()) {
@@ -132,21 +134,28 @@ public class area implements Cmd {
             for (Entry<String, RestrictedArea> area : areas.entrySet()) {
                 i++;
                 CuboidArea cuboid = area.getValue().getCuboidArea();
+                HashMap<CurrencyType, Double> multi = area.getValue().getMultipliers();
                 if (area.getValue().getWgName() == null) {
-                    Language.sendMessage(sender, "command.area.output.list", "%number%", i,
-                        "%areaname%", area.getKey(),
-                        "%worldname%", cuboid.getWorld().getName(),
-                        "%x1%", cuboid.getLowLoc().getBlockX(),
-                        "%y1%", cuboid.getLowLoc().getBlockY(),
-                        "%z1%", cuboid.getLowLoc().getBlockZ(),
-                        "%x2%", cuboid.getHighLoc().getBlockX(),
-                        "%y2%", cuboid.getHighLoc().getBlockY(),
-                        "%z2%", cuboid.getHighLoc().getBlockZ(),
-                        "%bonus%", area.getValue().getMultiplier());
+                    Language.sendMessage(sender, "command.area.output.lists",
+                        "%number%", i,
+                        "%areaname%", area.getValue().getName(),
+                        "%worldname%", cuboid.getWorldName(),
+                        "%x1%", cuboid.getLowPoint().getBlockX(),
+                        "%y1%", cuboid.getLowPoint().getBlockY(),
+                        "%z1%", cuboid.getLowPoint().getBlockZ(),
+                        "%x2%", cuboid.getHighPoint().getBlockX(),
+                        "%y2%", cuboid.getHighPoint().getBlockY(),
+                        "%z2%", cuboid.getHighPoint().getBlockZ(),
+                        "%money%", multi.get(CurrencyType.MONEY),
+                        "%points%", multi.get(CurrencyType.POINTS),
+                        "%exp%", multi.get(CurrencyType.EXP));
                 } else {
-                    Language.sendMessage(sender, "command.area.output.wgList", "%number%", i,
-                        "%areaname%", area.getKey(),
-                        "%bonus%", area.getValue().getMultiplier());
+                    Language.sendMessage(sender, "command.area.output.wgLists",
+                        "%number%", i,
+                        "%areaname%", area.getValue().getName(),
+                        "%money%", multi.get(CurrencyType.MONEY),
+                        "%points%", multi.get(CurrencyType.POINTS),
+                        "%exp%", multi.get(CurrencyType.EXP));
                 }
             }
             Language.sendMessage(sender, "general.info.separator");

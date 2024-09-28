@@ -1,11 +1,12 @@
 package com.gamingmesh.jobs.container;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class BoostMultiplier implements Cloneable {
 
-    private final java.util.Map<CurrencyType, Double> map = new HashMap<>();
-    private final java.util.Map<CurrencyType, Long> timers = new HashMap<>();
+    private final Map<CurrencyType, Double> map = new HashMap<>();
+    private final Map<CurrencyType, Long> timers = new HashMap<>();
 
     @Override
     public BoostMultiplier clone() {
@@ -16,15 +17,21 @@ public class BoostMultiplier implements Cloneable {
         return boost;
     }
 
+    public BoostMultiplier(Map<CurrencyType, Double> map) {
+        for (CurrencyType one : CurrencyType.values()) {
+            this.map.put(one, map.getOrDefault(one, 0D));
+        }
+    }
+
     public BoostMultiplier() {
         for (CurrencyType one : CurrencyType.values()) {
-            map.put(one, 0D);
+            this.map.put(one, 0D);
         }
     }
 
     public BoostMultiplier add(CurrencyType type, double amount) {
         if (!Double.isNaN(amount))
-            map.put(type, amount);
+            this.map.put(type, amount);
         timers.remove(type);
         return this;
     }

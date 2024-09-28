@@ -559,9 +559,9 @@ public class LanguageManager {
             c.get("command.area.help.removeUsage", "&eUsage: &6/Jobs area remove [areaName]");
             c.get("command.area.output.addedNew", "&eAdded a new restricted area with &6%bonus% &ebonus");
             c.get("command.area.output.removed", "&eRemoved the restricted area &6%name%");
-            c.get("command.area.output.list", "&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%");
-            c.get("command.area.output.wgList", "&e%number%&a. WorldGuard: &e%areaname% &6%bonus%");
-            c.get("command.area.output.noAreas", "&eThere are no saved restricted areas");
+            c.get("command.area.output.lists", "&7%number%&f. &7%areaname% &f%worldname% &7(&a%x1%:%y1%:%z1%&7/&e%x2%:%y2%:%z2%&7) &2%money% &6%points% &e%exp%");
+            c.get("command.area.output.wgLists", "&7%number%&f. WorldGuard: &7%areaname% &2%money% &6%points% &e%exp%");
+            c.get("command.area.output.noAreas", "&eThere are no saved restricted areas"); 
             c.get("command.area.output.noAreasByLoc", "&eThere are no restricted areas in this location");
             c.get("command.area.output.areaList", "&eRestricted areas by your location: &6%list%");
             c.get("command.area.output.selected1", "&eSelected the first point: &6%x%:%y%:%z%");

@@ -1,72 +1,108 @@
 package com.gamingmesh.jobs.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.util.Vector;
+
+import net.Zrips.CMILib.Container.CMIWorld;
+import net.Zrips.CMILib.Container.CuboidArea.ChunkRef;
 
 public class CuboidArea {
-    protected Location highPoints;
-    protected Location lowPoints;
+    protected Vector highPoints;
+    protected Vector lowPoints;
     protected String worldName;
+    protected World world;
 
     protected CuboidArea() {
     }
 
     public CuboidArea(Location startLoc, Location endLoc) {
-	int highx, highy, highz, lowx, lowy, lowz;
-	if (startLoc.getBlockX() > endLoc.getBlockX()) {
-	    highx = startLoc.getBlockX();
-	    lowx = endLoc.getBlockX();
-	} else {
-	    highx = endLoc.getBlockX();
-	    lowx = startLoc.getBlockX();
-	}
-	if (startLoc.getBlockY() > endLoc.getBlockY()) {
-	    highy = startLoc.getBlockY();
-	    lowy = endLoc.getBlockY();
-	} else {
-	    highy = endLoc.getBlockY();
-	    lowy = startLoc.getBlockY();
-	}
-	if (startLoc.getBlockZ() > endLoc.getBlockZ()) {
-	    highz = startLoc.getBlockZ();
-	    lowz = endLoc.getBlockZ();
-	} else {
-	    highz = endLoc.getBlockZ();
-	    lowz = startLoc.getBlockZ();
-	}
-	highPoints = new Location(startLoc.getWorld(), highx, highy, highz);
-	lowPoints = new Location(startLoc.getWorld(), lowx, lowy, lowz);
-	worldName = startLoc.getWorld().getName();
+        modifyVectors(startLoc.toVector(), endLoc.toVector());
+        this.worldName = startLoc.getWorld().getName();
+    }
+
+    public CuboidArea(String worldName, Vector startLoc, Vector endLoc) {
+        modifyVectors(startLoc, endLoc);
+        this.worldName = worldName;
+    }
+
+    private void modifyVectors(Vector startLoc, Vector endLoc) {
+
+        int highx = Math.max(startLoc.getBlockX(), endLoc.getBlockX());
+        int lowx = Math.min(startLoc.getBlockX(), endLoc.getBlockX());
+
+        int highy = Math.max(startLoc.getBlockY(), endLoc.getBlockY());
+        int lowy = Math.min(startLoc.getBlockY(), endLoc.getBlockY());
+
+        int highz = Math.max(startLoc.getBlockZ(), endLoc.getBlockZ());
+        int lowz = Math.min(startLoc.getBlockZ(), endLoc.getBlockZ());
+
+        this.highPoints = new Vector(highx, highy, highz);
+        this.lowPoints = new Vector(lowx, lowy, lowz);
     }
 
     public long getSize() {
-	int xsize = (highPoints.getBlockX() - lowPoints.getBlockX()) + 1;
-	int zsize = (highPoints.getBlockZ() - lowPoints.getBlockZ()) + 1;
-	int ysize = (highPoints.getBlockY() - lowPoints.getBlockY()) + 1;
-	return (long) xsize * ysize * zsize;
+        int xsize = (getHighPoint().getBlockX() - getLowPoint().getBlockX()) + 1;
+        int zsize = (getHighPoint().getBlockZ() - getLowPoint().getBlockZ()) + 1;
+        int ysize = (getHighPoint().getBlockY() - getLowPoint().getBlockY()) + 1;
+        return (long) xsize * ysize * zsize;
     }
 
     public int getXSize() {
-	return (highPoints.getBlockX() - lowPoints.getBlockX()) + 1;
+        return (getHighPoint().getBlockX() - getLowPoint().getBlockX()) + 1;
     }
 
     public int getYSize() {
-	return (highPoints.getBlockY() - lowPoints.getBlockY()) + 1;
+        return (getHighPoint().getBlockY() - getLowPoint().getBlockY()) + 1;
     }
 
     public int getZSize() {
-	return (highPoints.getBlockZ() - lowPoints.getBlockZ()) + 1;
+        return (getHighPoint().getBlockZ() - getLowPoint().getBlockZ()) + 1;
     }
 
     public Location getHighLoc() {
-	return highPoints;
+        return getHighPoint().toLocation(getWorld());
     }
 
     public Location getLowLoc() {
-	return lowPoints;
+        return getLowPoint().toLocation(getWorld());
+    }
+
+    public String getWorldName() {
+        return worldName;
     }
 
     public World getWorld() {
-	return highPoints.getWorld();
+        if (world != null)
+            return world;
+        world = CMIWorld.getWorld(worldName);
+        return world;
+    }
+
+    public List<ChunkRef> getChunks() {
+        List<ChunkRef> chunks = new ArrayList<>();
+
+        int lowX = ChunkRef.getChunkCoord(this.getLowPoint().getBlockX());
+        int lowZ = ChunkRef.getChunkCoord(this.getLowPoint().getBlockZ());
+        int highX = ChunkRef.getChunkCoord(this.getHighPoint().getBlockX());
+        int highZ = ChunkRef.getChunkCoord(this.getHighPoint().getBlockZ());
+
+        for (int x = lowX; x <= highX; x++) {
+            for (int z = lowZ; z <= highZ; z++) {
+                chunks.add(new ChunkRef(x, z));
+            }
+        }
+        return chunks;
+    }
+
+    public Vector getLowPoint() {
+        return lowPoints;
+    }
+
+    public Vector getHighPoint() {
+        return highPoints;
     }
 }
