@@ -31,10 +31,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsInstancePaymentEvent;
+import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
+import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public class JobsPaymentVisualizationListener implements Listener {
@@ -88,6 +91,44 @@ public class JobsPaymentVisualizationListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         paymentCaches.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onJobsPaymentEvent(JobsPaymentEvent event) {
+        if (event.isCancelled())
+            return;
+        showPayment(event);
+    }
+
+    private static void showPayment(JobsPaymentEvent event) {
+
+        if (event.getPlayer() == null || !event.getPlayer().isOnline() || event.getPayment().isEmpty())
+            return;
+
+        UUID playerUUID = event.getPlayer().getUniqueId();
+        Player abp = Bukkit.getPlayer(playerUUID);
+        if (abp == null)
+            return;
+
+        if (ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID, Jobs.getGCManager().ActionBarsMessageByDefault))
+            return;
+
+        String message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
+        double money = event.getPayment().get(CurrencyType.MONEY);
+        if (money != 0D)
+            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), money));
+
+        double points = event.getPayment().get(CurrencyType.POINTS);
+        if (points != 0D)
+            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+
+        double exp = event.getPayment().get(CurrencyType.EXP);
+        if (exp != 0D)
+            message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), exp));
+
+        if (!message.isEmpty())
+            abp.sendMessage(message);
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

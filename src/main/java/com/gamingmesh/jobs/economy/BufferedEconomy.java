@@ -37,6 +37,7 @@ import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
@@ -206,9 +207,6 @@ public class BufferedEconomy {
                     // If event is canceled, dont do anything
                     if (jobsPaymentEvent.isCancelled())
                         continue;
-
-                    // Do we need this?
-                    payment.getPayment().putAll(jobsPaymentEvent.getPayment());
 
                     if (Jobs.getGCManager().UseServerAccount && !hasMoney) {
                         CMIActionBar.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));

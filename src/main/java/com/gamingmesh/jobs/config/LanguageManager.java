@@ -294,7 +294,7 @@ public class LanguageManager {
 
             c.get("command.recalculatepermissions.help.info", "Reset players permission cache");
             c.get("command.recalculatepermissions.help.args", "(playername)");
-            
+
             c.get("command.stats.help.info", "Show the level you are in each job you are part of.");
             c.get("command.stats.help.args", "[playername]");
             Jobs.getGCManager().getCommandArgs().put("stats", Arrays.asList("[playername]"));
@@ -561,7 +561,7 @@ public class LanguageManager {
             c.get("command.area.output.removed", "&eRemoved the restricted area &6%name%");
             c.get("command.area.output.lists", "&7%number%&f. &7%areaname% &f%worldname% &7(&a%x1%:%y1%:%z1%&7/&e%x2%:%y2%:%z2%&7) &2%money% &6%points% &e%exp%");
             c.get("command.area.output.wgLists", "&7%number%&f. WorldGuard: &7%areaname% &2%money% &6%points% &e%exp%");
-            c.get("command.area.output.noAreas", "&eThere are no saved restricted areas"); 
+            c.get("command.area.output.noAreas", "&eThere are no saved restricted areas");
             c.get("command.area.output.noAreasByLoc", "&eThere are no restricted areas in this location");
             c.get("command.area.output.areaList", "&eRestricted areas by your location: &6%list%");
             c.get("command.area.output.selected1", "&eSelected the first point: &6%x%:%y%:%z%");
@@ -648,11 +648,16 @@ public class LanguageManager {
             c.get("command.toggle.help.args", "actionbar/bossbar");
             Jobs.getGCManager().getCommandArgs().put("toggle", Arrays.asList("actionbar%%bossbar"));
             c.get("command.toggle.output.turnedoff", "&4This feature is turned off!");
-            
+
+            c.get("command.toggle.output.paid.main", "&aYou got:");
+            c.get("command.toggle.output.paid.money", "&e[amount] money");
+            c.get("command.toggle.output.paid.exp", "&7[exp] exp");
+            c.get("command.toggle.output.paid.points", "&6[points] points");
+
             c.get("command.toggle.output.paid.ACmoney", "&e+[amount]$ ");
             c.get("command.toggle.output.paid.ACexp", "&7+[exp]XP ");
             c.get("command.toggle.output.paid.ACpoints", "&6+[points]pts ");
-            
+
             c.get("command.toggle.output.on", "&aToggled: &aON");
             c.get("command.toggle.output.off", "&aToggled: &4OFF");
 
