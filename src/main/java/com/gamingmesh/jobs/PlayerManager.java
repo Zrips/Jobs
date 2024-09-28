@@ -133,8 +133,26 @@ public class PlayerManager {
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
         playersUUIDCache.putIfAbsent(jPlayer.playerUUID, jPlayer);
-        if (jPlayer.getName() != null)
+        if (jPlayer.getName() == null)
+            return;
+
+        // On data load check for name duplication
+        if (!Jobs.fullyLoaded) {
+            // Checking for existing record by same name
+            JobsPlayer oldRecord = playersNameCache.get(jPlayer.getName().toLowerCase());
+            if (oldRecord != null) {
+                CMIMessages.consoleMessage("&cDuplicate in database for (&f" + jPlayer.getName() + "&c) -> (&f" + jPlayer.getUniqueId() + "&c) <-> (&f" + oldRecord.getUniqueId() + "&c)");
+                // Using newest record
+                if (jPlayer.getSeen() > oldRecord.getSeen())
+                    playersNameCache.put(jPlayer.getName().toLowerCase(), jPlayer);
+                return;
+            }
             playersNameCache.putIfAbsent(jPlayer.getName().toLowerCase(), jPlayer);
+        } else {
+            // Add player to cache independent if there was other record by this name, we should use latest record
+            playersNameCache.put(jPlayer.getName().toLowerCase(), jPlayer);
+        }
+
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
@@ -426,6 +444,7 @@ public class PlayerManager {
         jPlayer.setUserId(info.getID());
         jPlayer.setDoneQuests(info.getQuestsDone());
         jPlayer.setQuestProgressionFromString(info.getQuestProgression());
+        jPlayer.setSeen(info.getSeen());
 
         if (jobs != null) {
             for (JobsDAOData jobdata : jobs) {

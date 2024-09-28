@@ -928,30 +928,32 @@ public class JobsPlayer {
      */
     public void save(boolean async) {
 //	synchronized (saveLock) {
-        if (!isSaved) {
-            JobsDAO dao = Jobs.getJobsDAO();
-            if (!async) {
-                dao.save(this);
-                dao.saveLog(this);
-                dao.savePoints(this);
-                dao.recordPlayersLimits(this);
-                dao.updateSeen(this);
-            } else {
-                dao.saveAsync(this);
-                dao.saveLogAsync(this);
-                dao.savePointsAsync(this);
-                dao.recordPlayersLimitsAsync(this);
-                dao.updateSeenAsync(this);
-            }
+        if (isSaved)
+            return;
 
-            setSaved(true);
-
-            Player player = getPlayer();
-            if (player == null || !player.isOnline()) {
-                Jobs.getPlayerManager().addPlayerToCache(this);
-                Jobs.getPlayerManager().removePlayer(player);
-            }
+        JobsDAO dao = Jobs.getJobsDAO();
+        if (async) {
+            dao.saveAsync(this);
+            dao.saveLogAsync(this);
+            dao.savePointsAsync(this);
+            dao.recordPlayersLimitsAsync(this);
+            dao.updateSeenAsync(this);
+        } else {
+            dao.save(this);
+            dao.saveLog(this);
+            dao.savePoints(this);
+            dao.recordPlayersLimits(this);
+            dao.updateSeen(this);
         }
+
+        setSaved(true);
+
+        Player player = getPlayer();
+        if (player == null || !player.isOnline()) {
+            Jobs.getPlayerManager().addPlayerToCache(this);
+            Jobs.getPlayerManager().removePlayer(player);
+        }
+
 //	}
     }
 
