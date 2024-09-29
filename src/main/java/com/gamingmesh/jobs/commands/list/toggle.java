@@ -10,6 +10,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.MessageToggleState;
+import com.gamingmesh.jobs.container.MessageToggleType;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 
@@ -25,34 +26,44 @@ public class toggle implements Cmd {
             return null;
         }
 
-        boolean isBossbar = false, isActionbar = false;
-        if (args.length != 1 || (!(isBossbar = args[0].equalsIgnoreCase("bossbar")) && !(isActionbar = args[0].equalsIgnoreCase("actionbar")))) {
-            return false;
-        }
-
         Player player = (Player) sender;
         UUID playerUUID = player.getUniqueId();
 
-        if (isActionbar) {
-            MessageToggleState ex = ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID, Jobs.getGCManager().ActionBarsMessageDefault).getNext();
-            Language.sendMessage(sender, "command.toggle.output." + ex.toString());
-            ToggleBarHandling.getActionBarToggle().put(playerUUID, ex);
+        if (args.length == 1) {
+
+            switch (args[0].toLowerCase()) {
+            case "actionbar":
+                toggleState(sender, playerUUID, MessageToggleType.ActionBar);
+                return true;
+            case "bossbar":
+                toggleState(sender, playerUUID, MessageToggleType.BossBar);
+                if (ToggleBarHandling.getState(playerUUID, MessageToggleType.BossBar).equals(MessageToggleState.Off)) {
+                    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(playerUUID);
+                    if (jPlayer != null)
+                        jPlayer.hideBossBars();
+                }
+                return true;
+            case "chattext":
+                toggleState(sender, playerUUID, MessageToggleType.ChatText);
+                return true;
+            }
         }
 
-        if (isBossbar) {
-            MessageToggleState ex = ToggleBarHandling.getBossBarToggle().getOrDefault(playerUUID, Jobs.getGCManager().BossBarsMessageDefault).getNext();
-
-            Language.sendMessage(sender, "command.toggle.output." + ex.toString());
-
-            if (ex.equals(MessageToggleState.Off)) {
-                JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player.getUniqueId());
-                if (jPlayer != null)
-                    jPlayer.hideBossBars();
-            }
-
-            ToggleBarHandling.getBossBarToggle().put(playerUUID, ex);
+        LC.info_Spliter.sendMessage(sender);
+        for (MessageToggleType one : MessageToggleType.values()) {
+            Language.sendMessage(sender, "command.toggle.output." + ToggleBarHandling.getState(playerUUID, one).toString(), "[type]", one.toString());
         }
 
         return true;
+    }
+
+    private static void toggleState(CommandSender sender, UUID uuid, MessageToggleType type) {
+        MessageToggleState state = ToggleBarHandling.getState(uuid, type).getNext();
+
+        if (type.equals(MessageToggleType.ChatText) && state.equals(MessageToggleState.Rapid))
+            state = state.getNext();
+
+        ToggleBarHandling.modify(uuid, type, state);
+        Language.sendMessage(sender, "command.toggle.output." + state.toString(), "[type]", type.toString());
     }
 }

@@ -646,7 +646,7 @@ public class LanguageManager {
 
             c.get("command.toggle.help.info", "Toggles payment output on action bar or bossbar.");
             c.get("command.toggle.help.args", "actionbar/bossbar");
-            Jobs.getGCManager().getCommandArgs().put("toggle", Arrays.asList("actionbar%%bossbar"));
+            Jobs.getGCManager().getCommandArgs().put("toggle", Arrays.asList("actionbar%%bossbar%%chattext"));
             c.get("command.toggle.output.turnedoff", "&4This feature is turned off!");
 
             c.get("command.toggle.output.paid.main", "&aYou got:");
@@ -658,9 +658,9 @@ public class LanguageManager {
             c.get("command.toggle.output.paid.ACexp", "&7+[exp]XP ");
             c.get("command.toggle.output.paid.ACpoints", "&6+[points]pts ");
 
-            c.get("command.toggle.output.Rapid", "&aToggled: &7Rapid");
-            c.get("command.toggle.output.Batched", "&aToggled: &fBatched");
-            c.get("command.toggle.output.Off", "&aToggled: &6Off");
+            c.get("command.toggle.output.Rapid", "&7[type]&a: &7Rapid");
+            c.get("command.toggle.output.Batched", "&7[type]&a: &fBatched");
+            c.get("command.toggle.output.Off", "&7[type]&a: &6Off");
 
             c.get("command.howmuch.help.info", "Check potential payment by target entity or block");
             c.get("command.howmuch.help.args", "");

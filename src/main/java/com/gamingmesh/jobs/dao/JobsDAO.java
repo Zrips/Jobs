@@ -41,6 +41,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Logs.CMIDebug;
@@ -130,7 +131,8 @@ public abstract class JobsDAO {
         username("text"),
         seen("bigint"),
         donequests("int"),
-        quests("text");
+        quests("text"),
+        messageOptions("int");
 
         private String type;
 
@@ -1904,7 +1906,8 @@ public abstract class JobsDAO {
                     res.getInt("id"), uuid,
                     res.getLong(UserTableFields.seen.getCollumn()),
                     res.getInt(UserTableFields.donequests.getCollumn()),
-                    res.getString(UserTableFields.quests.getCollumn()));
+                    res.getString(UserTableFields.quests.getCollumn()),
+                    res.getInt(UserTableFields.messageOptions.getCollumn()));
                 Jobs.getPlayerManager().addPlayerToMap(pInfo);
             }
         } catch (SQLException e) {
@@ -1945,7 +1948,8 @@ public abstract class JobsDAO {
                         UUID.fromString(uuid),
                         seen,
                         res.getInt(UserTableFields.donequests.getCollumn()),
-                        res.getString(UserTableFields.quests.getCollumn())));
+                        res.getString(UserTableFields.quests.getCollumn()),
+                        res.getInt(UserTableFields.messageOptions.getCollumn())));
                 } catch (IllegalArgumentException e) {
                 }
             }
@@ -2063,16 +2067,30 @@ public abstract class JobsDAO {
 
         PreparedStatement prest = null;
         try {
-            prest = conn.prepareStatement("UPDATE `" + DBTables.UsersTable.getTableName() + "` SET `" + UserTableFields.seen.getCollumn()
+
+            Integer options = ToggleBarHandling.getPlayerOptionsAsInt(player.getUniqueId());
+            StringBuilder querry = new StringBuilder();
+
+            querry.append("UPDATE `" + DBTables.UsersTable.getTableName() + "` SET `" + UserTableFields.seen.getCollumn()
                 + "` = ?, `" + UserTableFields.username.getCollumn()
                 + "` = ?, `" + UserTableFields.donequests.getCollumn()
-                + "` = ?, `" + UserTableFields.quests.getCollumn()
-                + "` = ? WHERE `id` = ?;");
+                + "` = ?, `" + UserTableFields.quests.getCollumn());
+
+            if (options != null)
+                querry.append("` = ?, `" + UserTableFields.messageOptions.getCollumn());
+
+            querry.append("` = ? WHERE `id` = ?;");
+
+            prest = conn.prepareStatement(querry.toString());
             prest.setLong(1, System.currentTimeMillis());
             prest.setString(2, player.getName());
             prest.setInt(3, player.getDoneQuests());
             prest.setString(4, player.getQuestProgressionString());
-            prest.setInt(5, player.getUserId());
+            // Only recording options if its not null
+            if (options != null)
+                prest.setInt(5, options);
+            // Shifting the index based on previous options on what we are saving
+            prest.setInt(options != null ? 6 : 5, player.getUserId());
             prest.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -2734,7 +2752,7 @@ public abstract class JobsDAO {
 
         if (Jobs.getGCManager().useNewExploration)
             return false;
-        
+
         JobsConnection conn = getConnection();
         if (conn == null)
             return false;

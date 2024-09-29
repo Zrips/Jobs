@@ -62,6 +62,7 @@ import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
@@ -286,6 +287,8 @@ public class PlayerManager {
         if (info != null) {
             jPlayer.setDoneQuests(info.getQuestsDone());
             jPlayer.setQuestProgressionFromString(info.getQuestProgression());
+
+            ToggleBarHandling.recordPlayerOptionsFromInt(jPlayer.getUniqueId(), info.getMessageOptions());
         }
 
         Jobs.getJobsDAO().loadLog(jPlayer);
@@ -444,6 +447,9 @@ public class PlayerManager {
         jPlayer.setUserId(info.getID());
         jPlayer.setDoneQuests(info.getQuestsDone());
         jPlayer.setQuestProgressionFromString(info.getQuestProgression());
+
+        ToggleBarHandling.recordPlayerOptionsFromInt(jPlayer.getUniqueId(), info.getMessageOptions());
+
         jPlayer.setSeen(info.getSeen());
 
         if (jobs != null) {

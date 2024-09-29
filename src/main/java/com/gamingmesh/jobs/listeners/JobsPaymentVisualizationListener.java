@@ -34,11 +34,9 @@ import com.gamingmesh.jobs.api.JobsInstancePaymentEvent;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.MessageToggleState;
-import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public class JobsPaymentVisualizationListener implements Listener {
@@ -106,34 +104,37 @@ public class JobsPaymentVisualizationListener implements Listener {
         if (event.getPlayer() == null || !event.getPlayer().isOnline() || event.getPayment().isEmpty())
             return;
 
-        MessageToggleState state = ToggleBarHandling.getActionBarState(event.getPlayer().getUniqueId());
-
-        if (state.equals(MessageToggleState.Rapid))
-            return;
-
         UUID playerUUID = event.getPlayer().getUniqueId();
-        Player abp = Bukkit.getPlayer(playerUUID);
-        if (abp == null)
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null)
             return;
 
         if (!Jobs.getGeneralConfigManager().ActionBarEnabled) {
-            String message = generateDelayedMessage(event.getPayment());
-            if (!message.isEmpty())
-                abp.sendMessage(message);
+            showChatMessage(player, event.getPayment());
             return;
         }
 
-        if (state.equals(MessageToggleState.Batched)) {
-            String message = generateDelayedMessage(event.getPayment());
-            if (!message.isEmpty())
-                CMIActionBar.send(abp, message);
+        MessageToggleState state = ToggleBarHandling.getActionBarState(event.getPlayer().getUniqueId());
+
+        if (!state.equals(MessageToggleState.Batched)) {
+            showChatMessage(player, event.getPayment());
             return;
         }
 
         String message = generateDelayedMessage(event.getPayment());
+        if (!message.isEmpty())
+            CMIActionBar.send(player, message);
+        return;
+    }
+
+    private static void showChatMessage(Player player, Map<CurrencyType, Double> payment) {
+        MessageToggleState chatState = ToggleBarHandling.getChatTextState(player.getUniqueId());
+        if (chatState.equals(MessageToggleState.Off))
+            return;
+        String message = generateDelayedMessage(payment);
 
         if (!message.isEmpty())
-            abp.sendMessage(message);
+            player.sendMessage(message);
     }
 
     private static String generateDelayedMessage(Map<CurrencyType, Double> payment) {
@@ -176,7 +177,7 @@ public class JobsPaymentVisualizationListener implements Listener {
     public void onJobsPaymentEventBossBar(JobsPaymentEvent event) {
         if (event.isCancelled())
             return;
-        
+
         if (event.getPlayer() == null || !event.getPlayer().isOnline())
             return;
 

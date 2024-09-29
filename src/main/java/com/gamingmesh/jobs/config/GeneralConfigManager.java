@@ -116,6 +116,7 @@ public class GeneralConfigManager {
         payForEachVTradeItem, allowEnchantingBoostedItems, preventShopItemEnchanting;
     public MessageToggleState BossBarsMessageDefault = MessageToggleState.Rapid;
     public MessageToggleState ActionBarsMessageDefault = MessageToggleState.Rapid;
+    public MessageToggleState ChatTextMessageDefault = MessageToggleState.Batched;
 
     public int ActionBarsMessageKeepFor;
 
@@ -991,7 +992,11 @@ public class GeneralConfigManager {
             "Percentage to loose when leaving job at max level",
             "Only works when fix-at-max-level is set to false");
         levelLossPercentageFromMax = c.get("old-job.level-loss-from-max-level", levelLossPercentage);
-
+        
+        c.addComment("ChatText.Messages.DefaultState", "States of chat text messages when payment is issued", "Valid options: Off, Batched",
+            "This will be used if player disables action bar payment messages");
+        ChatTextMessageDefault = MessageToggleState.getByName(c.get("ChatText.Messages.DefaultState", MessageToggleState.Batched.toString()));
+        
         c.addComment("ActionBars.Enabled", "Enables ActionBar messages");
         ActionBarEnabled = c.get("ActionBars.Enabled", true);
 

@@ -897,7 +897,7 @@ public final class Jobs extends JavaPlugin {
             getInstance().getBlockOwnerShip(CMIMaterial.SMOKER).ifPresent(BlockOwnerShip::load);
         }
 
-        ToggleBarHandling.load();
+        ToggleBarHandling.init();
         usedSlots.clear();
         for (Job job : jobs) {
             usedSlots.put(job, dao.getSlotsTaken(job));
@@ -937,7 +937,6 @@ public final class Jobs extends JavaPlugin {
             dao.saveExplore();
 
         blockOwnerShipsMaterial.values().forEach(BlockOwnerShip::save);
-        ToggleBarHandling.save();
 
         if (saveTask != null)
             saveTask.shutdown();

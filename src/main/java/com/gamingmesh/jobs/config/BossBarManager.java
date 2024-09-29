@@ -40,7 +40,7 @@ public class BossBarManager {
         if (Version.getCurrent().isLower(Version.v1_9_R1) || Jobs.getGCManager().BossBarsMessageDefault.equals(MessageToggleState.Off))
             return;
 
-        if (ToggleBarHandling.getBossBarToggle().getOrDefault(player.getUniqueId(), MessageToggleState.Rapid).equals(MessageToggleState.Off))
+        if (ToggleBarHandling.getBossBarState(player.getUniqueId()).equals(MessageToggleState.Off))
             return;
 
         showJobProgressionInTask(player, jobProg, expGain);
