@@ -1,0 +1,58 @@
+name: Bug Report
+description: Create a bug report to help us improve our CMI.
+labels: bug report
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This page is intended to help us resolve issues with CMI as fast as possible. 
+        Please take your time and fill out this form to the best of your abilities.
+        Note: if you have more then one issue, please consider making a new issue.
+  - type: textarea
+    id: description-of-issue
+    attributes:
+      label: Description of Issue
+      description: |
+        Please provide a very concise description of your issue.
+    validations:
+      required: true
+  - type: textarea
+    id: cmi-version
+    attributes:
+      label: Version Information
+      description: Please provide us with the full output of `/cmi version`.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: console-errors
+    attributes:
+      label: Errors
+      description: If they are too big consider providing a pastebin link.
+      placeholder: Paste any errors you have in here.
+      render: shell
+  - type: textarea
+    id: config-sections
+    attributes:
+      label: Relevant Config Sections
+      description: Avoid pasting in whole configs & sensitive data.
+      placeholder: Paste any relevant config sections in here.
+      render: yaml      
+  - type: input
+    id: server-plugins
+    attributes:
+      label: Relevant Plugins
+      description: Please provide us with any relevant plugins (with versions)
+      placeholder: Vault 1.7.3
+  - type: checkboxes
+    id: agreement-section
+    attributes:
+      label: Agreements
+      description: Please agree to the following.
+      options:
+        - label: My server is supported by CMI.
+          required: true
+        - label: My version of CMI at the time of this report is up to date.
+          required: true
+        - label: I have searched the github and asked around before making this report.
+          required: true
