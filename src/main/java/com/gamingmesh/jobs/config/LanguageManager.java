@@ -646,7 +646,7 @@ public class LanguageManager {
 
             c.get("command.toggle.help.info", "Toggles payment output on action bar or bossbar.");
             c.get("command.toggle.help.args", "actionbar/bossbar");
-            Jobs.getGCManager().getCommandArgs().put("toggle", Arrays.asList("actionbar%%bossbar%%chattext"));
+            Jobs.getGCManager().getCommandArgs().put("toggle", Arrays.asList("actionbar%%bossbar%%chattext", "off%%rapid%%batched"));
             c.get("command.toggle.output.turnedoff", "&4This feature is turned off!");
 
             c.get("command.toggle.output.paid.main", "&aYou got:");

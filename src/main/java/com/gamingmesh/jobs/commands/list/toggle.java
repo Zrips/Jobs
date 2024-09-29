@@ -26,25 +26,37 @@ public class toggle implements Cmd {
             return null;
         }
 
-        Player player = (Player) sender;
-        UUID playerUUID = player.getUniqueId();
+        UUID playerUUID = ((Player) sender).getUniqueId();
+        MessageToggleType type = null;
+        MessageToggleState state = null;
 
-        if (args.length == 1) {
+        for (String one : args) {
+            if (type == null) {
+                type = MessageToggleType.getByName(one);
+                if (type != null)
+                    continue;
+            }
 
-            switch (args[0].toLowerCase()) {
-            case "actionbar":
-                toggleState(sender, playerUUID, MessageToggleType.ActionBar);
+            if (state == null) {
+                state = MessageToggleState.getByName(one);
+                if (state != null)
+                    continue;
+            }
+        }
+
+        if (type != null) {
+            switch (type) {
+            case ChatText:
+            case ActionBar:
+                toggleState(sender, playerUUID, type, state);
                 return true;
-            case "bossbar":
-                toggleState(sender, playerUUID, MessageToggleType.BossBar);
-                if (ToggleBarHandling.getState(playerUUID, MessageToggleType.BossBar).equals(MessageToggleState.Off)) {
+            case BossBar:
+                toggleState(sender, playerUUID, type, state);
+                if (ToggleBarHandling.getState(playerUUID, type).equals(MessageToggleState.Off)) {
                     JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(playerUUID);
                     if (jPlayer != null)
                         jPlayer.hideBossBars();
                 }
-                return true;
-            case "chattext":
-                toggleState(sender, playerUUID, MessageToggleType.ChatText);
                 return true;
             }
         }
@@ -57,8 +69,8 @@ public class toggle implements Cmd {
         return true;
     }
 
-    private static void toggleState(CommandSender sender, UUID uuid, MessageToggleType type) {
-        MessageToggleState state = ToggleBarHandling.getState(uuid, type).getNext();
+    private static void toggleState(CommandSender sender, UUID uuid, MessageToggleType type, MessageToggleState state) {
+        state = state != null ? state : ToggleBarHandling.getState(uuid, type).getNext();
 
         if (type.equals(MessageToggleType.ChatText) && state.equals(MessageToggleState.Rapid))
             state = state.getNext();

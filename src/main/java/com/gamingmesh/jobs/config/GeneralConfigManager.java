@@ -995,7 +995,7 @@ public class GeneralConfigManager {
         
         c.addComment("ChatText.Messages.DefaultState", "States of chat text messages when payment is issued", "Valid options: Off, Batched",
             "This will be used if player disables action bar payment messages");
-        ChatTextMessageDefault = MessageToggleState.getByName(c.get("ChatText.Messages.DefaultState", MessageToggleState.Batched.toString()));
+        ChatTextMessageDefault = MessageToggleState.getByName(c.get("ChatText.Messages.DefaultState", MessageToggleState.Off.toString()));
         
         c.addComment("ActionBars.Enabled", "Enables ActionBar messages");
         ActionBarEnabled = c.get("ActionBars.Enabled", true);
@@ -1013,7 +1013,7 @@ public class GeneralConfigManager {
             BossBarEnabled = c.get("BossBar.Enabled", true);
 
             c.addComment("BossBar.Messages.DefaultState", "When this set to true player will see Bossbar messages by default");
-            BossBarsMessageDefault = MessageToggleState.getByName(c.get("BossBar.Messages.DefaultState", MessageToggleState.Rapid.toString()));
+            BossBarsMessageDefault = MessageToggleState.getByName(c.get("BossBar.Messages.DefaultState", MessageToggleState.Batched.toString()));
 
             c.addComment("BossBar.SegmentCount", "Defines in how many parts bossbar will be split visually", "Valid options: 1, 6, 10, 12, 20");
             SegmentCount = c.get("BossBar.SegmentCount", 1);
