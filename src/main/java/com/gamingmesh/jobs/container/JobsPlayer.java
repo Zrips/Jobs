@@ -199,7 +199,7 @@ public class JobsPlayer {
      */
     public int getTotalLevels() {
         int i = 0;
-        for (JobProgression job : progression) {
+        for (JobProgression job : getJobProgression()) {
             i += job.getLevel();
         }
         return i;
@@ -432,7 +432,7 @@ public class JobsPlayer {
      * Reloads max experience for all jobs for this player.
      */
     public void reloadMaxExperience() {
-        progression.forEach(JobProgression::reloadMaxExperience);
+        getJobProgression().forEach(JobProgression::reloadMaxExperience);
     }
 
     /**
@@ -484,10 +484,10 @@ public class JobsPlayer {
     public int getJobCount(boolean includeIgnoredMaxJobs) {
 
         if (includeIgnoredMaxJobs)
-            return progression.size();
+            return getJobProgression().size();
 
         int count = 0;
-        for (JobProgression one : progression) {
+        for (JobProgression one : getJobProgression()) {
             if (one.getJob().isIgnoreMaxJobs())
                 continue;
             count++;
@@ -504,7 +504,7 @@ public class JobsPlayer {
      */
     public JobProgression getJobProgression(Job job) {
         if (job != null) {
-            for (JobProgression prog : progression) {
+            for (JobProgression prog : getJobProgression()) {
                 if (prog.getJob().isSame(job))
                     return prog;
             }
@@ -591,7 +591,9 @@ public class JobsPlayer {
                 Jobs.getJobsDAO().deleteArchive(this, job);
             }
 
-            progression.add(new JobProgression(job, this, level, exp));
+            synchronized (progression) {
+                progression.add(new JobProgression(job, this, level, exp));
+            }
             reloadMaxExperience();
             reloadLimits();
             reloadHonorific();
@@ -650,16 +652,16 @@ public class JobsPlayer {
      * @param job - the job left
      */
     public boolean leaveJob(Job job) {
-//	synchronized (saveLock) {
-        if (progression.remove(getJobProgression(job))) {
-            reloadMaxExperience();
-            reloadLimits();
-            reloadHonorific();
-            Jobs.getPermissionHandler().recalculatePermissions(this);
-            return true;
+        synchronized (progression) {
+            if (progression.remove(getJobProgression(job))) {
+                reloadMaxExperience();
+                reloadLimits();
+                reloadHonorific();
+                Jobs.getPermissionHandler().recalculatePermissions(this);
+                return true;
+            }
+            return false;
         }
-        return false;
-//	}
     }
 
     /**
@@ -667,13 +669,13 @@ public class JobsPlayer {
      * @return true if success
      */
     public boolean leaveAllJobs() {
-//	synchronized (saveLock) {
-        progression.clear();
-        reloadHonorific();
-        Jobs.getPermissionHandler().recalculatePermissions(this);
-        reloadLimits();
-        return true;
-//	}
+        synchronized (progression) {
+            progression.clear();
+            reloadHonorific();
+            Jobs.getPermissionHandler().recalculatePermissions(this);
+            reloadLimits();
+            return true;
+        }
     }
 
     /**
@@ -764,8 +766,10 @@ public class JobsPlayer {
      * @param newjob - the new job
      */
     public boolean transferJob(Job oldjob, Job newjob) {
-//	synchronized (saveLock) {
-        if (!isInJob(newjob)) {
+        synchronized (progression) {
+            if (isInJob(newjob))
+                return false;
+
             for (JobProgression prog : progression) {
                 if (!prog.getJob().isSame(oldjob))
                     continue;
@@ -783,9 +787,9 @@ public class JobsPlayer {
                 Jobs.getPermissionHandler().recalculatePermissions(this);
                 return true;
             }
+
+            return false;
         }
-        return false;
-//	}
     }
 
     public int getMaxJobLevelAllowed(Job job) {
@@ -824,8 +828,8 @@ public class JobsPlayer {
     public void reloadHonorific() {
         StringBuilder builder = new StringBuilder();
 
-        if (progression.size() > 0) {
-            for (JobProgression prog : progression) {
+        if (!getJobProgression().isEmpty()) {
+            for (JobProgression prog : getJobProgression()) {
                 DisplayMethod method = prog.getJob().getDisplayMethod();
                 if (method == DisplayMethod.NONE)
                     continue;
@@ -1034,7 +1038,7 @@ public class JobsPlayer {
      * @return true if yes
      */
     public boolean canGetPaid(ActionInfo info) {
-        int numjobs = progression.size();
+        int numjobs = getJobProgression().size();
 
         if (numjobs == 0) {
             if (Jobs.getNoneJob() == null)
@@ -1048,7 +1052,7 @@ public class JobsPlayer {
                 return false;
         }
 
-        for (JobProgression prog : progression) {
+        for (JobProgression prog : getJobProgression()) {
             int level = prog.getLevel();
             JobInfo jobinfo = prog.getJob().getJobInfo(info, level);
             if (jobinfo == null)
@@ -1128,7 +1132,7 @@ public class JobsPlayer {
     }
 
     public void resetQuests() {
-        for (JobProgression prog : progression) {
+        for (JobProgression prog : getJobProgression()) {
             resetQuests(prog.getJob());
         }
     }
@@ -1151,7 +1155,7 @@ public class JobsPlayer {
 
         Quest q = job.getNextQuest(getQuestNameList(job, null), getJobProgression(job).getLevel());
         if (q == null) {
-            for (JobProgression one : progression) {
+            for (JobProgression one : getJobProgression()) {
                 if (one.getJob().isSame(job))
                     continue;
 
@@ -1193,7 +1197,7 @@ public class JobsPlayer {
 
     public List<QuestProgression> getQuestProgressions() {
         List<QuestProgression> g = new ArrayList<>();
-        for (JobProgression one : progression) {
+        for (JobProgression one : getJobProgression()) {
             g.addAll(getQuestProgressions(one.getJob()));
         }
         return g;
