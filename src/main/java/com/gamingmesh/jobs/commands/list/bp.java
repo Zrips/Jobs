@@ -42,7 +42,7 @@ public class bp implements Cmd {
 
         final List<Block> changedBlocks = new ArrayList<>();
 
-        if (Jobs.getGCManager().useNewBlockProtection) {            
+        if (Jobs.getGCManager().useNewBlockProtection) {
             for (int x = -10; x < 10; x++) {
                 for (int y = -10; y < 10; y++) {
                     for (int z = -10; z < 10; z++) {
@@ -69,7 +69,7 @@ public class bp implements Cmd {
                     }
                 }
             }
-        } else
+        } else {
             for (int x = -10; x < 10; x++) {
                 for (int y = -10; y < 10; y++) {
                     for (int z = -10; z < 10; z++) {
@@ -103,6 +103,7 @@ public class bp implements Cmd {
                     }
                 }
             }
+        }
 
         if (changedBlocks.isEmpty())
             Language.sendMessage(sender, "command.bp.output.notFound");
