@@ -1,17 +1,17 @@
 /**
  * Jobs Plugin for Bukkit
  * Copyright (C) 2011 Zak Ford <zak.j.ford@gmail.com>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -110,45 +110,45 @@ public class JobsPaymentVisualizationListener implements Listener {
             return;
 
         if (!Jobs.getGeneralConfigManager().ActionBarEnabled) {
-            showChatMessage(player, event.getPayment());
+            showChatMessage(player, event);
             return;
         }
 
         MessageToggleState state = ToggleBarHandling.getActionBarState(event.getPlayer().getUniqueId());
 
         if (!state.equals(MessageToggleState.Batched)) {
-            showChatMessage(player, event.getPayment());
+            showChatMessage(player, event);
             return;
         }
 
-        String message = generateDelayedMessage(event.getPayment());
+        String message = generateDelayedMessage(event);
         if (!message.isEmpty())
             CMIActionBar.send(player, message);
         return;
     }
 
-    private static void showChatMessage(Player player, Map<CurrencyType, Double> payment) {
+    private static void showChatMessage(Player player, JobsPaymentEvent event) {
         MessageToggleState chatState = ToggleBarHandling.getChatTextState(player.getUniqueId());
         if (chatState.equals(MessageToggleState.Off))
             return;
-        String message = generateDelayedMessage(payment);
+        String message = generateDelayedMessage(event);
 
         if (!message.isEmpty())
             player.sendMessage(message);
     }
 
-    private static String generateDelayedMessage(Map<CurrencyType, Double> payment) {
+    private static String generateDelayedMessage(JobsPaymentEvent event) {
 
         String message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
-        double money = payment.get(CurrencyType.MONEY);
+        double money = event.get(CurrencyType.MONEY);
         if (money != 0D)
             message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), money));
 
-        double points = payment.get(CurrencyType.POINTS);
+        double points = event.get(CurrencyType.POINTS);
         if (points != 0D)
             message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
 
-        double exp = payment.get(CurrencyType.EXP);
+        double exp = event.get(CurrencyType.EXP);
         if (exp != 0D)
             message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), exp));
 
