@@ -936,7 +936,7 @@ public final class Jobs extends JavaPlugin {
         if (dao != null && Jobs.getGeneralConfigManager().ExploreSaveIntoDatabase)
             dao.saveExplore();
 
-        blockOwnerShipsMaterial.values().forEach(BlockOwnerShip::save);
+        BlockOwnerShip.save(blockOwnerShipsMaterial);
 
         if (saveTask != null)
             saveTask.shutdown();

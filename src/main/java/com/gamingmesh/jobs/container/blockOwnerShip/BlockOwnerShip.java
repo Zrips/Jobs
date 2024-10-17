@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import com.gamingmesh.jobs.api.JobsBlockOwnershipRegisterEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -19,12 +18,15 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.api.JobsBlockOwnershipRegisterEvent;
 import com.gamingmesh.jobs.config.YmlMaker;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.blockLoc;
 
 import net.Zrips.CMILib.Container.CMILocation;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class BlockOwnerShip {
@@ -127,10 +129,10 @@ public class BlockOwnerShip {
 
         if (ownerUUID != null && !ownerUUID.equals(player.getUniqueId())) {
             if (Jobs.getGCManager().blockOwnershipTakeOver) {
-                
+
                 if (Jobs.getPermissionManager().hasPermission(jPlayer, "jobs.noownershiptakeover"))
                     return ownershipFeedback.invalid;
-                
+
                 // Removing ownership to record new player
                 this.remove(ownerUUID, CMILocation.toString(block.getLocation(), ":", true, true));
                 block.removeMetadata(metadataName, plugin);
@@ -290,8 +292,9 @@ public class BlockOwnerShip {
 
     public int remove(UUID uuid, String location) {
         HashMap<String, blockLoc> ls = blockOwnerShips.get(uuid);
+        int ret = 0;
         if (ls == null)
-            return 0;
+            return ret;
 
         for (Entry<String, blockLoc> one : new HashMap<String, blockLoc>(ls).entrySet()) {
 
@@ -303,11 +306,13 @@ public class BlockOwnerShip {
             ls.remove(one.getKey());
 
             Map<String, UUID> oldRecord = ownerMapByLocation.get(one.getValue().getWorldName());
-            if (oldRecord != null)
+            if (oldRecord != null) {
                 oldRecord.remove(one.getValue().toVectorString());
+                ret++;
+            }
         }
 
-        return 1;
+        return ret;
     }
 
     public List<MetadataValue> getBlockMetadatas(Block block) {
@@ -320,34 +325,12 @@ public class BlockOwnerShip {
     }
 
     public void load() {
-        YmlMaker f = new YmlMaker(Jobs.getFolder(), "furnaceBrewingStands.yml");
-        YmlMaker f2 = new YmlMaker(Jobs.getFolder(), "blockOwnerShips.yml");
-        if (!f.exists() && !f2.exists())
+
+        YmlMaker f = new YmlMaker(Jobs.getFolder(), "blockOwnerShips.yml");
+        if (!f.exists())
             return;
 
-        if (f.exists()) {
-            f.getConfigFile().renameTo(f2.getConfigFile());
-        }
-
-        f = f2;
-
-        String path = "";
-        switch (type) {
-        case BLAST_FURNACE:
-            path = "BlastFurnace";
-            break;
-        case BREWING_STAND:
-            path = "Brewing";
-            break;
-        case FURNACE:
-            path = "Furnace";
-            break;
-        case SMOKER:
-            path = "Smoker";
-            break;
-        default:
-            break;
-        }
+        String path = type.getPath();
 
         if (isReassignDisabled())
             return;
@@ -375,17 +358,24 @@ public class BlockOwnerShip {
             }
 
             HashMap<String, blockLoc> blist = new HashMap<String, blockLoc>();
+            boolean informed = false;
             for (String oneL : ls) {
-                blockLoc bl = new blockLoc(oneL);
-                CMILocation cmil = CMILocation.fromString(oneL, ":");
+                try {
+                    blockLoc bl = new blockLoc(oneL);
 
-                blist.put(CMILocation.toString(cmil, ":", true, true), bl);
+                    blist.put(oneL, bl);
 
-                Map<String, UUID> oldRecord = ownerMapByLocation.getOrDefault(bl.getWorldName(), new HashMap<String, UUID>());
-                oldRecord.put(bl.toVectorString(), uuid);
-                ownerMapByLocation.put(bl.getWorldName(), oldRecord);
+                    Map<String, UUID> oldRecord = ownerMapByLocation.getOrDefault(bl.getWorldName(), new HashMap<String, UUID>());
+                    oldRecord.put(bl.toVectorString(), uuid);
+                    ownerMapByLocation.put(bl.getWorldName(), oldRecord);
 
-                total++;
+                    total++;
+
+                } catch (Throwable e) {
+                    if (!informed)
+                        e.printStackTrace();
+                    informed = true;
+                }
             }
 
             if (!blist.isEmpty()) {
@@ -398,46 +388,45 @@ public class BlockOwnerShip {
         }
     }
 
-    public void save() {
-        YmlMaker f = new YmlMaker(Jobs.getFolder(), "furnaceBrewingStands.yml");
-        if (f.exists()) {
-            f.getConfigFile().renameTo(new File(Jobs.getFolder(), "blockOwnerShips.yml"));
+    public static void save(HashMap<CMIMaterial, BlockOwnerShip> blockOwnerShipsMaterial) {
+
+        File f = new File(Jobs.getInstance().getDataFolder(), "blockOwnerShips.yml");
+
+        ConfigReader cfg = null;
+        try {
+            cfg = new ConfigReader(f);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        f = new YmlMaker(Jobs.getFolder(), "blockOwnerShips.yml");
-
-        if (blockOwnerShips.isEmpty() && f.getConfigFile().length() == 0L) {
-            f.getConfigFile().delete();
+        if (cfg == null)
             return;
-        }
 
-        f.createNewFile();
-        f.saveDefaultConfig();
+        cfg.getC().options().copyDefaults(true);
 
-        if (isReassignDisabled()) {
-            return;
-        }
-
-        String path = (type == BlockTypes.FURNACE ? "Furnace"
-            : type == BlockTypes.BLAST_FURNACE ? "BlastFurnace"
-                : type == BlockTypes.BREWING_STAND ? "Brewing" : type == BlockTypes.SMOKER ? "Smoker" : "");
-        f.getConfig().set(path, null);
-
-        for (Entry<UUID, HashMap<String, blockLoc>> one : blockOwnerShips.entrySet()) {
-            StringBuilder full = new StringBuilder();
-
-            for (String oneL : one.getValue().keySet()) {
-                if (!full.toString().isEmpty())
-                    full.append(";");
-
-                full.append(oneL);
+        for (BlockOwnerShip ownership : blockOwnerShipsMaterial.values()) {
+            if (ownership.isReassignDisabled()) {
+                return;
             }
+            String path = ownership.getType().getPath();
 
-            if (!full.toString().isEmpty())
-                f.getConfig().set(path + "." + one.getKey().toString(), full.toString());
+            cfg.getC().set(path, null);
+
+            for (Entry<UUID, HashMap<String, blockLoc>> one : ownership.blockOwnerShips.entrySet()) {
+                StringBuilder full = new StringBuilder();
+
+                for (String oneL : one.getValue().keySet()) {
+                    if (!full.toString().isEmpty())
+                        full.append(";");
+                    full.append(oneL);
+                }
+
+                if (!full.toString().isEmpty())
+                    cfg.get(path + "." + one.getKey().toString(), full.toString());
+            }
         }
 
-        f.saveConfig();
+        cfg.save();
     }
 
     public boolean isReassignDisabled() {

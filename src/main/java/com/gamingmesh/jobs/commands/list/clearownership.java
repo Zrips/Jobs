@@ -4,11 +4,13 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.i18n.Language;
@@ -65,8 +67,11 @@ public class clearownership implements Cmd {
             }
         }
 
-        Language.sendMessage(sender,"command.clearownership.output.cleared", "[furnaces]", amounts.getOrDefault(BlockTypes.FURNACE, 0), "[brewing]", amounts.getOrDefault(
+        Language.sendMessage(sender, "command.clearownership.output.cleared", "[furnaces]", amounts.getOrDefault(BlockTypes.FURNACE, 0), "[brewing]", amounts.getOrDefault(
             BlockTypes.BREWING_STAND, 0), "[smoker]", amounts.getOrDefault(BlockTypes.SMOKER, 0), "[blast]", amounts.getOrDefault(BlockTypes.BLAST_FURNACE, 0));
+
+        Bukkit.dispatchCommand(sender, JobsCommands.LABEL + " " + ownedblocks.class.getSimpleName() + (sender.getName().equals(jPlayer.getName()) ? "" : jPlayer.getName()));
+
         return true;
     }
 }

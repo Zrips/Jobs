@@ -870,17 +870,18 @@ public class GeneralConfigManager {
         FurnacesMaxDefault = c.get("ExploitProtections.Furnaces.MaxDefaultAvailable", 20);
 
         if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
-            BlastFurnacesReassign = c.get("ExploitProtections.BlastFurnaces.Reassign", false);
+            BlastFurnacesReassign = c.get("ExploitProtections.BlastFurnaces.Reassign", true);
             BlastFurnacesMaxDefault = c.get("ExploitProtections.BlastFurnaces.MaxDefaultAvailable", 15);
 
-            SmokerReassign = c.get("ExploitProtections.Smokers.Reassign", false);
+            SmokerReassign = c.get("ExploitProtections.Smokers.Reassign", true);
             SmokersMaxDefault = c.get("ExploitProtections.Smokers.MaxDefaultAvailable", 15);
-        }
+        } 
 
         c.addComment("ExploitProtections.BrewingStands.Reassign",
             "When enabled, players interacted brewing stands will be saved into file and will be reassigned after restart to keep giving out money",
             "Players will no longer need to click on brewing stand to get paid from it after server restart");
         BrewingStandsReassign = c.get("ExploitProtections.BrewingStands.Reassign", true);
+        
         c.addComment("ExploitProtections.BrewingStands.MaxDefaultAvailable",
             "Defines max available brewing stands each player can have to get paid from",
             "Set to 0 if you want to disable this limitation",
