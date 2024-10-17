@@ -32,6 +32,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
@@ -410,7 +411,7 @@ public class ConfigManager {
         cfg.addComment(pt + ".Brew", "Brewing miscellaneous items");
         generate(cfg, pt + ".Brew.nether_stalk");
         generate(cfg, pt + ".Brew.redstone");
-        
+
         cfg.addComment(pt + ".Brush", "Brushing blocks and getting items from them");
         generate(cfg, pt + ".Brush.suspicious_sand");
         generate(cfg, pt + ".Brush.suspicious_gravel");
@@ -810,10 +811,10 @@ public class ConfigManager {
 
             Jobs.getExploreManager().setExploreEnabled();
             Jobs.getExploreManager().setPlayerAmount(amount);
-            
+
             Jobs.getChunkExplorationManager().setExploreEnabled();
-	    Jobs.getChunkExplorationManager().setPlayerAmount(amount);
-	    
+            Jobs.getChunkExplorationManager().setPlayerAmount(amount);
+
         } else if (actionType == ActionType.CRAFT) {
             if (myKey.startsWith("!")) {
                 type = myKey.substring(1, myKey.length());
@@ -840,12 +841,12 @@ public class ConfigManager {
             meta = "ALL";
             // case for ":all" identifier
             type = (actionType == ActionType.SHEAR && myKey.startsWith("color")) ? "color" : CMIMaterial.getGeneralMaterialName(type);
-            
+
             CMIEntityType entity = CMIEntityType.get(type);
             if (entity != null) {
-		type = entity.toString();
-	    }
-            
+                type = entity.toString();
+            }
+
         }
 
         if (actionType == ActionType.TNTBREAK)

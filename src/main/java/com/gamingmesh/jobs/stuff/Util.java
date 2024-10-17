@@ -39,6 +39,7 @@ import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.container.JobsWorld;
 
 import net.Zrips.CMILib.Enchants.CMIEnchantment;
+import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Version.Version;
 
@@ -88,6 +89,9 @@ public final class Util {
 
     public static String getRealType(Entity entity) {
         if (Version.isCurrentEqualOrHigher(Version.v1_11_R1)) {
+            CMIEntityType ctype = CMIEntityType.get(entity);
+            if (ctype != null)
+                return ctype.toString();
             return entity.getType().name();
         }
 
