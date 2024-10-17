@@ -1047,9 +1047,8 @@ public final class Jobs extends JavaPlugin {
         List<JobProgression> progression = jPlayer.getJobProgression();
         int numjobs = progression.size();
 
-        if (!Jobs.getGCManager().useBlockProtectionBlockTracker && !Jobs.getExploitManager().isProtectionValidAddIfNotExists(jPlayer, info, block, true)) {
+        if (!Jobs.getGCManager().useBlockProtectionBlockTracker && !Jobs.getExploitManager().isProtectionValidAddIfNotExists(jPlayer, info, block, true))
             return;
-        }
 
         // no job
         if (numjobs == 0) {
