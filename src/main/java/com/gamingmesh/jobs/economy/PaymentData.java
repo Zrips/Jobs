@@ -76,12 +76,9 @@ public class PaymentData {
 
     public void addNewAmount(CurrencyType type, Double Payment, Long time) {
 
-//        payments.put(type, new LimitsData(type, time == null ? System.currentTimeMillis() : time, Payment));
-
         LimitsData data = new LimitsData(type, Payment);
 
-        if (time != null)
-            data.setPaymentsTime(time);
+        data.setPaymentsTime(time == null ? System.currentTimeMillis() : time);
 
         payments.put(type, data);
     }

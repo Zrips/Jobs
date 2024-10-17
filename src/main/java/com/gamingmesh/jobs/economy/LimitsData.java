@@ -16,28 +16,22 @@ public class LimitsData {
 
     @Deprecated
     public LimitsData(CurrencyType type, long paymentsTime) {
-        this(type, paymentsTime, 0D);
+        init(type, paymentsTime, 0D);
     }
 
     @Deprecated
     public LimitsData(CurrencyType type, long paymentsTime, double payment) {
-        this.type = type;
-        this.paymentsTime = paymentsTime;
-        CurrencyLimit limit = Jobs.getGCManager().getLimit(type);
-        if (limit.getResetsAt() != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date());
-            resetsAt = limit.getResetsAt().toMili();
-        } else
-            resetsAt = (limit.getTimeLimit() * 100L) + System.currentTimeMillis();
-        this.amount = payment;
+        init(type, paymentsTime, payment);
     }
 
     public LimitsData(CurrencyType type, double payment) {
-        this.type = type;
-        this.paymentsTime = System.currentTimeMillis();
-        CurrencyLimit limit = Jobs.getGCManager().getLimit(type);
+        init(type, System.currentTimeMillis(), payment);
+    }
 
+    private void init(CurrencyType type, long paymentsTime, double payment) {
+        this.type = type;
+        this.paymentsTime = paymentsTime;
+        CurrencyLimit limit = Jobs.getGCManager().getLimit(type);
         if (limit.getResetsAt() != null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
@@ -79,8 +73,15 @@ public class LimitsData {
         return paymentsTime;
     }
 
+    private static long day = (1000L * 60L * 60L * 24L);
+
     public void setPaymentsTime(long paymentsTime) {
         this.paymentsTime = paymentsTime;
+        // If first payment time is over 24 hours, reset the amount
+        if (this.paymentsTime + day < resetsAt) {
+            setAmount(0);
+            setReseted(true);
+        }
     }
 
     public long getResetsAt() {
