@@ -111,7 +111,7 @@ public class RestrictedAreaManager {
             conf.set("restrictedareas." + areaKey + ".enabled", area.isEnabled());
 
             for (Entry<CurrencyType, Double> one : area.getMultipliers().entrySet()) {
-                conf.set("restrictedareas." + areaKey + ".multipliers." + one.getKey(), one.getValue());
+                conf.set("restrictedareas." + areaKey + ".multipliers." + CMIText.firstToUpperCase(one.getKey().name()), one.getValue());
             }
 
             if (area.getWgName() == null) {
