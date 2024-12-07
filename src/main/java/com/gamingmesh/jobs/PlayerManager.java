@@ -251,47 +251,42 @@ public class PlayerManager {
         JobsPlayer jPlayer = playersUUIDCache.get(player.getUniqueId());
 
         if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
+            CompletableFuture<JobsPlayer> future = CompletableFuture.supplyAsync(() -> {
+                JobsPlayer jobsPlayer = playersUUIDCache.get(player.getUniqueId());
+                jobsPlayer = jobsPlayer == null ? new JobsPlayer(player) : jobsPlayer;
 
-            if (Jobs.getGCManager().MultiServerCompatability()) {
-                CompletableFuture<JobsPlayer> future = CompletableFuture.supplyAsync(() -> {
-                    JobsPlayer jobsPlayer = playersUUIDCache.get(player.getUniqueId());
-                    jobsPlayer = jobsPlayer == null ? new JobsPlayer(player) : jobsPlayer;
-                    loadPlayer(jobsPlayer);
-                    return jobsPlayer;
-                });
-                future.thenAccept(this::finalizeJoinPlayer);
-                return;
-            }
+                return loadPlayer(jobsPlayer).join();
+            });
 
-            jPlayer = jPlayer == null ? new JobsPlayer(player) : jPlayer;
-            jPlayer = Jobs.getJobsDAO().loadFromDao(jPlayer);
-
-            loadPlayer(jPlayer);
+            future.thenAccept(this::finalizeJoinPlayer);
+        } else {
+            finalizeJoinPlayer(jPlayer);
         }
-
-        finalizeJoinPlayer(jPlayer);
     }
 
-    private static void loadPlayer(JobsPlayer jPlayer) {
+    private static CompletableFuture<JobsPlayer> loadPlayer(JobsPlayer old) {
+        return CompletableFuture.supplyAsync(() -> {
+            JobsPlayer jPlayer = Jobs.getJobsDAO().loadFromDao(old).join();
 
-        Jobs.getJobsDAO().loadFromDao(jPlayer);
+            if (Jobs.getGCManager().MultiServerCompatability()) {
+                jPlayer.setArchivedJobs(Jobs.getJobsDAO().getArchivedJobs(jPlayer));
+                jPlayer.setPaymentLimit(Jobs.getJobsDAO().getPlayersLimits(jPlayer));
+                jPlayer.setPoints(Jobs.getJobsDAO().getPlayerPoints(jPlayer));
+            }
 
-        if (Jobs.getGCManager().MultiServerCompatability()) {
-            jPlayer.setArchivedJobs(Jobs.getJobsDAO().getArchivedJobs(jPlayer));
-            jPlayer.setPaymentLimit(Jobs.getJobsDAO().getPlayersLimits(jPlayer));
-            jPlayer.setPoints(Jobs.getJobsDAO().getPlayerPoints(jPlayer));
-        }
+            // Lets load quest progression
+            PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(jPlayer.getUniqueId());
+            if (info != null) {
+                jPlayer.setDoneQuests(info.getQuestsDone());
+                jPlayer.setQuestProgressionFromString(info.getQuestProgression());
 
-        // Lets load quest progression
-        PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(jPlayer.getUniqueId());
-        if (info != null) {
-            jPlayer.setDoneQuests(info.getQuestsDone());
-            jPlayer.setQuestProgressionFromString(info.getQuestProgression());
+                ToggleBarHandling.recordPlayerOptionsFromInt(jPlayer.getUniqueId(), info.getMessageOptions());
+            }
 
-            ToggleBarHandling.recordPlayerOptionsFromInt(jPlayer.getUniqueId(), info.getMessageOptions());
-        }
+            Jobs.getJobsDAO().loadLog(jPlayer);
 
-        Jobs.getJobsDAO().loadLog(jPlayer);
+            return jPlayer;
+        });
     }
 
     private void finalizeJoinPlayer(JobsPlayer jPlayer) {
