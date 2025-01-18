@@ -40,7 +40,6 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.MessageToggleState;
 
 import net.Zrips.CMILib.CMILib;
-import net.Zrips.CMILib.Container.CMIArray;
 import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Enchants.CMIEnchantment;
@@ -113,7 +112,7 @@ public class GeneralConfigManager {
         BossBarEnabled = false, ActionBarEnabled, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
         LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
-        payForEachVTradeItem, allowEnchantingBoostedItems, preventShopItemEnchanting;
+        payForEachVTradeItem, allowEnchantingBoostedItems, preventShopItemEnchanting, useCustomFishingOnly = false;
     public MessageToggleState BossBarsMessageDefault = MessageToggleState.Rapid;
     public MessageToggleState ActionBarsMessageDefault = MessageToggleState.Rapid;
     public MessageToggleState ChatTextMessageDefault = MessageToggleState.Batched;
@@ -961,6 +960,9 @@ public class GeneralConfigManager {
 
         c.addComment("ExploitProtections.MythicMobs", "MythicMobs plugin support", "Disable if you having issues with it or using old version");
         MythicMobsEnabled = c.get("ExploitProtections.MythicMobs.enabled", true);
+
+        c.addComment("ExploitProtections.CustomFishing", "CustomFishing plugin support (Optional)", "If setting is enabled, Fish and PyroFishingPro actions are disabled and only CustomFishing action is enabled.", "Leave it disabled if you're not experiencing issues because of CustomFishing Plugin.");
+        useCustomFishingOnly = c.get("ExploitProtections.CustomFishing.Use-CustomFishing-Only", false);
 
         // Only applies for older versions.
         if (Version.isCurrentLower(Version.v1_14_R1)) {

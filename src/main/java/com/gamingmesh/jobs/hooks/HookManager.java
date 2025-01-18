@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.hooks;
 
+import com.gamingmesh.jobs.hooks.CustomFishing.CustomFishingManager;
 import com.gamingmesh.jobs.hooks.blockTracker.BlockTrackerManager;
 import com.gamingmesh.jobs.hooks.pyroFishingPro.PyroFishingProManager;
 import org.bukkit.plugin.PluginManager;
@@ -29,6 +30,7 @@ public class HookManager {
     private static WildStackerHandler wildStackerHandler;
     private static BlockTrackerManager blockTrackerManager;
     private static PyroFishingProManager pyroFishingProManager;
+    private static CustomFishingManager customFishingManager;
 
     private static final Jobs PLUGIN = JavaPlugin.getPlugin(Jobs.class);
 
@@ -45,6 +47,7 @@ public class HookManager {
             setWildStackerHandler();
             setBlockTrackerManager();
             setPyroFishingProManager();
+            setCustomFishingManager();
         });
     }
 
@@ -98,12 +101,23 @@ public class HookManager {
         return pyroFishingProManager;
     }
 
+    public static CustomFishingManager getCustomFishingManager() {
+        if (customFishingManager == null)
+            customFishingManager = new CustomFishingManager();
+
+        return customFishingManager;
+    }
+
     public static boolean checkMythicMobs() {
         return Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.check();
     }
 
     public static boolean checkPyroFishingPro() {
         return pyroFishingProManager != null;
+    }
+
+    public static boolean checkCustomFishing() {
+        return customFishingManager != null;
     }
 
     public static BlockTrackerManager getBlockTrackerManager() {
@@ -180,6 +194,17 @@ public class HookManager {
         if (JobsHook.PyroFishingPro.isEnabled()) {
             pyroFishingProManager = new PyroFishingProManager();
             CMIMessages.consoleMessage("&e" + JobsHook.PyroFishingPro + " detected.");
+        }
+    }
+
+    private static void setCustomFishingManager() {
+        if (JobsHook.CustomFishing.isEnabled()) {
+            customFishingManager = new CustomFishingManager();
+            if (Jobs.getGCManager().useCustomFishingOnly) {
+                CMIMessages.consoleMessage("&e" + JobsHook.CustomFishing + " detected. (Using CustomFishing-Only Settings)");
+            } else {
+                CMIMessages.consoleMessage("&e" + JobsHook.CustomFishing + " detected. (Not using CustomFishing-Only Settings)");
+            }
         }
     }
 }
