@@ -79,8 +79,12 @@ public class LimitsData {
         this.paymentsTime = paymentsTime;
         // If first payment time is over 24 hours, reset the amount
         if (this.paymentsTime + day < resetsAt) {
-            setAmount(0);
-            setReseted(true);
+            CurrencyLimit limit = Jobs.getGCManager().getLimit(type);
+            // Only reset for daily limits
+            if (limit.getResetsAt() != null) {
+                setAmount(0);
+                setReseted(true);
+            }
         }
     }
 

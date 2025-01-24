@@ -59,7 +59,7 @@ public class TitleManager {
 	    "Stores the titles people gain at certain levels.",
 	    "Each title requires to have a name, short name (used when the player has more than 1 job)",
 	    "the colour of the title and the level requirement to attain the title.",
-	    "Colour can ether be a word like Brown, can be color character like &5 or hex color code like {#6600cc}",
+	    "Colour can either be a word like Brown, can be color character like &5 or hex color code like {#6600cc}",
 	    "It is recommended but not required to have a title at level 0.",
 	    "Titles are completely optional.",
 	    "Possible variable are {level} to add current jobs level.",
