@@ -29,6 +29,7 @@ public enum ActionType {
     MMKILL("MMKill"),
     FISH(),
     PYROFISHINGPRO("PyroFishingPro"),
+    CUSTOMFISHING("CustomFishing"),
     CRAFT(),
     VTRADE("VTrade"),
     SMELT(),

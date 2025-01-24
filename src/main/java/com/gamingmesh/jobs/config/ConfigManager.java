@@ -385,6 +385,9 @@ public class ConfigManager {
         cfg.addComment(pt + ".PyroFishingPro", "Catching CUSTOM fish of the PyroFishingPro plugin");
         generate(cfg, pt + ".PyroFishingPro.CustomTier");
 
+        cfg.addComment(pt + ".CustomFishing", "Catching CUSTOM fish of the CustomFishing plugin");
+        generate(cfg, pt + ".CustomFishing.CustomFishId");
+
         cfg.addComment(pt + ".Repair", "Repairing items");
         generate(cfg, pt + ".Repair.wood_sword");
         generate(cfg, pt + ".Repair.iron_sword");
@@ -595,6 +598,7 @@ public class ConfigManager {
         case MILK:
         case MMKILL:
         case PYROFISHINGPRO:
+        case CUSTOMFISHING:
         case BREED:
         case TAME:
         case SHEAR:
@@ -796,7 +800,8 @@ public class ConfigManager {
             type = cmiEnchant != null ? cmiEnchant.getKeyName() : myKey;
 
         } else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
-            || actionType == ActionType.BAKE || actionType == ActionType.SMELT || actionType == ActionType.PYROFISHINGPRO) {
+            || actionType == ActionType.BAKE || actionType == ActionType.SMELT || actionType == ActionType.PYROFISHINGPRO
+            || actionType == ActionType.CUSTOMFISHING) {
             type = myKey;
         } else if (actionType == ActionType.EXPLORE) {
             type = myKey;
