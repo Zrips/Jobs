@@ -37,6 +37,7 @@ import com.gamingmesh.jobs.container.MessageToggleState;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public class JobsPaymentVisualizationListener implements Listener {
@@ -158,6 +159,9 @@ public class JobsPaymentVisualizationListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJobsInstancePaymentBossEvent(JobsInstancePaymentEvent event) {
 
+        if (!Jobs.getGCManager().BossBarEnabled)
+            return;
+
         if (event.getPlayer() == null || !event.getPlayer().isOnline())
             return;
 
@@ -176,6 +180,9 @@ public class JobsPaymentVisualizationListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJobsPaymentEventBossBar(JobsPaymentEvent event) {
         if (event.isCancelled())
+            return;
+
+        if (!Jobs.getGCManager().BossBarEnabled)
             return;
 
         if (event.getPlayer() == null || !event.getPlayer().isOnline())
