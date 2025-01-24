@@ -332,7 +332,7 @@ public class LanguageManager {
             c.get("command.archive.help.info", "Shows all jobs saved in archive by user.");
             c.get("command.archive.help.args", "[playername]");
             Jobs.getGCManager().getCommandArgs().put("archive", Arrays.asList("[playername]"));
-            c.get("command.archive.error.nojob", "There is no jobs saved.");
+            c.get("command.archive.error.nojob", "There are no jobs saved.");
 
             c.get("command.give.help.info", "Gives item by jobs name and item category name. Player name is optional");
             c.get("command.give.help.args", "[playername] [jobname] [items/limiteditems] [jobitemname]");
