@@ -395,13 +395,13 @@ public class JobsCommands implements CommandExecutor {
                 message.append(" -> ");
 
             if (income != 0.0)
-                message.append(Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income)));
+                message.append(Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor + CurrencyType.MONEY.format(income)));
 
             if (points != 0.0)
-                message.append(Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points)));
+                message.append(Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor + CurrencyType.POINTS.format(points)));
 
             if (xp != 0.0)
-                message.append(Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp)));
+                message.append(Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor + CurrencyType.EXP.format(xp)));
 
             if (info.getFromLevel() > 1 && info.getUntilLevel() != -1)
                 message.append(Jobs.getLanguage().getMessage("command.info.help.levelRange", "%levelFrom%", info.getFromLevel(), "%levelUntil%", info.getUntilLevel()));
@@ -443,7 +443,7 @@ public class JobsCommands implements CommandExecutor {
         String message = Jobs.getLanguage().getMessage(path,
             "%joblevel%", jobProg.getLevelFormatted(),
             jobProg.getJob(),
-            "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
+            "%jobxp%", CurrencyType.EXP.format(jobProg.getExperience()),
             "%jobmaxxp%", jobProg.getMaxExperience(),
             "%titlename%", title == null ? "Unknown" : title.getName());
         return " " + (isMaxLevelReached ? "" : progressBar ? jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) : "") + " " + message;

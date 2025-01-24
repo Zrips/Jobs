@@ -24,9 +24,24 @@ import java.util.Map;
 import com.gamingmesh.jobs.Jobs;
 
 public enum CurrencyType {
-    MONEY("Money", 1),
-    EXP("Exp", 2),
-    POINTS("Points", 3);
+    MONEY("Money", 1) {
+        @Override
+        public String format(double value) {
+            return String.format(Jobs.getGCManager().getDecimalPlacesMoney(), value);
+        }
+    },
+    EXP("Exp", 2){
+        @Override
+        public String format(double value) {
+            return String.format(Jobs.getGCManager().getDecimalPlacesExp(), value);
+        }
+    },
+    POINTS("Points", 3){
+        @Override
+        public String format(double value) {
+            return String.format(Jobs.getGCManager().getDecimalPlacesPoints(), value);
+        }
+    };
 
     private String name;
     private int id = 0;
@@ -39,6 +54,10 @@ public enum CurrencyType {
 
     public String getName() {
         return name;
+    }
+
+    public String format(double value) {
+        return String.valueOf(value);
     }
 
     public static CurrencyType getByName(String name) {

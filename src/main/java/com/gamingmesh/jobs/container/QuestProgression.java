@@ -11,8 +11,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.stuff.Util;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 public class QuestProgression {
 
     private Quest quest;

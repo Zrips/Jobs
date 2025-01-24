@@ -10,8 +10,6 @@ import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 public class Quest {
 
     private String configName = "";

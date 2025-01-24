@@ -31,7 +31,6 @@ import com.gamingmesh.jobs.hooks.HookManager;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Container.CMIText;
 import net.Zrips.CMILib.Container.CuboidArea.ChunkRef;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class RestrictedAreaManager {

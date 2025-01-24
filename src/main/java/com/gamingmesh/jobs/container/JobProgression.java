@@ -22,10 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Container.CMINumber;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Time.CMITimeManager;
 
 public class JobProgression {

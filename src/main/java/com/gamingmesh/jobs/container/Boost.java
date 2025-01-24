@@ -5,8 +5,6 @@ import java.util.HashMap;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.PlayerManager.BoostOf;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 public class Boost {
 
     private java.util.Map<BoostOf, BoostMultiplier> map = new HashMap<>();

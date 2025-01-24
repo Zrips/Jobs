@@ -319,15 +319,15 @@ public class GuiManager {
 
                 if (income != 0.0)
                     val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor
-                        + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
+                        + CurrencyType.MONEY.format(income));
 
                 if (points != 0.0)
                     val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor
-                        + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+                        + CurrencyType.POINTS.format(points));
 
                 if (xp != 0.0)
                     val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor
-                        + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
+                        + CurrencyType.EXP.format(xp));
 
                 lore.add(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", itemName) + val);
 
@@ -340,7 +340,7 @@ public class GuiManager {
                     ItemMeta meta = guiItem.getItemMeta();
                     meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.help.jobName", job));
                     meta.setLore(lore);
-                    
+
                     guiItem.setItemMeta(meta);
                     tempInv.setItem(i, guiItem.clone());
 
@@ -529,15 +529,15 @@ public class GuiManager {
 
                 if (income != 0.0)
                     val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor
-                        + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
+                        + CurrencyType.MONEY.format( income));
 
                 if (points != 0.0)
                     val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor
-                        + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+                        + CurrencyType.POINTS.format( points));
 
                 if (xp != 0.0)
                     val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor
-                        + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
+                        + CurrencyType.EXP.format( xp));
 
                 lore.add(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", itemName) + val);
 

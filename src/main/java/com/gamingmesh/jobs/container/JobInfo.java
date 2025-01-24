@@ -22,7 +22,6 @@ import com.gamingmesh.jobs.Jobs;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Equations.Parser;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class JobInfo {
     private ActionType actionType;

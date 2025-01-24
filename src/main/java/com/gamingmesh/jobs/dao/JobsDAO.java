@@ -45,7 +45,6 @@ import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.stuff.Util;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Time.CMITimeManager;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -1823,6 +1822,8 @@ public abstract class JobsDAO {
             return GTopListByJobCache;
         }
 
+        GTopListByJobUpdateCache = System.currentTimeMillis();
+
         JobsConnection conn = getConnection();
         List<TopList> names = new ArrayList<>();
         if (conn == null)
@@ -1862,7 +1863,7 @@ public abstract class JobsDAO {
             close(res);
             close(prest);
         }
-
+        GTopListByJobCache = names;
         return names;
     }
 

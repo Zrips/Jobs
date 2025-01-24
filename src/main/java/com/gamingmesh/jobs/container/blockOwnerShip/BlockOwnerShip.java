@@ -26,7 +26,6 @@ import com.gamingmesh.jobs.stuff.blockLoc;
 import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class BlockOwnerShip {

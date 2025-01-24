@@ -69,7 +69,6 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -1046,17 +1045,7 @@ public class PlayerManager {
     }
 
     public BoostMultiplier getItemBoostNBT(Player player, Job prog) {
-        Map<Job, BoostMultiplier> cj = cache.get(player.getUniqueId());
-        if (cj == null) {
-            cache.put(player.getUniqueId(), cj = new HashMap<>());
-        }
-
-        BoostMultiplier boost = cj.get(prog);
-        if (boost == null) {
-            cj.put(prog, boost = getInventoryBoost(player, prog));
-        }
-
-        return boost;
+        return cache.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>()).computeIfAbsent(prog, k -> getInventoryBoost(player, prog));
     }
 
     public BoostMultiplier getInventoryBoost(Player player, Job job) {

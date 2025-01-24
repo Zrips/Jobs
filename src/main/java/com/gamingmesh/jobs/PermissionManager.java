@@ -30,8 +30,6 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 public class PermissionManager {
 
     private final Map<String, Integer> permDelay = new HashMap<>();
@@ -171,7 +169,7 @@ public class PermissionManager {
         if (force || getDelay(perm) + permInfo.getTime() < System.currentTimeMillis()) {
 
             Map<String, Boolean> perms = getAll(player, perm);
-            for (Map.Entry<String, Boolean> permission : perms.entrySet()) { 
+            for (Map.Entry<String, Boolean> permission : perms.entrySet()) {
                 if (!permission.getKey().startsWith(perm) || !permission.getValue())
                     continue;
                 try {

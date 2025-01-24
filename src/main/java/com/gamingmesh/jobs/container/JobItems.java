@@ -29,7 +29,6 @@ import com.gamingmesh.jobs.config.ShopManager;
 
 import net.Zrips.CMILib.Items.CMIAsyncHead;
 import net.Zrips.CMILib.Items.CMIItemStack;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class JobItems {
 

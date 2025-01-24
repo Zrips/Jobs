@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -116,7 +117,7 @@ public class level implements Cmd {
                 Player player = jPlayer.getPlayer();
                 if (player != null)
                     Language.sendMessage(player, "command.level.output.target", job, "%level%", prog.getLevel(),
-                        "%exp%", String.format(Jobs.getGCManager().getDecimalPlacesExp(), prog.getExperience()));
+                        "%exp%", CurrencyType.EXP.format(prog.getExperience()));
 
                 Language.sendMessage(sender, "general.admin.success");
             } else

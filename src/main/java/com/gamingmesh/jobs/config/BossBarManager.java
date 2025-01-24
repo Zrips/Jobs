@@ -7,6 +7,7 @@ import org.bukkit.boss.BossBar;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BossBarInfo;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -68,7 +69,7 @@ public class BossBarManager {
         String message = Jobs.getLanguage().getMessage("command.stats.bossBarOutput",
             "%joblevel%", jobProg.getLevelFormatted(),
             jobProg.getJob(),
-            "%jobxp%", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), jobProg.getExperience()),
+            "%jobxp%", CurrencyType.EXP.format(jobProg.getExperience()),
             "%jobmaxxp%", jobProg.getMaxExperience(),
             "%gain%", gain);
 
@@ -90,7 +91,7 @@ public class BossBarManager {
         bar.setVisible(true);
 
         if (oldOne != null)
-            oldOne.setScheduler(CMIScheduler.runTaskLater(() -> {
+            oldOne.setScheduler(CMIScheduler.runTaskLater(Jobs.getInstance(), () -> {
                 for (BossBarInfo one : player.getBossBarInfo()) {
                     if (!one.getPlayerName().equalsIgnoreCase(player.getName()))
                         continue;
