@@ -1,0 +1,1397 @@
+ItemList:
+  ACACIA_BOAT: Akazienholzboot
+  ACACIA_BUTTON: Akazienholzknopf
+  ACACIA_DOOR: Akazienholztür
+  ACACIA_FENCE: Akazienholzzaun
+  ACACIA_FENCE_GATE: Akazienholzzauntor
+  ACACIA_LEAVES: Akazienlaub
+  ACACIA_LOG: Akazienstamm
+  ACACIA_PLANKS: Akazienholzbretter
+  ACACIA_PRESSURE_PLATE: Akazienholzdruckplatte
+  ACACIA_SAPLING: Akaziensetzling
+  ACACIA_SLAB: Akazienholzstufe
+  ACACIA_STAIRS: Akazienholztreppe
+  ACACIA_TRAPDOOR: Akazienholzfalltür
+  ACACIA_WOOD: Akazienholz
+  ACTIVATOR_RAIL: Aktivierungsschiene
+  AIR: Luft
+  ALLIUM: Zierlauch
+  ANDESITE: Andesit
+  ANVIL: Amboss
+  APPLE: Apfel
+  ARMOR_STAND: Rüstungsständer
+  ARROW: Pfeil
+  ATTACHED_MELON_STEM: Melonenranke
+  ATTACHED_PUMPKIN_STEM: Kürbisranke
+  AZURE_BLUET: Porzellansternchen
+  BAKED_POTATO: Ofenkartoffel
+  BARRIER: Barriere
+  BAT_SPAWN_EGG: Fledermaus-Spawn-Ei
+  BEACON: Leuchtfeuer
+  BEDROCK: Grundgestein
+  BEEF: Rohes Rindfleisch
+  BEETROOT: Rote Bete
+  BEETROOTS: Rote Bete
+  BEETROOT_SEEDS: Rote-Bete-Samen
+  BEETROOT_SOUP: Borschtsch
+  BIRCH_BOAT: Birkenholzboot
+  BIRCH_BUTTON: Birkenholzknopf
+  BIRCH_DOOR: Birkenholztür
+  BIRCH_FENCE: Birkenholzzaun
+  BIRCH_FENCE_GATE: Birkenholzzauntor
+  BIRCH_LEAVES: Birkenlaub
+  BIRCH_LOG: Birkenstamm
+  BIRCH_PLANKS: Birkenholzbretter
+  BIRCH_PRESSURE_PLATE: Birkenholzdruckplatte
+  BIRCH_SAPLING: Birkensetzling
+  BIRCH_SLAB: Birkenholzstufe
+  BIRCH_STAIRS: Birkenholztreppe
+  BIRCH_TRAPDOOR: Birkenholzfalltür
+  BIRCH_WOOD: Birkenholz
+  BLACK_BANNER: Schwarzes Banner
+  BLACK_BED: Schwarzes Bett
+  BLACK_CARPET: Schwarzer Teppich
+  BLACK_CONCRETE: Schwarzer Beton
+  BLACK_CONCRETE_POWDER: Schwarzer Trockenbeton
+  BLACK_GLAZED_TERRACOTTA: Schwarze glasierte Keramik
+  BLACK_SHULKER_BOX: Schwarze Shulker-Kiste
+  BLACK_STAINED_GLASS: Schwarzes Glas
+  BLACK_STAINED_GLASS_PANE: Schwarze Glasscheibe
+  BLACK_TERRACOTTA: Schwarze Keramik
+  BLACK_WALL_BANNER: Schwarzes Banner
+  BLACK_WOOL: Schwarze Wolle
+  BLAZE_POWDER: Lohenstaub
+  BLAZE_ROD: Lohenrute
+  BLAZE_SPAWN_EGG: Lohen-Spawn-Ei
+  BLUE_BANNER: Blaues Banner
+  BLUE_BED: Blaues Bett
+  BLUE_CARPET: Blauer Teppich
+  BLUE_CONCRETE: Blauer Beton
+  BLUE_CONCRETE_POWDER: Blauer Trockenbeton
+  BLUE_GLAZED_TERRACOTTA: Blaue glasierte Keramik
+  BLUE_ICE: Blaueis
+  BLUE_ORCHID: Blaue Orchidee
+  BLUE_SHULKER_BOX: Blaue Shulker-Kiste
+  BLUE_STAINED_GLASS: Blaues Glas
+  BLUE_STAINED_GLASS_PANE: Blaue Glasscheibe
+  BLUE_TERRACOTTA: Blaue Keramik
+  BLUE_WALL_BANNER: Blaues Banner
+  BLUE_WOOL: Blaue Wolle
+  BONE: Knochen
+  BONE_BLOCK: Knochenblock
+  BONE_MEAL: Knochenmehl
+  BOOK: Buch
+  BOOKSHELF: Bücherregal
+  BOW: Bogen
+  BOWL: Schüssel
+  BRAIN_CORAL: Hirnkoralle
+  BRAIN_CORAL_BLOCK: Hirnkorallenblock
+  BRAIN_CORAL_FAN: Hirnkorallenfächer
+  BRAIN_CORAL_WALL_FAN: Hirnkorallenwandfächer
+  BREAD: Brot
+  BREWING_STAND: Braustand
+  BRICK: Ziegel
+  BRICKS: Ziegelsteine
+  BRICK_SLAB: Ziegelstufe
+  BRICK_STAIRS: Ziegeltreppe
+  BROWN_BANNER: Braunes Banner
+  BROWN_BED: Braunes Bett
+  BROWN_CARPET: Brauner Teppich
+  BROWN_CONCRETE: Brauner Beton
+  BROWN_CONCRETE_POWDER: Brauner Trockenbeton
+  BROWN_GLAZED_TERRACOTTA: Braune glasierte Keramik
+  BROWN_MUSHROOM: Brauner Pilz
+  BROWN_MUSHROOM_BLOCK: Brauner Pilzblock
+  BROWN_SHULKER_BOX: Braune Shulker-Kiste
+  BROWN_STAINED_GLASS: Braunes Glas
+  BROWN_STAINED_GLASS_PANE: Braune Glasscheibe
+  BROWN_TERRACOTTA: Braune Keramik
+  BROWN_WALL_BANNER: Braunes Banner
+  BROWN_WOOL: Braune Wolle
+  BUBBLE_COLUMN: Blasensäule
+  BUBBLE_CORAL: Blasenkoralle
+  BUBBLE_CORAL_BLOCK: Blasenkorallenblock
+  BUBBLE_CORAL_FAN: Blasenkorallenfächer
+  BUBBLE_CORAL_WALL_FAN: Blasenkorallenwandfächer
+  BUCKET: Eimer
+  CACTUS: Kaktus
+  CACTUS_GREEN: Grüner Farbstoff
+  CAKE: Kuchen
+  CARROT: Karotte
+  CARROTS: Karotten
+  CARROT_ON_A_STICK: Karottenrute
+  CARVED_PUMPKIN: Geschnitzter Kürbis
+  CAULDRON: Kessel
+  CAVE_AIR: Höhlenluft
+  CAVE_SPIDER_SPAWN_EGG: Höhlenspinnen-Spawn-Ei
+  CHAINMAIL_BOOTS: Kettenstiefel
+  CHAINMAIL_CHESTPLATE: Kettenhemd
+  CHAINMAIL_HELMET: Kettenhaube
+  CHAINMAIL_LEGGINGS: Kettenhose
+  CHAIN_COMMAND_BLOCK: Ketten-Befehlsblock
+  CHARCOAL: Holzkohle
+  CHEST: Truhe
+  CHEST_MINECART: Güterlore
+  CHICKEN: Rohes Hühnchen
+  CHICKEN_SPAWN_EGG: Huhn-Spawn-Ei
+  CHIPPED_ANVIL: Angeschlagener Amboss
+  CHISELED_QUARTZ_BLOCK: Gemeißelter Quarzblock
+  CHISELED_RED_SANDSTONE: Gemeißelter roter Sandstein
+  CHISELED_SANDSTONE: Gemeißelter Sandstein
+  CHISELED_STONE_BRICKS: Gemeißelte Steinziegel
+  CHORUS_FLOWER: Chorusblüte
+  CHORUS_FRUIT: Chorusfrucht
+  CHORUS_PLANT: Choruspflanze
+  CLAY: Ton
+  CLAY_BALL: Tonklumpen
+  CLOCK: Uhr
+  COAL: Kohle
+  COAL_BLOCK: Kohleblock
+  COAL_ORE: Steinkohle
+  COARSE_DIRT: Grobe Erde
+  COBBLESTONE: Bruchstein
+  COBBLESTONE_SLAB: Bruchsteinstufe
+  COBBLESTONE_STAIRS: Bruchsteintreppe
+  COBBLESTONE_WALL: Bruchsteinmauer
+  COBWEB: Spinnennetz
+  COCOA: Kakao
+  COCOA_BEANS: Kakaobohnen
+  COD: Roher Kabeljau
+  COD_BUCKET: Kabeljaueimer
+  COD_SPAWN_EGG: Kabeljau-Spawn-Ei
+  COMMAND_BLOCK: Befehlsblock
+  COMMAND_BLOCK_MINECART: Befehlsblocklore
+  COMPARATOR: Redstone-Komparator
+  COMPASS: Kompass
+  CONDUIT: Aquisator
+  COOKED_BEEF: Steak
+  COOKED_CHICKEN: Gebratenes Hühnchen
+  COOKED_COD: Gebratener Kabeljau
+  COOKED_MUTTON: Gebratenes Hammelfleisch
+  COOKED_PORKCHOP: Gebratenes Schweinefleisch
+  COOKED_RABBIT: Gebratenes Kaninchen
+  COOKED_SALMON: Gebratener Lachs
+  COOKIE: Keks
+  COW_SPAWN_EGG: Kuh-Spawn-Ei
+  CRACKED_STONE_BRICKS: Rissige Steinziegel
+  CRAFTING_TABLE: Werkbank
+  CREEPER_HEAD: Creeperkopf
+  CREEPER_SPAWN_EGG: Creeper-Spawn-Ei
+  CREEPER_WALL_HEAD: Creeperkopf
+  CUT_RED_SANDSTONE: Geschnittener roter Sandstein
+  CUT_SANDSTONE: Geschnittener Sandstein
+  CYAN_BANNER: Türkises Banner
+  CYAN_BED: Türkises Bett
+  CYAN_CARPET: Türkiser Teppich
+  CYAN_CONCRETE: Türkiser Beton
+  CYAN_CONCRETE_POWDER: Türkiser Trockenbeton
+  CYAN_DYE: Türkiser Farbstoff
+  CYAN_GLAZED_TERRACOTTA: Türkise glasierte Keramik
+  CYAN_SHULKER_BOX: Türkise Shulker-Kiste
+  CYAN_STAINED_GLASS: Türkises Glas
+  CYAN_STAINED_GLASS_PANE: Türkise Glasscheibe
+  CYAN_TERRACOTTA: Türkise Keramik
+  CYAN_WALL_BANNER: Türkises Banner
+  CYAN_WOOL: Türkise Wolle
+  DAMAGED_ANVIL: Beschädigter Amboss
+  DANDELION: Löwenzahn
+  DANDELION_YELLOW: Gelber Farbstoff
+  DARK_OAK_BOAT: Schwarzeichenholzboot
+  DARK_OAK_BUTTON: Schwarzeichenholzknopf
+  DARK_OAK_DOOR: Schwarzeichenholztür
+  DARK_OAK_FENCE: Schwarzeichenholzzaun
+  DARK_OAK_FENCE_GATE: Schwarzeichenholzzauntor
+  DARK_OAK_LEAVES: Schwarzeichenlaub
+  DARK_OAK_LOG: Schwarzeichenstamm
+  DARK_OAK_PLANKS: Schwarzeichenholzbretter
+  DARK_OAK_PRESSURE_PLATE: Schwarzeichenholzdruckplatte
+  DARK_OAK_SAPLING: Schwarzeichensetzling
+  DARK_OAK_SLAB: Schwarzeichenholzstufe
+  DARK_OAK_STAIRS: Schwarzeichenholztreppe
+  DARK_OAK_TRAPDOOR: Schwarzeichenholzfalltür
+  DARK_OAK_WOOD: Schwarzeichenholz
+  DARK_PRISMARINE: Dunkler Prismarin
+  DARK_PRISMARINE_SLAB: Dunkle Prismarinstufe
+  DARK_PRISMARINE_STAIRS: Dunkle Prismarintreppe
+  DAYLIGHT_DETECTOR: Tageslichtsensor
+  DEAD_BRAIN_CORAL: Abgestorbene Hirnkoralle
+  DEAD_BRAIN_CORAL_BLOCK: Abgestorbener Hirnkorallenblock
+  DEAD_BRAIN_CORAL_FAN: Abgestorbener Hirnkorallenfächer
+  DEAD_BRAIN_CORAL_WALL_FAN: Abgestorbener Hirnkorallenwandfächer
+  DEAD_BUBBLE_CORAL: Abgestorbene Blasenkoralle
+  DEAD_BUBBLE_CORAL_BLOCK: Abgestorbener Blasenkorallenblock
+  DEAD_BUBBLE_CORAL_FAN: Abgestorbener Blasenkorallenfächer
+  DEAD_BUBBLE_CORAL_WALL_FAN: Abgestorbener Blasenkorallenwandfächer
+  DEAD_BUSH: Toter Busch
+  DEAD_FIRE_CORAL: Abgestorbene Feuerkoralle
+  DEAD_FIRE_CORAL_BLOCK: Abgestorbener Feuerkorallenblock
+  DEAD_FIRE_CORAL_FAN: Abgestorbener Feuerkorallenfächer
+  DEAD_FIRE_CORAL_WALL_FAN: Abgestorbener Feuerkorallenwandfächer
+  DEAD_HORN_CORAL: Abgestorbene Geweihkoralle
+  DEAD_HORN_CORAL_BLOCK: Abgestorbener Geweihkorallenblock
+  DEAD_HORN_CORAL_FAN: Abgestorbener Geweihkorallenfächer
+  DEAD_HORN_CORAL_WALL_FAN: Abgestorbener Geweihkorallenwandfächer
+  DEAD_TUBE_CORAL: Abgestorbene Orgelkoralle
+  DEAD_TUBE_CORAL_BLOCK: Abgestorbener Orgelkorallenblock
+  DEAD_TUBE_CORAL_FAN: Abgestorbener Orgelkorallenfächer
+  DEAD_TUBE_CORAL_WALL_FAN: Abgestorbener Orgelkorallenwandfächer
+  DEBUG_STICK: Debug-Stab
+  DETECTOR_RAIL: Sensorschiene
+  DIAMOND: Diamant
+  DIAMOND_AXE: Diamantaxt
+  DIAMOND_BLOCK: Diamantblock
+  DIAMOND_BOOTS: Diamantstiefel
+  DIAMOND_CHESTPLATE: Diamantharnisch
+  DIAMOND_HELMET: Diamanthelm
+  DIAMOND_HOE: Diamanthacke
+  DIAMOND_HORSE_ARMOR: Diamantener Rossharnisch
+  DIAMOND_LEGGINGS: Diamantbeinschutz
+  DIAMOND_ORE: Diamanterz
+  DIAMOND_PICKAXE: Diamantspitzhacke
+  DIAMOND_SHOVEL: Diamantschaufel
+  DIAMOND_SWORD: Diamantschwert
+  DIORITE: Diorit
+  DIRT: Erde
+  DISPENSER: Werfer
+  DOLPHIN_SPAWN_EGG: Delfin-Spawn-Ei
+  DONKEY_SPAWN_EGG: Esel-Spawn-Ei
+  DRAGON_BREATH: Drachenatem
+  DRAGON_EGG: Drachenei
+  DRAGON_HEAD: Drachenkopf
+  DRAGON_WALL_HEAD: Drachenkopf
+  DRIED_KELP: Getrockneter Seetang
+  DRIED_KELP_BLOCK: Getrockneter Seetangblock
+  DROPPER: Spender
+  DROWNED_SPAWN_EGG: Ertrunkenen-Spawn-Ei
+  EGG: Ei
+  ELDER_GUARDIAN_SPAWN_EGG: Großwächter-Spawn-Ei
+  ELYTRA: Elytren
+  EMERALD: Smaragd
+  EMERALD_BLOCK: Smaragdblock
+  EMERALD_ORE: Smaragderz
+  ENCHANTED_BOOK: Verzaubertes Buch
+  ENCHANTED_GOLDEN_APPLE: Verzauberter goldener Apfel
+  ENCHANTING_TABLE: Zaubertisch
+  ENDERMAN_SPAWN_EGG: Enderman-Spawn-Ei
+  ENDERMITE_SPAWN_EGG: Endermiten-Spawn-Ei
+  ENDER_CHEST: Endertruhe
+  ENDER_EYE: Enderauge
+  ENDER_PEARL: Enderperle
+  END_CRYSTAL: Enderkristall
+  END_GATEWAY: Endtransitportal
+  END_PORTAL: Endportal
+  END_PORTAL_FRAME: Endportalrahmen
+  END_ROD: Endstab
+  END_STONE: Endstein
+  END_STONE_BRICKS: Endsteinziegel
+  EVOKER_SPAWN_EGG: Magier-Spawn-Ei
+  EXPERIENCE_BOTTLE: Erfahrungsfläschchen
+  FARMLAND: Ackerboden
+  FEATHER: Feder
+  FERMENTED_SPIDER_EYE: Fermentiertes Spinnenauge
+  FERN: Farn
+  FILLED_MAP: Karte
+  FIRE: Feuer
+  FIREWORK_ROCKET: Feuerwerksrakete
+  FIREWORK_STAR: Feuerwerksstern
+  FIRE_CHARGE: Feuerkugel
+  FIRE_CORAL: Feuerkoralle
+  FIRE_CORAL_BLOCK: Feuerkorallenblock
+  FIRE_CORAL_FAN: Feuerkorallenfächer
+  FIRE_CORAL_WALL_FAN: Feuerkorallenwandfächer
+  FISHING_ROD: Angel
+  FLINT: Feuerstein
+  FLINT_AND_STEEL: Feuerzeug
+  FLOWER_POT: Blumentopf
+  FROSTED_ICE: Brüchiges Eis
+  FURNACE: Ofen
+  FURNACE_MINECART: Ofenlore
+  GHAST_SPAWN_EGG: Ghast-Spawn-Ei
+  GHAST_TEAR: Ghast-Träne
+  GLASS: Glas
+  GLASS_BOTTLE: Glasflasche
+  GLASS_PANE: Glasscheibe
+  GLISTERING_MELON_SLICE: Glitzernde Melonenscheibe
+  GLOWSTONE: Leuchtstein
+  GLOWSTONE_DUST: Leuchtsteinstaub
+  GOLDEN_APPLE: Goldener Apfel
+  GOLDEN_AXE: Goldaxt
+  GOLDEN_BOOTS: Goldstiefel
+  GOLDEN_CARROT: Goldene Karotte
+  GOLDEN_CHESTPLATE: Goldharnisch
+  GOLDEN_HELMET: Goldhelm
+  GOLDEN_HOE: Goldhacke
+  GOLDEN_HORSE_ARMOR: Goldener Rossharnisch
+  GOLDEN_LEGGINGS: Goldbeinschutz
+  GOLDEN_PICKAXE: Goldspitzhacke
+  GOLDEN_SHOVEL: Goldschaufel
+  GOLDEN_SWORD: Goldschwert
+  GOLD_BLOCK: Goldblock
+  GOLD_INGOT: Goldbarren
+  GOLD_NUGGET: Goldklumpen
+  GOLD_ORE: Golderz
+  GRANITE: Granit
+  GRASS: Grasblock
+  GRASS_BLOCK: Grasblock
+  GRAVEL: Kies
+  GRAY_BANNER: Graues Banner
+  GRAY_BED: Graues Bett
+  GRAY_CARPET: Grauer Teppich
+  GRAY_CONCRETE: Grauer Beton
+  GRAY_CONCRETE_POWDER: Grauer Trockenbeton
+  GRAY_DYE: Grauer Farbstoff
+  GRAY_GLAZED_TERRACOTTA: Graue glasierte Keramik
+  GRAY_SHULKER_BOX: Graue Shulker-Kiste
+  GRAY_STAINED_GLASS: Graues Glas
+  GRAY_STAINED_GLASS_PANE: Graue Glasscheibe
+  GRAY_TERRACOTTA: Graue Keramik
+  GRAY_WALL_BANNER: Graues Banner
+  GRAY_WOOL: Graue Wolle
+  GREEN_BANNER: Grünes Banner
+  GREEN_BED: Grünes Bett
+  GREEN_CARPET: Grüner Teppich
+  GREEN_CONCRETE: Grüner Beton
+  GREEN_CONCRETE_POWDER: Grüner Trockenbeton
+  GREEN_GLAZED_TERRACOTTA: Grüne glasierte Keramik
+  GREEN_SHULKER_BOX: Grüne Shulker-Kiste
+  GREEN_STAINED_GLASS: Grünes Glas
+  GREEN_STAINED_GLASS_PANE: Grüne Glasscheibe
+  GREEN_TERRACOTTA: Grüne Keramik
+  GREEN_WALL_BANNER: Grünes Banner
+  GREEN_WOOL: Grüne Wolle
+  GUARDIAN_SPAWN_EGG: Wächter-Spawn-Ei
+  GUNPOWDER: Schwarzpulver
+  HAY_BLOCK: Strohballen
+  HEART_OF_THE_SEA: Herz des Meeres
+  HEAVY_WEIGHTED_PRESSURE_PLATE: Grobwägeplatte
+  HOPPER: Trichter
+  HOPPER_MINECART: Trichterlore
+  HORN_CORAL: Geweihkoralle
+  HORN_CORAL_BLOCK: Geweihkorallenblock
+  HORN_CORAL_FAN: Geweihkorallenfächer
+  HORN_CORAL_WALL_FAN: Geweihkorallenwandfächer
+  HORSE_SPAWN_EGG: Pferde-Spawn-Ei
+  HUSK_SPAWN_EGG: Wüstenzombie-Spawn-Ei
+  ICE: Eis
+  INFESTED_CHISELED_STONE_BRICKS: Befallene gemeißelte Steinziegel
+  INFESTED_COBBLESTONE: Befallener Bruchstein
+  INFESTED_CRACKED_STONE_BRICKS: Befallene rissige Steinziegel
+  INFESTED_MOSSY_STONE_BRICKS: Befallene bemooste Steinziegel
+  INFESTED_STONE: Befallener Stein
+  INFESTED_STONE_BRICKS: Befallene Steinziegel
+  INK_SAC: Tintenbeutel
+  IRON_AXE: Eisenaxt
+  IRON_BARS: Eisengitter
+  IRON_BLOCK: Eisenblock
+  IRON_BOOTS: Eisenstiefel
+  IRON_CHESTPLATE: Eisenharnisch
+  IRON_DOOR: Eisentür
+  IRON_HELMET: Eisenhelm
+  IRON_HOE: Eisenhacke
+  IRON_HORSE_ARMOR: Eiserner Rossharnisch
+  IRON_INGOT: Eisenbarren
+  IRON_LEGGINGS: Eisenbeinschutz
+  IRON_NUGGET: Eisenklumpen
+  IRON_ORE: Eisenerz
+  IRON_PICKAXE: Eisenspitzhacke
+  IRON_SHOVEL: Eisenschaufel
+  IRON_SWORD: Eisenschwert
+  IRON_TRAPDOOR: Eisenfalltür
+  ITEM_FRAME: Rahmen
+  JACK_O_LANTERN: Kürbislaterne
+  JUKEBOX: Plattenspieler
+  JUNGLE_BOAT: Tropenholzboot
+  JUNGLE_BUTTON: Tropenholzknopf
+  JUNGLE_DOOR: Tropenholztür
+  JUNGLE_FENCE: Tropenholzzaun
+  JUNGLE_FENCE_GATE: Tropenholzzauntor
+  JUNGLE_LEAVES: Tropenbaumlaub
+  JUNGLE_LOG: Tropenbaumstamm
+  JUNGLE_PLANKS: Tropenholzbretter
+  JUNGLE_PRESSURE_PLATE: Tropenholzdruckplatte
+  JUNGLE_SAPLING: Tropenbaumsetzling
+  JUNGLE_SLAB: Tropenholzstufe
+  JUNGLE_STAIRS: Tropenholztreppe
+  JUNGLE_TRAPDOOR: Tropenholzfalltür
+  JUNGLE_WOOD: Tropenholz
+  KELP: Seetang
+  KELP_PLANT: Seetangstängel
+  KNOWLEDGE_BOOK: Buch des Wissens
+  LADDER: Leiter
+  LAPIS_BLOCK: Lapislazuliblock
+  LAPIS_LAZULI: Lapislazuli
+  LAPIS_ORE: Lapislazulierz
+  LARGE_FERN: Großer Farn
+  LAVA: Lava
+  LAVA_BUCKET: Lavaeimer
+  LEAD: Leine
+  LEATHER: Leder
+  LEATHER_BOOTS: Lederstiefel
+  LEATHER_CHESTPLATE: Lederjacke
+  LEATHER_HELMET: Lederkappe
+  LEATHER_LEGGINGS: Lederhose
+  LEVER: Hebel
+  LIGHT_BLUE_BANNER: Hellblaues Banner
+  LIGHT_BLUE_BED: Hellblaues Bett
+  LIGHT_BLUE_CARPET: Hellblauer Teppich
+  LIGHT_BLUE_CONCRETE: Hellblauer Beton
+  LIGHT_BLUE_CONCRETE_POWDER: Hellblauer Trockenbeton
+  LIGHT_BLUE_DYE: Hellblauer Farbstoff
+  LIGHT_BLUE_GLAZED_TERRACOTTA: Hellblaue glasierte Keramik
+  LIGHT_BLUE_SHULKER_BOX: Hellblaue Shulker-Kiste
+  LIGHT_BLUE_STAINED_GLASS: Hellblaues Glas
+  LIGHT_BLUE_STAINED_GLASS_PANE: Hellblaue Glasscheibe
+  LIGHT_BLUE_TERRACOTTA: Hellblaue Keramik
+  LIGHT_BLUE_WALL_BANNER: Hellblaues Banner
+  LIGHT_BLUE_WOOL: Hellblaue Wolle
+  LIGHT_GRAY_BANNER: Hellgraues Banner
+  LIGHT_GRAY_BED: Hellgraues Bett
+  LIGHT_GRAY_CARPET: Hellgrauer Teppich
+  LIGHT_GRAY_CONCRETE: Hellgrauer Beton
+  LIGHT_GRAY_CONCRETE_POWDER: Hellgrauer Trockenbeton
+  LIGHT_GRAY_DYE: Hellgrauer Farbstoff
+  LIGHT_GRAY_GLAZED_TERRACOTTA: Hellgraue glasierte Keramik
+  LIGHT_GRAY_SHULKER_BOX: Hellgraue Shulker-Kiste
+  LIGHT_GRAY_STAINED_GLASS: Hellgraues Glas
+  LIGHT_GRAY_STAINED_GLASS_PANE: Hellgraue Glasscheibe
+  LIGHT_GRAY_TERRACOTTA: Hellgraue Keramik
+  LIGHT_GRAY_WALL_BANNER: Hellgraues Banner
+  LIGHT_GRAY_WOOL: Hellgraue Wolle
+  LIGHT_WEIGHTED_PRESSURE_PLATE: Feinwägeplatte
+  LILAC: Flieder
+  LILY_PAD: Seerosenblatt
+  LIME_BANNER: Hellgrünes Banner
+  LIME_BED: Hellgrünes Bett
+  LIME_CARPET: Hellgrüner Teppich
+  LIME_CONCRETE: Hellgrüner Beton
+  LIME_CONCRETE_POWDER: Hellgrüner Trockenbeton
+  LIME_DYE: Hellgrüner Farbstoff
+  LIME_GLAZED_TERRACOTTA: Hellgrüne glasierte Keramik
+  LIME_SHULKER_BOX: Hellgrüne Shulker-Kiste
+  LIME_STAINED_GLASS: Hellgrünes Glas
+  LIME_STAINED_GLASS_PANE: Hellgrüne Glasscheibe
+  LIME_TERRACOTTA: Hellgrüne Keramik
+  LIME_WALL_BANNER: Hellgrünes Banner
+  LIME_WOOL: Hellgrüne Wolle
+  LINGERING_POTION: Verweiltrank
+  LLAMA_SPAWN_EGG: Lama-Spawn-Ei
+  MAGENTA_BANNER: Magenta Banner
+  MAGENTA_BED: Magenta Bett
+  MAGENTA_CARPET: Magenta Teppich
+  MAGENTA_CONCRETE: Magenta Beton
+  MAGENTA_CONCRETE_POWDER: Magenta Trockenbeton
+  MAGENTA_DYE: Magenta Farbstoff
+  MAGENTA_GLAZED_TERRACOTTA: Magenta glasierte Keramik
+  MAGENTA_SHULKER_BOX: Magenta Shulker-Kiste
+  MAGENTA_STAINED_GLASS: Magenta Glas
+  MAGENTA_STAINED_GLASS_PANE: Magenta Glasscheibe
+  MAGENTA_TERRACOTTA: Magenta Keramik
+  MAGENTA_WALL_BANNER: Magenta Banner
+  MAGENTA_WOOL: Magenta Wolle
+  MAGMA_BLOCK: Magmablock
+  MAGMA_CREAM: Magmacreme
+  MAGMA_CUBE_SPAWN_EGG: Magmawürfel-Spawn-Ei
+  MAP: Leere Karte
+  MELON: Melone
+  MELON_SEEDS: Melonenkerne
+  MELON_SLICE: Melonenscheibe
+  MELON_STEM: Melonenpflanze
+  MILK_BUCKET: Milcheimer
+  MINECART: Lore
+  MOOSHROOM_SPAWN_EGG: Mooshroom-Spawn-Ei
+  MOSSY_COBBLESTONE: Bemooster Bruchstein
+  MOSSY_COBBLESTONE_WALL: Bemooste Bruchsteinmauer
+  MOSSY_STONE_BRICKS: Bemooste Steinziegel
+  MOVING_PISTON: Bewegter Block
+  MULE_SPAWN_EGG: Maultier-Spawn-Ei
+  MUSHROOM_STEM: Pilzstiel
+  MUSHROOM_STEW: Pilzsuppe
+  MUSIC_DISC_11: Schallplatte
+  MUSIC_DISC_13: Schallplatte
+  MUSIC_DISC_BLOCKS: Schallplatte
+  MUSIC_DISC_CAT: Schallplatte
+  MUSIC_DISC_CHIRP: Schallplatte
+  MUSIC_DISC_FAR: Schallplatte
+  MUSIC_DISC_MALL: Schallplatte
+  MUSIC_DISC_MELLOHI: Schallplatte
+  MUSIC_DISC_STAL: Schallplatte
+  MUSIC_DISC_STRAD: Schallplatte
+  MUSIC_DISC_WAIT: Schallplatte
+  MUSIC_DISC_WARD: Schallplatte
+  MUTTON: Rohes Hammelfleisch
+  MYCELIUM: Myzel
+  NAME_TAG: Namensschild
+  NAUTILUS_SHELL: Nautilusschale
+  NETHERRACK: Netherrack
+  NETHER_BRICK: Netherziegel
+  NETHER_BRICKS: Netherziegel
+  NETHER_BRICK_FENCE: Netherziegelzaun
+  NETHER_BRICK_SLAB: Netherziegelstufe
+  NETHER_BRICK_STAIRS: Netherziegeltreppe
+  NETHER_PORTAL: Netherportal
+  NETHER_QUARTZ_ORE: Netherquarzerz
+  NETHER_STAR: Netherstern
+  NETHER_WART: Netherwarze
+  NETHER_WART_BLOCK: Netherwarzenblock
+  NOTE_BLOCK: Notenblock
+  OAK_BOAT: Eichenholzboot
+  OAK_BUTTON: Eichenholzknopf
+  OAK_DOOR: Eichenholztür
+  OAK_FENCE: Eichenholzzaun
+  OAK_FENCE_GATE: Eichenholzzauntor
+  OAK_LEAVES: Eichenlaub
+  OAK_LOG: Eichenstamm
+  OAK_PLANKS: Eichenholzbretter
+  OAK_PRESSURE_PLATE: Eichenholzdruckplatte
+  OAK_SAPLING: Eichensetzling
+  OAK_SLAB: Eichenholzstufe
+  OAK_STAIRS: Eichenholztreppe
+  OAK_TRAPDOOR: Eichenholzfalltür
+  OAK_WOOD: Eichenholz
+  OBSERVER: Beobachter
+  OBSIDIAN: Obsidian
+  OCELOT_SPAWN_EGG: Ozelot-Spawn-Ei
+  ORANGE_BANNER: Oranges Banner
+  ORANGE_BED: Oranges Bett
+  ORANGE_CARPET: Oranger Teppich
+  ORANGE_CONCRETE: Oranger Beton
+  ORANGE_CONCRETE_POWDER: Oranger Trockenbeton
+  ORANGE_DYE: Oranger Farbstoff
+  ORANGE_GLAZED_TERRACOTTA: Orange glasierte Keramik
+  ORANGE_SHULKER_BOX: Orange Shulker-Kiste
+  ORANGE_STAINED_GLASS: Oranges Glas
+  ORANGE_STAINED_GLASS_PANE: Orange Glasscheibe
+  ORANGE_TERRACOTTA: Orange Keramik
+  ORANGE_TULIP: Orange Tulpe
+  ORANGE_WALL_BANNER: Oranges Banner
+  ORANGE_WOOL: Orange Wolle
+  OXEYE_DAISY: Margerite
+  PACKED_ICE: Packeis
+  PAINTING: Gemälde
+  PAPER: Papier
+  PARROT_SPAWN_EGG: Papageien-Spawn-Ei
+  PEONY: Pfingstrose
+  PETRIFIED_OAK_SLAB: Versteinerte Eichenholzstufe
+  PHANTOM_MEMBRANE: Phantomhaut
+  PHANTOM_SPAWN_EGG: Phantom-Spawn-Ei
+  PIG_SPAWN_EGG: Schweine-Spawn-Ei
+  PINK_BANNER: Rosa Banner
+  PINK_BED: Rosa Bett
+  PINK_CARPET: Rosa Teppich
+  PINK_CONCRETE: Rosa Beton
+  PINK_CONCRETE_POWDER: Rosa Trockenbeton
+  PINK_DYE: Rosa Farbstoff
+  PINK_GLAZED_TERRACOTTA: Rosa glasierte Keramik
+  PINK_SHULKER_BOX: Rosa Shulker-Kiste
+  PINK_STAINED_GLASS: Rosa Glas
+  PINK_STAINED_GLASS_PANE: Rosa Glasscheibe
+  PINK_TERRACOTTA: Rosa Keramik
+  PINK_TULIP: Rosa Tulpe
+  PINK_WALL_BANNER: Rosa Banner
+  PINK_WOOL: Rosa Wolle
+  PISTON: Kolben
+  PISTON_HEAD: Kolbenkopf
+  PLAYER_HEAD: Spielerkopf
+  PLAYER_WALL_HEAD: Spielerkopf
+  PODZOL: Podsol
+  POISONOUS_POTATO: Giftige Kartoffel
+  POLAR_BEAR_SPAWN_EGG: Eisbären-Spawn-Ei
+  POLISHED_ANDESITE: Polierter Andesit
+  POLISHED_DIORITE: Polierter Diorit
+  POLISHED_GRANITE: Polierter Granit
+  POPPED_CHORUS_FRUIT: Geplatzte Chorusfrucht
+  POPPY: Mohn
+  PORKCHOP: Rohes Schweinefleisch
+  POTATO: Kartoffel
+  POTATOES: Kartoffeln
+  POTION: Trank
+  POTTED_ACACIA_SAPLING: Eingetopfter Akaziensetzling
+  POTTED_ALLIUM: Eingetopfter Zierlauch
+  POTTED_AZURE_BLUET: Eingetopftes Porzellansternchen
+  POTTED_BIRCH_SAPLING: Eingetopfter Birkensetzling
+  POTTED_BLUE_ORCHID: Eingetopfte blaue Orchidee
+  POTTED_BROWN_MUSHROOM: Eingetopfter brauner Pilz
+  POTTED_CACTUS: Eingetopfter Kaktus
+  POTTED_DANDELION: Eingetopfter Löwenzahn
+  POTTED_DARK_OAK_SAPLING: Eingetopfter Schwarzeichensetzling
+  POTTED_DEAD_BUSH: Eingetopfter toter Busch
+  POTTED_FERN: Eingetopfter Farn
+  POTTED_JUNGLE_SAPLING: Eingetopfter Tropenbaumsetzling
+  POTTED_OAK_SAPLING: Eingetopfter Eichensetzling
+  POTTED_ORANGE_TULIP: Eingetopfte orange Tulpe
+  POTTED_OXEYE_DAISY: Eingetopfte Margerite
+  POTTED_PINK_TULIP: Eingetopfte rosa Tulpe
+  POTTED_POPPY: Eingetopfter Mohn
+  POTTED_RED_MUSHROOM: Eingetopfter roter Pilz
+  POTTED_RED_TULIP: Eingetopfte rote Tulpe
+  POTTED_SPRUCE_SAPLING: Eingetopfter Fichtensetzling
+  POTTED_WHITE_TULIP: Eingetopfte weiße Tulpe
+  POWERED_RAIL: Antriebsschiene
+  PRISMARINE: Prismarin
+  PRISMARINE_BRICKS: Prismarinziegel
+  PRISMARINE_BRICK_SLAB: Prismarinziegelstufe
+  PRISMARINE_BRICK_STAIRS: Prismarinziegeltreppe
+  PRISMARINE_CRYSTALS: Prismarinkristalle
+  PRISMARINE_SHARD: Prismarinscherbe
+  PRISMARINE_SLAB: Prismarinstufe
+  PRISMARINE_STAIRS: Prismarintreppe
+  PUFFERFISH: Kugelfisch
+  PUFFERFISH_BUCKET: Kugelfischeimer
+  PUFFERFISH_SPAWN_EGG: Kugelfisch-Spawn-Ei
+  PUMPKIN: Kürbis
+  PUMPKIN_PIE: Kürbiskuchen
+  PUMPKIN_SEEDS: Kürbiskerne
+  PUMPKIN_STEM: Kürbispflanze
+  PURPLE_BANNER: Violettes Banner
+  PURPLE_BED: Violettes Bett
+  PURPLE_CARPET: Violetter Teppich
+  PURPLE_CONCRETE: Violetter Beton
+  PURPLE_CONCRETE_POWDER: Violetter Trockenbeton
+  PURPLE_DYE: Violetter Farbstoff
+  PURPLE_GLAZED_TERRACOTTA: Violette glasierte Keramik
+  PURPLE_SHULKER_BOX: Violette Shulker-Kiste
+  PURPLE_STAINED_GLASS: Violettes Glas
+  PURPLE_STAINED_GLASS_PANE: Violette Glasscheibe
+  PURPLE_TERRACOTTA: Violette Keramik
+  PURPLE_WALL_BANNER: Violettes Banner
+  PURPLE_WOOL: Violette Wolle
+  PURPUR_BLOCK: Purpurblock
+  PURPUR_PILLAR: Purpursäule
+  PURPUR_SLAB: Purpurstufe
+  PURPUR_STAIRS: Purpurtreppe
+  QUARTZ: Netherquarz
+  QUARTZ_BLOCK: Quarzblock
+  QUARTZ_PILLAR: Quarzsäule
+  QUARTZ_SLAB: Quarzstufe
+  QUARTZ_STAIRS: Quarztreppe
+  RABBIT: Rohes Kaninchen
+  RABBIT_FOOT: Hasenpfote
+  RABBIT_HIDE: Kaninchenfell
+  RABBIT_SPAWN_EGG: Kaninchen-Spawn-Ei
+  RABBIT_STEW: Kaninchenragout
+  RAIL: Schiene
+  REDSTONE: Redstone-Staub
+  REDSTONE_BLOCK: Redstone-Block
+  REDSTONE_LAMP: Redstone-Lampe
+  REDSTONE_ORE: Redstone-Erz
+  REDSTONE_TORCH: Redstone-Fackel
+  REDSTONE_WALL_TORCH: Redstone-Fackel
+  REDSTONE_WIRE: Redstone-Leitung
+  RED_BANNER: Rotes Banner
+  RED_BED: Rotes Bett
+  RED_CARPET: Roter Teppich
+  RED_CONCRETE: Roter Beton
+  RED_CONCRETE_POWDER: Roter Trockenbeton
+  RED_GLAZED_TERRACOTTA: Rote glasierte Keramik
+  RED_MUSHROOM: Roter Pilz
+  RED_MUSHROOM_BLOCK: Roter Pilzblock
+  RED_NETHER_BRICKS: Rote Netherziegel
+  RED_SAND: Roter Sand
+  RED_SANDSTONE: Roter Sandstein
+  RED_SANDSTONE_SLAB: Rote Sandsteinstufe
+  RED_SANDSTONE_STAIRS: Rote Sandsteintreppe
+  RED_SHULKER_BOX: Rote Shulker-Kiste
+  RED_STAINED_GLASS: Rotes Glas
+  RED_STAINED_GLASS_PANE: Rote Glasscheibe
+  RED_TERRACOTTA: Rote Keramik
+  RED_TULIP: Rote Tulpe
+  RED_WALL_BANNER: Rotes Banner
+  RED_WOOL: Rote Wolle
+  REPEATER: Redstone-Verstärker
+  REPEATING_COMMAND_BLOCK: Wiederhol-Befehlsblock
+  ROSE_BUSH: Rosenstrauch
+  ROSE_RED: Roter Farbstoff
+  ROTTEN_FLESH: Verrottetes Fleisch
+  SADDLE: Sattel
+  SALMON: Roher Lachs
+  SALMON_BUCKET: Lachseimer
+  SALMON_SPAWN_EGG: Lachs-Spawn-Ei
+  SAND: Sand
+  SANDSTONE: Sandstein
+  SANDSTONE_SLAB: Sandsteinstufe
+  SANDSTONE_STAIRS: Sandsteintreppe
+  SCUTE: Hornschild
+  SEAGRASS: Seegras
+  SEA_LANTERN: Seelaterne
+  SEA_PICKLE: Meeresgurke
+  SHEARS: Schere
+  SHEEP_SPAWN_EGG: Schafs-Spawn-Ei
+  SHIELD: Schild
+  SHULKER_BOX: Shulker-Kiste
+  SHULKER_SHELL: Shulker-Schale
+  SHULKER_SPAWN_EGG: Shulker-Spawn-Ei
+  SILVERFISH_SPAWN_EGG: Silberfischchen-Spawn-Ei
+  SKELETON_HORSE_SPAWN_EGG: Skelettpferde-Spawn-Ei
+  SKELETON_SKULL: Skelettschädel
+  SKELETON_SPAWN_EGG: Skelett-Spawn-Ei
+  SKELETON_WALL_SKULL: Skelettschädel
+  SLIME_BALL: Schleimball
+  SLIME_BLOCK: Schleimblock
+  SLIME_SPAWN_EGG: Schleim-Spawn-Ei
+  SMOOTH_QUARTZ: Glatter Quarzblock
+  SMOOTH_RED_SANDSTONE: Glatter roter Sandstein
+  SMOOTH_SANDSTONE: Glatter Sandstein
+  SMOOTH_STONE: Glatter Stein
+  SNOW: Schnee
+  SNOWBALL: Schneeball
+  SNOW_BLOCK: Schneeblock
+  SOUL_SAND: Seelensand
+  SPAWNER: Spawner
+  SPECTRAL_ARROW: Spektralpfeil
+  SPIDER_EYE: Spinnenauge
+  SPIDER_SPAWN_EGG: Spinnen-Spawn-Ei
+  SPLASH_POTION: Wurftrank
+  SPONGE: Schwamm
+  SPRUCE_BOAT: Fichtenholzboot
+  SPRUCE_BUTTON: Fichtenholzknopf
+  SPRUCE_DOOR: Fichtenholztür
+  SPRUCE_FENCE: Fichtenholzzaun
+  SPRUCE_FENCE_GATE: Fichtenholzzauntor
+  SPRUCE_LEAVES: Fichtennadeln
+  SPRUCE_LOG: Fichtenstamm
+  SPRUCE_PLANKS: Fichtenholzbretter
+  SPRUCE_PRESSURE_PLATE: Fichtenholzdruckplatte
+  SPRUCE_SAPLING: Fichtensetzling
+  SPRUCE_SLAB: Fichtenholzstufe
+  SPRUCE_STAIRS: Fichtenholztreppe
+  SPRUCE_TRAPDOOR: Fichtenholzfalltür
+  SPRUCE_WOOD: Fichtenholz
+  SQUID_SPAWN_EGG: Tintenfisch-Spawn-Ei
+  STICK: Stock
+  STICKY_PISTON: Klebriger Kolben
+  STONE: Stein
+  STONE_AXE: Steinaxt
+  STONE_BRICKS: Steinziegel
+  STONE_BRICK_SLAB: Steinziegelstufe
+  STONE_BRICK_STAIRS: Steinziegeltreppe
+  STONE_BUTTON: Steinknopf
+  STONE_HOE: Steinhacke
+  STONE_PICKAXE: Steinspitzhacke
+  STONE_PRESSURE_PLATE: Steindruckplatte
+  STONE_SHOVEL: Steinschaufel
+  STONE_SLAB: Steinstufe
+  STONE_SWORD: Steinschwert
+  STRAY_SPAWN_EGG: Eiswanderer-Spawn-Ei
+  STRING: Faden
+  STRIPPED_ACACIA_LOG: Entrindeter Akazienstamm
+  STRIPPED_ACACIA_WOOD: Entrindetes Akazienholz
+  STRIPPED_BIRCH_LOG: Entrindeter Birkenstamm
+  STRIPPED_BIRCH_WOOD: Entrindetes Birkenholz
+  STRIPPED_DARK_OAK_LOG: Entrindeter Schwarzeichenstamm
+  STRIPPED_DARK_OAK_WOOD: Entrindetes Schwarzeichenholz
+  STRIPPED_JUNGLE_LOG: Entrindeter Tropenbaumstamm
+  STRIPPED_JUNGLE_WOOD: Entrindetes Tropenholz
+  STRIPPED_OAK_LOG: Entrindeter Eichenstamm
+  STRIPPED_OAK_WOOD: Entrindetes Eichenholz
+  STRIPPED_SPRUCE_LOG: Entrindeter Fichtenstamm
+  STRIPPED_SPRUCE_WOOD: Entrindetes Fichtenholz
+  STRUCTURE_BLOCK: Konstruktionsblock
+  STRUCTURE_VOID: Konstruktionsleere
+  SUGAR: Zucker
+  SUGAR_CANE: Zuckerrohr
+  SUNFLOWER: Sonnenblume
+  TALL_GRASS: Hohes Gras
+  TALL_SEAGRASS: Hohes Seegras
+  TERRACOTTA: Keramik
+  TIPPED_ARROW: Getränkter Pfeil
+  TNT: TNT
+  TNT_MINECART: TNT-Lore
+  TORCH: Fackel
+  TOTEM_OF_UNDYING: Totem der Unsterblichkeit
+  TRAPPED_CHEST: Redstone-Truhe
+  TRIDENT: Dreizack
+  TRIPWIRE: Stolperdraht
+  TRIPWIRE_HOOK: Haken
+  TROPICAL_FISH: Tropenfisch
+  TROPICAL_FISH_BUCKET: Tropenfischeimer
+  TROPICAL_FISH_SPAWN_EGG: Tropenfisch-Spawn-Ei
+  TUBE_CORAL: Orgelkoralle
+  TUBE_CORAL_BLOCK: Orgelkorallenblock
+  TUBE_CORAL_FAN: Orgelkorallenfächer
+  TUBE_CORAL_WALL_FAN: Orgelkorallenwandfächer
+  TURTLE_EGG: Schildkrötenei
+  TURTLE_HELMET: Schildkrötenpanzer
+  TURTLE_SPAWN_EGG: Schildkröten-Spawn-Ei
+  VEX_SPAWN_EGG: Plagegeister-Spawn-Ei
+  VILLAGER_SPAWN_EGG: Dorfbewohner-Spawn-Ei
+  VINDICATOR_SPAWN_EGG: Diener-Spawn-Ei
+  VINE: Ranken
+  VOID_AIR: Leerenluft
+  WALL_SIGN: Akazienholzschild
+  WALL_TORCH: Fackel
+  WATER: Wasser
+  WATER_BUCKET: Wassereimer
+  WET_SPONGE: Nasser Schwamm
+  WHEAT: Weizen
+  WHEAT_SEEDS: Weizenkörner
+  WHITE_BANNER: Weißes Banner
+  WHITE_BED: Weißes Bett
+  WHITE_CARPET: Weißer Teppich
+  WHITE_CONCRETE: Weißer Beton
+  WHITE_CONCRETE_POWDER: Weißer Trockenbeton
+  WHITE_GLAZED_TERRACOTTA: Weiße glasierte Keramik
+  WHITE_SHULKER_BOX: Weiße Shulker-Kiste
+  WHITE_STAINED_GLASS: Weißes Glas
+  WHITE_STAINED_GLASS_PANE: Weiße Glasscheibe
+  WHITE_TERRACOTTA: Weiße Keramik
+  WHITE_TULIP: Weiße Tulpe
+  WHITE_WALL_BANNER: Weißes Banner
+  WHITE_WOOL: Weiße Wolle
+  WITCH_SPAWN_EGG: Hexen-Spawn-Ei
+  WITHER_SKELETON_SKULL: Wither-Skelettschädel
+  WITHER_SKELETON_SPAWN_EGG: Wither-Skelett-Spawn-Ei
+  WITHER_SKELETON_WALL_SKULL: Wither-Skelettschädel
+  WOLF_SPAWN_EGG: Wolfs-Spawn-Ei
+  WOODEN_AXE: Holzaxt
+  WOODEN_HOE: Holzhacke
+  WOODEN_PICKAXE: Holzspitzhacke
+  WOODEN_SHOVEL: Holzschaufel
+  WOODEN_SWORD: Holzschwert
+  WRITABLE_BOOK: Buch und Feder
+  WRITTEN_BOOK: Beschriebenes Buch
+  YELLOW_BANNER: Gelbes Banner
+  YELLOW_BED: Gelbes Bett
+  YELLOW_CARPET: Gelber Teppich
+  YELLOW_CONCRETE: Gelber Beton
+  YELLOW_CONCRETE_POWDER: Gelber Trockenbeton
+  YELLOW_GLAZED_TERRACOTTA: Gelbe glasierte Keramik
+  YELLOW_SHULKER_BOX: Gelbe Shulker-Kiste
+  YELLOW_STAINED_GLASS: Gelbes Glas
+  YELLOW_STAINED_GLASS_PANE: Gelbe Glasscheibe
+  YELLOW_TERRACOTTA: Gelbe Keramik
+  YELLOW_WALL_BANNER: Gelbes Banner
+  YELLOW_WOOL: Gelbe Wolle
+  ZOMBIE_HEAD: Zombiekopf
+  ZOMBIE_HORSE_SPAWN_EGG: Zombiepferde-Spawn-Ei
+  ZOMBIE_PIGMAN_SPAWN_EGG: Zombifizierter-Piglin-Spawn-Ei
+  ZOMBIE_SPAWN_EGG: Zombie-Spawn-Ei
+  ZOMBIE_VILLAGER_SPAWN_EGG: Zombiedorfbewohner-Spawn-Ei
+  ZOMBIE_WALL_HEAD: Zombiekopf
+  ACACIA_SIGN: Akazienholzschild
+  ACACIA_WALL_SIGN: Akazienholzschild
+  ANDESITE_SLAB: Andesitstufe
+  ANDESITE_STAIRS: Andesittreppe
+  ANDESITE_WALL: Andesitmauer
+  BAMBOO: Bambus
+  BAMBOO_SAPLING: Bambussprössling
+  BARREL: Fass
+  BELL: Glocke
+  BIRCH_SIGN: Birkenholzschild
+  BIRCH_WALL_SIGN: Birkenholzschild
+  BLACK_DYE: Schwarzer Farbstoff
+  BLAST_FURNACE: Schmelzofen
+  BLUE_DYE: Blauer Farbstoff
+  BRICK_WALL: Ziegelsteinmauer
+  BROWN_DYE: Brauner Farbstoff
+  CAMPFIRE: Lagerfeuer
+  CARTOGRAPHY_TABLE: Kartentisch
+  CAT_SPAWN_EGG: Katzen-Spawn-Ei
+  CORNFLOWER: Kornblume
+  CREEPER_BANNER_PATTERN: Bannervorlage
+  CROSSBOW: Armbrust
+  CUT_RED_SANDSTONE_SLAB: Geschnittene rote Sandsteinstufe
+  CUT_SANDSTONE_SLAB: Geschnittene Sandsteinstufe
+  DARK_OAK_SIGN: Schwarzeichenholzschild
+  DARK_OAK_WALL_SIGN: Schwarzeichenholzschild
+  DIORITE_SLAB: Dioritstufe
+  DIORITE_STAIRS: Diorittreppe
+  DIORITE_WALL: Dioritmauer
+  END_STONE_BRICK_SLAB: Endsteinziegelstufe
+  END_STONE_BRICK_STAIRS: Endsteinziegeltreppe
+  END_STONE_BRICK_WALL: Endsteinziegelmauer
+  FLETCHING_TABLE: Bognertisch
+  FLOWER_BANNER_PATTERN: Bannervorlage
+  FOX_SPAWN_EGG: Fuchs-Spawn-Ei
+  GLOBE_BANNER_PATTERN: Bannervorlage
+  GRANITE_SLAB: Granitstufe
+  GRANITE_STAIRS: Granittreppe
+  GRANITE_WALL: Granitmauer
+  GREEN_DYE: Grüner Farbstoff
+  GRINDSTONE: Schleifstein
+  JIGSAW: Verbundblock
+  JUNGLE_SIGN: Tropenholzschild
+  JUNGLE_WALL_SIGN: Tropenholzschild
+  LANTERN: Laterne
+  LEATHER_HORSE_ARMOR: Lederner Rossharnisch
+  LECTERN: Lesepult
+  LILY_OF_THE_VALLEY: Maiglöckchen
+  LOOM: Webstuhl
+  MOJANG_BANNER_PATTERN: Bannervorlage
+  MOSSY_COBBLESTONE_SLAB: Bemooste Bruchsteinstufe
+  MOSSY_COBBLESTONE_STAIRS: Bemooste Bruchsteintreppe
+  MOSSY_STONE_BRICK_SLAB: Bemooste Steinziegelstufe
+  MOSSY_STONE_BRICK_STAIRS: Bemooste Steinziegeltreppe
+  MOSSY_STONE_BRICK_WALL: Bemooste Steinziegelmauer
+  NETHER_BRICK_WALL: Netherziegelmauer
+  OAK_SIGN: Eichenholzschild
+  OAK_WALL_SIGN: Eichenholzschild
+  PANDA_SPAWN_EGG: Panda-Spawn-Ei
+  PILLAGER_SPAWN_EGG: Plünderer-Spawn-Ei
+  POLISHED_ANDESITE_STAIRS: Polierte Andesittreppe
+  POLISHED_ANDESITE_SLAB: Polierte Andesitstufe
+  POLISHED_DIORITE_SLAB: Polierte Dioritstufe
+  POLISHED_DIORITE_STAIRS: Polierte Diorittreppe
+  POLISHED_GRANITE_SLAB: Polierte Granitstufe
+  POLISHED_GRANITE_STAIRS: Polierte Granittreppe
+  POTTED_BAMBOO: Eingetopfter Bambus
+  POTTED_CORNFLOWER: Eingetopfte Kornblume
+  POTTED_LILY_OF_THE_VALLEY: Eingetopftes Maiglöckchen
+  POTTED_WITHER_ROSE: Eingetopfte Wither-Rose
+  PRISMARINE_WALL: Prismarinmauer
+  RAVAGER_SPAWN_EGG: Verwüster-Spawn-Ei
+  RED_DYE: Roter Farbstoff
+  RED_NETHER_BRICK_SLAB: Rote Netherziegelstufe
+  RED_NETHER_BRICK_STAIRS: Rote Netherziegeltreppe
+  RED_NETHER_BRICK_WALL: Rote Netherziegelmauer
+  RED_SANDSTONE_WALL: Rote Sandsteinmauer
+  SANDSTONE_WALL: Sandsteinmauer
+  SCAFFOLDING: Gerüst
+  SKULL_BANNER_PATTERN: Bannervorlage
+  SMITHING_TABLE: Schmiedetisch
+  SMOKER: Räucherofen
+  SMOOTH_QUARTZ_SLAB: Glatte Quarzstufe
+  SMOOTH_QUARTZ_STAIRS: Glatte Quarztreppe
+  SMOOTH_RED_SANDSTONE_SLAB: Glatte rote Sandsteinstufe
+  SMOOTH_RED_SANDSTONE_STAIRS: Glatte rote Sandsteintreppe
+  SMOOTH_SANDSTONE_SLAB: Glatte Sandsteinstufe
+  SMOOTH_SANDSTONE_STAIRS: Glatte Sandsteintreppe
+  SMOOTH_STONE_SLAB: Glatte Steinstufe
+  SPRUCE_SIGN: Fichtenholzschild
+  SPRUCE_WALL_SIGN: Fichtenholzschild
+  STONECUTTER: Steinsäge
+  STONE_BRICK_WALL: Steinziegelmauer
+  STONE_STAIRS: Steintreppe
+  SUSPICIOUS_STEW: Seltsame Suppe
+  SWEET_BERRIES: Süßbeeren
+  SWEET_BERRY_BUSH: Süßbeerstrauch
+  TRADER_LLAMA_SPAWN_EGG: Händlerlama-Spawn-Ei
+  WANDERING_TRADER_SPAWN_EGG: Fahrender-Händler-Spawn-Ei
+  WHITE_DYE: Weißer Farbstoff
+  WITHER_ROSE: Wither-Rose
+  YELLOW_DYE: Gelber Farbstoff
+  COMPOSTER: Komposter
+  BEEHIVE: Bienenstock
+  BEE_NEST: Bienennest
+  BEE_SPAWN_EGG: Bienen-Spawn-Ei
+  HONEYCOMB: Honigwabe
+  HONEYCOMB_BLOCK: Honigwabenblock
+  HONEY_BLOCK: Honigblock
+  HONEY_BOTTLE: Honigflasche
+  ANCIENT_DEBRIS: Antiker Schrott
+  BASALT: Basalt
+  BLACKSTONE: Schwarzstein
+  BLACKSTONE_SLAB: Schwarzsteinstufe
+  BLACKSTONE_STAIRS: Schwarzsteintreppe
+  BLACKSTONE_WALL: Schwarzsteinmauer
+  CHAIN: Kette
+  CHISELED_NETHER_BRICKS: Gemeißelte Netherziegel
+  CHISELED_POLISHED_BLACKSTONE: Gemeißelter polierter Schwarzstein
+  CRACKED_NETHER_BRICKS: Rissige Netherziegel
+  CRACKED_POLISHED_BLACKSTONE_BRICKS: Rissige polierte Schwarzsteinziegel
+  CRIMSON_BUTTON: Karmesinknopf
+  CRIMSON_DOOR: Karmesintür
+  CRIMSON_FENCE: Karmesinzaun
+  CRIMSON_FENCE_GATE: Karmesinzauntor
+  CRIMSON_FUNGUS: Karmesinpilz
+  CRIMSON_HYPHAE: Karmesinhyphen
+  CRIMSON_NYLIUM: Karmesin-Nezel
+  CRIMSON_PLANKS: Karmesinbretter
+  CRIMSON_PRESSURE_PLATE: Karmesindruckplatte
+  CRIMSON_ROOTS: Karmesinwurzeln
+  CRIMSON_SIGN: Karmesinschild
+  CRIMSON_SLAB: Karmesinstufe
+  CRIMSON_STAIRS: Karmesintreppe
+  CRIMSON_STEM: Karmesinstiel
+  CRIMSON_TRAPDOOR: Karmesinfalltür
+  CRIMSON_WALL_SIGN: Karmesinschild
+  CRYING_OBSIDIAN: Weinender Obsidian
+  GILDED_BLACKSTONE: Golddurchzogener Schwarzstein
+  HOGLIN_SPAWN_EGG: Hoglin-Spawn-Ei
+  LODESTONE: Leitstein
+  MUSIC_DISC_PIGSTEP: Schallplatte
+  NETHERITE_AXE: Netheritaxt
+  NETHERITE_BLOCK: Netheritblock
+  NETHERITE_BOOTS: Netheritstiefel
+  NETHERITE_CHESTPLATE: Netheritharnisch
+  NETHERITE_HELMET: Netherithelm
+  NETHERITE_HOE: Netherithacke
+  NETHERITE_INGOT: Netheritbarren
+  NETHERITE_LEGGINGS: Netheritbeinschutz
+  NETHERITE_PICKAXE: Netheritspitzhacke
+  NETHERITE_SCRAP: Netheritplatten
+  NETHERITE_SHOVEL: Netheritschaufel
+  NETHERITE_SWORD: Netheritschwert
+  NETHER_GOLD_ORE: Nethergolderz
+  NETHER_SPROUTS: Nethersprossen
+  PIGLIN_BANNER_PATTERN: Bannervorlage
+  PIGLIN_SPAWN_EGG: Piglin-Spawn-Ei
+  POLISHED_BASALT: Polierter Basalt
+  POLISHED_BLACKSTONE: Polierter Schwarzstein
+  POLISHED_BLACKSTONE_BRICKS: Polierte Schwarzsteinziegel
+  POLISHED_BLACKSTONE_BRICK_SLAB: Polierte Schwarzsteinziegelstufe
+  POLISHED_BLACKSTONE_BRICK_STAIRS: Polierte Schwarzsteinziegeltreppe
+  POLISHED_BLACKSTONE_BRICK_WALL: Polierte Schwarzsteinziegelmauer
+  POLISHED_BLACKSTONE_BUTTON: Polierter Schwarzsteinknopf
+  POLISHED_BLACKSTONE_PRESSURE_PLATE: Polierte Schwarzsteindruckplatte
+  POLISHED_BLACKSTONE_SLAB: Polierte Schwarzsteinstufe
+  POLISHED_BLACKSTONE_STAIRS: Polierte Schwarzsteintreppe
+  POLISHED_BLACKSTONE_WALL: Polierte Schwarzsteinmauer
+  POTTED_CRIMSON_FUNGUS: Eingetopfter Karmesinpilz
+  POTTED_CRIMSON_ROOTS: Eingetopfte Karmesinwurzeln
+  POTTED_WARPED_FUNGUS: Eingetopfter Wirrpilz
+  POTTED_WARPED_ROOTS: Eingetopfte Wirrwurzeln
+  QUARTZ_BRICKS: Quarzziegel
+  RESPAWN_ANCHOR: Seelenanker
+  SHROOMLIGHT: Pilzlicht
+  SOUL_CAMPFIRE: Seelenlagerfeuer
+  SOUL_FIRE: Seelenfeuer
+  SOUL_LANTERN: Seelenlaterne
+  SOUL_SOIL: Seelenerde
+  SOUL_TORCH: Seelenfackel
+  SOUL_WALL_TORCH: Seelenfackel
+  STRIDER_SPAWN_EGG: Schreiter-Spawn-Ei
+  STRIPPED_CRIMSON_HYPHAE: Geschälte Karmesinhyphen
+  STRIPPED_CRIMSON_STEM: Geschälter Karmesinstiel
+  STRIPPED_WARPED_HYPHAE: Geschälte Wirrhyphen
+  STRIPPED_WARPED_STEM: Geschälter Wirrstiel
+  TARGET: Zielblock
+  TWISTING_VINES: Zwirbelranken
+  TWISTING_VINES_PLANT: Zwirbelrankenpflanze
+  WARPED_BUTTON: Wirrknopf
+  WARPED_DOOR: Wirrtür
+  WARPED_FENCE: Wirrzaun
+  WARPED_FENCE_GATE: Wirrzauntor
+  WARPED_FUNGUS: Wirrpilz
+  WARPED_FUNGUS_ON_A_STICK: Wirrpilzrute
+  WARPED_HYPHAE: Wirrhyphen
+  WARPED_NYLIUM: Wirr-Nezel
+  WARPED_PLANKS: Wirrbretter
+  WARPED_PRESSURE_PLATE: Wirrdruckplatte
+  WARPED_ROOTS: Wirrwurzeln
+  WARPED_SIGN: Wirrschild
+  WARPED_SLAB: Wirrstufe
+  WARPED_STAIRS: Wirrtreppe
+  WARPED_STEM: Wirrstiel
+  WARPED_TRAPDOOR: Wirrfalltür
+  WARPED_WALL_SIGN: Wirrschild
+  WARPED_WART_BLOCK: Wirrwarzenblock
+  WEEPING_VINES: Trauerranken
+  WEEPING_VINES_PLANT: Trauerrankenpflanze
+  ZOGLIN_SPAWN_EGG: Zoglin-Spawn-Ei
+  ZOMBIFIED_PIGLIN_SPAWN_EGG: Zombifizierter-Piglin-Spawn-Ei
+  PIGLIN_BRUTE_SPAWN_EGG: Piglin-Barbaren-Spawn-Ei
+  AMETHYST_BLOCK: Amethystblock
+  AMETHYST_CLUSTER: Amethysthaufen
+  AMETHYST_SHARD: Amethystscherbe
+  AXOLOTL_BUCKET: Axolotleimer
+  AXOLOTL_SPAWN_EGG: Axolotl-Spawn-Ei
+  AZALEA: Azalee
+  AZALEA_LEAVES: Azaleenlaub
+  BIG_DRIPLEAF: Großes Tropfblatt
+  BIG_DRIPLEAF_STEM: Großer Tropfblattstiel
+  BLACK_CANDLE: Schwarze Kerze
+  BLACK_CANDLE_CAKE: Kuchen mit schwarzer Kerze
+  BLUE_CANDLE: Blaue Kerze
+  BLUE_CANDLE_CAKE: Kuchen mit blauer Kerze
+  BROWN_CANDLE: Braune Kerze
+  BROWN_CANDLE_CAKE: Kuchen mit brauner Kerze
+  BUDDING_AMETHYST: Amethystknospenblock
+  BUNDLE: Bündel
+  CALCITE: Kalzit
+  CANDLE: Kerze
+  CANDLE_CAKE: Kuchen mit Kerze
+  CAVE_VINES: Höhlenranken
+  CAVE_VINES_PLANT: Höhlenrankenpflanze
+  CHISELED_DEEPSLATE: Gemeißelter Tiefenschiefer
+  COBBLED_DEEPSLATE: Bruchtiefenschiefer
+  COBBLED_DEEPSLATE_SLAB: Bruchtiefenschieferstufe
+  COBBLED_DEEPSLATE_STAIRS: Bruchtiefenschiefertreppe
+  COBBLED_DEEPSLATE_WALL: Bruchtiefenschiefermauer
+  COPPER_BLOCK: Kupferblock
+  COPPER_INGOT: Kupferbarren
+  COPPER_ORE: Kupfererz
+  CRACKED_DEEPSLATE_BRICKS: Rissige Tiefenschieferziegel
+  CRACKED_DEEPSLATE_TILES: Rissige Tiefenschieferfliesen
+  CUT_COPPER: Geschnittener Kupferblock
+  CUT_COPPER_SLAB: Geschnittene Kupferstufe
+  CUT_COPPER_STAIRS: Geschnittene Kupfertreppe
+  CYAN_CANDLE: Türkise Kerze
+  CYAN_CANDLE_CAKE: Kuchen mit türkiser Kerze
+  DEEPSLATE: Tiefenschiefer
+  DEEPSLATE_BRICKS: Tiefenschieferziegel
+  DEEPSLATE_BRICK_SLAB: Tiefenschieferziegelstufe
+  DEEPSLATE_BRICK_STAIRS: Tiefenschieferziegeltreppe
+  DEEPSLATE_BRICK_WALL: Tiefenschieferziegelmauer
+  DEEPSLATE_COAL_ORE: Tiefenschiefer-Steinkohle
+  DEEPSLATE_COPPER_ORE: Tiefenschiefer-Kupfererz
+  DEEPSLATE_DIAMOND_ORE: Tiefenschiefer-Diamanterz
+  DEEPSLATE_EMERALD_ORE: Tiefenschiefer-Smaragderz
+  DEEPSLATE_GOLD_ORE: Tiefenschiefer-Golderz
+  DEEPSLATE_IRON_ORE: Tiefenschiefer-Eisenerz
+  DEEPSLATE_LAPIS_ORE: Tiefenschiefer-Lapislazulierz
+  DEEPSLATE_REDSTONE_ORE: Tiefenschiefer-Redstone-Erz
+  DEEPSLATE_TILES: Tiefenschieferfliesen
+  DEEPSLATE_TILE_SLAB: Tiefenschieferfliesenstufe
+  DEEPSLATE_TILE_STAIRS: Tiefenschieferfliesentreppe
+  DEEPSLATE_TILE_WALL: Tiefenschieferfliesenmauer
+  DIRT_PATH: Trampelpfad
+  DRIPSTONE_BLOCK: Tropfsteinblock
+  EXPOSED_COPPER: Angelaufener Kupferblock
+  EXPOSED_CUT_COPPER: Angelaufener geschnittener Kupferblock
+  EXPOSED_CUT_COPPER_SLAB: Angelaufene geschnittene Kupferstufe
+  EXPOSED_CUT_COPPER_STAIRS: Angelaufene geschnittene Kupfertreppe
+  FLOWERING_AZALEA: Blühende Azalee
+  FLOWERING_AZALEA_LEAVES: Blühendes Azaleenlaub
+  GLOW_BERRIES: Leuchtbeeren
+  GLOW_INK_SAC: Leuchttintenbeutel
+  GLOW_ITEM_FRAME: Leuchtrahmen
+  GLOW_LICHEN: Leuchtflechte
+  GLOW_SQUID_SPAWN_EGG: Leuchttintenfisch-Spawn-Ei
+  GOAT_SPAWN_EGG: Ziegen-Spawn-Ei
+  GRAY_CANDLE: Graue Kerze
+  GRAY_CANDLE_CAKE: Kuchen mit grauer Kerze
+  GREEN_CANDLE: Grüne Kerze
+  GREEN_CANDLE_CAKE: Kuchen mit grüner Kerze
+  HANGING_ROOTS: Hängende Wurzeln
+  INFESTED_DEEPSLATE: Befallener Tiefenschiefer
+  LARGE_AMETHYST_BUD: Große Amethystknospe
+  LAVA_CAULDRON: Lavakessel
+  LIGHT: Lichtblock
+  LIGHTNING_ROD: Blitzableiter
+  LIGHT_BLUE_CANDLE: Hellblaue Kerze
+  LIGHT_BLUE_CANDLE_CAKE: Kuchen mit hellblauer Kerze
+  LIGHT_GRAY_CANDLE: Hellgraue Kerze
+  LIGHT_GRAY_CANDLE_CAKE: Kuchen mit hellgrauer Kerze
+  LIME_CANDLE: Hellgrüne Kerze
+  LIME_CANDLE_CAKE: Kuchen mit hellgrüner Kerze
+  MAGENTA_CANDLE: Magenta Kerze
+  MAGENTA_CANDLE_CAKE: Kuchen mit magenta Kerze
+  MEDIUM_AMETHYST_BUD: Mittlere Amethystknospe
+  MOSS_BLOCK: Moosblock
+  MOSS_CARPET: Moosteppich
+  ORANGE_CANDLE: Orange Kerze
+  ORANGE_CANDLE_CAKE: Kuchen mit oranger Kerze
+  OXIDIZED_COPPER: Oxidierter Kupferblock
+  OXIDIZED_CUT_COPPER: Oxidierter geschnittener Kupferblock
+  OXIDIZED_CUT_COPPER_SLAB: Oxidierte geschnittene Kupferstufe
+  OXIDIZED_CUT_COPPER_STAIRS: Oxidierte geschnittene Kupfertreppe
+  PINK_CANDLE: Rosa Kerze
+  PINK_CANDLE_CAKE: Kuchen mit rosa Kerze
+  POINTED_DRIPSTONE: Spitzer Tropfstein
+  POLISHED_DEEPSLATE: Polierter Tiefenschiefer
+  POLISHED_DEEPSLATE_SLAB: Polierte Tiefenschieferstufe
+  POLISHED_DEEPSLATE_STAIRS: Polierte Tiefenschiefertreppe
+  POLISHED_DEEPSLATE_WALL: Polierte Tiefenschiefermauer
+  POTTED_AZALEA_BUSH: Eingetopfte Azalee
+  POTTED_FLOWERING_AZALEA_BUSH: Eingetopfte blühende Azalee
+  POWDER_SNOW: Pulverschnee
+  POWDER_SNOW_BUCKET: Pulverschneeeimer
+  POWDER_SNOW_CAULDRON: Pulverschneekessel
+  PURPLE_CANDLE: Violette Kerze
+  PURPLE_CANDLE_CAKE: Kuchen mit violetter Kerze
+  RAW_COPPER: Rohkupfer
+  RAW_COPPER_BLOCK: Rohkupferblock
+  RAW_GOLD: Rohgold
+  RAW_GOLD_BLOCK: Rohgoldblock
+  RAW_IRON: Roheisen
+  RAW_IRON_BLOCK: Roheisenblock
+  RED_CANDLE: Rote Kerze
+  RED_CANDLE_CAKE: Kuchen mit roter Kerze
+  ROOTED_DIRT: Wurzelerde
+  SCULK_SENSOR: Sculk-Sensor
+  SMALL_AMETHYST_BUD: Kleine Amethystknospe
+  SMALL_DRIPLEAF: Kleines Tropfblatt
+  SMOOTH_BASALT: Glatter Basalt
+  SPORE_BLOSSOM: Sporenblüte
+  SPYGLASS: Fernrohr
+  TINTED_GLASS: Getöntes Glas
+  TUFF: Tuffstein
+  WATER_CAULDRON: Wasserkessel
+  WAXED_COPPER_BLOCK: Gewachster Kupferblock
+  WAXED_CUT_COPPER: Gewachster geschnittener Kupferblock
+  WAXED_CUT_COPPER_SLAB: Gewachste geschnittene Kupferstufe
+  WAXED_CUT_COPPER_STAIRS: Gewachste geschnittene Kupfertreppe
+  WAXED_EXPOSED_COPPER: Gewachster angelaufener Kupferblock
+  WAXED_EXPOSED_CUT_COPPER: Gewachster angelaufener geschnittener Kupferblock
+  WAXED_EXPOSED_CUT_COPPER_SLAB: Gewachste angelaufene geschnittene Kupferstufe
+  WAXED_EXPOSED_CUT_COPPER_STAIRS: Gewachste angelaufene geschnittene Kupfertreppe
+  WAXED_OXIDIZED_COPPER: Gewachster oxidierter Kupferblock
+  WAXED_OXIDIZED_CUT_COPPER: Gewachster oxidierter geschnittener Kupferblock
+  WAXED_OXIDIZED_CUT_COPPER_SLAB: Gewachste oxidierte geschnittene Kupferstufe
+  WAXED_OXIDIZED_CUT_COPPER_STAIRS: Gewachste oxidierte geschnittene Kupfertreppe
+  WAXED_WEATHERED_COPPER: Gewachster verwitterter Kupferblock
+  WAXED_WEATHERED_CUT_COPPER: Gewachster verwitterter geschnittener Kupferblock
+  WAXED_WEATHERED_CUT_COPPER_SLAB: Gewachste verwitterte geschnittene Kupferstufe
+  WAXED_WEATHERED_CUT_COPPER_STAIRS: Gewachste verwitterte geschnittene Kupfertreppe
+  WEATHERED_COPPER: Verwitterter Kupferblock
+  WEATHERED_CUT_COPPER: Verwitterter geschnittener Kupferblock
+  WEATHERED_CUT_COPPER_SLAB: Verwitterte geschnittene Kupferstufe
+  WEATHERED_CUT_COPPER_STAIRS: Verwitterte geschnittene Kupfertreppe
+  WHITE_CANDLE: Weiße Kerze
+  WHITE_CANDLE_CAKE: Kuchen mit weißer Kerze
+  YELLOW_CANDLE: Gelbe Kerze
+  YELLOW_CANDLE_CAKE: Kuchen mit gelber Kerze
+  SIGN: Akazienholzschild
+  LEGACY_STATIONARY_WATER: Wasser
+  LEGACY_STATIONARY_LAVA: Lava
+  LEGACY_BURNING_FURNACE: Ofen
+  LEGACY_NETHER_WARTS: Netherwarze
+  LEGACY_IRON_DOOR_BLOCK: Eisentür
+  LEGACY_GLOWING_REDSTON_ORE: Redstone-Erz
+  LEGACY_SUGAR_CANE_BLOCK: Zuckerrohr
+  LEGACY_RAW_FISH: Roher Kabeljau
+  LEGACY_SKULL: Creeperkopf
+  LEGACY_SIGN_POST: Akazienholzschild
+  LEGACY_BED_BLOCK: Schwarzes Bett
+  LEGACY_REDSTONE_TORCH_OFF: Fackel
+  LEGACY_REDSTONE_TORCH_ON: Fackel
+  LEGACY_CAKE_BLOCK: Kuchen
+  LEGACY_DIODE_BLOCK_OFF: Redstone-Fackel
+  LEGACY_DIODE_BLOCK_ON: Redstone-Fackel
+  LEGACY_MELON_BLOCK: Melone
+  LEGACY_REDSTONE_COMPARATOR_OFF: Redstone-Komparator
+  LEGACY_REDSTONE_COMPARATOR_ON: Redstone-Komparator
+  LEGACY_WOODEN_DOOR_BLOCK: Eichenholztür
+  LEGACY_SPRUCE_DOOR: Fichtenholztür
+  LEGACY_BIRCH_DOOR: Birkenholztür
+  LEGACY_JUNGLE_DOOR: Tropenholztür
+  LEGACY_ACACIA_DOOR: Akazienholztür
+  LEGACY_DARK_OAK_DOOR: Schwarzeichenholztür
+  LEGACY_GLOWING_REDSTONE_ORE: Redstone-Erz
+  LEGACY_BREWING_STAND: Braustand
+  LEGACY_WHEAT: Weizen
+EntityList:
+  4-ELDER_GUARDIAN: Großwächter
+  5-WITHER_SKELETON: Wither-Skelett
+  6-STRAY: Eiswanderer
+  23-HUSK: Wüstenzombie
+  27-ZOMBIE_VILLAGER: Zombiedorfbewohner
+  28-SKELETON_HORSE: Skelettpferd
+  29-ZOMBIE_HORSE: Zombiepferd
+  30-ARMOR_STAND: Rüstungsständer
+  31-DONKEY: Esel
+  32-MULE: Maultier
+  34-EVOKER: Magier
+  35-VEX: Plagegeist
+  36-VINDICATOR: Diener
+  37-ILLUSIONER: Illusionist
+  50-CREEPER: Creeper
+  51-SKELETON: Skelett
+  52-SPIDER: Spinne
+  53-GIANT: Riese
+  54-ZOMBIE: Zombie
+  55-SLIME: Schleim
+  56-GHAST: Ghast
+  925-ZOMBIFIED_PIGLIN: Zombifizierter Piglin
+  58-ENDERMAN: Enderman
+  59-CAVE_SPIDER: Höhlenspinne
+  60-SILVERFISH: Silberfischchen
+  61-BLAZE: Lohe
+  62-MAGMA_CUBE: Magmawürfel
+  63-ENDER_DRAGON: Enderdrache
+  64-WITHER: Wither
+  65-BAT: Fledermaus
+  66-WITCH: Hexe
+  67-ENDERMITE: Endermite
+  68-GUARDIAN: Wächter
+  69-SHULKER: Shulker
+  90-PIG: Schwein
+  91-SHEEP: Schaf
+  92-COW: Kuh
+  93-CHICKEN: Huhn
+  94-SQUID: Tintenfisch
+  95-WOLF: Wolf
+  96-MUSHROOM_COW: Mooshroom
+  97-SNOWMAN: Schneegolem
+  98-OCELOT: Ozelot
+  99-IRON_GOLEM: Eisengolem
+  100-HORSE: Pferd
+  101-RABBIT: Kaninchen
+  102-POLAR_BEAR: Eisbär
+  103-LLAMA: Lama
+  105-PARROT: Papagei
+  120-VILLAGER: Dorfbewohner
+  901-TURTLE: Schildkröte
+  902-PHANTOM: Phantom
+  904-COD: Kabeljau
+  905-SALMON: Lachs
+  906-PUFFERFISH: Kugelfisch
+  907-TROPICAL_FISH: Tropenfisch
+  908-DROWNED: Ertrunkener
+  909-DOLPHIN: Delfin
+  923-CAT: Katze
+  917-PANDA: Panda
+  918-PILLAGER: Plünderer
+  919-RAVAGER: Verwüster
+  920-TRADER_LLAMA: Händlerlama
+  921-WANDERING_TRADER: Fahrender Händler
+  922-FOX: Fuchs
+  924-BEE: Biene
+  926-HOGLIN: Hoglin
+  927-PIGLIN: Piglin
+  928-STRIDER: Schreiter
+  929-ZOGLIN: Zoglin
+  930-PIGLIN_BRUTE: Piglin-Barbar
+  931-AXOLOTL: Axolotl
+  932-GLOW_SQUID: Leuchttintenfisch
+  933-GOAT: Ziege
+  914-PLAYER: Spieler
+EnchantList:
+  Fire protection: Feuerschutz
+  Sharpness: Schärfe
+  Flame: Flamme
+  Soul speed: Seelenläufer
+  Aqua affinity: Wasseraffinität
+  Punch: Schlag
+  Loyalty: Treue
+  Depth strider: Wasserläufer
+  Vanishing curse: Fluch des Verschwindens
+  Unbreaking: Haltbarkeit
+  Knockback: Rückstoß
+  Luck of the sea: Glück des Meeres
+  Binding curse: Fluch der Bindung
+  Fortune: Glück
+  Protection: Schutz
+  Efficiency: Effizienz
+  Mending: Reparatur
+  Frost walker: Eisläufer
+  Lure: Köder
+  Looting: Plünderung
+  Piercing: Durchschuss
+  Blast protection: Explosionsschutz
+  Smite: Bann
+  Multishot: Mehrfachschuss
+  Fire aspect: Verbrennung
+  Channeling: Entladung
+  Sweeping: Schwungkraft
+  Thorns: Dornen
+  Bane of arthropods: Nemesis der Gliederfüßer
+  Respiration: Atmung
+  Riptide: Sog
+  Silk touch: Behutsamkeit
+  Quick charge: Schnellladen
+  Projectile protection: Schussschutz
+  Impaling: Harpune
+  Feather falling: Federfall
+  Power: Stärke
+  Infinity: Unendlichkeit
+ColorList:
+  0-white: '&fWeiß'
+  1-orange: '&6Orange'
+  2-magenta: '&dMagenta'
+  3-light_blue: '&9Hellblau'
+  4-yellow: '&eGelb'
+  5-lime: '&aHellgrün'
+  6-pink: '&dPink'
+  7-gray: '&8Grau'
+  8-light_gray: '&7Hellgrau'
+  9-cyan: '&3Cyan'
+  10-purple: '&5Lila'
+  11-blue: '&1Blau'
+  12-brown: '&4Braun'
+  13-green: '&2Grün'
+  14-red: '&cRot'
+  15-black: '&0Schwarz'
+MythicEntityList:
+  AngrySludge: Wütender Schlamm
+  SkeletalKnight: Skelettritter
