@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -38,6 +39,14 @@ public class NameTranslatorManager {
 
     public String translate(String materialName, JobInfo info) {
         return translate(materialName, info.getActionType(), info.getId(), info.getMeta(), info.getName());
+    }
+
+    public String translate(CMIMaterial material) {
+        NameList nameList = listOfNames.get(material);
+        // Defaulting to CMILib name translation
+        if (nameList == null)
+            return material.getName();
+        return nameList.getName();
     }
 
     public String translate(String materialName, ActionType action, int id, String meta, String name) {

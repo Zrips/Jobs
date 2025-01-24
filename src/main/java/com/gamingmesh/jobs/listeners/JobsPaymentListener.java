@@ -1134,7 +1134,7 @@ public final class JobsPaymentListener implements Listener {
                 return;
 
             CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
-                "[type]", CMIMaterial.get(block).getName(),
+                "[type]", Jobs.getNameTranslatorManager().translate(CMIMaterial.get(block)),
                 "[location]", LC.Location_Full.getLocale(block.getLocation())));
             jPlayer.addBlockOwnerShipInform(lc);
         });
