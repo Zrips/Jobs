@@ -337,7 +337,7 @@ public class JobsCommands implements CommandExecutor {
             if (sender.getName().equalsIgnoreCase(pName))
                 pi.autoPagination(sender, LABEL + " " + info.class.getSimpleName() + " " + job.getName() + t);
             else
-                pi.autoPagination(sender, LABEL + " " + playerinfo.class.getSimpleName() + " " + job.getName() + t);
+                pi.autoPagination(sender, LABEL + " " + playerinfo.class.getSimpleName() + " " + pName + " " + job.getName() + t);
         }
     }
 
