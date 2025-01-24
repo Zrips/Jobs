@@ -73,10 +73,15 @@ public class area implements Cmd {
                     name = protectedRegion.getId();
                 }
 
-                if (!wg)
-                    ra.addNew(new RestrictedArea(name, Jobs.getSelectionManager().getSelectionCuboid(player), bonus), true);
-                else
-                    ra.addNew(new RestrictedArea(name, name, bonus), true);
+                if (!wg) {
+                    RestrictedArea restrictedArea = new RestrictedArea(name, Jobs.getSelectionManager().getSelectionCuboid(player), bonus);
+                    restrictedArea.setEnabled(true);
+                    ra.addNew(restrictedArea, true);
+                } else {
+                    RestrictedArea restrictedArea = new RestrictedArea(name, name, bonus);
+                    restrictedArea.setEnabled(true);
+                    ra.addNew(restrictedArea, true);
+                }
                 Language.sendMessage(sender, "command.area.output.addedNew", "%bonus%", bonus);
                 return true;
             }
