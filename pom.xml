@@ -196,7 +196,7 @@
 			<artifactId>CMILib</artifactId>
 			<version>1.5.0.2</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/CMILib1.5.0.3.jar</systemPath>
+			<systemPath>${basedir}/libs/CMILib1.5.2.8.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<repositories>
