@@ -18,6 +18,9 @@
 
 package com.gamingmesh.jobs.container;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.gamingmesh.jobs.Jobs;
 
 public enum CurrencyType {
@@ -68,5 +71,16 @@ public enum CurrencyType {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public static HashMap<CurrencyType, Double> generate(Double money, Double exp, Double points) {
+        HashMap<CurrencyType, Double> amounts = new HashMap<>();
+        if (money != null)
+            amounts.put(CurrencyType.MONEY, money);
+        if (exp != null)
+            amounts.put(CurrencyType.EXP, exp);
+        if (points != null)
+            amounts.put(CurrencyType.POINTS, points);
+        return amounts;
     }
 }

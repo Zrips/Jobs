@@ -27,11 +27,8 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
     private boolean cancelled = false;
 
     @Deprecated
-    public JobsPrePaymentEvent(OfflinePlayer offlinePlayer, Job job, double money, double points) {
-        this.job = job;
-        this.offlinePlayer = offlinePlayer;
-        amounts.put(CurrencyType.MONEY, money);
-        amounts.put(CurrencyType.POINTS, points);
+    public JobsPrePaymentEvent(OfflinePlayer offlinePlayer, Job job, double money, double points) {        
+        this(offlinePlayer, job, CurrencyType.generate(money, null, points), null, null, null, null);
     }
 
     @Deprecated
@@ -39,12 +36,15 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
         this(offlinePlayer, job, money, 0, points, block, entity, living, info);
     }
 
+    @Deprecated
     public JobsPrePaymentEvent(OfflinePlayer offlinePlayer, Job job, double money, double exp, double points, Block block, Entity entity, LivingEntity living, ActionInfo info) {
+        this(offlinePlayer, job, CurrencyType.generate(money, exp, points), block, entity, living, info);
+    }
+
+    public JobsPrePaymentEvent(OfflinePlayer offlinePlayer, Job job, Map<CurrencyType, Double> payments, Block block, Entity entity, LivingEntity living, ActionInfo info) {
         this.job = job;
         this.offlinePlayer = offlinePlayer;
-        amounts.put(CurrencyType.MONEY, money);
-        amounts.put(CurrencyType.EXP, exp);
-        amounts.put(CurrencyType.POINTS, points);
+        amounts.putAll(payments);
         this.block = block;
         this.entity = entity;
         this.living = living;
