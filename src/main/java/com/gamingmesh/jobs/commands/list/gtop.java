@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.commands.list;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.i18n.Language;
 import net.Zrips.CMILib.Container.PageInfo;
@@ -104,12 +105,18 @@ public class gtop implements Cmd {
     }
 
     public static boolean hasToBeSeenInGlobalTop(TopList topList) {
-        Player player = topList.getPlayerInfo().getJobsPlayer().getPlayer();
+        
+        JobsPlayer jplayer = topList.getPlayerInfo().getJobsPlayer();
+        
+        if (Jobs.getGCManager().JobsTopHiddenPlayers.contains(jplayer.getName().toLowerCase()))
+            return false;
+        
+        Player player = jplayer.getPlayer();
         if (player != null)
             return !player.hasPermission("jobs.hidegtop");
         return !Jobs.getVaultPermission().playerHas(
             null,
-            Bukkit.getOfflinePlayer(topList.getPlayerInfo().getUuid()),
+            Bukkit.getOfflinePlayer(jplayer.getUniqueId()),
             "jobs.hidegtop");
     }
 }

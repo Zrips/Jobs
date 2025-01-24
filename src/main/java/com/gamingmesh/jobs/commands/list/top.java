@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.commands.list;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.i18n.Language;
 import net.Zrips.CMILib.Container.PageInfo;
@@ -60,7 +61,7 @@ public class top implements Cmd {
         int workingIn = Jobs.getUsedSlots(job);
         PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, workingIn, page);
         final int finalPage = page;
-        CMIScheduler.runTaskAsynchronously(() -> showTop(sender, job, pi, finalPage));
+        CMIScheduler.runTaskAsynchronously(plugin, () -> showTop(sender, job, pi, finalPage));
         return true;
     }
 
@@ -111,11 +112,16 @@ public class top implements Cmd {
     }
 
     private static boolean hasToBeSeenInTop(TopList topList, Job job) {
-        Player player = topList.getPlayerInfo().getJobsPlayer().getPlayer();
+        JobsPlayer jplayer = topList.getPlayerInfo().getJobsPlayer();
+
+        if (Jobs.getGCManager().JobsTopHiddenPlayers.contains(jplayer.getName().toLowerCase()))
+            return false;
+
+        Player player = jplayer.getPlayer();
         if (player != null)
             return !(player.hasPermission("jobs.hidetop.*") || player.hasPermission("jobs.hidetop." + job.getName().toLowerCase()));
 
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(topList.getPlayerInfo().getUuid());
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(jplayer.getUniqueId());
         return !(Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop.*")
             || Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop." + job.getName().toLowerCase()));
     }

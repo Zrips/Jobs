@@ -1788,8 +1788,14 @@ public abstract class JobsDAO {
 
             while (res.next()) {
                 PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt(JobsTableFields.userid.getCollumn()));
-                if (info != null)
-                    jobs.add(new TopList(info, res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
+
+                if (info == null)
+                    continue;
+
+                if (Jobs.getGCManager().JobsTopHiddenPlayers.contains(info.getName().toLowerCase()))
+                    continue;
+
+                jobs.add(new TopList(info, res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1803,12 +1809,20 @@ public abstract class JobsDAO {
         return jobs;
     }
 
+    List<TopList> GTopListByJobCache = new ArrayList<TopList>();
+    Long GTopListByJobUpdateCache = 0L;
+
     /**
      * Get player list by total job level
      * @param start - starting entry
      * @return info - information about jobs
      */
     public List<TopList> getGlobalTopList(int start) {
+
+        if (System.currentTimeMillis() - GTopListByJobUpdateCache < 30 * 1000L) {
+            return GTopListByJobCache;
+        }
+
         JobsConnection conn = getConnection();
         List<TopList> names = new ArrayList<>();
         if (conn == null)
@@ -1832,6 +1846,9 @@ public abstract class JobsDAO {
             while (res.next()) {
                 PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt(JobsTableFields.userid.getCollumn()));
                 if (info == null)
+                    continue;
+
+                if (Jobs.getGCManager().JobsTopHiddenPlayers.contains(info.getName().toLowerCase()))
                     continue;
 
                 names.add(new TopList(info, res.getInt("totallvl"), res.getInt("totalexp")));

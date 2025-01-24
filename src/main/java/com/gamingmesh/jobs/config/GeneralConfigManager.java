@@ -73,6 +73,8 @@ public class GeneralConfigManager {
         SoundTitleChangeSound, ServerAccountName, ServertaxesAccountName, localeString = "";
     private String getSelectionTool, DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
 
+    public List<String> JobsTopHiddenPlayers;
+    
     public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime, blockOwnershipRange,
         globalblocktimer, globalBlockBreakTimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
         SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays, BlastFurnacesMaxDefault, SmokersMaxDefault,
@@ -1190,6 +1192,12 @@ public class GeneralConfigManager {
 
         c.addComment("Commands.PageRow.JobsTop.AmountToShow", "Defines amount of players to be shown in one page for /jobs top & /jobs gtop");
         JobsTopAmount = c.get("Commands.PageRow.JobsTop.AmountToShow", 15);
+        
+        
+        c.addComment("Commands.PageRow.JobsTop.HiddenPlayers", "List of player names who should be excluded from /jobs top & /jobs gtop");
+        JobsTopHiddenPlayers = c.get("Commands.PageRow.JobsTop.HiddenPlayers", Arrays.asList("Zrips"));
+        CMIList.toLowerCase(JobsTopHiddenPlayers);
+        
         c.addComment("Commands.PageRow.Placeholders.AmountToShow", "Defines amount of placeholders to be shown in one page for /jobs placeholders");
         PlaceholdersPage = c.get("Commands.PageRow.Placeholders.AmountToShow", 10);
         c.addComment("Commands.JobsLeave.UsePerPermissionLeave", "Defines how job leave works.",
