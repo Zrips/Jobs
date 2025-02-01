@@ -109,7 +109,7 @@ public class GeneralConfigManager {
         EmptyServerAccountActionBar, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
         JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames, hideItemAttributes,
         DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UsePerPermissionForLeaving,
-        EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, MonsterDamageIgnoreBosses, tameablesPayout, useMaxPaymentCurve, blockOwnershipTakeOver,
+        EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, MonsterDamageIgnoreBosses, tameablesPayout, useMaxPaymentCurve, blockOwnershipTakeOver, blockOwnershipDisabled,
         hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel, RomanNumbers,
         BossBarEnabled = false, ActionBarEnabled, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
@@ -1216,6 +1216,9 @@ public class GeneralConfigManager {
         c.addComment("BlockOwnership.TakeOver", "When enabled by interacting with furncae ownership will get transfered to new player",
             "If set to false then furnace will belong to player who interacted with it first until its ownership is removed");
         blockOwnershipTakeOver = c.get("BlockOwnership.TakeOver", false);
+
+        c.addComment("BlockOwnership.Disabled", "When set to true, all checks and actions regarding ownership will no longer be carried out. This mode does not cause a loss of any already existing data.");
+        blockOwnershipDisabled = c.get("BlockOwnership.Disabled", false);
 
         c.save();
     }
