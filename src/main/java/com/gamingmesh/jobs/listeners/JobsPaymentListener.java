@@ -385,6 +385,9 @@ public final class JobsPaymentListener implements Listener {
         if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
             return;
 
+        if (Jobs.getGCManager().blockOwnershipDisabled)
+            return;
+
         BlockOwnerShip ownerShip = plugin.getBlockOwnerShip(CMIMaterial.get(block), false).orElse(null);
 
         if (ownerShip == null)
@@ -1118,6 +1121,9 @@ public final class JobsPaymentListener implements Listener {
     }
 
     private void processItemMove(Block block) {
+        if (Jobs.getGCManager().blockOwnershipDisabled)
+            return;
+
         plugin.getBlockOwnerShip(CMIMaterial.get(block)).ifPresent(os -> {
             if (!os.disable(block) || !Jobs.getGCManager().informOnPaymentDisable)
                 return;
@@ -1145,6 +1151,9 @@ public final class JobsPaymentListener implements Listener {
         Block block = event.getBlock();
 
         if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+            return;
+
+        if (Jobs.getGCManager().blockOwnershipDisabled)
             return;
 
         BlockOwnerShip bos = plugin.getBlockOwnerShip(CMIMaterial.get(block), false).orElse(null);
@@ -1773,6 +1782,8 @@ public final class JobsPaymentListener implements Listener {
         boolean isFurnace = cmat == CMIMaterial.FURNACE || cmat == CMIMaterial.LEGACY_BURNING_FURNACE;
 
         if ((isFurnace || cmat == CMIMaterial.SMOKER || cmat == CMIMaterial.BLAST_FURNACE || isBrewingStand)) {
+            if (Jobs.getGCManager().blockOwnershipDisabled)
+                return;
 
             BlockOwnerShip blockOwner = plugin.getBlockOwnerShip(cmat).orElse(null);
             if (blockOwner == null) {
