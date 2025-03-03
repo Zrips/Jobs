@@ -122,7 +122,7 @@ public class JobsPaymentVisualizationListener implements Listener {
         }
 
         String message = generateDelayedMessage(event);
-        if (!message.isEmpty())
+        if (!message.trim().isEmpty())
             CMIActionBar.send(player, message);
         return;
     }
@@ -133,7 +133,7 @@ public class JobsPaymentVisualizationListener implements Listener {
             return;
         String message = generateDelayedMessage(event);
 
-        if (!message.isEmpty())
+        if (!message.trim().isEmpty())
             player.sendMessage(message);
     }
 
@@ -237,7 +237,7 @@ public class JobsPaymentVisualizationListener implements Listener {
         if (points != 0D)
             message.append(Jobs.getLanguage().getMessage("command.toggle.output.paid.ACpoints", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points)));
 
-        if (!message.toString().isEmpty())
+        if (!message.toString().trim().isEmpty())
             CMIActionBar.send(player, message.toString(), Jobs.getGCManager().ActionBarsMessageKeepFor);
 
     }
