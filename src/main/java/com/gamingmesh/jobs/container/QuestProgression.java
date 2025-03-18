@@ -183,6 +183,10 @@ public class QuestProgression {
 
         jPlayer.addDoneQuest(questJob);
 
+        if (quest.getRewardAmount() > 0) {
+            Jobs.getEconomy().getEconomy().depositPlayer(player, quest.getRewardAmount());
+        }
+
         for (String one : quest.getRewardCmds()) {
             ServerCommandEvent ev = new ServerCommandEvent(Bukkit.getConsoleSender(), one.replace("[playerName]", player.getName()));
             Bukkit.getPluginManager().callEvent(ev);
