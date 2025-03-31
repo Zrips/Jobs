@@ -59,7 +59,10 @@ public class Language {
     }
 
     public static void sendMessage(CommandSender sender, String key, Object... variables) {
-        sender.sendMessage(Jobs.getLanguage().getMessage(key, variables));
+        String msg = Jobs.getLanguage().getMessage(key, variables);
+        if (msg.isEmpty())
+            return;
+        sender.sendMessage(msg);
     }
 
     /**
