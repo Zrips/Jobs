@@ -264,6 +264,7 @@ public class LanguageManager {
             c.get("command.editquests.help.output.to", " &eto: &f");
             c.get("command.editquests.help.output.objectives", "Objectives");
             c.get("command.editquests.help.output.rewards", "Reward commands");
+            c.get("command.editquests.help.output.rewardAmount", " &eAmount: &f");
             c.get("command.editquests.help.output.description", "&eDescription");
             c.get("command.editquests.help.output.areas", "&eRestricted areas");
 

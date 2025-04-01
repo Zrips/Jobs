@@ -258,6 +258,8 @@ public class editquests implements Cmd {
             }
         }
 
+        cfg.set(path + "RewardAmount", quest.getRewardAmount() > 0 ? quest.getRewardAmount() : null);
+
         cfg.set(path + "RewardCommands", quest.getRewardCmds().isEmpty() ? null : quest.getRewardCmds());
         cfg.set(path + "RewardDesc", quest.getDescription().isEmpty() ? null : quest.getDescription());
         cfg.set(path + "RestrictedAreas", quest.getRestrictedAreas().isEmpty() ? null : quest.getRestrictedAreas());
@@ -466,6 +468,36 @@ public class editquests implements Cmd {
                         }
                         chance = CMINumber.clamp(chance, 0, 100);
                         quest.setChance(chance);
+                        updateQuestInFile(sender, quest);
+                    }
+
+                    @Override
+                    public void onDisable() {
+                        mainWindow(sender, quest);
+                    }
+                };
+                chatEdit.setCheckForCancel(true);
+                chatEdit.printMessage();
+            }
+        };
+        rm.addCommand(rmc);
+
+        rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.output.rewardAmount") + quest.getRewardAmount());
+        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", quest.getRewardAmount()));
+        rmc = new RawMessageCommand() {
+            @Override
+            public void run(CommandSender sender) {
+                ChatMessageEdit chatEdit = new ChatMessageEdit(sender, quest.getQuestName()) {
+                    @Override
+                    public void run(String message) {
+                        int rewardAmount = 0;
+                        try {
+                            rewardAmount = Integer.parseInt(message);
+                        } catch (Throwable e) {
+                            LC.info_UseInteger.sendMessage(sender);
+                            return;
+                        }
+                        quest.setRewardAmount(rewardAmount);
                         updateQuestInFile(sender, quest);
                     }
 

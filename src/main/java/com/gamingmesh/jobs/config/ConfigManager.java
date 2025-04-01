@@ -227,6 +227,9 @@ public class ConfigManager {
             "Use [playerName] to insert players name who finished that quest");
         cfg.get(questPt + ".RewardCommands", Arrays.asList("money give [playerName] 500", "msg [playerName] Completed quest!"));
 
+        cfg.addComment(questPt + ".RewardAmount", "Reward amount to be given to player after quest is finished");
+        cfg.get(questPt + ".RewardAmount", 0);
+
         cfg.addComment(questPt + ".RewardDesc", "Quest description to be used to explain quest requirements or rewards for player");
         cfg.get(questPt + ".RewardDesc", Arrays.asList("Break 300 Oak wood", "Get 500 bucks for this"));
 
@@ -1490,6 +1493,7 @@ public class ConfigManager {
                             quest.setMaxLvl(sqsection.getInt("toLevel"));
 
                         quest.setChance(sqsection.getInt("Chance", 100));
+                        quest.setRewardAmount(sqsection.getDouble("RewardAmount"));
                         quest.setRewardCmds(sqsection.getStringList("RewardCommands"));
                         quest.setDescription(sqsection.getStringList("RewardDesc"));
                         quest.setRestrictedArea(sqsection.getStringList("RestrictedAreas"));

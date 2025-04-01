@@ -25,6 +25,8 @@ public class Quest {
 
     private final List<String> rewardCmds = new ArrayList<>(), rewards = new ArrayList<>(), area = new ArrayList<>();
 
+    private double rewardAmount = 0;
+
     private boolean stopped = false;
 
     private Map<ActionType, Map<String, QuestObjective>> objectives = new HashMap<>();
@@ -54,6 +56,11 @@ public class Quest {
             this.rewardCmds.addAll(rewardCmds);
         }
     }
+
+    public double getRewardAmount() { return rewardAmount; }
+
+    public void setRewardAmount(double rewardAmount) { this.rewardAmount = rewardAmount; }
+
 
     public List<String> getDescription() {
         return rewards;
