@@ -459,18 +459,27 @@ public class JobsCommands implements CommandExecutor {
         if (max < 1)
             max = 2;
 
+        int bars = Jobs.getGCManager().jobsStatsBarCount;
+
+        if (bars <= 0)
+            return "";
+
+        String full = Jobs.getLanguage().getMessage("command.stats.barFull");
+        String empty = Jobs.getLanguage().getMessage("command.stats.barEmpty");
+
         StringBuilder message = new StringBuilder();
-        int percentage = (int) ((current * 50.0) / max);
+        int percentage = (int) ((current * bars) / max);
         for (int i = 0; i < percentage; i++) {
-            message.append(Jobs.getLanguage().getMessage("command.stats.barFull"));
+            message.append(full);
         }
 
-        if (50 - percentage < 0)
-            percentage = 50;
+        if (bars - percentage < 0)
+            percentage = bars;
 
-        for (int i = 0; i < 50 - percentage; i++) {
-            message.append(Jobs.getLanguage().getMessage("command.stats.barEmpty"));
+        for (int i = 0; i < bars - percentage; i++) {
+            message.append(empty);
         }
+
         return message.toString();
     }
 

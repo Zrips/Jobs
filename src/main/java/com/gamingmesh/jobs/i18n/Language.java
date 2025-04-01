@@ -38,7 +38,11 @@ public class Language {
 
     public FileConfiguration enlocale, customlocale;
 
-    private final Pattern patern = Pattern.compile("([ ]?[\\/][n][$|\\s])");
+    private static final Pattern NEW_LINE_PATTERN = Pattern.compile("([ ]?[\\/][n][$|\\s])");
+
+    private static final Pattern JOB_NAME_PATTERN = Pattern.compile("(?i)[\\[%]jobname[\\]%]");
+    private static final Pattern JOB_DISPLAY_NAME_PATTERN = Pattern.compile("(?i)[\\[%]jobdisplayname[\\]%]");
+    private static final Pattern JOB_FULL_NAME_PATTERN = Pattern.compile("(?i)[\\[%]jobfullname[\\]%]");
 
     /**
      * Reloads the config
@@ -52,10 +56,13 @@ public class Language {
     }
 
     public static String updateJob(String text, Job job) {
-        return text
-            .replaceAll("(\\[|%)(?i:jobname)(\\]|%)", job.getName())
-            .replaceAll("(\\[|%)(?i:jobdisplayname)(\\]|%)", job.getDisplayName())
-            .replaceAll("(\\[|%)(?i:jobfullname)(\\]|%)", job.getJobFullName());
+        text = replacePattern(JOB_NAME_PATTERN, text, job.getName());
+        text = replacePattern(JOB_DISPLAY_NAME_PATTERN, text, job.getDisplayName());
+        return replacePattern(JOB_FULL_NAME_PATTERN, text, job.getJobFullName());
+    }
+
+    private static String replacePattern(Pattern pattern, String text, String replacement) {
+        return pattern.matcher(text).replaceAll(replacement);
     }
 
     public static void sendMessage(CommandSender sender, String key, Object... variables) {
@@ -164,7 +171,7 @@ public class Language {
     }
 
     public String filterNewLine(String msg) {
-        Matcher match = patern.matcher(msg);
+        Matcher match = NEW_LINE_PATTERN.matcher(msg);
         while (match.find()) {
             msg = msg.replace(match.group(0), "\n");
         }

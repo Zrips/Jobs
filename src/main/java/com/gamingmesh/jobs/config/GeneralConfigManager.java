@@ -119,6 +119,7 @@ public class GeneralConfigManager {
     public MessageToggleState ActionBarsMessageDefault = MessageToggleState.Rapid;
     public MessageToggleState ChatTextMessageDefault = MessageToggleState.Batched;
 
+    public int jobsStatsBarCount;
     public int ActionBarsMessageKeepFor;
 
     public boolean jobsshopenabled;
@@ -1210,6 +1211,9 @@ public class GeneralConfigManager {
         c.addComment("Commands.JobsInfo.open-browse", "Open up the jobs browse action list, when your performed /jobs info command?");
         jobsInfoOpensBrowse = c.get("Commands.JobsInfo.open-browse", false);
 
+        c.addComment("Commands.Stats.BarCount", "Amount of progress bars to be shown in /jobs stats command");
+        jobsStatsBarCount = c.get("Commands.Stats.BarCount", 50);
+        
         c.addComment("BlockOwnership.Range", "Set to 0 or lower if you want to disable this. Setting to positive number will mean that player needs to be in this range from owner block to get paid");
         blockOwnershipRange = c.get("BlockOwnership.Range", 0);
 
