@@ -39,6 +39,12 @@
 			<groupId>com.gmail.nossr50.mcMMO</groupId>
 			<artifactId>mcMMO</artifactId>
 			<version>2.2.004</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>*</artifactId>
+					<groupId>com.sk89q.worldguard</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- Vault -->
 		<dependency>
@@ -68,7 +74,7 @@
 		<dependency>
 			<groupId>com.sk89q.worldguard</groupId>
 			<artifactId>worldguard-bukkit</artifactId>
-			<version>7.0.2-SNAPSHOT</version>
+			<version>7.0.12</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>bukkit</artifactId>
@@ -96,7 +102,7 @@
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
 			<artifactId>worldedit-bukkit</artifactId>
-			<version>7.1.0-SNAPSHOT</version>
+			<version>7.3.10</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>bukkit-classloader-check</artifactId>
@@ -134,9 +140,9 @@
 		</dependency>
 		<!-- PlaceholderAPI -->
 		<dependency>
-			<groupId>me.clip</groupId>
+			<groupId>com.github.placeholderapi</groupId>
 			<artifactId>placeholderapi</artifactId>
-			<version>2.10.9</version>
+			<version>2.11.6</version>
 			<scope>provided</scope>
 			<exclusions>
 				<exclusion>
@@ -185,9 +191,9 @@
 			<systemPath>${basedir}/libs/PyroFishingPro-4.9.1.jar</systemPath>
 		</dependency>
 		<dependency>
-            <groupId>com.github.Xiao-MoMi</groupId>
-            <artifactId>Custom-Fishing</artifactId>
-            <version>2.2.34</version>
+            <groupId>net.momirealms</groupId>
+            <artifactId>custom-fishing</artifactId>
+            <version>2.3.4</version>
             <scope>provided</scope>
         </dependency>
 		<!-- CMILib -->
@@ -200,6 +206,10 @@
 		</dependency>
 	</dependencies>
 	<repositories>
+		<repository>
+			<id>momirealms</id>
+			<url>https://repo.momirealms.net/releases/</url>
+		</repository>
 		<repository>
 			<id>CodeMC</id>
 			<url>https://repo.codemc.org/repository/maven-public/</url>
