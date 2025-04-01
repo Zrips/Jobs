@@ -23,8 +23,4 @@ public class BlockTrackerManager {
             return false;
         }
     }
-
-    public Method getIsTrackedMethod() {
-        return isTrackedMethod;
-    }
 }

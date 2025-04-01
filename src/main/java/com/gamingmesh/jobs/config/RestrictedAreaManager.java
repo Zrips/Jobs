@@ -26,7 +26,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.LevelLimits;
 import com.gamingmesh.jobs.container.RestrictedArea;
-import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.hooks.JobsHook;
 
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Container.CMIText;
@@ -156,7 +156,7 @@ public class RestrictedAreaManager {
 
         for (RestrictedArea area : getByLocation(player.getLocation())) {
             if (!area.inRestrictedArea(player.getLocation()) ||
-                (area.getWgName() != null && HookManager.getWorldGuardManager() != null && !HookManager.getWorldGuardManager().inArea(player.getLocation(), area.getWgName())))
+                (area.getWgName() != null && JobsHook.WorldGuard.isEnabled() && !JobsHook.getWorldGuardManager().inArea(player.getLocation(), area.getWgName())))
                 continue;
 
             if (area.getJobs().isEmpty())

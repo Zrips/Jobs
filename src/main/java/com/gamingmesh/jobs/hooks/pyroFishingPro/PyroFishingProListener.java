@@ -8,12 +8,12 @@ import com.gamingmesh.jobs.Jobs;
 
 import me.arsmagica.API.PyroFishCatchEvent;
 
-public class PyroFishingProManager implements Listener {
+public class PyroFishingProListener implements Listener {
     private static String lastFish;
     private static long time = 0;
     private final Jobs jobs;
 
-    public PyroFishingProManager() {
+    public PyroFishingProListener() {
         this.jobs = Jobs.getInstance();
         registerListener();
     }

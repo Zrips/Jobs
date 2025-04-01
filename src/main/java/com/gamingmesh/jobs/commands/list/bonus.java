@@ -12,7 +12,7 @@ import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.hooks.JobsHook;
 import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
@@ -58,8 +58,7 @@ public class bonus implements Cmd {
             printBoost(sender, boost, BoostOf.NearSpawner);
         printBoost(sender, boost, BoostOf.PetPay);
 
-        if (HookManager.getMcMMOManager().mcMMOPresent ||
-            HookManager.getMcMMOManager().mcMMOOverHaul && boost.get(BoostOf.McMMO, CurrencyType.EXP) != 0D)
+        if (JobsHook.mcMMO.isEnabled() && boost.get(BoostOf.McMMO, CurrencyType.EXP) != 0D)
             printBoost(sender, boost, BoostOf.McMMO);
 
         Language.sendMessage(sender, "general.info.separator");

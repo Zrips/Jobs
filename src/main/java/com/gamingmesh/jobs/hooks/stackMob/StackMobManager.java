@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
-public class StackMobHandler {
+public class StackMobManager {
 
     public boolean isStacked(LivingEntity entity) {
         return getPlugin().getEntityManager().isStackedEntity(entity);

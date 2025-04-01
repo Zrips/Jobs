@@ -60,7 +60,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.hooks.JobsHook;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.stuff.Util;
@@ -1162,8 +1162,8 @@ public class PlayerManager {
 
         Player pl = player.getPlayer();
 
-        if (HookManager.getMcMMOManager().mcMMOPresent || HookManager.getMcMMOManager().mcMMOOverHaul)
-            boost.add(BoostOf.McMMO, new BoostMultiplier().add(HookManager.getMcMMOManager().getMultiplier(pl)));
+        if (JobsHook.mcMMO.isEnabled())
+            boost.add(BoostOf.McMMO, new BoostMultiplier().add(JobsHook.getMcMMOManager().getMultiplier(pl)));
 
         double petPay = 0D;
 
@@ -1176,7 +1176,7 @@ public class PlayerManager {
             }
         }
 
-        if (ent != null && HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(ent, pl)) {
+        if (ent != null && JobsHook.MyPet.isEnabled() && JobsHook.getMyPetManager().isMyPet(ent, pl)) {
             if (petPay == 0D)
                 petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", false, false);
             if (petPay != 0D)

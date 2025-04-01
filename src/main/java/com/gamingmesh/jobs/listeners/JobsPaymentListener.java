@@ -39,7 +39,6 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.MushroomCow;
 import org.bukkit.entity.Player;
@@ -72,7 +71,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -102,7 +100,6 @@ import com.gamingmesh.jobs.actions.ExploreActionInfo;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.actions.ItemNameActionInfo;
 import com.gamingmesh.jobs.actions.PotionItemActionInfo;
-import com.gamingmesh.jobs.actions.PyroFishingProInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.ExploreRespond;
@@ -112,13 +109,8 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip.ownershipFeedback;
-import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.hooks.JobsHook;
-import com.gamingmesh.jobs.hooks.pyroFishingPro.PyroFishingProManager;
 import com.gamingmesh.jobs.stuff.Util;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.base.Objects;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -362,11 +354,11 @@ public final class JobsPaymentListener implements Listener {
 
         if (Jobs.getGCManager().payForStackedEntities) {
             if (JobsHook.WildStacker.isEnabled() && !StackSplit.SHEEP_SHEAR.isEnabled()) {
-                for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount((LivingEntity) entity) - 1; i++) {
+                for (int i = 0; i < JobsHook.getWildStackerManager().getEntityAmount((LivingEntity) entity) - 1; i++) {
                     Jobs.action(jDamager, new CustomKillInfo(typeString, ActionType.SHEAR));
                 }
-            } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked((LivingEntity) entity)) {
-                StackEntity stack = HookManager.getStackMobHandler().getStackEntity((LivingEntity) entity);
+            } else if (JobsHook.StackMob.isEnabled() && JobsHook.getStackMobManager().isStacked((LivingEntity) entity)) {
+                StackEntity stack = JobsHook.getStackMobManager().getStackEntity((LivingEntity) entity);
                 if (stack != null) {
                     Jobs.action(jDamager, new CustomKillInfo(typeString, ActionType.SHEAR));
                     return;
@@ -451,7 +443,7 @@ public final class JobsPaymentListener implements Listener {
             return;
 
         // Checks whether the broken block has been tracked by BlockTracker
-        if (JobsHook.BlockTracker.isEnabled() && Jobs.getGCManager().useBlockProtectionBlockTracker && HookManager.getBlockTrackerManager().isTracked(block)) {
+        if (JobsHook.BlockTracker.isEnabled() && Jobs.getGCManager().useBlockProtectionBlockTracker && JobsHook.getBlockTrackerManager().isTracked(block)) {
             return;
         }
 
@@ -589,12 +581,12 @@ public final class JobsPaymentListener implements Listener {
 
         if (Jobs.getGCManager().payForStackedEntities) {
             if (JobsHook.WildStacker.isEnabled()) {
-                for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount(animal) - 1; i++) {
+                for (int i = 0; i < JobsHook.getWildStackerManager().getEntityAmount(animal) - 1; i++) {
                     Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
                 }
-            } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(animal)) {
+            } else if (JobsHook.StackMob.isEnabled() && JobsHook.getStackMobManager().isStacked(animal)) {
 
-                StackEntity stack = HookManager.getStackMobHandler().getStackEntity(animal);
+                StackEntity stack = JobsHook.getStackMobManager().getStackEntity(animal);
                 if (stack != null) {
                     Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
                     return;
@@ -1327,15 +1319,15 @@ public final class JobsPaymentListener implements Listener {
         if (killer.hasMetadata("NPC"))
             return;
 
-        if (Jobs.getGCManager().MythicMobsEnabled && HookManager.getMythicManager() != null
-            && HookManager.getMythicManager().isMythicMob(lVictim)) {
+        if (Jobs.getGCManager().MythicMobsEnabled && JobsHook.getMythicMobsManager() != null
+            && JobsHook.getMythicMobsManager().isMythicMob(lVictim)) {
             return;
         }
 
         Player pDamager = null;
 
         boolean isTameable = killer instanceof Tameable;
-        boolean isMyPet = HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(killer, null);
+        boolean isMyPet = JobsHook.getMyPetManager() != null && JobsHook.getMyPetManager().isMyPet(killer, null);
 
         if (killer instanceof Player) { // Checking if killer is player
             pDamager = (Player) killer;
@@ -1344,7 +1336,7 @@ public final class JobsPaymentListener implements Listener {
 
             pDamager = projectile.getShooter() instanceof Player ? (Player) projectile.getShooter() : null;
         } else if (isMyPet) { // Checking if killer is MyPet animal
-            UUID uuid = HookManager.getMyPetManager().getOwnerOfPet(killer);
+            UUID uuid = JobsHook.getMyPetManager().getOwnerOfPet(killer);
 
             if (uuid != null)
                 pDamager = Bukkit.getPlayer(uuid);
@@ -1392,11 +1384,11 @@ public final class JobsPaymentListener implements Listener {
 
         if (Jobs.getGCManager().payForStackedEntities) {
             if (JobsHook.WildStacker.isEnabled()) {
-                for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount(lVictim) - 1; i++) {
+                for (int i = 0; i < JobsHook.getWildStackerManager().getEntityAmount(lVictim) - 1; i++) {
                     Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
                 }
-            } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(lVictim)) {
-                StackEntity stack = HookManager.getStackMobHandler().getStackEntity(lVictim);
+            } else if (JobsHook.StackMob.isEnabled() && JobsHook.getStackMobManager().isStacked(lVictim)) {
+                StackEntity stack = JobsHook.getStackMobManager().getStackEntity(lVictim);
                 if (stack != null) {
                     Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
                     return;

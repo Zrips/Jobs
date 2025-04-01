@@ -8,72 +8,60 @@ import com.gamingmesh.jobs.Jobs;
 import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.MythicBukkit;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
-//import io.lumine.xikage.mythicmobs.MythicMobs;
-//import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
-//import io.lumine.xikage.mythicmobs.mobs.MythicMob;
-
-public class MythicMobs5 implements MythicMobInterface {
+public class MythicMobs5 {
 
     public BukkitAPIHelper apiHelper;
     private Jobs plugin;
 
     public MythicMobs5(Jobs plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
-    @Override
-    public void registerListener() {
-	plugin.getServer().getPluginManager().registerEvents(new MythicMobs5Listener(), plugin);
-    }
-
-    @Override
     public boolean isMythicMob(LivingEntity lVictim) {
-	return apiHelper != null && lVictim != null && apiHelper.isMythicMob(lVictim);
+        return apiHelper != null && lVictim != null && apiHelper.isMythicMob(lVictim);
     }
 
-    @Override
     public boolean check() {
-	Plugin mm = plugin.getServer().getPluginManager().getPlugin("MythicMobs");
-	if (mm == null)
-	    return false;
+        Plugin mm = plugin.getServer().getPluginManager().getPlugin("MythicMobs");
+        if (mm == null)
+            return false;
 
-	try {
-	    Class.forName("io.lumine.mythic.api.mobs.MythicMob");
-	    Class.forName("io.lumine.mythic.bukkit.BukkitAPIHelper");
-	    Class.forName("io.lumine.mythic.bukkit.events.MythicMobDeathEvent");
-	} catch (ClassNotFoundException e) {
-	    // Disabling
-	    CMIMessages.consoleMessage("&e[Jobs] &6MythicMobs was found - &cBut your version is outdated, please update for full support.");
-	    return false;
-	}
+        try {
+            Class.forName("io.lumine.mythic.api.mobs.MythicMob");
+            Class.forName("io.lumine.mythic.bukkit.BukkitAPIHelper");
+            Class.forName("io.lumine.mythic.bukkit.events.MythicMobDeathEvent");
+        } catch (ClassNotFoundException e) {
+            // Disabling
+            CMIMessages.consoleMessage("&e[Jobs] &6MythicMobs was found - &cBut your version is outdated, please update for full support.");
+            return false;
+        }
 
-	apiHelper = ((MythicBukkit) mm).getAPIHelper();
-	CMIMessages.consoleMessage("&e[Jobs] &6MythicMobs was found - Enabling capabilities.");
-	return true;
+        apiHelper = ((MythicBukkit) mm).getAPIHelper();
+        return true;
     }
 
     static boolean failed = false;
 
-    @Override
     public String getDisplayName(String id) {
-	if (failed || apiHelper == null)
-	    return "";
+        if (failed || apiHelper == null)
+            return "";
 
-	MythicMob mm = apiHelper.getMythicMob(id);
-	try {
-	    if (mm != null && mm.getDisplayName() != null)
-		return mm.getDisplayName().toString();
-	} catch (Throwable e) {
-	    if (!failed) {
-		failed = true;
-		e.printStackTrace();
-		CMIMessages.consoleMessage("&cEncountered error when checking MythicMob entity name. Support for mythicMobs will be suspended for time beying. Please report this issue.");
-	    }
-	}
+        MythicMob mm = apiHelper.getMythicMob(id);
+        try {
+            if (mm != null && mm.getDisplayName() != null)
+                return mm.getDisplayName().toString();
+        } catch (Throwable e) {
+            if (!failed) {
+                failed = true;
+                e.printStackTrace();
+                CMIMessages.consoleMessage("&cEncountered error when checking MythicMob entity name. Support for mythicMobs will be suspended for time beying. Please report this issue.");
+            }
+        }
 
-	return "";
+        return "";
     }
 
 }

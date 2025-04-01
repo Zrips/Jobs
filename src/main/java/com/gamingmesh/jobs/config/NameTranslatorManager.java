@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -19,7 +18,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
-import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.hooks.JobsHook;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Container.CMIText;
@@ -192,7 +191,7 @@ public class NameTranslatorManager {
                 if (got != null && got.getName() != null)
                     return got.getName();
 
-                return HookManager.getMythicManager() == null ? materialName : HookManager.getMythicManager().getDisplayName(materialName);
+                return !JobsHook.MythicMobs.isEnabled() ? materialName : JobsHook.getMythicMobsManager().getDisplayName(materialName);
             default:
                 break;
             }

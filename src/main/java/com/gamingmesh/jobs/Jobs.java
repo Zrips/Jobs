@@ -32,7 +32,6 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.logging.Logger;
 
-import com.gamingmesh.jobs.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -97,8 +96,18 @@ import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
 import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.hooks.JobsHook;
 import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.listeners.JobsDefaultFishPaymentListener;
+import com.gamingmesh.jobs.listeners.JobsListener;
+import com.gamingmesh.jobs.listeners.JobsPayment1_14Listener;
+import com.gamingmesh.jobs.listeners.JobsPayment1_16Listener;
+import com.gamingmesh.jobs.listeners.JobsPayment1_20Listener;
+import com.gamingmesh.jobs.listeners.JobsPayment1_9Listener;
+import com.gamingmesh.jobs.listeners.JobsPaymentListener;
+import com.gamingmesh.jobs.listeners.JobsPaymentVisualizationListener;
+import com.gamingmesh.jobs.listeners.PistonProtectionListener;
+import com.gamingmesh.jobs.listeners.PlayerSignEdit1_20Listeners;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
@@ -778,7 +787,7 @@ public final class Jobs extends JavaPlugin {
                 new YmlMaker(getFolder(), "Signs.yml").saveDefaultConfig();
             }
 
-            HookManager.loadHooks();
+            JobsHook.loadHooks();
             registerListeners();
 
             complement = new Complement1();
@@ -812,11 +821,13 @@ public final class Jobs extends JavaPlugin {
         CMIMessages.consoleMessage("&eRegistering listeners...");
 
         PluginManager pm = getInstance().getServer().getPluginManager();
+
         if (getGCManager().useCustomFishingOnly) {
-            pm.registerEvents(new JobsCustomFishingPaymentListener(), getInstance());
+            JobsHook.CustomFishing.registerListener();
         } else {
             pm.registerEvents(new JobsDefaultFishPaymentListener(), getInstance());
         }
+
         pm.registerEvents(new JobsListener(getInstance()), getInstance());
         pm.registerEvents(new JobsPaymentListener(getInstance()), getInstance());
 
@@ -842,18 +853,10 @@ public final class Jobs extends JavaPlugin {
 
         pm.registerEvents(new JobsChatEvent(getInstance()), getInstance());
 
-        if (HookManager.checkPyroFishingPro()) {
-            HookManager.getPyroFishingProManager().registerListener();
-        }
-        if (HookManager.checkCustomFishing()) {
-            HookManager.getCustomFishingManager().registerListener();
-        }
-        if (HookManager.getMcMMOManager().CheckmcMMO()) {
-            HookManager.setMcMMOlistener();
-        }
-        if (HookManager.checkMythicMobs()) {
-            HookManager.getMythicManager().registerListener();
-        }
+        JobsHook.PyroFishingPro.registerListener();
+        JobsHook.mcMMO.registerListener();
+        JobsHook.MythicMobs.registerListener();
+
         CMIMessages.consoleMessage("&eListeners registered successfully");
     }
 
