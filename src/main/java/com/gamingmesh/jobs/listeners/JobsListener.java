@@ -192,7 +192,7 @@ public class JobsListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         if (Jobs.getGCManager().MultiServerCompatability()) {
-            CMIScheduler.runTaskLater(() -> Jobs.getPlayerManager().playerJoin(event.getPlayer()), 40L);
+            CMIScheduler.runTaskLater(plugin, () -> Jobs.getPlayerManager().playerJoin(event.getPlayer()), 40L);
         } else {
             Jobs.getPlayerManager().playerJoin(event.getPlayer());
         }
@@ -421,11 +421,8 @@ public class JobsListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCropGrown(final BlockGrowEvent event) {
         if (Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld())) {
-            CMIScheduler.runAtLocationLater(event.getBlock().getLocation(), () -> {
-                if (Jobs.getGCManager().useNewBlockProtection)
-                    Jobs.getExploitManager().remove(event.getBlock());
-                else
-                    Jobs.getBpManager().remove(event.getBlock());
+            CMIScheduler.runAtLocationLater(plugin, event.getBlock().getLocation(), () -> {
+                Jobs.getExploitManager().remove(event.getBlock());
             }, 1L);
         }
     }
@@ -433,11 +430,8 @@ public class JobsListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onTreeGrown(final StructureGrowEvent event) {
         if (!event.getBlocks().isEmpty() && Jobs.getGCManager().canPerformActionInWorld(event.getBlocks().get(0).getWorld())) {
-            CMIScheduler.runAtLocationLater(event.getBlocks().get(0).getLocation(), () -> event.getBlocks().forEach(blockState -> {
-                if (Jobs.getGCManager().useNewBlockProtection)
-                    Jobs.getExploitManager().remove(blockState.getBlock());
-                else
-                    Jobs.getBpManager().remove(blockState.getBlock());
+            CMIScheduler.runAtLocationLater(plugin, event.getBlocks().get(0).getLocation(), () -> event.getBlocks().forEach(blockState -> {
+                Jobs.getExploitManager().remove(blockState.getBlock());
             }), 1L);
         }
     }

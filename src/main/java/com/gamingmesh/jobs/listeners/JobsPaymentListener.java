@@ -250,7 +250,7 @@ public final class JobsPaymentListener implements Listener {
 
         CMIEntityType type = CMIEntityType.get(entity.getType());
 
-        if (type != CMIEntityType.COW && type != CMIEntityType.MUSHROOM_COW && type != CMIEntityType.GOAT)
+        if (type != CMIEntityType.COW && type != CMIEntityType.MUSHROOM_COW && type != CMIEntityType.MOOSHROOM && type != CMIEntityType.GOAT)
             return;
 
         Player player = event.getPlayer();
@@ -260,7 +260,7 @@ public final class JobsPaymentListener implements Listener {
             return;
         }
 
-        if (itemInHand.getType() == Material.BOWL && type != CMIEntityType.MUSHROOM_COW) {
+        if (itemInHand.getType() == Material.BOWL && type != CMIEntityType.MUSHROOM_COW && type != CMIEntityType.MOOSHROOM) {
             return;
         }
 
