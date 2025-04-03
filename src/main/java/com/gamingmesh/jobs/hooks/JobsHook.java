@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.hooks;
 
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gamingmesh.jobs.Jobs;
@@ -21,7 +22,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 public enum JobsHook {
     MyPet {
         @Override
-        public boolean init() {
+        protected boolean init() {
 
             if (!isPresent())
                 return false;
@@ -33,7 +34,7 @@ public enum JobsHook {
     },
     StackMob {
         @Override
-        public boolean init() {
+        protected boolean init() {
             if (!isPresent())
                 return false;
 
@@ -44,7 +45,7 @@ public enum JobsHook {
     },
     WildStacker {
         @Override
-        public boolean init() {
+        protected boolean init() {
             if (!isPresent())
                 return false;
 
@@ -55,7 +56,7 @@ public enum JobsHook {
     },
     WorldGuard {
         @Override
-        public boolean init() {
+        protected boolean init() {
             if (!isPresent())
                 return false;
 
@@ -67,7 +68,7 @@ public enum JobsHook {
     MythicMobs {
 
         @Override
-        public boolean init() {
+        protected boolean init() {
             if (!isPresent())
                 return false;
 
@@ -100,7 +101,7 @@ public enum JobsHook {
     },
     mcMMO {
         @Override
-        public boolean init() {
+        protected boolean init() {
             if (!isPresent())
                 return false;
 
@@ -129,7 +130,7 @@ public enum JobsHook {
     },
     BlockTracker {
         @Override
-        public boolean init() {
+        protected boolean init() {
             if (!isPresent())
                 return false;
 
@@ -139,15 +140,6 @@ public enum JobsHook {
         }
     },
     PyroFishingPro {
-        @Override
-        public boolean init() {
-            if (!isPresent())
-                return false;
-
-            printDetectedMessage(this);
-            return true;
-        }
-
         @Override
         public void registerListener() {
 
@@ -160,7 +152,7 @@ public enum JobsHook {
     },
     CustomFishing {
         @Override
-        public boolean init() {
+        protected boolean init() {
             if (!isPresent())
                 return false;
             printDetectedMessage(this, Jobs.getGCManager().useCustomFishingOnly ? "(Using CustomFishing-Only Settings)" : "(Not using CustomFishing-Only Settings)");
@@ -181,27 +173,33 @@ public enum JobsHook {
         }
     };
 
-    private Boolean enabled;
-    private Boolean present;
+    private boolean enabled;
+    private boolean present;
 
     public boolean isEnabled() {
-        if (enabled == null)
-            enabled = JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager().isPluginEnabled(name());
         return enabled;
     }
 
     public boolean isPresent() {
-        if (present == null)
-            present = JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager().getPlugin(name()) != null;
         return present;
     }
 
     public void registerListener() {
-
     }
 
-    public boolean init() {
-        return false;
+    private void checkState() {
+        PluginManager pm = JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager();
+        present = pm.getPlugin(name()) != null;
+        enabled = pm.isPluginEnabled(name());
+    }
+
+    protected boolean init() {
+
+        if (!isPresent())
+            return false;
+
+        printDetectedMessage(this);
+        return true;
     }
 
     private static void printDetectedMessage(JobsHook hook, String... extra) {
@@ -222,6 +220,7 @@ public enum JobsHook {
 
     public static void loadHooks() {
         for (JobsHook one : JobsHook.values()) {
+            one.checkState();
             one.init();
         }
     }

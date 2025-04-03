@@ -40,7 +40,6 @@ public class McMMOManager {
             // Skill names should be in lower case
             Long t = InfoMap.get(SuperAbilityType.TREE_FELLER.toString().toLowerCase());
             if (t != null) {
-                CMIDebug.d("found", t);
                 if (t > System.currentTimeMillis())
                     return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
                 InfoMap.remove(SuperAbilityType.TREE_FELLER.toString().toLowerCase());

@@ -69,6 +69,7 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -312,7 +313,7 @@ public class PlayerManager {
         jPlayer.onDisconnect();
         if (Jobs.getGCManager().saveOnDisconnect() || Jobs.getGCManager().MultiServerCompatability()) {
             jPlayer.setSaved(false);
-            jPlayer.save();
+            jPlayer.save(true);
         }
     }
 
@@ -1162,8 +1163,9 @@ public class PlayerManager {
 
         Player pl = player.getPlayer();
 
-        if (JobsHook.mcMMO.isEnabled())
+        if (JobsHook.mcMMO.isEnabled()) {
             boost.add(BoostOf.McMMO, new BoostMultiplier().add(JobsHook.getMcMMOManager().getMultiplier(pl)));
+        }
 
         double petPay = 0D;
 

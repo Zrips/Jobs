@@ -45,21 +45,17 @@ public class McMMO2_X_listener implements Listener {
         Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void OnAbilityOn(McMMOPlayerAbilityActivateEvent event) {
-
         HashMap<String, Long> InfoMap = JobsHook.getMcMMOManager().getMap().computeIfAbsent(event.getPlayer().getUniqueId(), k -> new HashMap<>());
-
         InfoMap.put(event.getAbility().toString().toLowerCase(), System.currentTimeMillis() + (60 * 1000));
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void OnAbilityOff(McMMOPlayerAbilityDeactivateEvent event) {
-
         HashMap<String, Long> InfoMap = JobsHook.getMcMMOManager().getMap().get(event.getPlayer().getUniqueId());
         if (InfoMap == null)
             return;
-
         InfoMap.remove(event.getAbility().toString().toLowerCase());
         if (InfoMap.isEmpty())
             JobsHook.getMcMMOManager().getMap().remove(event.getPlayer().getUniqueId());
