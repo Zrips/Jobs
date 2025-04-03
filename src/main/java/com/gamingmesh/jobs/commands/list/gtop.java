@@ -54,7 +54,7 @@ public class gtop implements Cmd {
         int amount = Jobs.getGCManager().JobsTopAmount;
         PageInfo pi = new PageInfo(amount, Jobs.getPlayerManager().getPlayersCache().size(), page);
 
-        CMIScheduler.runTaskAsynchronously(() -> showGlobalTop(sender, pi, amount));
+        CMIScheduler.runTaskAsynchronously(plugin, () -> showGlobalTop(sender, pi, amount));
         return true;
     }
 

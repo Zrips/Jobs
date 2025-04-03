@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -19,10 +20,12 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
 
+import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class SignUtil {
 
@@ -47,7 +50,7 @@ public class SignUtil {
         Map<String, jobsSign> sub = signsByType.get(jSign.getIdentifier().toLowerCase());
         if (sub != null) {
             sub.remove(jSign.locToBlockString());
-        } 
+        }
 
         return true;
     }
@@ -328,6 +331,8 @@ public class SignUtil {
             "[job]", jobname);
     }
 
+    private ConcurrentHashMap<Sign, CMITask> signTasks = new ConcurrentHashMap<Sign, CMITask>();
+
     @SuppressWarnings("deprecation")
     public boolean updateHead(final Sign sign, final String playerName, int timelapse) {
         if (playerName == null)
@@ -336,6 +341,10 @@ public class SignUtil {
         if (timelapse < 1) {
             timelapse = 1;
         }
+
+        CMITask existingTask = signTasks.get(sign);
+        if (existingTask != null)
+            return true;
 
         BlockFace directionFacing = null;
         if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
@@ -354,20 +363,22 @@ public class SignUtil {
         if (directionFacing != null && !(loc.getBlock().getState() instanceof Skull))
             loc.add(directionFacing.getOppositeFace().getModX(), 0, directionFacing.getOppositeFace().getModZ());
 
-        CMIScheduler.get().runTaskLater(new Runnable() {
-            @Override
-            public void run() {
-                if (!(loc.getBlock().getState() instanceof Skull))
-                    return;
+        // Limit time to max 60 seconds
+        long timeFrame = CMINumber.clamp(timelapse * Jobs.getGCManager().InfoUpdateInterval, 0, 60);
 
-                Skull skull = (Skull) loc.getBlock().getState();
-                if (playerName.equalsIgnoreCase(skull.getOwner()))
-                    return;
+        signTasks.put(sign, CMIScheduler.runTaskLater(plugin, () -> {
+            if (!(loc.getBlock().getState() instanceof Skull))
+                return;
 
-                skull.setOwner(playerName);
-                skull.update();
-            }
-        }, timelapse * Jobs.getGCManager().InfoUpdateInterval * 20L);
+            Skull skull = (Skull) loc.getBlock().getState();
+            if (playerName.equalsIgnoreCase(skull.getOwner()))
+                return;
+
+            skull.setOwner(playerName);
+            skull.update();
+
+            signTasks.remove(sign);
+        }, timeFrame * 20L));
         return true;
     }
 }

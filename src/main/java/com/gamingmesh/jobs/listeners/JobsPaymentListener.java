@@ -759,37 +759,34 @@ public final class JobsPaymentListener implements Listener {
                 preInv[i] = preInv[i].clone();
         }
 
-        CMIScheduler.get().runTaskLater(new Runnable() {
-            @Override
-            public void run() {
-                final ItemStack[] postInv = player.getInventory().getContents();
-                int newItemsCount = 0;
+        CMIScheduler.runTaskLater(Jobs.getInstance(), () -> {
+            final ItemStack[] postInv = player.getInventory().getContents();
+            int newItemsCount = 0;
 
-                for (int i = 0; i < preInv.length; i++) {
-                    ItemStack pre = preInv[i];
-                    ItemStack post = postInv[i];
+            for (int i = 0; i < preInv.length; i++) {
+                ItemStack pre = preInv[i];
+                ItemStack post = postInv[i];
 
-                    // We're only interested in filled slots that are different
-                    if (hasSameItem(compareItem, post) && (hasSameItem(compareItem, pre) || pre == null)) {
-                        newItemsCount += post.getAmount() - (pre != null ? pre.getAmount() : 0);
-                    }
+                // We're only interested in filled slots that are different
+                if (hasSameItem(compareItem, post) && (hasSameItem(compareItem, pre) || pre == null)) {
+                    newItemsCount += post.getAmount() - (pre != null ? pre.getAmount() : 0);
                 }
+            }
 
-                if (resultStack == null)
-                    return;
+            if (resultStack == null)
+                return;
 
-                while (newItemsCount > 0) {
-                    newItemsCount--;
+            while (newItemsCount > 0) {
+                newItemsCount--;
 
-                    if (resultStack.getItemMeta() instanceof PotionMeta) {
-                        PotionMeta potion = (PotionMeta) resultStack.getItemMeta();
-                        if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && potion.getBasePotionData() != null)
-                            Jobs.action(jPlayer, new PotionItemActionInfo(resultStack, type, potion.getBasePotionData().getType()));
-                    } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
-                        Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), type));
-                    } else {
-                        Jobs.action(jPlayer, new ItemActionInfo(resultStack, type));
-                    }
+                if (resultStack.getItemMeta() instanceof PotionMeta) {
+                    PotionMeta potion = (PotionMeta) resultStack.getItemMeta();
+                    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && potion.getBasePotionData() != null)
+                        Jobs.action(jPlayer, new PotionItemActionInfo(resultStack, type, potion.getBasePotionData().getType()));
+                } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
+                    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), type));
+                } else {
+                    Jobs.action(jPlayer, new ItemActionInfo(resultStack, type));
                 }
             }
         }, 1);
@@ -1281,7 +1278,7 @@ public final class JobsPaymentListener implements Listener {
                 // So lets remove meta in case some plugin removes entity in wrong way.
                 // Need to delay action for other function to properly check for existing meta data relating to this entity before clearing it out
                 // Longer delay is needed due to mob split event being fired few seconds after mob dies and not at same time
-                CMIScheduler.runTaskLater(() -> lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin), 200L);
+                CMIScheduler.runTaskLater(plugin, () -> lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin), 200L);
             } catch (Throwable ignored) {
             }
             return;
@@ -1290,7 +1287,7 @@ public final class JobsPaymentListener implements Listener {
         if (Jobs.getGCManager().MonsterDamageUse) {
             boolean ignore = false;
             if (Jobs.getGCManager().MonsterDamageIgnoreBosses) {
-                CMIEntityType etype = CMIEntityType.getByType(lVictim.getType());
+                CMIEntityType etype = CMIEntityType.get(lVictim.getType());
                 switch (etype) {
                 case ENDER_DRAGON:
                 case WITHER:
@@ -1833,7 +1830,7 @@ public final class JobsPaymentListener implements Listener {
             if ((Version.isCurrentEqualOrHigher(Version.v1_13_R1) && (type.endsWith("_LOG") || type.endsWith("_WOOD"))) ||
                 (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && (type.endsWith("_STEM") || type.endsWith("_HYPHAE"))) ||
                 (Version.isCurrentEqualOrHigher(Version.v1_20_R1) && (type.equalsIgnoreCase("BAMBOO_BLOCK")))) {
-                CMIScheduler.get().runTaskLater(() -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
+                CMIScheduler.runTaskLater(plugin, () -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
             }
         }
     }

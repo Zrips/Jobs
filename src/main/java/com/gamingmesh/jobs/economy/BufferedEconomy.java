@@ -210,9 +210,9 @@ public class BufferedEconomy {
                     }
 
                     if (Jobs.getGCManager().isEconomyAsync())
-                        CMIScheduler.get().runLaterAsync(new BufferedPaymentTask(this, economy, payment), i);
+                        CMIScheduler.runLaterAsync(plugin, new BufferedPaymentTask(this, economy, payment), i);
                     else
-                        CMIScheduler.get().runTaskLater(new BufferedPaymentTask(this, economy, payment), i);
+                        CMIScheduler.runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 
                 } catch (Throwable e) {
                     e.printStackTrace();

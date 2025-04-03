@@ -29,94 +29,91 @@ public class glog implements Cmd {
             return false;
         }
 
-        CMIScheduler.get().runTaskAsynchronously(new Runnable() {
-            @Override
-            public void run() {
-                Map<LogAmounts, Double> unsortMap = new HashMap<>();
-                int time = CMITimeManager.timeInInt();
+        CMIScheduler.runTaskAsynchronously(plugin, () -> {
+            Map<LogAmounts, Double> unsortMap = new HashMap<>();
+            int time = CMITimeManager.timeInInt();
 
-                for (Integer oneP : Jobs.getJobsDAO().getLognameList(time, time)) {
-                    PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(oneP);
-                    if (info == null)
-                        continue;
+            for (Integer oneP : Jobs.getJobsDAO().getLognameList(time, time)) {
+                PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(oneP);
+                if (info == null)
+                    continue;
 
-                    String name = info.getName();
-                    if (name == null)
-                        continue;
+                String name = info.getName();
+                if (name == null)
+                    continue;
 
-                    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(info.getUuid());
-                    if (jPlayer == null)
-                        continue;
+                JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(info.getUuid());
+                if (jPlayer == null)
+                    continue;
 
-                    Map<String, Log> logList = jPlayer.getLog();
-                    if (logList == null || logList.isEmpty())
-                        continue;
+                Map<String, Log> logList = jPlayer.getLog();
+                if (logList == null || logList.isEmpty())
+                    continue;
 
-                    for (Log l : logList.values()) {
-                        for (LogAmounts amounts : l.getAmountList().values()) {
-                            amounts.setUsername(name);
-                            amounts.setAction(l.getActionType());
-                            unsortMap.put(amounts, amounts.get(CurrencyType.MONEY));
-                        }
+                for (Log l : logList.values()) {
+                    for (LogAmounts amounts : l.getAmountList().values()) {
+                        amounts.setUsername(name);
+                        amounts.setAction(l.getActionType());
+                        unsortMap.put(amounts, amounts.get(CurrencyType.MONEY));
                     }
                 }
-
-                unsortMap = Sorting.sortDoubleDESCByLog(unsortMap);
-                if (unsortMap.isEmpty()) {
-                    Language.sendMessage(sender, "command.glog.output.nodata");
-                    return;
-                }
-
-                int count = 1, max = 10;
-
-                double totalMoney = 0,
-                    totalExp = 0,
-                    totalPoints = 0;
-
-                Language.sendMessage(sender, "command.glog.output.topline");
-                for (LogAmounts info : unsortMap.keySet()) {
-                    double money = info.get(CurrencyType.MONEY);
-                    totalMoney += money;
-
-                    String moneyS = "";
-                    if (money != 0D)
-                        moneyS = Jobs.getLanguage().getMessage("command.glog.output.money", "%amount%", money);
-
-                    double exp = info.get(CurrencyType.EXP);
-                    totalExp += exp;
-
-                    String expS = "";
-                    if (exp != 0D)
-                        expS = Jobs.getLanguage().getMessage("command.glog.output.exp", "%amount%", exp);
-
-                    double points = info.get(CurrencyType.POINTS);
-                    totalPoints += points;
-
-                    String pointsS = "";
-                    if (points != 0D)
-                        pointsS = Jobs.getLanguage().getMessage("command.glog.output.points", "%amount%", points);
-
-                    Language.sendMessage(sender, "command.glog.output.ls",
-                        "%number%", count,
-                        "%action%", info.getAction(),
-                        "%item%", info.getItemName().replace(":0", "").replace('_', ' ').toLowerCase(),
-                        "%qty%", info.getCount(),
-                        "%money%", moneyS,
-                        "%exp%", expS,
-                        "%points%", pointsS);
-
-                    count++;
-
-                    if (count > max)
-                        break;
-                }
-
-                NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
-                Language.sendMessage(sender, "command.glog.output.totalIncomes", "%money%", format.format(totalMoney),
-                    "%exp%", format.format(totalExp), "%points%", format.format(totalPoints));
-
-                Language.sendMessage(sender, "command.glog.output.bottomline");
             }
+
+            unsortMap = Sorting.sortDoubleDESCByLog(unsortMap);
+            if (unsortMap.isEmpty()) {
+                Language.sendMessage(sender, "command.glog.output.nodata");
+                return;
+            }
+
+            int count = 1, max = 10;
+
+            double totalMoney = 0,
+                totalExp = 0,
+                totalPoints = 0;
+
+            Language.sendMessage(sender, "command.glog.output.topline");
+            for (LogAmounts info : unsortMap.keySet()) {
+                double money = info.get(CurrencyType.MONEY);
+                totalMoney += money;
+
+                String moneyS = "";
+                if (money != 0D)
+                    moneyS = Jobs.getLanguage().getMessage("command.glog.output.money", "%amount%", money);
+
+                double exp = info.get(CurrencyType.EXP);
+                totalExp += exp;
+
+                String expS = "";
+                if (exp != 0D)
+                    expS = Jobs.getLanguage().getMessage("command.glog.output.exp", "%amount%", exp);
+
+                double points = info.get(CurrencyType.POINTS);
+                totalPoints += points;
+
+                String pointsS = "";
+                if (points != 0D)
+                    pointsS = Jobs.getLanguage().getMessage("command.glog.output.points", "%amount%", points);
+
+                Language.sendMessage(sender, "command.glog.output.ls",
+                    "%number%", count,
+                    "%action%", info.getAction(),
+                    "%item%", info.getItemName().replace(":0", "").replace('_', ' ').toLowerCase(),
+                    "%qty%", info.getCount(),
+                    "%money%", moneyS,
+                    "%exp%", expS,
+                    "%points%", pointsS);
+
+                count++;
+
+                if (count > max)
+                    break;
+            }
+
+            NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+            Language.sendMessage(sender, "command.glog.output.totalIncomes", "%money%", format.format(totalMoney),
+                "%exp%", format.format(totalExp), "%points%", format.format(totalPoints));
+
+            Language.sendMessage(sender, "command.glog.output.bottomline");
         });
         return true;
     }

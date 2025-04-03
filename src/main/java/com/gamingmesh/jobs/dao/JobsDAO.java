@@ -1021,14 +1021,15 @@ public abstract class JobsDAO {
 
     public void triggerTableIdUpdate() {
         // Lets convert old fields
-        if (!converted) {
-            CMIScheduler.get().runTaskLater(() -> {
-                CMIMessages.consoleMessage("&6[Jobs] Converting to new database format");
-                convertID();
-                CMIMessages.consoleMessage("&6[Jobs] Converted to new database format");
-                converted = true;
-            }, 60L);
-        }
+        if (converted)
+            return;
+        
+        CMIScheduler.runTaskLater(plugin, () -> {
+            CMIMessages.consoleMessage("&6[Jobs] Converting to new database format");
+            convertID();
+            CMIMessages.consoleMessage("&6[Jobs] Converted to new database format");
+            converted = true;
+        }, 60L);
     }
 
     private void convertID() {

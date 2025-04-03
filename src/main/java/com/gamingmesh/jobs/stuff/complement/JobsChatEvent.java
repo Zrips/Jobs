@@ -17,52 +17,52 @@ public class JobsChatEvent implements Listener {
     private Jobs plugin;
 
     public JobsChatEvent(Jobs plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void asyncPlayerChatEvent(final AsyncPlayerChatEvent event) {
-	if (event.isCancelled() || Util.getJobsEditorMap().isEmpty())
-	    return;
+        if (event.isCancelled() || Util.getJobsEditorMap().isEmpty())
+            return;
 
-	final String msg = Util.getJobsEditorMap().remove(event.getPlayer().getUniqueId());
-	if (msg != null) {
-	    CMIScheduler.get().runTask(() -> event.getPlayer().performCommand(msg + event.getMessage()));
-	    event.setCancelled(true);
-	}
+        final String msg = Util.getJobsEditorMap().remove(event.getPlayer().getUniqueId());
+        if (msg != null) {
+            CMIScheduler.runTask(plugin, () -> event.getPlayer().performCommand(msg + event.getMessage()));
+            event.setCancelled(true);
+        }
     }
 
     // Adding to chat prefix job name
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-	if (!Jobs.getGCManager().getModifyChat())
-	    return;
+        if (!Jobs.getGCManager().getModifyChat())
+            return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
-	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
-	if (honorific.equals(" "))
-	    honorific = "";
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
+        String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
+        if (honorific.equals(" "))
+            honorific = "";
 
-	event.setFormat(event.getFormat().replace("%1$s", honorific + "%1$s"));
+        event.setFormat(event.getFormat().replace("%1$s", honorific + "%1$s"));
     }
 
     // Changing chat prefix variable to job name
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerChatLow(AsyncPlayerChatEvent event) {
-	onPlayerChatHigh(event);
+        onPlayerChatHigh(event);
     }
 
     // Changing chat prefix variable to job name
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerChatHigh(AsyncPlayerChatEvent event) {
-	if (Jobs.getGCManager().getModifyChat())
-	    return;
+        if (Jobs.getGCManager().getModifyChat())
+            return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
-	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
-	if (honorific.equals(" "))
-	    honorific = "";
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
+        String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
+        if (honorific.equals(" "))
+            honorific = "";
 
-	event.setFormat(event.getFormat().replace("{jobs}", honorific));
+        event.setFormat(event.getFormat().replace("{jobs}", honorific));
     }
 }

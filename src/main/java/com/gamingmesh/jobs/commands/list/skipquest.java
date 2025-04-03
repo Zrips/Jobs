@@ -115,11 +115,10 @@ public class skipquest implements Cmd {
             if (!Util.SKIPCONFIRM.contains(uuid)) {
                 Util.SKIPCONFIRM.add(uuid);
 
-                CMIScheduler.get().runTaskLater(() -> Util.SKIPCONFIRM.remove(uuid),
-                        20 * Jobs.getGCManager().ConfirmExpiryTime);
+                CMIScheduler.runTaskLater(plugin, () -> Util.SKIPCONFIRM.remove(uuid), 20 * Jobs.getGCManager().ConfirmExpiryTime);
 
                 Language.sendMessage(sender, "command.skipquest.confirmationNeed", "[questName]",
-                        old.getQuestName(), "[time]", Jobs.getGCManager().ConfirmExpiryTime);
+                    old.getQuestName(), "[time]", Jobs.getGCManager().ConfirmExpiryTime);
                 return true;
             }
 

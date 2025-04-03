@@ -410,7 +410,7 @@ public class Placeholder {
         return null;
     }
 
-    private String simplifyDouble(double value) {
+    private static String simplifyDouble(double value) {
         return String.valueOf((int) (value * 100) / 100D);
     }
 
@@ -437,11 +437,11 @@ public class Placeholder {
             case user_id:
                 return Integer.toString(user.getUserId());
             case user_bstandcount:
-                return Integer.toString(user.getBrewingStandCount());
+                return Integer.toString(user.getOwnerShipCount(BlockTypes.BREWING_STAND));
             case user_maxbstandcount:
                 return Integer.toString(user.getMaxOwnerShipAllowed(BlockTypes.BREWING_STAND));
             case user_furncount:
-                return Integer.toString(user.getFurnaceCount());
+                return Integer.toString(user.getOwnerShipCount(BlockTypes.FURNACE));
             case user_maxfurncount:
                 return Integer.toString(user.getMaxOwnerShipAllowed(BlockTypes.FURNACE));
             case user_smokercount:

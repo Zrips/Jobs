@@ -49,23 +49,10 @@ public class BlockOwnerShip {
         }
 
         material = type;
+        this.type = BlockTypes.getFromCMIMaterial(type);
 
-        switch (this.type = BlockTypes.getFromCMIMaterial(type)) {
-        case BLAST_FURNACE:
-            metadataName = "jobsBlastFurnaceOwner";
-            break;
-        case BREWING_STAND:
-            metadataName = "jobsBrewingOwner";
-            break;
-        case FURNACE:
-            metadataName = "jobsFurnaceOwner";
-            break;
-        case SMOKER:
-            metadataName = "jobsSmokerOwner";
-            break;
-        default:
-            break;
-        }
+        if (this.type != null)
+            metadataName = "jobs" + this.type.getPath();
     }
 
     public BlockTypes getType() {
@@ -168,8 +155,7 @@ public class BlockOwnerShip {
 
         block.setMetadata(metadataName, new FixedMetadataValue(plugin, jPlayer.getUniqueId().toString()));
 
-        if (!Jobs.getGCManager().isBrewingStandsReassign() && !Jobs.getGCManager().isFurnacesReassign()
-            && !Jobs.getGCManager().BlastFurnacesReassign && !Jobs.getGCManager().SmokerReassign) {
+        if (!BlockTypes.isAnyToReasign()) {
             return ownershipFeedback.newReg;
         }
 
@@ -429,10 +415,7 @@ public class BlockOwnerShip {
     }
 
     public boolean isReassignDisabled() {
-        return (type == BlockTypes.FURNACE && !Jobs.getGCManager().isFurnacesReassign())
-            || (type == BlockTypes.BLAST_FURNACE && !Jobs.getGCManager().BlastFurnacesReassign)
-            || (type == BlockTypes.BREWING_STAND && !Jobs.getGCManager().isBrewingStandsReassign())
-            || (type == BlockTypes.SMOKER && !Jobs.getGCManager().SmokerReassign);
+        return !type.isReasign();
     }
 
     public enum ownershipFeedback {

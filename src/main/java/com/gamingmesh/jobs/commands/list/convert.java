@@ -27,7 +27,7 @@ public class convert implements Cmd {
         String from = Jobs.getDBManager().getDbType() == DataBaseType.SqLite ? "SQLite" : "MySQL";
         String to = Jobs.getDBManager().getDbType() == DataBaseType.SqLite ? "MySQL" : "SQLite";
 
-        CMIScheduler.get().runTaskAsynchronously(() -> {
+        CMIScheduler.runTaskAsynchronously(plugin, () -> {
             Jobs.convertDatabase();
             CMIMessages.consoleMessage("&eDatabase was converted from &2" + from + " &eto &2" + to + "&e!");
         });

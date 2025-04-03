@@ -110,7 +110,7 @@ public class BlockProtectionManager {
 
         // If timer is under 5 min, we can run scheduler to remove it when time comes
         if (time > -1 && (time - System.currentTimeMillis()) / 1000 < 60 * 5)
-            Bp.setScheduler(CMIScheduler.runAtLocationLater(loc, () -> remove(loc), (time - System.currentTimeMillis()) / 50));
+            Bp.setScheduler(CMIScheduler.runAtLocationLater(Jobs.getInstance(), loc, () -> remove(loc), (time - System.currentTimeMillis()) / 50));
 
         Bpm.put(v, Bp);
         chunks.put(chunk, Bpm);

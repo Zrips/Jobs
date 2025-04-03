@@ -45,8 +45,7 @@ public class leave implements Cmd {
             if (!Util.LEAVECONFIRM.contains(uuid)) {
                 Util.LEAVECONFIRM.add(uuid);
 
-                CMIScheduler.get().runTaskLater(() -> Util.LEAVECONFIRM.remove(uuid),
-                    20 * Jobs.getGCManager().ConfirmExpiryTime);
+                CMIScheduler.runTaskLater(plugin, () -> Util.LEAVECONFIRM.remove(uuid), 20 * Jobs.getGCManager().ConfirmExpiryTime);
 
                 Language.sendMessage(sender, "command.leave.confirmationNeed",
                     job,

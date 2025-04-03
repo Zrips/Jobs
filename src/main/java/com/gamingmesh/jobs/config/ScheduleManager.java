@@ -45,7 +45,7 @@ public class ScheduleManager {
 	    return;
 
 	cancel();
-	timer = CMIScheduler.get().scheduleSyncRepeatingTask(this::scheduler, 20, 30 * 20L);
+	timer = CMIScheduler.scheduleSyncRepeatingTask(plugin, this::scheduler, 20, 30 * 20L);
     }
 
     public void cancel() {

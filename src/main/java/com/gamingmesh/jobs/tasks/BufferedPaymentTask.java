@@ -43,7 +43,7 @@ public class BufferedPaymentTask implements Runnable {
 	double money = payment.get(CurrencyType.MONEY);
 	if (money > 0) {
 	    if (Jobs.getGCManager().isEconomyAsync()) {
-		CMIScheduler.get().runTaskAsynchronously(() -> economy.depositPlayer(payment.getOfflinePlayer(), money));
+		CMIScheduler.runTaskAsynchronously(Jobs.getInstance(), () -> economy.depositPlayer(payment.getOfflinePlayer(), money));
 	    } else {
 		economy.depositPlayer(payment.getOfflinePlayer(), money);
 	    }

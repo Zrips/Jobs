@@ -363,7 +363,7 @@ public class JobsListener implements Listener {
 
         event.setCancelled(true);
 
-        CMIScheduler.get().runTaskLater(() -> signUtil.signUpdate(job, type), 1L);
+        CMIScheduler.runTaskLater(plugin, () -> signUtil.signUpdate(job, type), 1L);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

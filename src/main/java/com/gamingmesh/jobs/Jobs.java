@@ -794,10 +794,10 @@ public final class Jobs extends JavaPlugin {
 
             if (HookVault.isVaultEnable()) {
                 // register economy
-                CMIScheduler.get().runTask(() -> new HookEconomyTask(net.milkbowl.vault.economy.Economy.class));
+                CMIScheduler.runTask(Jobs.getInstance(), () -> new HookEconomyTask(net.milkbowl.vault.economy.Economy.class));
 
                 // register permission from vault
-                CMIScheduler.get().runTask(() -> new HookPermissionTask(Permission.class));
+                CMIScheduler.runTask(Jobs.getInstance(), () -> new HookPermissionTask(Permission.class));
             }
 
             dao.loadBlockProtection();
@@ -1149,7 +1149,7 @@ public final class Jobs extends JavaPlugin {
                 payments.put(CurrencyType.POINTS, pointAmount);
 
             // FinalPayment event
-            CMIScheduler.runTaskAsynchronously(() -> Bukkit.getServer().getPluginManager().callEvent(new JobsInstancePaymentEvent(jPlayer.getPlayer(), payments)));
+            CMIScheduler.runTaskAsynchronously(getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(new JobsInstancePaymentEvent(jPlayer.getPlayer(), payments)));
             economy.pay(jPlayer, payments);
 
             if (gConfigManager.LoggingUse) {
@@ -1318,7 +1318,7 @@ public final class Jobs extends JavaPlugin {
                 FASTPAYMENT.put(jPlayer.getUniqueId(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), payments), prog.getJob()));
 
                 // FinalPayment event
-                CMIScheduler.runTaskAsynchronously(() -> Bukkit.getServer().getPluginManager().callEvent(new JobsInstancePaymentEvent(jPlayer.getPlayer(), payments)));
+                CMIScheduler.runTaskAsynchronously(getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(new JobsInstancePaymentEvent(jPlayer.getPlayer(), payments)));
 
                 economy.pay(jPlayer, payments);
                 int oldLevel = prog.getLevel();

@@ -38,6 +38,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.MessageToggleState;
+import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 
 import net.Zrips.CMILib.CMILib;
 import net.Zrips.CMILib.Container.CMIList;
@@ -74,15 +75,15 @@ public class GeneralConfigManager {
     private String getSelectionTool, DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
 
     public List<String> JobsTopHiddenPlayers;
-    
+
     public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime, blockOwnershipRange,
         globalblocktimer, globalBlockBreakTimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
-        SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays, BlastFurnacesMaxDefault, SmokersMaxDefault,
+        SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays,
         levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
         SoundTitleChangePitch, ToplistInScoreboardInterval;
 
     protected int savePeriod, maxJobs, economyBatchDelay;
-    private int ResetTimeHour, ResetTimeMinute, DailyQuestsSkips, FurnacesMaxDefault, BrewingStandsMaxDefault,
+    private int ResetTimeHour, ResetTimeMinute, DailyQuestsSkips,
         BrowseAmountToShow, JobsGUIRows, JobsGUIBackButton, JobsGUINextButton, JobsGUIStartPosition, JobsGUIGroupAmount, JobsGUISkipAmount;
 
     public double skipQuestCost, MinimumOveralPaymentLimit, minimumOveralExpLimit, MinimumOveralPointsLimit, MonsterDamagePercentage,
@@ -90,7 +91,7 @@ public class GeneralConfigManager {
 
     public float maxPaymentCurveFactor;
 
-    private boolean FurnacesReassign, BrewingStandsReassign, useTnTFinder = false, ShowNewVersion;
+    private boolean useTnTFinder = false, ShowNewVersion;
     private boolean InformDuplicates, DailyQuestsUseGUI;
 
     private FireworkEffect fireworkEffect;
@@ -113,7 +114,7 @@ public class GeneralConfigManager {
         hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel, RomanNumbers,
         BossBarEnabled = false, ActionBarEnabled, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
-        LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
+        LoggingUse, payForCombiningItems, payForStackedEntities, payForAbove = false,
         payForEachVTradeItem, allowEnchantingBoostedItems, preventShopItemEnchanting, useCustomFishingOnly = false;
     public MessageToggleState BossBarsMessageDefault = MessageToggleState.Rapid;
     public MessageToggleState ActionBarsMessageDefault = MessageToggleState.Rapid;
@@ -862,33 +863,35 @@ public class GeneralConfigManager {
             "Set to 0 if you want to disable timer");
         CowMilkingTimer = c.get("Economy.MilkingCow.Timer", 30) * 1000;
 
+        BlockTypes.anyToReasign = false;
+        
         c.addComment("ExploitProtections.Furnaces.Reassign",
             "When enabled, players interacted furnaces will be saved into a file and will be reassigned after restart to keep giving out money",
             "Players will no longer need to click on furnace to get paid from it after server restart");
-        FurnacesReassign = c.get("ExploitProtections.Furnaces.Reassign", true);
+        BlockTypes.FURNACE.setReasign(c.get("ExploitProtections.Furnaces.Reassign", true));
         c.addComment("ExploitProtections.Furnaces.MaxDefaultAvailable",
             "Defines max available furnaces each player can have to get paid from",
             "This can be overridden with jobs.maxfurnaces.[amount] permission node");
-        FurnacesMaxDefault = c.get("ExploitProtections.Furnaces.MaxDefaultAvailable", 20);
+        BlockTypes.FURNACE.setMaxDefault(c.get("ExploitProtections.Furnaces.MaxDefaultAvailable", 20));
 
         if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
-            BlastFurnacesReassign = c.get("ExploitProtections.BlastFurnaces.Reassign", true);
-            BlastFurnacesMaxDefault = c.get("ExploitProtections.BlastFurnaces.MaxDefaultAvailable", 15);
+            BlockTypes.BLAST_FURNACE.setReasign(c.get("ExploitProtections.BlastFurnaces.Reassign", true));
+            BlockTypes.BLAST_FURNACE.setMaxDefault(c.get("ExploitProtections.BlastFurnaces.MaxDefaultAvailable", 15));
 
-            SmokerReassign = c.get("ExploitProtections.Smokers.Reassign", true);
-            SmokersMaxDefault = c.get("ExploitProtections.Smokers.MaxDefaultAvailable", 15);
-        } 
+            BlockTypes.SMOKER.setReasign(c.get("ExploitProtections.Smokers.Reassign", true));
+            BlockTypes.SMOKER.setMaxDefault(c.get("ExploitProtections.Smokers.MaxDefaultAvailable", 15));
+        }
 
         c.addComment("ExploitProtections.BrewingStands.Reassign",
             "When enabled, players interacted brewing stands will be saved into file and will be reassigned after restart to keep giving out money",
             "Players will no longer need to click on brewing stand to get paid from it after server restart");
-        BrewingStandsReassign = c.get("ExploitProtections.BrewingStands.Reassign", true);
-        
+        BlockTypes.BREWING_STAND.setReasign(c.get("ExploitProtections.BrewingStands.Reassign", true));
+
         c.addComment("ExploitProtections.BrewingStands.MaxDefaultAvailable",
             "Defines max available brewing stands each player can have to get paid from",
             "Set to 0 if you want to disable this limitation",
             "This can be overridden with jobs.maxbrewingstands.[amount] permission node");
-        BrewingStandsMaxDefault = c.get("ExploitProtections.BrewingStands.MaxDefaultAvailable", 20);
+        BlockTypes.BREWING_STAND.setMaxDefault(c.get("ExploitProtections.BrewingStands.MaxDefaultAvailable", 20));
 
         c.addComment("ExploitProtections.General.PlaceAndBreak.Enabled",
             "Enable blocks protection, like ore, from exploiting by placing and destroying same block again and again.",
@@ -964,7 +967,9 @@ public class GeneralConfigManager {
         c.addComment("ExploitProtections.MythicMobs", "MythicMobs plugin support", "Disable if you having issues with it or using old version");
         MythicMobsEnabled = c.get("ExploitProtections.MythicMobs.enabled", true);
 
-        c.addComment("ExploitProtections.CustomFishing", "CustomFishing plugin support (Optional)", "If setting is enabled, Fish and PyroFishingPro actions are disabled and only CustomFishing action is enabled.", "Leave it disabled if you're not experiencing issues because of CustomFishing Plugin.");
+        c.addComment("ExploitProtections.CustomFishing", "CustomFishing plugin support (Optional)",
+            "If setting is enabled, Fish and PyroFishingPro actions are disabled and only CustomFishing action is enabled.",
+            "Leave it disabled if you're not experiencing issues because of CustomFishing Plugin.");
         useCustomFishingOnly = c.get("ExploitProtections.CustomFishing.Use-CustomFishing-Only", false);
 
         // Only applies for older versions.
@@ -998,11 +1003,11 @@ public class GeneralConfigManager {
             "Percentage to loose when leaving job at max level",
             "Only works when fix-at-max-level is set to false");
         levelLossPercentageFromMax = c.get("old-job.level-loss-from-max-level", levelLossPercentage);
-        
+
         c.addComment("ChatText.Messages.DefaultState", "States of chat text messages when payment is issued", "Valid options: Off, Batched",
             "This will be used if player disables action bar payment messages");
         ChatTextMessageDefault = MessageToggleState.getByName(c.get("ChatText.Messages.DefaultState", MessageToggleState.Off.toString()));
-        
+
         c.addComment("ActionBars.Enabled", "Enables ActionBar messages");
         ActionBarEnabled = c.get("ActionBars.Enabled", true);
 
@@ -1193,12 +1198,11 @@ public class GeneralConfigManager {
 
         c.addComment("Commands.PageRow.JobsTop.AmountToShow", "Defines amount of players to be shown in one page for /jobs top & /jobs gtop");
         JobsTopAmount = c.get("Commands.PageRow.JobsTop.AmountToShow", 15);
-        
-        
+
         c.addComment("Commands.PageRow.JobsTop.HiddenPlayers", "List of player names who should be excluded from /jobs top & /jobs gtop");
         JobsTopHiddenPlayers = c.get("Commands.PageRow.JobsTop.HiddenPlayers", Arrays.asList("Zrips"));
         CMIList.toLowerCase(JobsTopHiddenPlayers);
-        
+
         c.addComment("Commands.PageRow.Placeholders.AmountToShow", "Defines amount of placeholders to be shown in one page for /jobs placeholders");
         PlaceholdersPage = c.get("Commands.PageRow.Placeholders.AmountToShow", 10);
         c.addComment("Commands.JobsLeave.UsePerPermissionLeave", "Defines how job leave works.",
@@ -1213,7 +1217,7 @@ public class GeneralConfigManager {
 
         c.addComment("Commands.Stats.BarCount", "Amount of progress bars to be shown in /jobs stats command");
         jobsStatsBarCount = c.get("Commands.Stats.BarCount", 50);
-        
+
         c.addComment("BlockOwnership.Range", "Set to 0 or lower if you want to disable this. Setting to positive number will mean that player needs to be in this range from owner block to get paid");
         blockOwnershipRange = c.get("BlockOwnership.Range", 0);
 
@@ -1243,20 +1247,24 @@ public class GeneralConfigManager {
         return ResetTimeMinute;
     }
 
+    @Deprecated
     public boolean isFurnacesReassign() {
-        return FurnacesReassign;
+        return BlockTypes.FURNACE.isReasign();
     }
 
+    @Deprecated
     public boolean isBrewingStandsReassign() {
-        return BrewingStandsReassign;
+        return BlockTypes.BREWING_STAND.isReasign();
     }
 
+    @Deprecated
     public int getFurnacesMaxDefault() {
-        return FurnacesMaxDefault;
+        return BlockTypes.FURNACE.getMaxDefault();
     }
 
+    @Deprecated
     public int getBrewingStandsMaxDefault() {
-        return BrewingStandsMaxDefault;
+        return BlockTypes.BREWING_STAND.getMaxDefault();
     }
 
     public int getBrowseAmountToShow() {

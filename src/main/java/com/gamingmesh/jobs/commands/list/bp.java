@@ -110,7 +110,7 @@ public class bp implements Cmd {
 
         if (!changedBlocks.isEmpty()) {
             Location bloc = changedBlocks.get(0).getLocation();
-            CMIScheduler.get().runAtLocationLater(bloc, () -> {
+            CMIScheduler.runAtLocationLater(plugin, bloc, () -> {
                 if (Version.isCurrentEqualOrHigher(Version.v1_15_R1)) {
                     for (Block one : changedBlocks) {
                         player.sendBlockChange(one.getLocation(), one.getBlockData());

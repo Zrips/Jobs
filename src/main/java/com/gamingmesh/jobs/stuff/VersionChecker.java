@@ -27,7 +27,7 @@ public final class VersionChecker {
         if (!Jobs.getGCManager().isShowNewVersion())
             return;
 
-        CMIScheduler.get().runTaskAsynchronously(() -> {
+        CMIScheduler.runTaskAsynchronously(plugin, () -> {
             String newVersion = getNewVersion();
             if (newVersion == null)
                 return;
