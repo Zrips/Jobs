@@ -1,31 +1,32 @@
 package com.gamingmesh.jobs.container;
 
+import java.util.UUID;
+
 public final class TopList {
 
     private int level;
     private int exp;
-    private PlayerInfo info;
+    private UUID uuid;
 
-    public TopList(PlayerInfo info, int level, int exp) {
-	this.info = info;
-	this.level = level;
-	this.exp = exp;
-    }
-
-    @Deprecated
-    public String getPlayerName() {
-	return info.getName();
-    }
-
-    public PlayerInfo getPlayerInfo() {
-	return info;
+    public TopList(UUID uuid, int level, int exp) {
+        this.uuid = uuid;
+        this.level = level;
+        this.exp = exp;
     }
 
     public int getLevel() {
-	return level;
+        return level;
     }
 
     public int getExp() {
-	return exp;
+        return exp;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 }

@@ -58,37 +58,37 @@ public class top implements Cmd {
             return null;
         }
 
-        int workingIn = Jobs.getUsedSlots(job);
-        PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, workingIn, page);
         final int finalPage = page;
-        CMIScheduler.runTaskAsynchronously(plugin, () -> showTop(sender, job, pi, finalPage));
+        CMIScheduler.runTaskAsynchronously(plugin, () -> showTop(sender, job, finalPage));
         return true;
     }
 
-    private static void showTop(CommandSender sender, Job job, PageInfo pi, int page) {
+    private static void showTop(CommandSender sender, Job job, int page) {
         Player player = (Player) sender;
-        List<TopList> fullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart())
-            .stream().filter(topList -> hasToBeSeenInTop(topList, job)).collect(Collectors.toList());
+        List<TopList> fullList = Jobs.getJobsDAO().toplist(job.getName());
 
         if (fullList.isEmpty()) {
             CMIMessages.sendMessage(sender, LC.info_NoInformation);
             return;
         }
 
+        PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, fullList.size(), page);
+
+        List<TopList> list = gtop.getSafeSubList(fullList, pi.getStart(), pi.getEnd());
+
         int place = 1;
 
         if (!Jobs.getGCManager().ShowToplistInScoreboard || player == null) {
             Language.sendMessage(sender, "command.top.output.topline", job, "%amount%", Jobs.getGCManager().JobsTopAmount);
 
-            for (TopList one : fullList) {
+            for (TopList one : list) {
 
-                if (place > Jobs.getGCManager().JobsTopAmount)
-                    break;
+                JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(one.getUuid());
 
                 Language.sendMessage(sender, "command.top.output.list",
                     "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
-                    "%playername%", one.getPlayerInfo().getName(),
-                    "%playerdisplayname%", one.getPlayerInfo().getDisplayName(),
+                    "%playername%", jPlayer.getName(),
+                    "%playerdisplayname%", jPlayer.getDisplayName(),
                     "%level%", one.getLevel(),
                     "%exp%", one.getExp());
                 place++;
@@ -97,11 +97,12 @@ public class top implements Cmd {
         } else {
             List<String> ls = new ArrayList<>();
 
-            for (TopList one : fullList) {
-                if (place > Jobs.getGCManager().JobsTopAmount)
-                    break;
+            for (TopList one : list) {
+
+                JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(one.getUuid());
+
                 ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
-                    "%playername%", one.getPlayerInfo().getName(), "%playerdisplayname%", one.getPlayerInfo().getDisplayName(), "%level%", one.getLevel()));
+                    "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName(), "%level%", one.getLevel()));
                 place++;
             }
 
@@ -109,21 +110,6 @@ public class top implements Cmd {
 
             pi.autoPagination(sender, "jobs top " + job.getName());
         }
-    }
-
-    private static boolean hasToBeSeenInTop(TopList topList, Job job) {
-        JobsPlayer jplayer = topList.getPlayerInfo().getJobsPlayer();
-
-        if (Jobs.getGCManager().JobsTopHiddenPlayers.contains(jplayer.getName().toLowerCase()))
-            return false;
-
-        Player player = jplayer.getPlayer();
-        if (player != null)
-            return !(player.hasPermission("jobs.hidetop.*") || player.hasPermission("jobs.hidetop." + job.getName().toLowerCase()));
-
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(jplayer.getUniqueId());
-        return !(Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop.*")
-            || Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop." + job.getName().toLowerCase()));
     }
 
 }

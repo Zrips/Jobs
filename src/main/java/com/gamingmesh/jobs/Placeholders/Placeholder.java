@@ -639,7 +639,7 @@ public class Placeholder {
                 if (list.size() < place)
                     return "";
 
-                return list.get(place - 1).getPlayerInfo().getName();
+                return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getName();
             case jtop_name_total_$1:
                 if (values.isEmpty())
                     return "";
@@ -659,7 +659,7 @@ public class Placeholder {
                 if (list.size() < place)
                     return "";
 
-                return list.get(place - 1).getPlayerInfo().getName();
+                return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getName();
             case jtop_displayname_$1_$2:
                 if (values.size() < 2)
                     return "";
@@ -679,7 +679,7 @@ public class Placeholder {
                 if (list.size() < place)
                     return "";
 
-                return list.get(place - 1).getPlayerInfo().getDisplayName();
+                return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getDisplayName();
             case jtop_displayname_total_$1:
                 if (values.isEmpty())
                     return "";
@@ -699,7 +699,7 @@ public class Placeholder {
                 if (list.size() < place)
                     return "";
 
-                return list.get(place - 1).getPlayerInfo().getDisplayName();
+                return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getDisplayName();
             case jtop_level_$1_$2:
                 if (values.size() < 2)
                     return "";
@@ -739,7 +739,7 @@ public class Placeholder {
                 if (list.size() < place)
                     return "";
 
-                return String.valueOf(list.get(place - 1).getPlayerInfo().getJobsPlayer().getTotalLevels());
+                return String.valueOf(Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getTotalLevels());
             case name_$1:
                 return jo.getName();
             case shortname_$1:

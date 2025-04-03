@@ -200,10 +200,10 @@ public class SignUtil {
 
         switch (type) {
         case gtoplist:
-            playerList = Jobs.getJobsDAO().getGlobalTopList(0);
+            playerList = Jobs.getJobsDAO().getGlobalTopList();
             break;
         case questtoplist:
-            playerList = Jobs.getJobsDAO().getQuestTopList(0);
+            playerList = Jobs.getJobsDAO().getQuestTopList();
             break;
         default:
             break;
@@ -256,7 +256,7 @@ public class SignUtil {
                     }
 
                     TopList pl = playerList.get(i + number);
-                    String playerName = pl.getPlayerInfo().getName();
+                    String playerName = Jobs.getPlayerManager().getJobsPlayer(pl.getUuid()).getName();
                     if (playerName.length() > 15) {
                         // We need to split 10 char of name, because of sign rows
                         playerName = playerName.split("(?<=\\G.{10})", 2)[0] + "~";
@@ -279,7 +279,7 @@ public class SignUtil {
                         sign.setLine(i, line);
                 }
                 sign.update();
-                if (!updateHead(sign, playerList.get(0).getPlayerInfo().getName(), timelapse)) {
+                if (!updateHead(sign, Jobs.getPlayerManager().getJobsPlayer(playerList.get(0).getUuid()).getName(), timelapse)) {
                     timelapse--;
                 }
             } else {
@@ -287,7 +287,7 @@ public class SignUtil {
                     continue;
 
                 TopList pl = playerList.get(jSign.getNumber() - 1);
-                String playerName = pl.getPlayerInfo().getName();
+                String playerName = Jobs.getPlayerManager().getJobsPlayer(pl.getUuid()).getName();
                 if (playerName.length() > 15) {
                     playerName = playerName.split("(?<=\\G.{10})", 2)[0] + "~";
                 }
@@ -310,7 +310,7 @@ public class SignUtil {
 
                 sign.setLine(3, translateSignLine("signs.SpecialList.bottom", no, playerName, pl.getLevel(), signJobName));
                 sign.update();
-                if (!updateHead(sign, pl.getPlayerInfo().getName(), timelapse)) {
+                if (!updateHead(sign, Jobs.getPlayerManager().getJobsPlayer(pl.getUuid()).getName(), timelapse)) {
                     timelapse--;
                 }
             }
