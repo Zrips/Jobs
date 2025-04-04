@@ -91,12 +91,12 @@ public class Placeholder {
         user_archived_jobs_level_$1("jname/number"),
         user_archived_jobs_exp_$1("jname/number"),
 
-        jtop_name_$1_$2("jname/number", "[1-15]"),
-        jtop_name_total_$1("[1-15]"),
-        jtop_displayname_$1_$2("jname/number", "[1-15]"),
-        jtop_displayname_total_$1("[1-15]"),
-        jtop_level_$1_$2("jname/number", "[1-15]"),
-        jtop_level_total_$1("[1-15]"),
+        jtop_name_$1_$2("jname/number", "1-15"),
+        jtop_name_total_$1("1-15"),
+        jtop_displayname_$1_$2("jname/number", "1-15"),
+        jtop_displayname_total_$1("1-15"),
+        jtop_level_$1_$2("jname/number", "1-15"),
+        jtop_level_total_$1("1-15"),
 
         maxjobs,
         total_workers,
@@ -634,9 +634,9 @@ public class Placeholder {
                 if (place < 1)
                     return "";
 
-                List<TopList> list = Jobs.getJobsDAO().getTopListByJob(jo, 15);
+                List<TopList> list = Jobs.getJobsDAO().toplist(jo.getName());
 
-                if (list.size() < place)
+                if (list.size() <= place)
                     return "";
 
                 return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getName();
@@ -674,9 +674,9 @@ public class Placeholder {
                 if (place < 1)
                     return "";
 
-                list = Jobs.getJobsDAO().getTopListByJob(jo, 15);
+                list = Jobs.getJobsDAO().toplist(jo.getName());
 
-                if (list.size() < place)
+                if (list.size() <= place)
                     return "";
 
                 return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getDisplayName();
@@ -696,7 +696,7 @@ public class Placeholder {
 
                 list = Jobs.getJobsDAO().getGlobalTopList();
 
-                if (list.size() < place)
+                if (list.size() <= place)
                     return "";
 
                 return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getDisplayName();
@@ -714,9 +714,9 @@ public class Placeholder {
                 if (place < 1)
                     return "";
 
-                list = Jobs.getJobsDAO().getTopListByJob(jo, 15);
+                list = Jobs.getJobsDAO().toplist(jo.getName());
 
-                if (list.size() < place)
+                if (list.size() <= place)
                     return "";
 
                 return String.valueOf(list.get(place - 1).getLevel());
@@ -736,7 +736,7 @@ public class Placeholder {
 
                 list = Jobs.getJobsDAO().getGlobalTopList();
 
-                if (list.size() < place)
+                if (list.size() <= place)
                     return "";
 
                 return String.valueOf(Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getTotalLevels());

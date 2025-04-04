@@ -289,6 +289,7 @@ public class LanguageManager {
             c.get("command.placeholders.output.list", "&e[place]. &7[placeholder]");
             c.get("command.placeholders.output.outputResult", " &eresult: &7[result]");
             c.get("command.placeholders.output.parse", "&6[placeholder] &7by [source] &6result &8|&f[result]&8|");
+            Jobs.getGCManager().getCommandArgs().put("placeholders", Arrays.asList("parse%%", "[placeholder]"));
 
             c.get("command.entitylist.help.info", "Shows all possible entities that can be used with the plugin.");
             c.get("command.entitylist.help.args", "");
