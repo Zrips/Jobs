@@ -46,10 +46,7 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
 
     private static Sound getSound(String soundName) {
 	if (soundName != null) {
-	    for (Sound one : Sound.values()) {
-		if (one.name().equalsIgnoreCase(soundName))
-		    return one;
-	    }
+        return Sound.valueOf(soundName);
 	}
 
 	return Sound.values()[0];

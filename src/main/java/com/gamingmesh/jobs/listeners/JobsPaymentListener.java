@@ -33,6 +33,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
+import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
@@ -510,6 +511,8 @@ public final class JobsPaymentListener implements Listener {
         breakCache.put(CMILocation.toString(block.getLocation(), ":", true, true), player.getUniqueId());
     }
 
+    private HashMap<Player, Long> lastBlockPlaced = new HashMap<>();
+    private int minTimeBetweenBlockPlacements = 205;
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         // check to make sure you can build
@@ -542,6 +545,17 @@ public final class JobsPaymentListener implements Listener {
 
         if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
             return;
+
+        if (!lastBlockPlaced.containsKey(player)) {
+            lastBlockPlaced.put(player, System.currentTimeMillis());
+        } else {
+            long currentTime = System.currentTimeMillis();
+            long diff = currentTime - lastBlockPlaced.get(player);
+            lastBlockPlaced.put(player, currentTime);
+            if (diff < minTimeBetweenBlockPlacements && block.getPistonMoveReaction().equals(PistonMoveReaction.BREAK)) {
+                return;
+            }
+        }
 
         Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new BlockActionInfo(block, ActionType.PLACE), block);
     }
@@ -1857,6 +1871,10 @@ public final class JobsPaymentListener implements Listener {
 
         if (Version.getCurrent().isEqualOrHigher(Version.v1_9_R2)
             && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
+            return;
+
+        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
+        if (mainHandItem.getType().equals(Material.TRIDENT) && mainHandItem.getEnchantments().containsKey(Enchantment.RIPTIDE))
             return;
 
         if (!payIfCreative(player))
