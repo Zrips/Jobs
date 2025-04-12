@@ -107,6 +107,7 @@ public class Placeholder {
 
         name_$1("jname/number"),
         shortname_$1("jname/number"),
+        fullname_$1("jname/number"),
         chatcolor_$1("jname/number"),
         description_$1("jname/number"),
         maxdailyq_$1("jname/number"),
@@ -744,6 +745,8 @@ public class Placeholder {
                 return jo.getName();
             case shortname_$1:
                 return jo.getShortName();
+            case fullname_$1:
+                return jo.getJobFullName();
             case chatcolor_$1:
                 return jo.getChatColor().toString();
             case description_$1:
