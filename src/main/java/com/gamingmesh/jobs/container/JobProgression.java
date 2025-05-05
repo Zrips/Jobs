@@ -40,6 +40,8 @@ public class JobProgression {
         this.jPlayer = jPlayer;
         this.experience = experience;
         this.level = level;
+
+        JobsTop.updateTops(job, jPlayer, level, experience);
     }
 
     /**
@@ -207,6 +209,8 @@ public class JobProgression {
         if (experience > maxExperience)
             experience = maxExperience;
 
+        JobsTop.updateTops(job, jPlayer, level, experience);
+
         return ret;
     }
 
@@ -234,6 +238,9 @@ public class JobProgression {
 
             jPlayer.reloadLimits();
         }
+
+        JobsTop.updateTops(job, jPlayer, level, experience);
+
         return ret;
     }
 

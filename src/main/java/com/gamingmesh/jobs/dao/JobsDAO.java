@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -36,6 +37,9 @@ import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.JobsQuestTop;
+import com.gamingmesh.jobs.container.JobsTop;
+import com.gamingmesh.jobs.container.JobsTop.topStats;
 import com.gamingmesh.jobs.container.JobsWorld;
 import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.LogAmounts;
@@ -49,6 +53,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Time.CMITimeManager;
+import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public abstract class JobsDAO {
@@ -1766,62 +1771,35 @@ public abstract class JobsDAO {
         }
     }
 
-    List<TopList> gTopNames = Collections.synchronizedList(new ArrayList<>());
-    long gTopTime = 0L;
-
     /**
      * Get player list by total job level
      * @param start - starting entry
      * @return info - information about jobs
      */
+    @Deprecated
     public List<TopList> getGlobalTopList() {
 
-        if (gTopTime == 0L) {
-            updateGTop();
-        }
+        List<UUID> top = JobsTop.getGlobalTopList(0);
 
-        if (System.currentTimeMillis() - gTopTime > 30 * 1000L)
-            CMIScheduler.runTaskAsynchronously(plugin, this::updateGTop);
+        if (top== null || top.isEmpty())
+            return new ArrayList<>();
+
+        List<TopList> gTopNames = Collections.synchronizedList(new ArrayList<>());
+        for (UUID uuid : top) {
+
+            if (uuid == null)
+                continue;
+
+            topStats stats = JobsTop.getGlobalStats(uuid);
+
+            if (stats == null)
+                continue;
+
+            TopList tl = new TopList(uuid, stats.getLevel(), (int) stats.getExperience());
+            gTopNames.add(tl);
+        }
 
         return new ArrayList<>(gTopNames);
-    }
-
-    private void updateGTop() {
-        gTopTime = System.currentTimeMillis();
-
-        JobsConnection conn = getConnection();
-        ArrayList<TopList> tNames = new ArrayList<TopList>();
-        if (conn == null)
-            return;
-
-        PreparedStatement prest = null;
-        ResultSet res = null;
-        try {
-
-            prest = conn.prepareStatement("SELECT " + JobsTableFields.userid.getCollumn()
-                + ", COUNT(*) AS amount, sum(" + JobsTableFields.level.getCollumn() + ") AS totallvl, sum(" + JobsTableFields.experience.getCollumn() + ") AS totalexp FROM `" + getJobsTableName()
-                + "` GROUP BY userid ORDER BY totallvl DESC, totalexp DESC;");
-            res = prest.executeQuery();
-
-            while (res.next()) {
-                PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt(JobsTableFields.userid.getCollumn()));
-                if (info == null) {
-                    continue;
-                }
-
-                if (Jobs.getGCManager().JobsTopHiddenPlayers.contains(info.getName().toLowerCase())) {
-                    continue;
-                }
-
-                tNames.add(new TopList(info.getUuid(), res.getInt("totallvl"), res.getInt("totalexp")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(res);
-            close(prest);
-        }
-        gTopNames = Collections.synchronizedList(new ArrayList<>(tNames));
     }
 
     List<TopList> qTopNames = Collections.synchronizedList(new ArrayList<>());
@@ -1833,50 +1811,30 @@ public abstract class JobsDAO {
      * @param size - max count of entries
      * @return info - information about jobs
      */
+    @Deprecated
     public List<TopList> getQuestTopList() {
-        if (qTopTime == 0L) {
-            updateQTop();
+        
+        List<UUID> top = JobsQuestTop.getGlobalTopList(0);
+
+        if (top== null || top.isEmpty())
+            return new ArrayList<>();
+
+        List<TopList> gTopNames = Collections.synchronizedList(new ArrayList<>());
+        for (UUID uuid : top) {
+
+            if (uuid == null)
+                continue;
+
+            Integer stats = JobsQuestTop.getGlobalCount(uuid);
+
+            if (stats == null)
+                continue;
+
+            TopList tl = new TopList(uuid, stats, 0);
+            gTopNames.add(tl);
         }
 
-        if (System.currentTimeMillis() - qTopTime > 30 * 1000L)
-            CMIScheduler.runTaskAsynchronously(plugin, this::updateQTop);
-
-        return new ArrayList<>(qTopNames);
-    }
-
-    private void updateQTop() {
-        qTopTime = System.currentTimeMillis();
-        JobsConnection conn = getConnection();
-        List<TopList> names = new ArrayList<>();
-        if (conn == null)
-            return;
-
-        PreparedStatement prest = null;
-        ResultSet res = null;
-        try {
-            prest = conn.prepareStatement("SELECT `id`, `" + UserTableFields.player_uuid.getCollumn() + "`, `" + UserTableFields.donequests.getCollumn() + "` FROM `" + DBTables.UsersTable.getTableName()
-                + "` ORDER BY `" + UserTableFields.donequests.getCollumn() + "` DESC, LOWER(" + UserTableFields.seen.getCollumn() + ") DESC;");
-
-            res = prest.executeQuery();
-
-            while (res.next()) {
-                PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt("id"));
-                if (info == null)
-                    continue;
-
-                names.add(new TopList(info.getUuid(), res.getInt(UserTableFields.donequests.getCollumn()), 0));
-
-                if (names.size() >= Jobs.getGCManager().JobsTopAmount)
-                    break;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(res);
-            close(prest);
-        }
-
-        qTopNames = Collections.synchronizedList(new ArrayList<>(names));
+        return new ArrayList<>(gTopNames);
     }
 
     public PlayerInfo loadPlayerData(UUID uuid) {

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -451,7 +452,6 @@ public class PlayerManager {
             for (JobsDAOData jobdata : jobs) {
                 Job job = Jobs.getJob(jobdata.getJobName());
                 if (job != null) {
-
                     // Fixing issue with doubled jobs. Picking bigger job by level or exp
                     JobProgression oldProg = jPlayer.getJobProgression(job);
                     if (oldProg != null && (oldProg.getLevel() > jobdata.getLevel() || oldProg.getLevel() == jobdata.getLevel() && oldProg.getExperience() > jobdata.getExperience())) {

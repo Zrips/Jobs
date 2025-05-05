@@ -19,6 +19,8 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.JobsTop;
+import com.gamingmesh.jobs.container.JobsTop.topStats;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.container.Title;
@@ -623,6 +625,8 @@ public class Placeholder {
             // Global placeholders by jobname
             switch (placeHolder) {
             case jtop_name_$1_$2:
+            case jtop_displayname_$1_$2:
+            case jtop_level_$1_$2:
                 if (values.size() < 2)
                     return "";
 
@@ -636,92 +640,32 @@ public class Placeholder {
                 if (place < 1)
                     return "";
 
-                List<TopList> list = Jobs.getJobsDAO().toplist(jo.getName());
-
-                if (list.size() <= place)
+                uuid = jo.getTop(place - 1);
+                if (uuid == null)
                     return "";
 
-                return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getName();
+                user = Jobs.getPlayerManager().getJobsPlayer(uuid);
+
+                if (user == null)
+                    return "";
+
+                if (placeHolder.equals(JobsPlaceHolders.jtop_name_$1_$2))
+                    return user.getName();
+
+                if (placeHolder.equals(JobsPlaceHolders.jtop_displayname_$1_$2))
+                    return user.getDisplayName();
+
+                topStats stats = jo.getTopStats(uuid);
+
+                if (stats == null)
+                    return "";
+
+                if (placeHolder.equals(JobsPlaceHolders.jtop_level_$1_$2))
+                    return String.valueOf(stats.getLevel());
+
+                return "";
             case jtop_name_total_$1:
-                if (values.isEmpty())
-                    return "";
-
-                place = 0;
-                try {
-                    place = Integer.parseInt(values.get(0));
-                } catch (NumberFormatException e) {
-                    return "";
-                }
-
-                if (place < 1)
-                    return "";
-
-                list = Jobs.getJobsDAO().getGlobalTopList();
-
-                if (list.size() < place)
-                    return "";
-
-                return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getName();
-            case jtop_displayname_$1_$2:
-                if (values.size() < 2)
-                    return "";
-
-                place = 0;
-                try {
-                    place = Integer.parseInt(values.get(1));
-                } catch (NumberFormatException e) {
-                    return "";
-                }
-
-                if (place < 1)
-                    return "";
-
-                list = Jobs.getJobsDAO().toplist(jo.getName());
-
-                if (list.size() <= place)
-                    return "";
-
-                return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getDisplayName();
             case jtop_displayname_total_$1:
-                if (values.isEmpty())
-                    return "";
-
-                place = 0;
-                try {
-                    place = Integer.parseInt(values.get(0));
-                } catch (NumberFormatException e) {
-                    return "";
-                }
-
-                if (place < 1)
-                    return "";
-
-                list = Jobs.getJobsDAO().getGlobalTopList();
-
-                if (list.size() <= place)
-                    return "";
-
-                return Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getDisplayName();
-            case jtop_level_$1_$2:
-                if (values.size() < 2)
-                    return "";
-
-                place = 0;
-                try {
-                    place = Integer.parseInt(values.get(1));
-                } catch (NumberFormatException e) {
-                    return "";
-                }
-
-                if (place < 1)
-                    return "";
-
-                list = Jobs.getJobsDAO().toplist(jo.getName());
-
-                if (list.size() <= place)
-                    return "";
-
-                return String.valueOf(list.get(place - 1).getLevel());
             case jtop_level_total_$1:
                 if (values.isEmpty())
                     return "";
@@ -736,12 +680,30 @@ public class Placeholder {
                 if (place < 1)
                     return "";
 
-                list = Jobs.getJobsDAO().getGlobalTopList();
-
-                if (list.size() <= place)
+                uuid = JobsTop.getGlobalTop(place - 1);
+                if (uuid == null)
                     return "";
 
-                return String.valueOf(Jobs.getPlayerManager().getJobsPlayer(list.get(place - 1).getUuid()).getTotalLevels());
+                user = Jobs.getPlayerManager().getJobsPlayer(uuid);
+
+                if (user == null)
+                    return "";
+
+                if (placeHolder.equals(JobsPlaceHolders.jtop_name_total_$1))
+                    return user.getName();
+
+                if (placeHolder.equals(JobsPlaceHolders.jtop_displayname_total_$1))
+                    return user.getDisplayName();
+
+                stats = JobsTop.getGlobalStats(uuid);
+
+                if (stats == null)
+                    return "";
+
+                if (placeHolder.equals(JobsPlaceHolders.jtop_level_total_$1))
+                    return String.valueOf(stats.getLevel());
+
+                return "";
             case name_$1:
                 return jo.getName();
             case shortname_$1:

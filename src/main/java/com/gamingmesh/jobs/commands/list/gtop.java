@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,11 +11,14 @@ import org.bukkit.scoreboard.DisplaySlot;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.container.JobsTop;
+import com.gamingmesh.jobs.container.JobsTop.topStats;
 import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Scoreboards.CMIScoreboard;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -30,7 +34,7 @@ public class gtop implements Cmd {
 
         Player player = sender instanceof Player ? (Player) sender : null;
 
-        int page = 1;
+        int page = 0;
 
         for (String one : args) {
             if (one.equalsIgnoreCase("clear")) {
@@ -43,7 +47,7 @@ public class gtop implements Cmd {
 
             if (page < 1)
                 try {
-                    page = Integer.parseInt(args[1]);
+                    page = Integer.parseInt(one);
                     continue;
                 } catch (NumberFormatException e) {
                 }
@@ -62,12 +66,12 @@ public class gtop implements Cmd {
 
         int amount = Jobs.getGCManager().JobsTopAmount;
 
-        List<TopList> fullList = Jobs.getJobsDAO().getGlobalTopList();
+        List<UUID> fullList = JobsTop.getGlobalTopList(0);
 
         PageInfo pi = new PageInfo(amount, fullList.size(), page);
 
         if (fullList.isEmpty()) {
-            Language.sendMessage(sender, "command.gtop.error.nojob");
+            CMIMessages.sendMessage(sender, LC.info_NoInformation);
             return;
         }
 
@@ -78,11 +82,15 @@ public class gtop implements Cmd {
             if (fullList.size() <= i + pi.getStart())
                 break;
 
-            TopList one = fullList.get(i + pi.getStart());
+            UUID one = fullList.get(i + pi.getStart());
 
-            JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(one.getUuid());
+            JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(one);
 
             if (jPlayer == null)
+                continue;
+
+            topStats stats = JobsTop.getGlobalStats(one);
+            if (stats == null)
                 continue;
 
             if (Jobs.getGCManager().ShowToplistInScoreboard && sender instanceof Player)
@@ -90,15 +98,15 @@ public class gtop implements Cmd {
                     "%number%", pi.getPositionForOutput(i),
                     "%playername%", jPlayer.getName(),
                     "%playerdisplayname%", jPlayer.getDisplayName(),
-                    "%level%", one.getLevel(),
-                    "%exp%", one.getExp()));
+                    "%level%", stats.getLevel(),
+                    "%exp%", stats.getExperience()));
             else
                 ls.add(Jobs.getLanguage().getMessage("command.gtop.output.list",
                     "%number%", pi.getPositionForOutput(i),
                     "%playername%", jPlayer.getName(),
                     "%playerdisplayname%", jPlayer.getDisplayName(),
-                    "%level%", one.getLevel(),
-                    "%exp%", one.getExp()));
+                    "%level%", stats.getLevel(),
+                    "%exp%", stats.getExperience()));
         }
 
         if (Jobs.getGCManager().ShowToplistInScoreboard && sender instanceof Player) {

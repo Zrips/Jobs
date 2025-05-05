@@ -472,7 +472,7 @@ public class JobsPlayer {
     /**
      * @return an unmodifiable list of job progressions
      */
-    public List<JobProgression> getJobProgression() {
+    public synchronized List<JobProgression> getJobProgression() {
         return Collections.unmodifiableList(progression);
     }
 
@@ -653,6 +653,10 @@ public class JobsPlayer {
     public boolean leaveJob(Job job) {
         synchronized (progression) {
             if (progression.remove(getJobProgression(job))) {
+
+                job.removeFromTop(getUniqueId());
+                JobsTop.updateGlobalTop(getUniqueId(), getJobProgression());
+
                 reloadMaxExperience();
                 reloadLimits();
                 reloadHonorific();
@@ -1380,12 +1384,14 @@ public class JobsPlayer {
 
     public void setDoneQuests(int doneQuests) {
         this.doneQuests = doneQuests;
+        JobsQuestTop.updateGlobalTop(this.getUniqueId(), doneQuests);
     }
 
     private CMITask questSignUpdateShed;
 
     public void addDoneQuest(final Job job) {
-        doneQuests++;
+
+        setDoneQuests(getDoneQuests() + 1);
 
         setSaved(false);
 
@@ -1518,4 +1524,5 @@ public class JobsPlayer {
             return Jobs.getEconomy().getEconomy().withdrawPlayer(this.getPlayer(), amount);
         return Jobs.getEconomy().getEconomy().withdrawPlayer(this.getName(), amount);
     }
+
 }

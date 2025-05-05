@@ -79,6 +79,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.JobsTop;
 import com.gamingmesh.jobs.container.JobsWorld;
 import com.gamingmesh.jobs.container.LoadStatus;
 import com.gamingmesh.jobs.container.Log;
@@ -122,6 +123,7 @@ import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
@@ -509,11 +511,16 @@ public final class Jobs extends JavaPlugin {
             jobsByName.put(job.getJobFullName().toLowerCase(), job);
         }
 
-        jobsByID.clear();
+        fillJobsByID();
+    }
 
+    private static void fillJobsByID() {
+        jobsByID.clear();
         for (Job job : jobs) {
-            jobsByID.put(job.getId(), job);
-            jobsByID.put(job.getLegacyId(), job);
+            if (job.getId() != 0)
+                jobsByID.put(job.getId(), job);
+            if (job.getLegacyId() != 0)
+                jobsByID.put(job.getLegacyId(), job);
         }
     }
 
@@ -560,6 +567,8 @@ public final class Jobs extends JavaPlugin {
      * @return {@link Job}
      */
     public static Job getJob(int id) {
+        if (jobsByID.isEmpty())
+            fillJobsByID();
         return jobsByID.get(id);
     }
 
