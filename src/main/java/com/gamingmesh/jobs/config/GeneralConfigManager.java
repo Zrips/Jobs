@@ -1045,11 +1045,11 @@ public class GeneralConfigManager {
         c.addComment("Sounds", "Extra sounds on some events",
             "All sounds can be found in https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
         SoundLevelupUse = c.get("Sounds.LevelUp.use", true);
-        SoundLevelupSound = c.get("Sounds.LevelUp.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP").toUpperCase();
+        SoundLevelupSound = c.get("Sounds.LevelUp.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP" : Version.isCurrentEqualOrHigher(Version.v1_21_R3) ? "ENTITY.PLAYER.LEVELUP" : "ENTITY_PLAYER_LEVELUP").toUpperCase();
         SoundLevelupVolume = c.get("Sounds.LevelUp.volume", 1);
         SoundLevelupPitch = c.get("Sounds.LevelUp.pitch", 3);
         SoundTitleChangeUse = c.get("Sounds.TitleChange.use", true);
-        SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP").toUpperCase();
+        SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP" : Version.isCurrentEqualOrHigher(Version.v1_21_R3) ? "ENTITY.PLAYER.LEVELUP" : "ENTITY_PLAYER_LEVELUP").toUpperCase();
         SoundTitleChangeVolume = c.get("Sounds.TitleChange.volume", 1);
         SoundTitleChangePitch = c.get("Sounds.TitleChange.pitch", 3);
 
