@@ -1518,24 +1518,26 @@ public abstract class JobsDAO {
      * @param job - job that the player wishes to join
      */
     public synchronized void joinJob(JobsPlayer jPlayer, JobProgression job) {
-        JobsConnection conn = getConnection();
-        if (conn == null)
-            return;
-        PreparedStatement prest = null;
-        try {
-            prest = conn.prepareStatement("INSERT INTO `" + getJobsTableName() + "` (`" + JobsTableFields.userid.getCollumn() + "`, `" + JobsTableFields.jobid.getCollumn()
-                + "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "`, `" + JobsTableFields.job.getCollumn() + "`) VALUES (?, ?, ?, ?, ?);");
-            prest.setInt(1, jPlayer.getUserId());
-            prest.setInt(2, job.getJob().getId());
-            prest.setInt(3, job.getLevel());
-            prest.setDouble(4, job.getExperience());
-            prest.setString(5, job.getJob().getName());
-            prest.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(prest);
-        }
+        CompletableFuture.runAsync(() -> {
+            JobsConnection conn = getConnection();
+            if (conn == null)
+                return;
+            PreparedStatement prest = null;
+            try {
+                prest = conn.prepareStatement("INSERT INTO `" + getJobsTableName() + "` (`" + JobsTableFields.userid.getCollumn() + "`, `" + JobsTableFields.jobid.getCollumn()
+                    + "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "`, `" + JobsTableFields.job.getCollumn() + "`) VALUES (?, ?, ?, ?, ?);");
+                prest.setInt(1, jPlayer.getUserId());
+                prest.setInt(2, job.getJob().getId());
+                prest.setInt(3, job.getLevel());
+                prest.setDouble(4, job.getExperience());
+                prest.setString(5, job.getJob().getName());
+                prest.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                close(prest);
+            }
+        });
     }
 
     /**
