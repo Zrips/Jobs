@@ -170,7 +170,11 @@ public final class Jobs extends JavaPlugin {
     private GuiManager guiManager;
 
     private static JobsDAO dao;
+
     private static List<Job> jobs = new ArrayList<Job>();
+    private static HashMap<String, Job> jobsByName = new HashMap<>();
+    private static HashMap<Integer, Job> jobsByID = new HashMap<>();
+
     private static Job noneJob;
     private static Map<Job, Integer> usedSlots = new WeakHashMap<>();
 
@@ -497,6 +501,20 @@ public final class Jobs extends JavaPlugin {
      */
     public static void setJobs(List<Job> jobs) {
         Jobs.jobs = jobs;
+
+        jobsByName.clear();
+
+        for (Job job : jobs) {
+            jobsByName.put(job.getName().toLowerCase(), job);
+            jobsByName.put(job.getJobFullName().toLowerCase(), job);
+        }
+
+        jobsByID.clear();
+
+        for (Job job : jobs) {
+            jobsByID.put(job.getId(), job);
+            jobsByID.put(job.getLegacyId(), job);
+        }
     }
 
     /**
@@ -530,12 +548,9 @@ public final class Jobs extends JavaPlugin {
      * @return the job that matches the name
      */
     public static Job getJob(String jobName) {
-        for (Job job : jobs) {
-            if (job.getName().equalsIgnoreCase(jobName) || job.getJobFullName().equalsIgnoreCase(jobName))
-                return job;
-        }
-
-        return null;
+        if (jobName == null)
+            return null;
+        return jobsByName.get(jobName.toLowerCase());
     }
 
     /**
@@ -545,13 +560,7 @@ public final class Jobs extends JavaPlugin {
      * @return {@link Job}
      */
     public static Job getJob(int id) {
-        for (Job job : jobs) {
-            if (job.getId() == id || job.getLegacyId() == id) {
-                return job;
-            }
-        }
-
-        return null;
+        return jobsByID.get(id);
     }
 
     public boolean isPlaceholderAPIEnabled() {

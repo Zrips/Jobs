@@ -141,7 +141,7 @@ public class PlayerManager {
         if (!Jobs.fullyLoaded) {
             // Checking for existing record by same name
             JobsPlayer oldRecord = playersNameCache.get(jPlayer.getName().toLowerCase());
-            if (oldRecord != null) {
+            if (oldRecord != null && !jPlayer.getUniqueId().equals(oldRecord.getUniqueId())) {
                 CMIMessages.consoleMessage("&cDuplicate in database for (&f" + jPlayer.getName() + "&c) -> (&f" + jPlayer.getUniqueId() + "&c) <-> (&f" + oldRecord.getUniqueId() + "&c)");
                 // Using newest record
                 if (jPlayer.getSeen() > oldRecord.getSeen())
