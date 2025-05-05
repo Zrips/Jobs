@@ -156,11 +156,11 @@
 			</exclusions>
 		</dependency>
 		<!-- CMILib -->
-		<!--		<dependency>-->
-		<!--			<groupId>com.github.Zrips</groupId>-->
-		<!--			<artifactId>CMILib</artifactId>-->
-		<!--			<version>1.4.7.4</version>-->
-		<!--		</dependency>-->
+<!--				<dependency>-->
+<!--					<groupId>com.github.Zrips</groupId>-->
+<!--					<artifactId>CMILib</artifactId>-->
+<!--					<version>1.4.7.4</version>-->
+<!--				</dependency>-->
 		<!--		 WildStacker -->
 		<dependency>
 			<groupId>com.bgsoftware</groupId>
@@ -180,7 +180,7 @@
 			<version>3.11-SNAPSHOT</version>
 			<scope>system</scope>
 			<!--			 Temporary solution for replacing repository -->
-			<systemPath>${basedir}/libs/mypet-3.12.jar</systemPath>
+			<systemPath>${basedir}/libs/mypet-3.12.jar</systemPath> 
 		</dependency>
 		<!-- PyroFishingPro -->
 		<dependency>
@@ -202,7 +202,7 @@
 			<artifactId>CMILib</artifactId>
 			<version>1.5.0.2</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/CMILib1.5.2.8.jar</systemPath>
+			<systemPath>${basedir}/libs/CMILib1.5.4.3.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<repositories>
