@@ -12,17 +12,13 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.JobsQuestTop;
-import com.gamingmesh.jobs.container.JobsTop;
-import com.gamingmesh.jobs.container.JobsTop.topStats;
 import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Scoreboards.CMIScoreboard;
-import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class gqtop implements Cmd {
 
@@ -57,9 +53,8 @@ public class gqtop implements Cmd {
         if (page < 1)
             page = 1;
 
-        int p = page;
+        showGlobalTop(sender, page);
 
-        CMIScheduler.runTaskAsynchronously(plugin, () -> showGlobalTop(sender, p));
         return true;
     }
 
@@ -101,7 +96,7 @@ public class gqtop implements Cmd {
                     "%playerdisplayname%", jPlayer.getDisplayName(),
                     "%level%", stats));
             else
-                ls.add(Jobs.getLanguage().getMessage("command.gtop.output.list",
+                ls.add(Jobs.getLanguage().getMessage("command.gqtop.output.list",
                     "%number%", pi.getPositionForOutput(i),
                     "%playername%", jPlayer.getName(),
                     "%playerdisplayname%", jPlayer.getDisplayName(),
@@ -111,7 +106,7 @@ public class gqtop implements Cmd {
         if (Jobs.getGCManager().ShowToplistInScoreboard && sender instanceof Player) {
             CMIScoreboard.show((Player) sender, Jobs.getLanguage().getMessage("scoreboard.gtopline"), ls, Jobs.getGCManager().ToplistInScoreboardInterval);
         } else {
-            Language.sendMessage(sender, "command.gtop.output.topline", "%amount%", amount);
+            Language.sendMessage(sender, "command.gqtop.output.topline", "%amount%", amount);
             CMIMessages.sendMessage(sender, CMIList.listToString(ls));
         }
 

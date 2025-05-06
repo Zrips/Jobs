@@ -98,7 +98,8 @@ public class ConfigManager {
         if (!cfg.getFile().isFile())
             return;
 
-        cfg.header(Arrays.asList("Jobs configuration.", "", "Edited by roracle to include 1.13 items and item names, prepping for 1.14 as well.",
+        cfg.header(Arrays.asList("Jobs configuration.", "",
+            "This Job will be ignored so there is no need to remove it. Keep it as reference as it will contain all possible options.",
             "",
             "Stores information about each job",
             "",

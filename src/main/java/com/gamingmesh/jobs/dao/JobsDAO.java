@@ -1802,9 +1802,6 @@ public abstract class JobsDAO {
         return new ArrayList<>(gTopNames);
     }
 
-    List<TopList> qTopNames = Collections.synchronizedList(new ArrayList<>());
-    long qTopTime = 0L;
-
     /**
      * Get players by quests done
      * @param start - starting entry

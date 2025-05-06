@@ -56,9 +56,7 @@ public class gtop implements Cmd {
         if (page < 1)
             page = 1;
 
-        int p = page;
-
-        CMIScheduler.runTaskAsynchronously(plugin, () -> showGlobalTop(sender, p));
+        showGlobalTop(sender, page);
         return true;
     }
 
