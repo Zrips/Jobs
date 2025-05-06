@@ -267,7 +267,7 @@ public class PlayerManager {
 
     private static CompletableFuture<JobsPlayer> loadPlayer(JobsPlayer old) {
         return CompletableFuture.supplyAsync(() -> {
-            JobsPlayer jPlayer = Jobs.getJobsDAO().loadFromDao(old).join();
+            JobsPlayer jPlayer = Jobs.getJobsDAO().loadFromDao(old);
 
             if (Jobs.getGCManager().MultiServerCompatability()) {
                 jPlayer.setArchivedJobs(Jobs.getJobsDAO().getArchivedJobs(jPlayer));

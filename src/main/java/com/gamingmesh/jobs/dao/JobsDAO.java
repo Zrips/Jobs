@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -53,7 +52,6 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Time.CMITimeManager;
-import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public abstract class JobsDAO {
@@ -1781,7 +1779,7 @@ public abstract class JobsDAO {
 
         List<UUID> top = JobsTop.getGlobalTopList(0);
 
-        if (top== null || top.isEmpty())
+        if (top == null || top.isEmpty())
             return new ArrayList<>();
 
         List<TopList> gTopNames = Collections.synchronizedList(new ArrayList<>());
@@ -1810,10 +1808,10 @@ public abstract class JobsDAO {
      */
     @Deprecated
     public List<TopList> getQuestTopList() {
-        
+
         List<UUID> top = JobsQuestTop.getGlobalTopList(0);
 
-        if (top== null || top.isEmpty())
+        if (top == null || top.isEmpty())
             return new ArrayList<>();
 
         List<TopList> gTopNames = Collections.synchronizedList(new ArrayList<>());
@@ -1914,27 +1912,38 @@ public abstract class JobsDAO {
         }
     }
 
-    public CompletableFuture<JobsPlayer> loadFromDao(JobsPlayer jPlayer) {
+    public CompletableFuture<JobsPlayer> loadFromDaoAsync(JobsPlayer jPlayer) {
         return CompletableFuture.supplyAsync(() -> {
-            List<JobsDAOData> list = getAllJobs(jPlayer.getName(), jPlayer.getUniqueId());
-            jPlayer.progression.clear();
-            for (JobsDAOData jobdata : list) {
-                if (!plugin.isEnabled())
-                    return null;
-
-                // add the job
-                Job job = Jobs.getJob(jobdata.getJobName());
-                if (job != null)
-                    jPlayer.progression.add(new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience()));
-            }
-            jPlayer.reloadMaxExperience();
-            jPlayer.reloadLimits();
-            jPlayer.setUserId(Jobs.getPlayerManager().getPlayerId(jPlayer.getUniqueId()));
-            return jPlayer;
+            return loadFromDao(jPlayer);
         });
     }
 
-    public CompletableFuture<JobsPlayer> loadFromDao(OfflinePlayer player) {
+    public JobsPlayer loadFromDao(JobsPlayer jPlayer) {
+        List<JobsDAOData> list = getAllJobs(jPlayer.getName(), jPlayer.getUniqueId());
+        jPlayer.progression.clear();
+        for (JobsDAOData jobdata : list) {
+            if (!plugin.isEnabled())
+                return null;
+
+            // add the job
+            Job job = Jobs.getJob(jobdata.getJobName());
+            if (job != null)
+                jPlayer.progression.add(new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience()));
+        }
+        jPlayer.reloadMaxExperience();
+        jPlayer.reloadLimits();
+        jPlayer.setUserId(Jobs.getPlayerManager().getPlayerId(jPlayer.getUniqueId()));
+        return jPlayer;
+    }
+
+    @Deprecated
+    public CompletableFuture<JobsPlayer> loadFromDaoAsync(OfflinePlayer player) {
+        JobsPlayer jPlayer = new JobsPlayer(player);
+        return loadFromDaoAsync(jPlayer);
+    }
+
+    @Deprecated
+    public JobsPlayer loadFromDao(OfflinePlayer player) {
         JobsPlayer jPlayer = new JobsPlayer(player);
         return loadFromDao(jPlayer);
     }

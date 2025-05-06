@@ -3,11 +3,13 @@ package com.gamingmesh.jobs.container.blockOwnerShip;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,6 +29,8 @@ import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Messages.CMIMessages;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class BlockOwnerShip {
 
@@ -373,45 +377,74 @@ public class BlockOwnerShip {
         }
     }
 
-    public static void save(HashMap<CMIMaterial, BlockOwnerShip> blockOwnerShipsMaterial) {
+    static CMITask saveTask = null;
 
-        File f = new File(Jobs.getInstance().getDataFolder(), "blockOwnerShips.yml");
+    public static void saveDelay() {
 
-        ConfigReader cfg = null;
-        try {
-            cfg = new ConfigReader(f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (cfg == null)
+        if (saveTask != null)
             return;
 
-        cfg.getC().options().copyDefaults(true);
+        // Limit to one save every minute max
+        saveTask = CMIScheduler.runTaskLater(Jobs.getInstance(), () -> {
+            saveAsync(Jobs.getInstance().getBlockOwnerShips().values());
+            saveTask = null;
+        }, 60 * 20);
+    }
 
-        for (BlockOwnerShip ownership : blockOwnerShipsMaterial.values()) {
-            if (ownership.isReassignDisabled()) {
-                return;
-            }
-            String path = ownership.getType().getPath();
-
-            cfg.getC().set(path, null);
-
-            for (Entry<UUID, HashMap<String, blockLoc>> one : ownership.blockOwnerShips.entrySet()) {
-                StringBuilder full = new StringBuilder();
-
-                for (String oneL : one.getValue().keySet()) {
-                    if (!full.toString().isEmpty())
-                        full.append(";");
-                    full.append(oneL);
-                }
-
-                if (!full.toString().isEmpty())
-                    cfg.get(path + "." + one.getKey().toString(), full.toString());
-            }
+    @Deprecated
+    public static void save(HashMap<CMIMaterial, BlockOwnerShip> blockOwnerShipsMaterial) {
+        if (saveTask != null) {
+            saveTask.cancel();
+            saveTask = null;
         }
+        saveAsync(blockOwnerShipsMaterial.values());
+    }
 
-        cfg.save();
+    private static void saveAsync(Collection<BlockOwnerShip> blockOwnerShips) {
+
+        Collection<BlockOwnerShip> copy = new ArrayList<>(blockOwnerShips);
+
+        CompletableFuture.runAsync(() -> {
+
+            File f = new File(Jobs.getInstance().getDataFolder(), "blockOwnerShips.yml");
+
+            ConfigReader cfg = null;
+            try {
+                cfg = new ConfigReader(f);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (cfg == null)
+                return;
+
+            cfg.getC().options().copyDefaults(true);
+
+            for (BlockOwnerShip ownership : copy) {
+                if (ownership.isReassignDisabled()) {
+                    return;
+                }
+                String path = ownership.getType().getPath();
+
+                cfg.getC().set(path, null);
+
+                for (Entry<UUID, HashMap<String, blockLoc>> one : ownership.blockOwnerShips.entrySet()) {
+                    StringBuilder full = new StringBuilder();
+
+                    for (String oneL : one.getValue().keySet()) {
+                        if (!full.toString().isEmpty())
+                            full.append(";");
+                        full.append(oneL);
+                    }
+
+                    if (!full.toString().isEmpty())
+                        cfg.get(path + "." + one.getKey().toString(), full.toString());
+                }
+            }
+
+            cfg.save();
+
+        });
     }
 
     public boolean isReassignDisabled() {

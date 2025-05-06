@@ -1811,6 +1811,9 @@ public final class JobsPaymentListener implements Listener {
             } else if (done == ownershipFeedback.reenabled && jPlayer != null) {
                 CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.reenabledBlock"));
             }
+            
+            BlockOwnerShip.saveDelay();
+            
         } else if (!block.getType().toString().startsWith("STRIPPED_") &&
             event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && hand.toString().endsWith("_AXE")) {
             // check if player is riding
