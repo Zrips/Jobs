@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,6 +53,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobCommands;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
+import com.gamingmesh.jobs.container.JobsMobSpawner;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.PlayerInfo;
@@ -70,7 +70,6 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -80,8 +79,6 @@ public class PlayerManager {
     private final ConcurrentMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, JobsPlayer> playersNameCache = new ConcurrentHashMap<>();
     private final ConcurrentMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<>();
-
-    private final String mobSpawnerMetadata = "jobsMobSpawner";
 
     private final Map<UUID, PlayerInfo> playerUUIDMap = new LinkedHashMap<>();
     private final Map<Integer, PlayerInfo> playerIdMap = new LinkedHashMap<>();
@@ -95,8 +92,9 @@ public class PlayerManager {
     /**
      * @return the cached mob spawner meta name
      */
+    @Deprecated
     public String getMobSpawnerMetadata() {
-        return mobSpawnerMetadata;
+        return JobsMobSpawner.getMobSpawnerMetadata();
     }
 
     @Deprecated
@@ -1182,7 +1180,7 @@ public class PlayerManager {
                 boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
         }
 
-        if (victim != null && victim.hasMetadata(mobSpawnerMetadata)) {
+        if (victim != null && JobsMobSpawner.isSpawnerEntity(victim)) {
             double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", false, false);
             if (amount != 0D)
                 boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));

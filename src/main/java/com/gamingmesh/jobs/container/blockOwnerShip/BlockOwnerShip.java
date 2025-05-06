@@ -388,7 +388,7 @@ public class BlockOwnerShip {
         saveTask = CMIScheduler.runTaskLater(Jobs.getInstance(), () -> {
             saveAsync(Jobs.getInstance().getBlockOwnerShips().values());
             saveTask = null;
-        }, 60 * 20);
+        }, 60 * 20L);
     }
 
     @Deprecated

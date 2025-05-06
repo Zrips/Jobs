@@ -17,11 +17,11 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.entity.EntityTransformEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.JobsMobSpawner;
 import com.gamingmesh.jobs.container.PlayerCamp;
 
 public final class JobsPayment1_14Listener implements Listener {
@@ -31,133 +31,133 @@ public final class JobsPayment1_14Listener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityTransformEvent(EntityTransformEvent event) {
-	    
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
 
-	if (!event.getEntity().hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+            return;
 
-	// Converting to string for backwards compatibility
-	switch (event.getTransformReason().toString()) {
-	case "CURED":
-	    break;
-	case "DROWNED":
-	    if (!event.getEntityType().equals(EntityType.ZOMBIE))
-		return;
+        if (!JobsMobSpawner.isSpawnerEntity(event.getEntity()))
+            return;
 
-	    event.getTransformedEntity().setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(Jobs.getInstance(), true));
-	    break;
-	case "FROZEN":
-	    if (!event.getEntityType().equals(EntityType.SKELETON))
-		return;
-	    event.getTransformedEntity().setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(Jobs.getInstance(), true));
-	    break;
-	case "INFECTION":
-	    break;
-	case "LIGHTNING":
-	    break;
-	case "PIGLIN_ZOMBIFIED":
-	    break;
-	case "SHEARED":
-	    break;
-	case "SPLIT":
+        // Converting to string for backwards compatibility
+        switch (event.getTransformReason().toString()) {
+        case "CURED":
+            break;
+        case "DROWNED":
+            if (!event.getEntityType().equals(EntityType.ZOMBIE))
+                return;
 
-	    if (!event.getEntityType().equals(EntityType.SLIME) && !event.getEntityType().equals(EntityType.MAGMA_CUBE))
-		return;
-	    for (Entity entity : event.getTransformedEntities()) {
-		entity.setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(Jobs.getInstance(), true));
-	    }
-	    break;
-	case "UNKNOWN":
-	    break;
-	default:
-	    break;
-	}
+            JobsMobSpawner.setSpawnerMeta(event.getTransformedEntity());
+            break;
+        case "FROZEN":
+            if (!event.getEntityType().equals(EntityType.SKELETON))
+                return;
+            JobsMobSpawner.setSpawnerMeta(event.getTransformedEntity());
+            break;
+        case "INFECTION":
+            break;
+        case "LIGHTNING":
+            break;
+        case "PIGLIN_ZOMBIFIED":
+            break;
+        case "SHEARED":
+            break;
+        case "SPLIT":
+
+            if (!event.getEntityType().equals(EntityType.SLIME) && !event.getEntityType().equals(EntityType.MAGMA_CUBE))
+                return;
+            for (Entity entity : event.getTransformedEntities()) {
+                JobsMobSpawner.setSpawnerMeta(entity);
+            }
+            break;
+        case "UNKNOWN":
+            break;
+        default:
+            break;
+        }
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCook(BlockCookEvent event) {
-	if (event.getBlock().getType() != Material.CAMPFIRE || campPlayers.isEmpty())
-	    return;
+        if (event.getBlock().getType() != Material.CAMPFIRE || campPlayers.isEmpty())
+            return;
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+            return;
 
-	Location blockLoc = event.getBlock().getLocation();
+        Location blockLoc = event.getBlock().getLocation();
 
-	for (Map.Entry<UUID, List<PlayerCamp>> map : campPlayers.entrySet()) {
-	    List<PlayerCamp> camps = map.getValue();
+        for (Map.Entry<UUID, List<PlayerCamp>> map : campPlayers.entrySet()) {
+            List<PlayerCamp> camps = map.getValue();
 
-	    if (camps.isEmpty()) {
-		campPlayers.remove(map.getKey());
-		continue;
-	    }
+            if (camps.isEmpty()) {
+                campPlayers.remove(map.getKey());
+                continue;
+            }
 
-	    for (PlayerCamp camp : new ArrayList<>(camps)) {
-		if (camp.getBlock().getLocation().equals(blockLoc)) {
-		    if (camp.getItem().equals(event.getSource())) {
-			camps.remove(camp);
+            for (PlayerCamp camp : new ArrayList<>(camps)) {
+                if (camp.getBlock().getLocation().equals(blockLoc)) {
+                    if (camp.getItem().equals(event.getSource())) {
+                        camps.remove(camp);
 
-			if (camps.isEmpty()) {
-			    campPlayers.remove(map.getKey());
-			} else {
-			    campPlayers.put(map.getKey(), camps);
-			}
-		    }
+                        if (camps.isEmpty()) {
+                            campPlayers.remove(map.getKey());
+                        } else {
+                            campPlayers.put(map.getKey(), camps);
+                        }
+                    }
 
-		    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(map.getKey()), new ItemActionInfo(event.getSource(), ActionType.BAKE));
-		    break;
-		}
-	    }
-	}
+                    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(map.getKey()), new ItemActionInfo(event.getSource(), ActionType.BAKE));
+                    break;
+                }
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-	if (event.getBlock().getType() != Material.CAMPFIRE || campPlayers.isEmpty())
-	    return;
+        if (event.getBlock().getType() != Material.CAMPFIRE || campPlayers.isEmpty())
+            return;
 
-	UUID playerUId = event.getPlayer().getUniqueId();
-	List<PlayerCamp> camps = campPlayers.get(playerUId);
-	if (camps == null)
-	    return;
+        UUID playerUId = event.getPlayer().getUniqueId();
+        List<PlayerCamp> camps = campPlayers.get(playerUId);
+        if (camps == null)
+            return;
 
-	if (camps.isEmpty()) {
-	    campPlayers.remove(playerUId);
-	    return;
-	}
+        if (camps.isEmpty()) {
+            campPlayers.remove(playerUId);
+            return;
+        }
 
-	Location blockLoc = event.getBlock().getLocation();
+        Location blockLoc = event.getBlock().getLocation();
 
-	for (PlayerCamp camp : new ArrayList<>(camps)) {
-	    if (camp.getBlock().getLocation().equals(blockLoc)) {
-		camps.remove(camp);
+        for (PlayerCamp camp : new ArrayList<>(camps)) {
+            if (camp.getBlock().getLocation().equals(blockLoc)) {
+                camps.remove(camp);
 
-		if (camps.isEmpty()) {
-		    campPlayers.remove(playerUId);
-		} else {
-		    campPlayers.put(playerUId, camps);
-		}
+                if (camps.isEmpty()) {
+                    campPlayers.remove(playerUId);
+                } else {
+                    campPlayers.put(playerUId, camps);
+                }
 
-		break;
-	    }
-	}
+                break;
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCampPlace(PlayerInteractEvent ev) {
-	org.bukkit.block.Block click = ev.getClickedBlock();
+        org.bukkit.block.Block click = ev.getClickedBlock();
 
-	if (click == null || click.getType() != Material.CAMPFIRE || !ev.hasItem())
-	    return;
+        if (click == null || click.getType() != Material.CAMPFIRE || !ev.hasItem())
+            return;
 
-	if (!JobsPaymentListener.payIfCreative(ev.getPlayer()) || !Jobs.getGCManager().canPerformActionInWorld(click.getWorld()))
-	    return;
+        if (!JobsPaymentListener.payIfCreative(ev.getPlayer()) || !Jobs.getGCManager().canPerformActionInWorld(click.getWorld()))
+            return;
 
-	List<PlayerCamp> camps = campPlayers.getOrDefault(ev.getPlayer().getUniqueId(), new ArrayList<>());
-	camps.add(new PlayerCamp(ev.getItem(), click));
+        List<PlayerCamp> camps = campPlayers.getOrDefault(ev.getPlayer().getUniqueId(), new ArrayList<>());
+        camps.add(new PlayerCamp(ev.getItem(), click));
 
-	campPlayers.put(ev.getPlayer().getUniqueId(), camps);
+        campPlayers.put(ev.getPlayer().getUniqueId(), camps);
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerBucketEntityEvent;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.EntityActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.JobsMobSpawner;
 
 public class JobsPayment1_16Listener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -37,7 +38,7 @@ public class JobsPayment1_16Listener implements Listener {
 
         Entity ent = event.getEntity();
         // mob spawner, no payment or experience
-        if (!Jobs.getGCManager().payNearSpawner() && ent.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+        if (!JobsMobSpawner.invalidForPaymentSpawnerMob(ent)) {
             return;
         }
 
