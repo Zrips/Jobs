@@ -551,9 +551,10 @@ public final class JobsPaymentListener implements Listener {
         } else {
             long currentTime = System.currentTimeMillis();
             long diff = currentTime - lastBlockPlaced.get(player);
-            lastBlockPlaced.put(player, currentTime);
-            if (diff < minTimeBetweenBlockPlacements && block.getPistonMoveReaction().equals(PistonMoveReaction.BREAK)) {
+            if (diff < minTimeBetweenBlockPlacements) {
                 return;
+            } else {
+                lastBlockPlaced.put(player, currentTime);
             }
         }
 
