@@ -17,8 +17,6 @@ import javax.annotation.Nullable;
 
 import com.gamingmesh.jobs.Jobs;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 public class JobsQuestTop {
 
     private static final int CACHE_LIMIT = 150;

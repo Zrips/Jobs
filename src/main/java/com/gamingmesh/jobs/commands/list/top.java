@@ -13,13 +13,11 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Scoreboards.CMIScoreboard;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -102,9 +100,9 @@ public class top implements Cmd {
 
             if (jPlayer == null)
                 continue;
-            
+
             JobProgression progression = jPlayer.getJobProgression(job);
-            
+
             if (Jobs.getGCManager().ShowToplistInScoreboard && sender instanceof Player)
                 ls.add(Jobs.getLanguage().getMessage("scoreboard.line",
                     "%number%", pi.getPositionForOutput(i),

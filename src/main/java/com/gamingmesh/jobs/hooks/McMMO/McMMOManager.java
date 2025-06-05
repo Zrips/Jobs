@@ -10,7 +10,6 @@ import org.bukkit.plugin.Plugin;
 import com.gamingmesh.jobs.Jobs;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class McMMOManager {
@@ -87,10 +86,10 @@ public class McMMOManager {
 
     public boolean CheckmcMMO() {
         Plugin McMMO = Bukkit.getPluginManager().getPlugin("mcMMO");
-        
+
         if (McMMO == null)
             return false;
-        
+
         try {
             Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
             mcMMOOverHaul = true;
