@@ -1884,8 +1884,9 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChunkUnload(ChunkUnloadEvent event) {
-        if (Version.isCurrentLower(Version.v1_15_R1))
+        if (Version.isCurrentEqualOrHigher(Version.v1_15_R1))
             return;
+        
         for (Entity entity : event.getChunk().getEntities()) {
             JobsMobSpawner.removeSpawnerMeta(entity);
         }
