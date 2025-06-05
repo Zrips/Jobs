@@ -54,7 +54,7 @@ public class top implements Cmd {
             }
             if (page < 1)
                 try {
-                    page = Integer.parseInt(args[1]);
+                    page = Integer.parseInt(one);
                     continue;
                 } catch (NumberFormatException e) {
                 }

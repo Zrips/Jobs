@@ -541,7 +541,6 @@ public final class JobsPaymentListener implements Listener {
         Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new BlockActionInfo(block, ActionType.PLACE), block);
     }
 
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAnimalTame(EntityTameEvent event) {
         if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
@@ -1886,7 +1885,7 @@ public final class JobsPaymentListener implements Listener {
     public void onChunkUnload(ChunkUnloadEvent event) {
         if (Version.isCurrentEqualOrHigher(Version.v1_15_R1))
             return;
-        
+
         for (Entity entity : event.getChunk().getEntities()) {
             JobsMobSpawner.removeSpawnerMeta(entity);
         }
