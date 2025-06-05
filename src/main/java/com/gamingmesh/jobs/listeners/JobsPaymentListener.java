@@ -394,9 +394,6 @@ public final class JobsPaymentListener implements Listener {
                 return;
         }
 
-        if (ownerShip.isDisabled(uuid, block.getLocation()))
-            return;
-
         // only care about first
         if (uuid == null && !data.isEmpty()) {
             MetadataValue value = data.get(0);
@@ -408,6 +405,9 @@ public final class JobsPaymentListener implements Listener {
         }
 
         if (uuid == null)
+            return;
+
+        if (ownerShip.isDisabled(uuid, block.getLocation()))
             return;
 
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(uuid);
