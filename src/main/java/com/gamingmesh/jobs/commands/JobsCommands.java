@@ -344,7 +344,7 @@ public class JobsCommands implements CommandExecutor {
     /**
      * Displays info about a particular action
      * @param player - the player of the job
-     * @param prog - the job we are displaying info about
+     * @param job - the job we are displaying info about
      * @param type - the type of action
      * @return the message
      */
@@ -485,7 +485,8 @@ public class JobsCommands implements CommandExecutor {
 
     /**
      * Displays job stats about a particular player's job from archive
-     * @param jobInfo - jobinfo string line
+     * @param jPlayer - the player of the job
+     * @param jobProg - the job progress of the players job
      * @return the message
      */
     public String jobStatsMessageArchive(JobsPlayer jPlayer, JobProgression jobProg) {
