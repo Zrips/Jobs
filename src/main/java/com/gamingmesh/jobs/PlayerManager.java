@@ -400,7 +400,7 @@ public class PlayerManager {
      * This can return null sometimes if the given player
      * is not cached into memory.
      *
-     * @param player the player uuid
+     * @param uuid the player uuid
      * @return {@link JobsPlayer} the player job info of the player
      */
     public JobsPlayer getJobsPlayer(UUID uuid) {
@@ -414,7 +414,7 @@ public class PlayerManager {
      * This can return null sometimes if the given player
      * is not cached into memory.
      *
-     * @param player name - the player name who's job you're getting
+     * @param playerName name - the player name who's job you're getting
      * @return {@link JobsPlayer} the player job info of the player
      */
     public JobsPlayer getJobsPlayer(String playerName) {

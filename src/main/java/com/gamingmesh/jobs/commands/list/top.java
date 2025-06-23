@@ -102,7 +102,7 @@ public class top implements Cmd {
                 continue;
 
             JobProgression progression = jPlayer.getJobProgression(job);
-
+            if(progression == null) continue; // Skip if the UUID has no progression in this job
             if (Jobs.getGCManager().ShowToplistInScoreboard && sender instanceof Player)
                 ls.add(Jobs.getLanguage().getMessage("scoreboard.line",
                     "%number%", pi.getPositionForOutput(i),
