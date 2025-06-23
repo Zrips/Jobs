@@ -47,7 +47,8 @@ public enum ActionType {
     COLLECT(),
     BAKE(),
     BUCKET(),
-    BRUSH();
+    BRUSH(),
+    VAX();
 
     private String name;
 

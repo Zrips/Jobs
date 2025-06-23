@@ -102,6 +102,7 @@ import com.gamingmesh.jobs.listeners.JobsDefaultFishPaymentListener;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPayment1_14Listener;
 import com.gamingmesh.jobs.listeners.JobsPayment1_16Listener;
+import com.gamingmesh.jobs.listeners.JobsPayment1_17Listener;
 import com.gamingmesh.jobs.listeners.JobsPayment1_20Listener;
 import com.gamingmesh.jobs.listeners.JobsPayment1_9Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
@@ -859,6 +860,9 @@ public final class Jobs extends JavaPlugin {
         if (Version.isCurrentEqualOrHigher(Version.v1_16_R3))
             pm.registerEvents(new JobsPayment1_16Listener(), getInstance());
 
+        if (Version.isCurrentEqualOrHigher(Version.v1_17_R1))
+            pm.registerEvents(new JobsPayment1_17Listener(), getInstance());
+
         if (Version.isCurrentEqualOrHigher(Version.v1_20_R1)) {
             pm.registerEvents(new PlayerSignEdit1_20Listeners(), getInstance());
             pm.registerEvents(new JobsPayment1_20Listener(), getInstance());
@@ -1068,7 +1072,7 @@ public final class Jobs extends JavaPlugin {
 
         List<JobProgression> progression = jPlayer.getJobProgression();
         int numjobs = progression.size();
-
+        
         if (!Jobs.getGCManager().useBlockProtectionBlockTracker && !Jobs.getExploitManager().isProtectionValidAddIfNotExists(jPlayer, info, block, true))
             return;
 
