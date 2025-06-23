@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.listeners;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -38,9 +37,8 @@ public class JobsPayment1_16Listener implements Listener {
 
         Entity ent = event.getEntity();
         // mob spawner, no payment or experience
-        if (!JobsMobSpawner.invalidForPaymentSpawnerMob(ent)) {
+        if (JobsMobSpawner.invalidForPaymentSpawnerMob(ent))
             return;
-        }
 
         Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(event.getEntityBucket(), ActionType.BUCKET));
     }

@@ -1,6 +1,2 @@
 jdk:
-  - openjdk17
-before_install:
-  - echo "Before Install"
-  - sdk install java 17.0.2-open
-  - sdk use java 17.0.2-open
+  - openjdk21
