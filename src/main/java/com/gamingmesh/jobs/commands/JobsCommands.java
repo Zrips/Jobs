@@ -300,18 +300,21 @@ public class JobsCommands implements CommandExecutor {
         }
 
         for (ActionType actionType : ActionType.values()) {
-            if (type.isEmpty() || type.startsWith(actionType.getName().toLowerCase())) {
-                List<JobInfo> info = job.getJobInfo(actionType);
-                if (info != null && !info.isEmpty()) {
-                    String m = jobInfoMessage(player, job, actionType);
-                    if (m.contains("\n"))
-                        message.addAll(Arrays.asList(m.split("\n")));
-                    else
-                        message.add(m);
-                } else if (!type.isEmpty()) {
-                    message.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none", job));
-                }
+
+            if (!type.isEmpty() && !type.startsWith(actionType.getName().toLowerCase()))
+                continue;
+
+            List<JobInfo> info = job.getJobInfo(actionType);
+            if (info != null && !info.isEmpty()) {
+                String m = jobInfoMessage(player, job, actionType);
+                if (m.contains("\n"))
+                    message.addAll(Arrays.asList(m.split("\n")));
+                else
+                    message.add(m);
+            } else if (!type.isEmpty()) {
+                message.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none", job));
             }
+
         }
 
         PageInfo pi = new PageInfo(15, message.size(), page);

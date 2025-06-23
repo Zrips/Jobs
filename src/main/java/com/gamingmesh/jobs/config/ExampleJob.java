@@ -227,14 +227,20 @@ public class ExampleJob {
         cfg.get(pt + ".Break.gravel.income", -1D);
 
         cfg.addComment(pt + ".Collect", "Payment for collecting things from sweet berry bush, composter or honey. Keep in mind that you need to define item you get it and not block you click on.");
-
-        generate(cfg, pt + ".Collect.sweet_berries-2");
-        generate(cfg, pt + ".Collect.sweet_berries-3");
+        generate(cfg, pt + ".Collect.sweet_berries");
         generate(cfg, pt + ".Collect.bonemeal");
         generate(cfg, pt + ".Collect.honeycomb");
         generate(cfg, pt + ".Collect.honey_bottle");
         generate(cfg, pt + ".Collect.glow_berries");
 
+        cfg.addComment(pt + ".Bucket", "Payment for catching entities in a bucket. Define material of a bucket and not entity you are catching.");
+        generate(cfg, pt + ".Bucket.PUFFERFISH_BUCKET");
+        generate(cfg, pt + ".Bucket.SALMON_BUCKET");
+        generate(cfg, pt + ".Bucket.COD_BUCKET");
+        generate(cfg, pt + ".Bucket.TROPICAL_FISH_BUCKET");
+        generate(cfg, pt + ".Bucket.AXOLOTL_BUCKET");
+        generate(cfg, pt + ".Bucket.TADPOLE_BUCKET");
+        
         cfg.addComment(pt + ".Bake", "Payment for cooking raw foods in camp fire");
         generate(cfg, pt + ".Bake.beef");
         generate(cfg, pt + ".Bake.porkchop");

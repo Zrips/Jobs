@@ -18,50 +18,66 @@
 
 package com.gamingmesh.jobs.container;
 
+import java.util.Arrays;
+import java.util.EnumSet;
+
 import net.Zrips.CMILib.Container.CMIText;
 
 public enum ActionType {
-    BREAK(),
-    STRIPLOGS("StripLogs"),
-    TNTBREAK("TNTBreak"),
-    PLACE(),
-    KILL(),
-    MMKILL("MMKill"),
-    FISH(),
-    PYROFISHINGPRO("PyroFishingPro"),
-    CUSTOMFISHING("CustomFishing"),
-    CRAFT(),
-    VTRADE("VTrade"),
-    SMELT(),
-    BREW(),
-    ENCHANT(),
-    REPAIR(),
-    BREED(),
-    TAME(),
-    DYE(),
-    SHEAR(),
-    MILK(),
-    EXPLORE(),
-    EAT(),
-    CUSTOMKILL("custom-kill"),
-    COLLECT(),
-    BAKE(),
-    BUCKET(),
-    BRUSH(),
-    VAX();
+    BREAK(ActionSubType.BLOCK, ActionSubType.PROTECTED),
+    STRIPLOGS("StripLogs", ActionSubType.BLOCK),
+    TNTBREAK("TNTBreak", ActionSubType.BLOCK),
+    PLACE(ActionSubType.BLOCK, ActionSubType.PROTECTED),
+    KILL(ActionSubType.ENTITY),
+    MMKILL("MMKill", ActionSubType.ENTITY, ActionSubType.CUSTOM),
+    FISH(ActionSubType.MATERIAL),
+    PYROFISHINGPRO("PyroFishingPro", ActionSubType.CUSTOM),
+    CUSTOMFISHING("CustomFishing", ActionSubType.CUSTOM),
+    CRAFT(ActionSubType.MATERIAL),
+    VTRADE("VTrade", ActionSubType.MATERIAL),
+    SMELT(ActionSubType.MATERIAL),
+    BREW(ActionSubType.MATERIAL),
+    ENCHANT(ActionSubType.ENCHANTMENT, ActionSubType.MATERIAL),
+    REPAIR(ActionSubType.MATERIAL),
+    BREED(ActionSubType.ENTITY),
+    TAME(ActionSubType.ENTITY),
+    DYE(ActionSubType.MATERIAL),
+    SHEAR(ActionSubType.ENTITY),
+    MILK(ActionSubType.ENTITY),
+    EXPLORE(ActionSubType.CUSTOM),
+    EAT(ActionSubType.MATERIAL),
+    CUSTOMKILL("custom-kill", ActionSubType.ENTITY, ActionSubType.CUSTOM),
+    COLLECT(ActionSubType.MATERIAL),
+    BAKE(ActionSubType.MATERIAL),
+    BUCKET(ActionSubType.MATERIAL),
+    BRUSH(ActionSubType.BLOCK),
+    VAX(ActionSubType.BLOCK, ActionSubType.PROTECTED);
 
     private String name;
 
-    ActionType(String name) {
-        this.name = name;
+    private EnumSet<ActionSubType> subTypes = EnumSet.noneOf(ActionSubType.class);
+
+    ActionType(ActionSubType... subTypes) {
+        this(null, subTypes);
     }
 
-    ActionType() {
-        this.name = CMIText.firstToUpperCase(this.toString());
+    ActionType(String name, ActionSubType... subTypes) {
+        this.subTypes = (subTypes == null || subTypes.length == 0)
+            ? EnumSet.noneOf(ActionSubType.class)
+            : EnumSet.copyOf(Arrays.asList(subTypes));
+        this.name = name == null ? CMIText.firstToUpperCase(this.toString()) : name;
     }
 
     public String getName() {
         return name;
+    }
+
+    public boolean hasSubType(ActionSubType subType) {
+        return subTypes.contains(subType);
+    }
+
+    public EnumSet<ActionSubType> getSubTypes() {
+        return subTypes;
     }
 
     public static ActionType getByName(String name) {

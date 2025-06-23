@@ -38,6 +38,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Gui.GuiItem;
+import com.gamingmesh.jobs.container.ActionSubType;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.DisplayMethod;
@@ -180,36 +181,9 @@ public class ConfigManager {
 
         CMIMaterial material = CMIMaterial.NONE;
 
-        switch (actionType) {
-        case KILL:
-        case MILK:
-        case MMKILL:
-        case PYROFISHINGPRO:
-        case CUSTOMFISHING:
-        case BREED:
-        case TAME:
-        case SHEAR:
-        case EXPLORE:
-        case CUSTOMKILL:
-            break;
-        case TNTBREAK:
-        case VTRADE:
-        case SMELT:
-        case REPAIR:
-        case PLACE:
-        case EAT:
-        case FISH:
-        case ENCHANT:
-        case DYE:
-        case CRAFT:
-        case BAKE:
-        case BREW:
-        case BREAK:
-        case STRIPLOGS:
-        case BUCKET:
-        case COLLECT:
-        case BRUSH:
-        case VAX:
+        if (actionType.hasSubType(ActionSubType.BLOCK) ||
+            actionType.hasSubType(ActionSubType.MATERIAL)) {
+
             material = CMIMaterial.get(myKey + (subType));
 
             if (material == CMIMaterial.NONE)
@@ -229,9 +203,6 @@ public class ConfigManager {
                 }
             }
 
-            break;
-        default:
-            break;
         }
 
         if (actionType == ActionType.STRIPLOGS && Version.isCurrentLower(Version.v1_13_R1))
@@ -273,12 +244,10 @@ public class ConfigManager {
             }
 
             // These actions MUST be blocks
-            if (actionType == ActionType.BREAK || actionType == ActionType.VAX || actionType == ActionType.PLACE || actionType == ActionType.STRIPLOGS) {
-                if (!material.isBlock() || material.getMaterial().toString().equalsIgnoreCase("AIR")) {
-                    CMIMessages.consoleMessage("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
-                        + " (" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
-                    return null;
-                }
+            if (actionType.hasSubType(ActionSubType.BLOCK) && (!material.isBlock() || material.getMaterial().toString().equalsIgnoreCase("AIR"))) {
+                CMIMessages.consoleMessage("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
+                    + " (" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
+                return null;
             }
 
             // START HACK
@@ -315,7 +284,7 @@ public class ConfigManager {
             }
 
             id = material.getId();
-        } else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK || actionType == ActionType.BUCKET) {
+        } else if (actionType.hasSubType(ActionSubType.ENTITY) && !actionType.hasSubType(ActionSubType.CUSTOM)) {
             // check entities
             CMIEntityType entity = CMIEntityType.getByName(myKey);
 
@@ -376,7 +345,9 @@ public class ConfigManager {
                     break;
                 }
             }
-        } else if (actionType == ActionType.ENCHANT) {
+        }
+
+        if (actionType == ActionType.ENCHANT) {
 
             CMIEnchantment cmiEnchant = CMIEnchantment.getCMIByName(myKey);
 
@@ -387,11 +358,9 @@ public class ConfigManager {
 
             type = cmiEnchant != null ? cmiEnchant.getKeyName() : myKey;
 
-        } else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
-            || actionType == ActionType.BAKE || actionType == ActionType.SMELT || actionType == ActionType.PYROFISHINGPRO
-            || actionType == ActionType.CUSTOMFISHING) {
-            type = myKey;
-        } else if (actionType == ActionType.EXPLORE) {
+        }
+
+        if (actionType == ActionType.EXPLORE) {
             type = myKey;
 
             int amount = 10;
@@ -408,7 +377,9 @@ public class ConfigManager {
             Jobs.getChunkExplorationManager().setExploreEnabled();
             Jobs.getChunkExplorationManager().setPlayerAmount(amount);
 
-        } else if (actionType == ActionType.CRAFT) {
+        }
+
+        if (actionType == ActionType.CRAFT) {
             if (myKey.startsWith("!")) {
                 type = myKey.substring(1, myKey.length());
             }
@@ -417,7 +388,13 @@ public class ConfigManager {
             if (split.length > 1) {
                 subType = split[1];
             }
-        } else if (actionType == ActionType.SHEAR && !myKey.startsWith("color")) {
+        }
+
+        if (actionType == ActionType.SHEAR && !myKey.startsWith("color")) {
+            type = myKey;
+        }
+
+        if (actionType.hasSubType(ActionSubType.CUSTOM)) {
             type = myKey;
         }
 

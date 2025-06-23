@@ -6,7 +6,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.antlr.v4.parse.ANTLRParser.action_return;
+
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -375,62 +378,10 @@ public class LanguageManager {
             c.get("command.info.gui.max", "&eMax level:&f ");
             c.get("command.info.gui.infoLore", Arrays.asList("&7Close"));
 
-            c.get("command.info.output.break.info", "&eBreak");
-            c.get("command.info.output.break.none", "%jobname% does not get money for breaking blocks.");
-            c.get("command.info.output.tntbreak.info", "&eTNTBreak");
-            c.get("command.info.output.tntbreak.none", "%jobname% does not get money for breaking blocks with TNT.");
-            c.get("command.info.output.place.info", "&ePlace");
-            c.get("command.info.output.place.none", "%jobname% does not get money for placing blocks.");
-            c.get("command.info.output.striplogs.info", "&eStrip logs");
-            c.get("command.info.output.striplogs.none", "%jobname% does not get money for stripping logs.");
-            c.get("command.info.output.kill.info", "&eKill");
-            c.get("command.info.output.kill.none", "%jobname% does not get money for killing monsters.");
-            c.get("command.info.output.mmkill.info", "&eMMKill");
-            c.get("command.info.output.mmkill.none", "%jobname% does not get money for killing Mythic monsters.");
-            c.get("command.info.output.fish.info", "&eFish");
-            c.get("command.info.output.fish.none", "%jobname% does not get money from fishing.");
-            c.get("command.info.output.pyrofishingpro.info", "&eFish");
-            c.get("command.info.output.pyrofishingpro.none", "%jobname% does not get money from fishing.");
-            c.get("command.info.output.customfishing.info", "&eFish");
-            c.get("command.info.output.customfishing.none", "%jobname% does not get money from fishing.");
-            c.get("command.info.output.craft.info", "&eCraft");
-            c.get("command.info.output.craft.none", "%jobname% does not get money from crafting.");
-            c.get("command.info.output.smelt.info", "&eSmelt");
-            c.get("command.info.output.smelt.none", "%jobname% does not get money from smelting.");
-            c.get("command.info.output.brew.info", "&eBrew");
-            c.get("command.info.output.brew.none", "%jobname% does not get money from brewing.");
-            c.get("command.info.output.eat.info", "&eEat");
-            c.get("command.info.output.eat.none", "%jobname% does not get money from eating food.");
-            c.get("command.info.output.dye.info", "&eDye");
-            c.get("command.info.output.dye.none", "%jobname% does not get money from dyeing.");
-            c.get("command.info.output.enchant.info", "&eEnchant");
-            c.get("command.info.output.enchant.none", "%jobname% does not get money from enchanting.");
-            c.get("command.info.output.vtrade.info", "&eVillager trade");
-            c.get("command.info.output.vtrade.none", "%jobname% does not get money for trading a villager.");
-            c.get("command.info.output.repair.info", "&eRepair");
-            c.get("command.info.output.repair.none", "%jobname% does not get money from repairing.");
-            c.get("command.info.output.breed.info", "&eBreed");
-            c.get("command.info.output.breed.none", "%jobname% does not get money from breeding.");
-            c.get("command.info.output.tame.info", "&eTame");
-            c.get("command.info.output.tame.none", "%jobname% does not get money from taming.");
-            c.get("command.info.output.milk.info", "&eMilk");
-            c.get("command.info.output.milk.none", "%jobname% does not get money from milking cows.");
-            c.get("command.info.output.shear.info", "&eShear");
-            c.get("command.info.output.shear.none", "%jobname% does not get money from shearing sheep.");
-            c.get("command.info.output.explore.info", "&eExplore");
-            c.get("command.info.output.explore.none", "%jobname% does not get money from exploring.");
-            c.get("command.info.output.custom-kill.info", "&eCustom kill");
-            c.get("command.info.output.custom-kill.none", "%jobname% does not get money from custom player kills.");
-            c.get("command.info.output.collect.info", "&eCollect");
-            c.get("command.info.output.collect.none", "%jobname% does not get money for collecting blocks.");
-            c.get("command.info.output.bake.info", "&eBake");
-            c.get("command.info.output.bake.none", "%jobname% does not get money for cooking foods.");
-            c.get("command.info.output.bucket.info", "&eBucket");
-            c.get("command.info.output.bucket.none", "%jobname% does not get money for bucketing.");
-            c.get("command.info.output.brush.info", "&eBrush");
-            c.get("command.info.output.brush.none", "%jobname% does not get money for brushing blocks.");
-            c.get("command.info.output.vax.info", "&eVax");
-            c.get("command.info.output.vax.none", "%jobname% does not get money for vaxing blocks.");
+            for (ActionType action : ActionType.values()) {
+                c.get("command.info.output." + action.toString().toLowerCase() + ".info", "&e" + action.getName());
+                c.get("command.info.output." + action.toString().toLowerCase() + ".none", "%jobname% does not get money for (" + action.getName() + ") action.");
+            }
 
             c.get("command.playerinfo.help.info", "Show how much each job is getting paid and for what on another player.");
             c.get("command.playerinfo.help.args", "[playername] [jobname] [action]");
@@ -554,9 +505,9 @@ public class LanguageManager {
             c.get("command.gtop.help.args", "clear/pageNumber");
             c.get("command.gtop.output.topline", "&aTop&e %amount% &aplayers by global job level");
             c.get("command.gtop.output.list", "&e%number%&a. &e%playerdisplayname% &alvl &e%level% &awith&e %exp% &aexp");
-            
+
             c.get("command.gqtop.help.info", "Shows top players by quests done.");
-            c.get("command.gqtop.help.args", "clear/pageNumber");            
+            c.get("command.gqtop.help.args", "clear/pageNumber");
             c.get("command.gqtop.output.topline", "&aTop&e %amount% &aplayers by done quests");
             c.get("command.gqtop.output.list", "&e%number%&a. &e%playerdisplayname% &alvl &e%level% &awith&e %exp% &aexp");
 
