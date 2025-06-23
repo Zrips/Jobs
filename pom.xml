@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>5.2.6.0</version>
+	<version>5.2.6.1</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
@@ -16,18 +16,14 @@
 	</properties>
 
 	<dependencies>
+        <!-- Spigot API -->
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.20.6-R0.1-SNAPSHOT</version>
+			<version>1.21.5-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot</artifactId>
-			<version>1.20.6-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
+        <!-- Mojang Authlib -->
 		<dependency>
 			<groupId>com.mojang</groupId>
 			<artifactId>authlib</artifactId>

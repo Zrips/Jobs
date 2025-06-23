@@ -40,7 +40,7 @@ public class JobsPayment1_17Listener implements Listener {
         }
 
         // check if player is riding
-        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle() && !player.getVehicle().getType().equals(EntityType.BOAT)) {
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle() && !player.getVehicle().getType().toString().contains("BOAT")) {
             return;
         }
 

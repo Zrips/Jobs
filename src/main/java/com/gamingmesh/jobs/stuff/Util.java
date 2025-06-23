@@ -38,6 +38,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.container.JobsWorld;
 
+import net.Zrips.CMILib.Container.CMIAttribute;
 import net.Zrips.CMILib.Enchants.CMIEnchantment;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIMaterial;
@@ -146,8 +147,7 @@ public final class Util {
 
     public static double getMaxHealth(LivingEntity entity) {
         if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-            org.bukkit.attribute.AttributeInstance attr = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-            return attr == null ? 0d : attr.getBaseValue();
+            return CMIAttribute.MAX_HEALTH.getBaseValue(entity);
         }
 
         return entity.getMaxHealth();
