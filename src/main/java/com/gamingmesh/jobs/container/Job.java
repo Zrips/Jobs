@@ -28,6 +28,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.BiPredicate;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -813,7 +815,7 @@ public class Job {
         this.legacyId = legacyId;
     }
 
-    public void updateTop(UUID uuid, int level, double experience) {
+    public void updateTop(@Nonnull UUID uuid, int level, double experience) {
         topList.updateAsync(uuid, level, experience);
     }
 

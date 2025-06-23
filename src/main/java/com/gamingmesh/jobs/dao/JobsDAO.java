@@ -50,6 +50,7 @@ import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.stuff.Util;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Time.CMITimeManager;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -781,12 +782,12 @@ public abstract class JobsDAO {
                 map.put(id, m);
             }
         } catch (Exception e) {
-            close(res);
-            close(prest);
+            e.printStackTrace();
         } finally {
             close(res);
             close(prest);
         }
+
         return map;
     }
 
