@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBucketEntityEvent;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.actions.EntityActionInfo;
+import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsMobSpawner;
 
@@ -42,6 +42,6 @@ public class JobsPayment1_16Listener implements Listener {
             return;
         }
 
-        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(event.getEntity(), ActionType.BUCKET));
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(event.getEntityBucket(), ActionType.BUCKET));
     }
 }
