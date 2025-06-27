@@ -461,7 +461,7 @@ public class NameTranslatorManager {
                     continue;
                 }
 
-                if (enchName.isEmpty()) {
+                if (enchName == null || enchName.isEmpty()) {
                     CMIMessages.consoleMessage("Could not identify enchantment: " + one.toString());
                     continue;
                 }
