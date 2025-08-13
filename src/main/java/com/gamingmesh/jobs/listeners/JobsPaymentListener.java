@@ -757,7 +757,7 @@ public final class JobsPaymentListener implements Listener {
                 preInv[i] = preInv[i].clone();
         }
 
-        CMIScheduler.runTaskLater(Jobs.getInstance(), () -> {
+        CMIScheduler.runAtEntityLater(Jobs.getInstance(), player, () -> {
             final ItemStack[] postInv = player.getInventory().getContents();
             int newItemsCount = 0;
 
@@ -1823,10 +1823,15 @@ public final class JobsPaymentListener implements Listener {
 
             String type = block.getType().toString();
 
+            final Location blockLocation = block.getLocation();
+
             if ((Version.isCurrentEqualOrHigher(Version.v1_13_R1) && (type.endsWith("_LOG") || type.endsWith("_WOOD"))) ||
                 (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && (type.endsWith("_STEM") || type.endsWith("_HYPHAE"))) ||
                 (Version.isCurrentEqualOrHigher(Version.v1_20_R1) && (type.equalsIgnoreCase("BAMBOO_BLOCK")))) {
-                CMIScheduler.runTaskLater(plugin, () -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
+                CMIScheduler.runAtLocationLater(plugin, blockLocation, () -> {
+                    Block b = blockLocation.getBlock();
+                    Jobs.action(jPlayer, new BlockActionInfo(b, ActionType.STRIPLOGS), b);
+                }, 1);
             }
         }
     }
