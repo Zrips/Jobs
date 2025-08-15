@@ -746,12 +746,8 @@ public class JobsPlayer {
                 JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(this, job, prog.getLevel(),
                     Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
                     Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
-                    Jobs.getGCManager().SoundLevelupSound,
-                    Jobs.getGCManager().SoundLevelupVolume,
-                    Jobs.getGCManager().SoundLevelupPitch,
-                    Jobs.getGCManager().SoundTitleChangeSound,
-                    Jobs.getGCManager().SoundTitleChangeVolume,
-                    Jobs.getGCManager().SoundTitleChangePitch);
+                    Jobs.getGCManager().soundLevelup,
+                    Jobs.getGCManager().soundTitleChange);
 
                 plugin.getServer().getPluginManager().callEvent(levelUpEvent);
             }

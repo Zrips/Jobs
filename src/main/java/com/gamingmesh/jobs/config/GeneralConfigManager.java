@@ -49,6 +49,7 @@ import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Messages.CMIMessages;
+import net.Zrips.CMILib.Sounds.CMISound;
 import net.Zrips.CMILib.Version.Version;
 
 public class GeneralConfigManager {
@@ -70,8 +71,11 @@ public class GeneralConfigManager {
     protected boolean economyAsync, isBroadcastingSkillups, isBroadcastingLevelups, payInCreative, payExploringWhenFlying,
         addXpPlayer, hideJobsWithoutPermission, payNearSpawner, modifyChat, saveOnDisconnect, MultiServerCompatability;
 
-    public String modifyChatPrefix, modifyChatSuffix, modifyChatSeparator, SoundLevelupSound,
-        SoundTitleChangeSound, ServerAccountName, ServertaxesAccountName, localeString = "";
+    public CMISound soundLevelup;
+    public CMISound soundTitleChange;
+
+    public String modifyChatPrefix, modifyChatSuffix, modifyChatSeparator,
+        ServerAccountName, ServertaxesAccountName, localeString = "";
     private String getSelectionTool, DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
 
     public List<String> JobsTopHiddenPlayers;
@@ -79,8 +83,7 @@ public class GeneralConfigManager {
     public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime, blockOwnershipRange,
         globalblocktimer, globalBlockBreakTimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
         SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays,
-        levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
-        SoundTitleChangePitch, ToplistInScoreboardInterval;
+        levelLossPercentageFromMax, levelLossPercentage, ToplistInScoreboardInterval;
 
     protected int savePeriod, maxJobs, economyBatchDelay;
     private int ResetTimeHour, ResetTimeMinute, DailyQuestsSkips,
@@ -1048,15 +1051,18 @@ public class GeneralConfigManager {
         c.addComment("Sounds", "Extra sounds on some events",
             "All sounds can be found in https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
         SoundLevelupUse = c.get("Sounds.LevelUp.use", true);
-        SoundLevelupSound = c.get("Sounds.LevelUp.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP" : Version.isCurrentEqualOrHigher(Version.v1_21_R3) ? "ENTITY.PLAYER.LEVELUP"
+        String SoundLevelupSound = c.get("Sounds.LevelUp.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP" : Version.isCurrentEqualOrHigher(Version.v1_21_R3) ? "ENTITY.PLAYER.LEVELUP"
             : "ENTITY_PLAYER_LEVELUP").toUpperCase();
-        SoundLevelupVolume = c.get("Sounds.LevelUp.volume", 1);
-        SoundLevelupPitch = c.get("Sounds.LevelUp.pitch", 3);
+        float SoundLevelupVolume = c.get("Sounds.LevelUp.volume", 1D).floatValue();
+        float SoundLevelupPitch = c.get("Sounds.LevelUp.pitch", 3D).floatValue();
+        soundLevelup = new CMISound(SoundLevelupSound, SoundLevelupVolume, SoundLevelupPitch);
+
         SoundTitleChangeUse = c.get("Sounds.TitleChange.use", true);
-        SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP" : Version.isCurrentEqualOrHigher(Version.v1_21_R3) ? "ENTITY.PLAYER.LEVELUP"
+        String SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP" : Version.isCurrentEqualOrHigher(Version.v1_21_R3) ? "ENTITY.PLAYER.LEVELUP"
             : "ENTITY_PLAYER_LEVELUP").toUpperCase();
-        SoundTitleChangeVolume = c.get("Sounds.TitleChange.volume", 1);
-        SoundTitleChangePitch = c.get("Sounds.TitleChange.pitch", 3);
+        float SoundTitleChangeVolume = c.get("Sounds.TitleChange.volume", 1D).floatValue();
+        float SoundTitleChangePitch = c.get("Sounds.TitleChange.pitch", 3D).floatValue();
+        soundTitleChange = new CMISound(SoundTitleChangeSound, SoundTitleChangeVolume, SoundTitleChangePitch);
 
         c.addComment("Fireworks", "Extra firework shooting in some events");
         FireworkLevelupUse = c.get("Fireworks.LevelUp.use", false);
