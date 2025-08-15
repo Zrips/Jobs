@@ -1,73 +1,72 @@
-# Example job configuration.
 #
-# Edited by roracle to include 1.13 items and item names, preparing for 1.14 as well.
+# This Job will be ignored so there is no need to remove it. Keep it as reference as it will contain all possible options.
+#
+# Stores information about each job
+#
+# NOTE: When having multiple jobs, both jobs will give the income payout to the player
+# even if they give the pay for one action (make the configurations with this in mind)
+# and each job will get the respective experience.
+#
+# e.g If player has 2 jobs where job1 gives 10 income and experience for killing a player 
+# and job2 gives 5 income and experience for killing a player. When the user kills a player
+# they will get 15 income and job1 will gain 10 experience and job2 will gain 5 experience.
 
-# ATTENTION!
-# This is just an example job and will not be included into job list. Recommended to keep
-# it around just for reference. Can be removed if needed.
-
-# Must be one word. This job will be ignored as this is just example of all possible actions.
+# Must be one word
+# This job will be ignored as this is just example of all possible actions.
 exampleJob:
-  # full name of the job (displayed when browsing a job, used when joining and leaving)
+  # full name of the job (displayed when browsing a job, used when joining and leaving
   # also can be used as a prefix for the user's name if the option is enabled.
   # Shown as a prefix only when the user has 1 job.
+
   # NOTE: Must be 1 word
   fullname: Woodcutter
-
+  # Jobs display name used only for visualization in specific parts. Can contain spaces and color codes
+  displayName: '&2--{#cancan}Woodcutter&2--'
   # Shortened version of the name of the job. Used as a prefix when the user has more than 1 job.
   shortname: W
-
-  # Jobs display name used only for visualization in specific parts. Can contain spaces and color codes
-  displayName: "&2--{#cancan}Woodcutter&2--"
-
-  # The short description of job
-  # Please try to not use this, use FullDescription below
-  #description: Earns money felling and planting trees
-
+  description: Earns money felling and planting trees
   # Full description of job to be shown in job browse command
   FullDescription:
-  - "&7Earns money felling and planting trees"
-  - ""
-  - "&2Get money for:"
-  - "  &7Planting trees"
-  - "  &7Cutting down trees"
-  - "  &7Killing players"
-
-  # The colour of the name, for a full list of supported colours, go to the message config.
+  - '&2Get money for:'
+  - '  &7Planting trees'
+  - '  &7Cutting down trees'
+  - '  &7Killing players'
+  # The colour of the name, for a full list of supported colours, go to the message config. Hex color codes are supported as of 1.16 minecraft version. Example: {#6600cc} or {#Brown}
   ChatColour: GREEN
-
   # [OPTIONAL] The colour of the boss bar: GREEN, BLUE, RED, WHITE, YELLOW, PINK, PURPLE.
   BossBarColour: WHITE
-
   # Option to let you choose what kind of prefix this job adds to your name.
-  # options are: full, title, job, shortfull, shorttitle, shortjob and none
+  # Options are: 
+  # none - Nothing
+  # full - Full title and job name
+  # job - Full job name
+  # title - Full title
+  # shortfull - Short title and job name
+  # shortjob - Short job name
+  # shorttitle - Short title
+  # shorttitlejob - Short title and full job name
+  # titleshortjob - Full title and short job name
   chat-display: full
-
   # [OPTIONAL] - the maximum level of this class
   max-level: 10
-
   # [OPTIONAL] - the maximum level of this class with specific permission
   # use jobs.[jobsname].vipmaxlevel, in this case it will be jobs.exampleJob.vipmaxlevel
   vip-max-level: 20
-
   # [OPTIONAL] - the maximum number of users on the server that can have this job at any one time (includes offline players).
   slots: 1
-
   # [OPTIONAL] Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.
   # In example if player is level 70, he will get paid as he would be at level 50, exp gain will be as he would be at lvl 40 and point gain will be as at level 60
   # This only applies after players level is higher than provided particular limit.
   softIncomeLimit: 50
   softExpLimit: 40
   softPointsLimit: 60
-
   # Equation used for calculating how much experience is needed to go to the next level.
   # Available parameters:
   #   numjobs - the number of jobs the player has
   #   maxjobs - the number of jobs the player have max
   #   joblevel - the level the player has attained in the job.
-  # NOTE: Please take care of the brackets when modifying this equation.
+  #  NOTE: Please take care of the brackets when modifying this equation.
   leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-
   # Equation used for calculating how much income is given per action for the job level.
   # Available parameters:
   #   numjobs - the number of jobs the player has
@@ -75,8 +74,8 @@ exampleJob:
   #   baseincome - the income for the action at level 1 (as set in the configuration).
   #   joblevel - the level the player has attained in the job.
   # NOTE: Please take care of the brackets when modifying this equation.
-  income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(baseincome*(joblevel-1)*0.01)) * ((numjobs-1)*0.05))
-
+  income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01)
+    * ((numjobs-1)*0.05))
   # Equation used for calculating how much points is given per action for the job level.
   # Available parameters:
   #   numjobs - the number of jobs the player has
@@ -84,8 +83,8 @@ exampleJob:
   #   basepoints - the points for the action at level 1 (as set in the configuration).
   #   joblevel - the level the player has attained in the job.
   # NOTE: Please take care of the brackets when modifying this equation.
-  points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(basepoints*(joblevel-1)*0.01)) * ((numjobs-1)*0.05))
-
+  points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01)
+    * ((numjobs-1)*0.05))
   # Equation used for calculating how much experience is given per action for the job level.
   # Available parameters:
   #   numjobs - the number of jobs the player has
@@ -93,23 +92,19 @@ exampleJob:
   #   baseexperience - the experience for the action at level 1 (as set in the configuration).
   #   joblevel - the level the player has attained in the job.
   # NOTE: Please take care of the brackets when modifying this equation.
-  experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
-
+  experience-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01)
+    * ((numjobs-1)*0.05))
   # Defines how often in seconds player can rejoin this job. Can be bypassed with jobs.rejoinbypass
   rejoinCooldown: 10
-
   # GUI icon information when using GUI function
+  # More information on usage at https://www.zrips.net/cmi/commands/icwol/
   Gui:
-    # name of the material
-    ItemStack: oaklog;DURABILITY:1
-    
-    # The number of slot where to put this material in gui.
-    slot: 2
-
+    ItemStack: oaklog;DURABILITY:1;hideenchants
+    # Slot number to show the item in the specified row
+    slot: 5
   # Defines maximum amount of daily quests player can have from THIS job
   # This will not have effect on overall quest amount player will have
   maxDailyQuests: 3
-
   # Daily quests
   # Each job can have as many daily quests as you want
   # Players will have access to quests from jobs he is currently working at
@@ -117,303 +112,315 @@ exampleJob:
     # Quest identification. Can be any ONE word or number or both of them. This doesn't have any real meaning but it can't repeat.
     first:
       # Quest name used for quests list, don't forget to enclose it with " "
-      Name: "Break Oak wood"
-
-      # List of objectives this quest will require for it to count as finished
-      # you can have as many objectives as you want
-      Objectives:
-      # This should be in a format as [actionType];[actionTarget, actionTarget];[amount]
+      Name: Break Oak wood
+      # This should be in a format as [actionType];[actionTarget];[amount]
       # [actionType] can be any valid job action. Look lower for all possible action types
-      # [actionTarget] can be material name, block type, entity name and so on.
-      #   - This is defined in same way as any generic payable job action.
-      #   - You can use multiple names separated by commas "," to avoid creating many rows.
+      # [actionTarget] can be material name, block type, entity name and so on. This is defined in same way as any generic payable job action
       # [amount] is how many times player should perform this action to complete quest
-      - "Break;oak_log;300"
-      - "Place;stone,cobblestone;5"
-
+      Objectives: Break;oak_log;300
       # Command list to be performed after quest is finished.
       # Use [playerName] to insert players name who finished that quest
       RewardCommands:
-      - "eco give [playerName] 500"
-      - "msg [playerName] Completed quest!"
-
+      - money give [playerName] 500
+      - msg [playerName] Completed quest!
+      # Reward amount to be given to player after quest is finished
+      RewardAmount: 0
       # Quest description to be used to explain quest requirements or rewards for player
       RewardDesc:
-      - "Break 300 Oak wood"
-      - "Get 500 bucks for this"
-
-      # Restricted areas to do not get income in quest in the player current location
+      - Break 300 Oak wood
+      - Get 500 bucks for this
+      # Restricted areas where player cant progress his quest
       RestrictedAreas:
-      - "Arenas"
-      - "myarena"
-
+      - Arenas
+      - myarena
       # Defines chance in getting this quest.
       # If you have set 10 quests and player can have only 2, then quests with biggest chance will be picked most likely
       # This will allow to have some rare quests with legendary rewards
       Chance: 40
-
+      # Defines from which level you want to give option to get this quest
+      # You can use both limitations to have limited quests for particular job level ranges
+      fromLevel: 3
       # Defines to which job level you want to give out this quest.
       # Keep in mind that player will keep quest even if he is over level limit if he got new one while being under
       # In example: player with level 2 takes quests and levels up to level 5, he still can finish this quest and after next quest reset (check general config file)
       # he will no longer have option to get this quest
       toLevel: 5
-
-      # Defines from which level you want to give option to get this quest
-      # You can use both limitations to have limited quests for particular job level ranges
-      fromLevel: 3
-
-    second:
-      Name: "Zombie killer"
-      Objectives:
-      - Kill;Zombie;50
-      RewardCommands:
-      - "eco give [playerName] 2000"
-      - "msg [playerName] Completed quest!"
-      RewardDesc:
-      - "Kill 50 zombies"
-      - "Get 2000 for this!"
-
-    third:
-      Name: "Strip logs"
-      Objectives:
-      - "StripLogs;stripped_birch_log;25"
-      - "StripLogs;stripped_acacia_log;25"
-      RewardCommands:
-      - "msg [playerName] Completed quest!"
-      RewardDesc:
-      - "Strip 25 birch and acacia logs each!"
-
-  ########################################################################
+  # ########################################################################
   # Section used to configure what items the job gets paid for, how much
   # they get paid and how much experience they gain.
-  #
-  # For break and place, the block name or id is used.
-  # You can select a sub-type by using a '-' between the id and the bit
-  # value for the sub-type. e.g LOG-0 = usual log, LOG-2 = birch log
-  # 17-2 = birch log.
-  #
-  # If no sub-type is give, the payout will be for all sub-types.
-  #
-  # To get a list of all available block types, check
+
+  # For break and place, the block material name is used.
+  # e.g ACACIA_LOG, DARK_OAK_FENCE, BIRCH_DOOR
+
+  # To get a list of all available block types, check the
+  # bukkit JavaDocs for a complete list of block types
   # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
-  # 
-  # For kill tags (Kill and custom-kill), the name is the name of the
-  # entity.
-  # To get a list of all available entity types, check
+
+  # For kill tags (Kill and custom-kill), the name is the name of the mob.
+  # To get a list of all available entity types, check the
+  # bukkit JavaDocs for a complete list of entity types
   # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
-  #
+
   # For custom-kill, it is the name of the job (case sensitive).
-  #
-  # NOTE: If a job has both the pay for killing a player and for killing a
-  # specific class, they will get both payments.
-  ########################################################################
+
+  # NOTE: If a job has both the pay for killing a player and for killing a specific class, they will get both payments.
+  # #######################################################################
   # payment for breaking a block
   Break:
     # block name/id (with optional sub-type)
-    log:
+    oak_log:
       # base income, can be not used if using point system
       income: 5.0
-
       # base points, can be not used if using income system
       points: 5.0
-
       # base experience
       experience: 5.0
-
       # (OPTIONAL) from which level of this job player can get money for this action
       # if not given, then player will always get money for this action
       # this can be used for any action
       from-level: 1
-
       # (OPTIONAL) until which level player can get money for this action.
       # if not given, then there is no limit
       # this can be used for any action
       until-level: 30
-
       # (OPTIONAL) Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.
       # In example if player is level 70, he will get paid as he would be at level 50, exp gain will be as he would be at lvl 40 and point gain will be as at level 60
       # This only applies after players level is higher than provided particular limit.
       softIncomeLimit: 50
       softExpLimit: 40
       softPointsLimit: 60
-
     gravel:
       # you can use minuses to take away money if the player break this block
       income: -1.0
-      experience: -1.0
-    # you can use "-all" sub name to specify if we detect all wool colours
-    wool-all:
-      income: 2.0
-      points: 1.0
-      experience: 1.0
-    log-all:
-      income: 1.0
-      points: 1.0
-      experience: 1.0
-    white_banner-all:
-      income: 1.0
-      points: 1.0
-      experience: 1.0
   # Payment for collecting things from sweet berry bush, composter or honey. Keep in mind that you need to define item you get it and not block you click on.
   Collect:
-    sweet_berries-2:
-      income: 0.2
-      points: 0.2
-      experience: 0.2
-    sweet_berries-3:
-      income: 0.5
-      points: 0.5
-      experience: 0.5
-    glow_berries:
-      income: 0.5
-      points: 0.5
-      experience: 0.5
+    sweet_berries:
+      income: 1.0
+      experience: 1.0
     bonemeal:
-      income: 1.5
-      points: 1.5
-      experience: 1.5
-    honeybottle:
-      income: 2.5
-      points: 2.5
-      experience: 2.5
+      income: 1.0
+      experience: 1.0
     honeycomb:
-      income: 2.5
-      points: 2.5
-      experience: 2.5
+      income: 1.0
+      experience: 1.0
+    honey_bottle:
+      income: 1.0
+      experience: 1.0
+    glow_berries:
+      income: 1.0
+      experience: 1.0
+  # Payment for catching entities in a bucket. Define material of a bucket and not entity you are catching.
+  Bucket:
+    PUFFERFISH_BUCKET:
+      income: 1.0
+      experience: 1.0
+    SALMON_BUCKET:
+      income: 1.0
+      experience: 1.0
+    COD_BUCKET:
+      income: 1.0
+      experience: 1.0
+    TROPICAL_FISH_BUCKET:
+      income: 1.0
+      experience: 1.0
+    AXOLOTL_BUCKET:
+      income: 1.0
+      experience: 1.0
+    TADPOLE_BUCKET:
+      income: 1.0
+      experience: 1.0
   # Payment for cooking raw foods in camp fire
   Bake:
     beef:
       income: 1.0
       experience: 1.0
     porkchop:
-      income: 0.5
-      points: 0.4
-  # payment for stripping wood logs, only for 1.13+ servers
+      income: 1.0
+      experience: 1.0
+  # Payment for stripping wood logs, only for 1.13+ servers
   StripLogs:
     stripped_acacia_log:
       income: 1.0
-      points: 1.0
       experience: 1.0
     stripped_oak_log:
       income: 1.0
-      points: 1.0
       experience: 1.0
-  # payment for breaking a block with tnt
-  TNTBreak:
-    log:
+  # Payment for vaxing blocks, only for 1.17+ servers
+  Vax:
+    COPPER_BLOCK:
+      income: 4.0
+      experience: 4.0
+    EXPOSED_COPPER:
+      income: 4.5
+      experience: 4.5
+    WEATHERED_COPPER:
       income: 5.0
-      points: 5.0
       experience: 5.0
-  # payment for placing a block
+    OXIDIZED_COPPER:
+      income: 6.0
+      experience: 6.0
+    CUT_COPPER:
+      income: 5.0
+      experience: 5.0
+    EXPOSED_CUT_COPPER:
+      income: 5.5
+      experience: 5.5
+    WEATHERED_CUT_COPPER:
+      income: 6.0
+      experience: 6.0
+    OXIDIZED_CUT_COPPER:
+      income: 7.0
+      experience: 7.0
+    CUT_COPPER_STAIRS:
+      income: 5.5
+      experience: 5.5
+    EXPOSED_CUT_COPPER_STAIRS:
+      income: 6.0
+      experience: 6.0
+    WEATHERED_CUT_COPPER_STAIRS:
+      income: 6.5
+      experience: 6.5
+    OXIDIZED_CUT_COPPER_STAIRS:
+      income: 7.5
+      experience: 7.5
+    CUT_COPPER_SLAB:
+      income: 5.0
+      experience: 5.0
+    EXPOSED_CUT_COPPER_SLAB:
+      income: 5.5
+      experience: 5.5
+    WEATHERED_CUT_COPPER_SLAB:
+      income: 6.0
+      experience: 6.0
+    OXIDIZED_CUT_COPPER_SLAB:
+      income: 7.0
+      experience: 7.0
+    CHISELED_COPPER:
+      income: 6.0
+      experience: 6.0
+    EXPOSED_CHISELED_COPPER:
+      income: 6.5
+      experience: 6.5
+    WEATHERED_CHISELED_COPPER:
+      income: 7.0
+      experience: 7.0
+    OXIDIZED_CHISELED_COPPER:
+      income: 8.0
+      experience: 8.0
+  # Payment for breaking a block with tnt
+  TNTBreak:
+    oaklog:
+      income: 1.0
+      experience: 1.0
+  # Payment for placing a block
   Place:
     # You can use list of materials to simplify adding each materials one by one
-    # Remember that you should separate the income, points and exp with ";"
+    # Remember that you should separate the income, points and exp with ';'
     materials:
     - sapling;1.0;1.0;1.0
     - wood;2.0;1.0
     - stone;0.1
-  # Payment for trading with a villager. Checks results only
+  # Payment for breaking a block with tnt
   VTrade:
     emerald:
       income: 1.0
-      points: 1.0
-      experience: 2.0
+      experience: 1.0
     # you can add enchanted book with sub-id
     enchanted_book-12:
       income: 1.0
-      experience: 2.0
+      experience: 1.0
   # Payment for killing any type of living entity
   Kill:
     Player:
-      income: 7.5
-      experience: 7.5
+      income: 1.0
+      experience: 1.0
   # Payment for killing a MythicMob
   MMKill:
     CustomNameHere:
-      income: 7.5
-      experience: 7.5
+      income: 1.0
+      experience: 1.0
   # Killing player with certain job
   custom-kill:
     Woodcutter:
-      income: 10.0
-      experience: 10.0
+      income: 1.0
+      experience: 1.0
   # Taming animals
   Tame:
     Wolf:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
   # Breeding animals
   Breed:
     Wolf:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
   # Eating food
   Eat:
     cooked_rabbit:
-      income: 5
-      experience: 5
+      income: 1.0
+      experience: 1.0
     baked_potato:
-      income: 5
-      experience: 5
+      income: 1.0
+      experience: 1.0
   # Milking cows
   Milk:
     Cow:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     MushroomCow:
-      income: 5.0
-      experience: 10.0
+      income: 1.0
+      experience: 1.0
   # Shear sheeps by its color
-  # You can use "color-all" identifier to specify all known colors.
+  # You can use 'color-all' identifier to specify all known colors.
   Shear:
     Black:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Blue:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Brown:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Cyan:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Gray:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Green:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Light_Blue:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Lime:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Magenta:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Orange:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Pink:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Purple:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Red:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Light_Gray:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     White:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
     Yellow:
-      income: 2.0
-      experience: 5.0
+      income: 1.0
+      experience: 1.0
   # dyeing armor
   Dye:
     leather_boots:
@@ -428,29 +435,24 @@ exampleJob:
     leather_leggings:
       income: 1.0
       experience: 1.0
-    351:
-      income: 1.0
-      experience: 1.0
   # Catching fish
   Fish:
     raw_fish:
-      income: 20.0
-      experience: 25.0
+      income: 1.0
+      experience: 1.0
     # If you are using below version 1.13
     legacy_raw_fish:
-      income: 20.0
-      experience: 25.0
+      income: 1.0
+      experience: 1.0
   # Catching CUSTOM fish of the PyroFishingPro plugin
   PyroFishingPro:
     CustomTier:
       income: 1.0
-      points: 1.0
       experience: 1.0
   # Catching CUSTOM fish of the CustomFishing plugin
   CustomFishing:
     CustomFishId:
       income: 1.0
-      points: 1.0
       experience: 1.0
   # Repairing items
   Repair:
@@ -458,74 +460,84 @@ exampleJob:
       income: 1.0
       experience: 1.0
     iron_sword:
-      income: 2.0
-      experience: 2.0
+      income: 1.0
+      experience: 1.0
   # Crafting items
   Craft:
     wood_sword:
-      income: 1.5
-      experience: 3.0
+      income: 1.0
+      experience: 1.0
     leather_boots:
       income: 1.0
-      experience: 6.0
-    # Add ! at front when you want to pay for crafted items with special names. Always use double quotation marks, same as example
-    "!Healing Bandage":
+      experience: 1.0
+    '!Healing Bandage':
       income: 1.0
-      experience: 6.0
-    # If you add ":" after the tipped_arrow then you can use effect names like in example
+      experience: 1.0
+    # If you add ':' after the tipped_arrow then you can use effect names like in example
     tipped_arrow:slowness:
-      income: 3.0
-      points: 3.0
+      income: 1.0
+      experience: 1.0
   # Smelting ores in any type of furnaces
   Smelt:
     iron_ingot:
-      income: 2.0
-      experience: 8.0
+      income: 1.0
+      experience: 1.0
     gold_ingot:
-      income: 4.5
-      experience: 12
-  # Enchanting items
+      income: 1.0
+      experience: 1.0
+  # Smelting ores in any type of furnaces
   Enchant:
     wood_sword:
-      income: 1.5
-      experience: 3.0
+      income: 1.0
+      experience: 1.0
     leather_boots:
       income: 1.0
-      experience: 6.0
+      experience: 1.0
     # Or/and you can give money for each enchantment they got
     DIG_SPEED-1:
-      income: 3.0
-      experience: 10.0
+      income: 1.0
+      experience: 1.0
     dig_speed-2:
-      income: 6.0
-      experience: 20.0
+      income: 1.0
+      experience: 1.0
   # Brewing miscellaneous items
   Brew:
     nether_stalk:
-      income: 5.0
-      experience: 3.0
-    redstone:
-      income: 5.0
-      experience: 3.0
-  # Explore options. Each number represents players number in exploring that chunk
-  # 1 means that player is first in this chunk, 2 is second and so on,
-  # so you can give money not only for first player who discovers that chunk
-  Explore:
-    1:
-      income: 5.0
-      experience: 5.0
-    2:
-      income: 2.5
-      experience: 2.5
-    3:
       income: 1.0
       experience: 1.0
-    4:
-      income: 0.5
-      experience: 0.5
-    5:
-      income: 0.1
-      experience: 0.1
+    redstone:
+      income: 1.0
+      experience: 1.0
+  # Brushing blocks and getting items from them
+  Brush:
+    suspicious_sand:
+      income: 1.0
+      experience: 1.0
+    suspicious_gravel:
+      income: 1.0
+      experience: 1.0
+    coal:
+      income: 1.0
+      experience: 1.0
+  # Explore options. Each number represents players number in exploring that chunk
+  # 1 means that player is first in this chunk, 2 is second and so on
+  # so you can give money not only for first player who discovers that chunk
+  Explore:
+    '1':
+      income: 1.0
+      experience: 1.0
+    '2':
+      income: 1.0
+      experience: 1.0
+    '3':
+      income: 1.0
+      experience: 1.0
+    '4':
+      income: 1.0
+      experience: 1.0
+    '5':
+      income: 1.0
+      experience: 1.0
   # permissions granted for joining to a job
   permissions:
     # example node
@@ -533,33 +545,27 @@ exampleJob:
     firstNode:
       # true to give, false to revoke
       value: true
-
       # The permission node
-      permission: "aaaaaatest.node"
-
+      permission: atest.node
       # minimum level needed to grant permission. Use 0 for all levels
       level: 0
     secNode:
       value: true
-      permission: "aaaaaatest.node2"
+      permission: atest.node2
       # Permission granted when reaching level 10
       level: 10
-
   # Permissions granted when particular conditions are met
   conditions:
     # Condition name, irrelevant, you can write anything in here
     first:
-      requires:
       # j marks that player should have particular jobs level and higher
+      requires:
       - j:Miner-50
       - j:Digger-50
-      # p marks permission requirement
       - p:essentials.notnoob
-
-      perform:
       # p marks permission, player will get if given true value, if used false, permission will be taken
+      perform:
       - p:essentials.fly-true
-
   # Commands executed when player reached level
   commands:
     # command name, just to have better idea what this do
@@ -567,69 +573,44 @@ exampleJob:
       # Command its self, this will be executed from console, so all commands should work
       # Possible variables are: [player] [jobname] [oldlevel] [newlevel]
       command: lp user [player] permission set essentials.fly
-
       # When to execute this command first time
       # Set to 0 if you want to detect all the levels
       levelFrom: 100
-
       # Until when to do this command
       # This can be set to same level as levelFrom, so this command will be executed only once
       # Set to 0 if you want to detect all the levels
       levelUntil: 100
-
     kit:
       command:
       - lp user [player] permission set essentials.kits.woodcutter
       - msg [player] Now you can use woodcutter kit!
-
       levelFrom: 150
       levelUntil: 150
-
   # Perform specific commands when a player reaches the max level of this job.
   # Players can have vip max level and this will be performed when they reach the max vip level.
-  # You can use "player:" or "console:" prefix tag to perform for specific senders.
+  # You can use 'player:' or 'console:' prefix tag to perform for specific senders.
   commands-on-max-level:
-  - 'msg [playerName] Max level of [job] reached!'
-  - 'player:jobs stats'
-  
-  # Turns the "world-blacklist" list into a whitelist. This essentially means the job only works in the specified worlds.
+  - msg [playerName] Max level of [job] reached!
+  - player:jobs stats
+  # Turns the 'world-blacklist' list into a whitelist. This essentially means the job only works in the specified worlds.
   reverse-world-blacklist-functionality: false
-  
   # World list in which this job will not work. World name should be exact
   world-blacklist:
   - plotworld
   - teamworld
-
-  # Allow a player to "/jobs join" this job even if they have the max jobs permission reached.
+  # Allow a player to '/jobs join' this job even if they have the max jobs permission reached.
   ignore-jobs-max: false
-  
+  cmd-on-join:
+  - msg [name] Thx for joining this job!
+  - msg [name] Now start working and get money from [jobname] job!
+  cmd-on-leave:
+  - msg [name] You have left this awesome [jobname] job
+  - msg [name] See you soon!
   # Limit item use to jobs level
   limitedItems:
     # Just name, don't have any impact
     firstOne:
-      # Tool/Weapon id. Works for any interact action.
-      id: 278
-
+      # Tool/Weapon data. More information on usage www.zrips.net/cmi/commands/icwol/
+      ItemStack: DIAMOND_PICKAXE;n{&8Miner_Pickaxe};l{&eBobs_pick\n&710%_bonus_XP};DAMAGE_ALL:1,FIRE_ASPECT:1
       # Level of this job player can start using this item
       level: 5
-
-      # (optional) Items name, option to use color codes
-      name: '&8Miner Pickaxe'
-
-      # (optional) Item lore, again can come with color codes
-      lore:
-      - '&eBobs pick'
-      - '&710% bonus XP'
-
-      # (optional) Item enchantments, all enchantment names can be found https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html
-      # enchant level can increase with jobs level to give best RPG experience
-      enchants:
-      - DAMAGE_ALL=1
-      - FIRE_ASPECT=1
-
-  cmd-on-join:
-  - 'msg [name] Thx for joining this job!'
-  - 'msg [name] Now start working and get money from [jobname] job!'
-  cmd-on-leave:
-  - 'msg [name] You have left this awesome [jobname] job'
-  - 'msg [name] See you soon!'

@@ -116,7 +116,7 @@ You can manually add the .jar file to your build path or you can use Jitpack if 
     <dependency>
         <groupId>com.github.Zrips</groupId>
         <artifactId>Jobs</artifactId>
-        <version>LATEST</version> <!-- Change the LATEST to the current version of jobs -->
+        <version>v5.2.6.2</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
@@ -131,7 +131,7 @@ repositories {
     }
 }
 dependencies {
-    implementation 'com.github.Zrips:Jobs:LATEST' //Change the LATEST to the current version of jobs
+    implementation 'com.github.Zrips:Jobs:v5.2.6.2'
 }
 ```
 
