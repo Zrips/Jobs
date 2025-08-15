@@ -31,6 +31,7 @@ import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dispenser;
@@ -576,14 +577,32 @@ public class JobsListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onChunkChangeMove(PlayerMoveEvent event) {
-        if (!event.getPlayer().isOnline() || !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
+        if (!event.getPlayer().isOnline() || event.getTo() == null || !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
             return;
 
-        Chunk from = event.getFrom().getChunk();
-        Chunk to = event.getTo().getChunk();
-        if (!from.equals(to)) {
-            plugin.getServer().getPluginManager().callEvent(new JobsChunkChangeEvent(event.getPlayer(), from, to));
-        }
+        final Player player = event.getPlayer();
+        final Location toLoc = event.getTo().clone();
+        final Location fromLoc = event.getFrom().clone();
+
+        CMIScheduler.runAtLocationLater(plugin, toLoc, () -> {
+            final Chunk to = toLoc.getChunk();
+            final int toX = to.getX();
+            final int toZ = to.getZ();
+            final World toWorld = to.getWorld();
+
+            CMIScheduler.runAtLocationLater(plugin, fromLoc, () -> {
+                final Chunk from = fromLoc.getChunk();
+
+                final boolean changed =
+                    from.getWorld() != toWorld ||
+                    from.getX() != toX ||
+                    from.getZ() != toZ;
+
+                if (changed) {
+                    plugin.getServer().getPluginManager().callEvent(new JobsChunkChangeEvent(player, from, to));
+                }
+            }, 1L);
+        }, 1L);
     }
 
     @EventHandler(ignoreCancelled = true)
