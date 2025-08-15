@@ -85,13 +85,7 @@ public class GeneralConfigManager {
     protected int savePeriod, maxJobs, economyBatchDelay;
     private int ResetTimeHour, ResetTimeMinute, DailyQuestsSkips,
         BrowseAmountToShow,
-        JobsGUIRows
-//        JobsGUIBackButton, 
-//        JobsGUINextButton, 
-//        JobsGUIStartPosition, 
-//        JobsGUIGroupAmount, 
-//        JobsGUISkipAmount
-    ;
+        JobsGUIRows;
 
     public double skipQuestCost, MinimumOveralPaymentLimit, minimumOveralExpLimit, MinimumOveralPointsLimit, MonsterDamagePercentage,
         DynamicPaymentMaxPenalty, DynamicPaymentMaxBonus, TaxesAmount, TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
@@ -1161,23 +1155,13 @@ public class GeneralConfigManager {
         JobsGUIAddEdge = c.get("JobsGUI.AddEdge", true);
 
         c.addComment("JobsGUI.RowCount", "Defines GUI row count. If set to 0 then size will auto adjust to fit in as many icons as possible");
-        
+
         JobsGUIRows = CMINumber.clamp(c.get("JobsGUI.RowCount", 0), 0, 6);
         if (JobsGUIRows > 0 && JobsGUIRows < 3 && JobsGUIAddEdge)
             JobsGUIRows = 3;
-        
-//        c.addComment("JobsGUI.BackButtonSlot", "Defines back button slot in GUI");
-//        JobsGUIBackButton = c.get("JobsGUI.BackButtonSlot", 37);
-//        c.addComment("JobsGUI.NextButtonSlot", "Defines next button slot in GUI");
-//        JobsGUINextButton = c.get("JobsGUI.NextButtonSlot", 45);
-//        c.addComment("JobsGUI.StartPosition", "Defines start position in gui from which job icons will be shown");
-//        JobsGUIStartPosition = c.get("JobsGUI.StartPosition", 11);
-//        c.addComment("JobsGUI.GroupAmount", "Defines by how many jobs we need to group up");
-//        JobsGUIGroupAmount = c.get("JobsGUI.GroupAmount", 7);
-//        c.addComment("JobsGUI.SkipAmount", "Defines by how many slots we need to skip after group");
-//        JobsGUISkipAmount = c.get("JobsGUI.SkipAmount", 2);
 
-        c.addComment("JobsGUI.InfoButton.Slot", "Slot for info button. Set it to 0 if you want to disable it", "Locale can be customized in locale file under gui->infoLore section");
+        c.addComment("JobsGUI.InfoButton.Slot", "Only works if you have AddEdge enabled", "Slot for info button. Set it to 0 if you want to disable it",
+            "Locale can be customized in locale file under gui->infoLore section");
         InfoButtonSlot = c.get("JobsGUI.InfoButton.Slot", 9);
 
         CMIItemStack item = CMILib.getInstance().getItemManager().getItem(c.get("JobsGUI.InfoButton.Material",
@@ -1305,43 +1289,6 @@ public class GeneralConfigManager {
     public int getJobsGUIRows() {
         return JobsGUIRows;
     }
-
-//    public int getJobsGUIBackButton() {
-//        if (JobsGUIBackButton < 1)
-//            JobsGUIBackButton = 1;
-//
-//        int mult = JobsGUIRows * 9;
-//        if (JobsGUIBackButton > mult)
-//            JobsGUIBackButton = mult;
-//
-//        return JobsGUIBackButton - 1;
-//    }
-//
-//    public int getJobsGUINextButton() {
-//        if (JobsGUINextButton < 1)
-//            JobsGUINextButton = 1;
-//
-//        int mult = JobsGUIRows * 9;
-//        if (JobsGUINextButton > mult)
-//            JobsGUINextButton = mult;
-//
-//        return JobsGUINextButton - 1;
-//    }
-//
-//    public int getJobsGUIStartPosition() {
-//        if (JobsGUIBackButton < 1)
-//            JobsGUIBackButton = 1;
-//
-//        return JobsGUIStartPosition - 1;
-//    }
-//
-//    public int getJobsGUIGroupAmount() {
-//        return JobsGUIGroupAmount;
-//    }
-//
-//    public int getJobsGUISkipAmount() {
-//        return JobsGUISkipAmount;
-//    }
 
     public boolean isJobsGUIAddEdge() {
         return JobsGUIAddEdge;

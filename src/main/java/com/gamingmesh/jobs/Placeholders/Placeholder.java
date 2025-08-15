@@ -70,6 +70,7 @@ public class Placeholder {
         user_total_points,
         user_archived_jobs,
         user_jobs,
+        user_jobs_clean,
 
         user_boost_$1_$2("jname/number", "money/exp/points"),
         user_pboost_$1_$2("jname/number", "money/exp/points"),
@@ -484,11 +485,24 @@ public class Placeholder {
                     }
                     jobNames.append(prog.getJob().getDisplayName());
                 }
-                if (user.getJobProgression().isEmpty()) {
-                    if (Jobs.getNoneJob() != null)
-                        jobNames.append(Jobs.getNoneJob().getDisplayName());
-                }
+
+                if (user.getJobProgression().isEmpty() && Jobs.getNoneJob() != null)
+                    jobNames.append(Jobs.getNoneJob().getDisplayName());
+
                 return jobNames.toString();
+            case user_jobs_clean:
+                jobNames = new StringBuilder();
+                for (JobProgression prog : user.getJobProgression()) {
+                    if (!jobNames.toString().isEmpty()) {
+                        jobNames.append(LC.info_ListSpliter.getLocale());
+                    }
+                    jobNames.append(prog.getJob().getDisplayName());
+                }
+
+                if (user.getJobProgression().isEmpty() && Jobs.getNoneJob() != null)
+                    jobNames.append(Jobs.getNoneJob().getDisplayName());
+
+                return CMIChatColor.stripColor(jobNames.toString());
             case user_quests:
                 String q = "";
                 for (QuestProgression questProg : user.getQuestProgressions()) {
