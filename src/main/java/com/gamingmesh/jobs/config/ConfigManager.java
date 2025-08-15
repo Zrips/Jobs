@@ -244,7 +244,7 @@ public class ConfigManager {
             }
 
             // These actions MUST be blocks
-            if (actionType.hasSubType(ActionSubType.BLOCK) && (!material.isBlock() || material.getMaterial().toString().equalsIgnoreCase("AIR"))) {
+            if (actionType.hasSubType(ActionSubType.BLOCK) && !actionType.hasSubType(ActionSubType.MATERIAL) && (!material.isBlock() || material.getMaterial().toString().equalsIgnoreCase("AIR"))) {
                 CMIMessages.consoleMessage("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
                     + " (" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
                 return null;

@@ -50,7 +50,7 @@ public enum ActionType {
     COLLECT(ActionSubType.MATERIAL),
     BAKE(ActionSubType.MATERIAL),
     BUCKET(ActionSubType.MATERIAL),
-    BRUSH(ActionSubType.BLOCK),
+    BRUSH(ActionSubType.BLOCK, ActionSubType.MATERIAL),
     VAX(ActionSubType.BLOCK, ActionSubType.PROTECTED);
 
     private String name;

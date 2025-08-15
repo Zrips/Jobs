@@ -820,8 +820,7 @@ public class PlayerManager {
             }, Jobs.getGCManager().ShootTime);
         }
 
-        String message = Jobs.getLanguage().getMessage("message.levelup." + (Jobs.getGCManager().isBroadcastingLevelups()
-            ? "broadcast" : "nobroadcast"));
+        String message = Jobs.getLanguage().getMessage("message.levelup." + (Jobs.getGCManager().isBroadcastingLevelups() ? "broadcast" : "nobroadcast"));
 
         message = Language.updateJob(message, job);
 
