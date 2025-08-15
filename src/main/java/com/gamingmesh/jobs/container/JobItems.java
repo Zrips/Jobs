@@ -54,6 +54,9 @@ public class JobItems {
     }
 
     public CMIItemStack getItemStack(Player player, CMIAsyncHead ahead) {
+        if (itemString == null)
+            return null;
+
         CMIItemStack item = CMIItemStack.deserialize(itemString.replace("[player]", player == null ? "" : player.getName()), ahead);
 
         if (item != null) {

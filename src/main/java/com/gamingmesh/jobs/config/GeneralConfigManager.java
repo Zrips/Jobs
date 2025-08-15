@@ -84,7 +84,14 @@ public class GeneralConfigManager {
 
     protected int savePeriod, maxJobs, economyBatchDelay;
     private int ResetTimeHour, ResetTimeMinute, DailyQuestsSkips,
-        BrowseAmountToShow, JobsGUIRows, JobsGUIBackButton, JobsGUINextButton, JobsGUIStartPosition, JobsGUIGroupAmount, JobsGUISkipAmount;
+        BrowseAmountToShow,
+        JobsGUIRows
+//        JobsGUIBackButton, 
+//        JobsGUINextButton, 
+//        JobsGUIStartPosition, 
+//        JobsGUIGroupAmount, 
+//        JobsGUISkipAmount
+    ;
 
     public double skipQuestCost, MinimumOveralPaymentLimit, minimumOveralExpLimit, MinimumOveralPointsLimit, MonsterDamagePercentage,
         DynamicPaymentMaxPenalty, DynamicPaymentMaxBonus, TaxesAmount, TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
@@ -93,6 +100,8 @@ public class GeneralConfigManager {
 
     private boolean useTnTFinder = false, ShowNewVersion;
     private boolean InformDuplicates, DailyQuestsUseGUI;
+
+    private boolean JobsGUIAddEdge;
 
     private FireworkEffect fireworkEffect;
 
@@ -864,7 +873,7 @@ public class GeneralConfigManager {
         CowMilkingTimer = c.get("Economy.MilkingCow.Timer", 30) * 1000;
 
         BlockTypes.anyToReasign = false;
-        
+
         c.addComment("ExploitProtections.Furnaces.Reassign",
             "When enabled, players interacted furnaces will be saved into a file and will be reassigned after restart to keep giving out money",
             "Players will no longer need to click on furnace to get paid from it after server restart");
@@ -1045,11 +1054,13 @@ public class GeneralConfigManager {
         c.addComment("Sounds", "Extra sounds on some events",
             "All sounds can be found in https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
         SoundLevelupUse = c.get("Sounds.LevelUp.use", true);
-        SoundLevelupSound = c.get("Sounds.LevelUp.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP" : Version.isCurrentEqualOrHigher(Version.v1_21_R3) ? "ENTITY.PLAYER.LEVELUP" : "ENTITY_PLAYER_LEVELUP").toUpperCase();
+        SoundLevelupSound = c.get("Sounds.LevelUp.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP" : Version.isCurrentEqualOrHigher(Version.v1_21_R3) ? "ENTITY.PLAYER.LEVELUP"
+            : "ENTITY_PLAYER_LEVELUP").toUpperCase();
         SoundLevelupVolume = c.get("Sounds.LevelUp.volume", 1);
         SoundLevelupPitch = c.get("Sounds.LevelUp.pitch", 3);
         SoundTitleChangeUse = c.get("Sounds.TitleChange.use", true);
-        SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP" : Version.isCurrentEqualOrHigher(Version.v1_21_R3) ? "ENTITY.PLAYER.LEVELUP" : "ENTITY_PLAYER_LEVELUP").toUpperCase();
+        SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP" : Version.isCurrentEqualOrHigher(Version.v1_21_R3) ? "ENTITY.PLAYER.LEVELUP"
+            : "ENTITY_PLAYER_LEVELUP").toUpperCase();
         SoundTitleChangeVolume = c.get("Sounds.TitleChange.volume", 1);
         SoundTitleChangePitch = c.get("Sounds.TitleChange.pitch", 3);
 
@@ -1145,18 +1156,26 @@ public class GeneralConfigManager {
         ShowActionNames = c.get("JobsGUI.ShowActionNames", true);
         c.addComment("JobsGUI.HideItemAttributes", "Do we hide all item attributes in GUI?");
         hideItemAttributes = c.get("JobsGUI.HideItemAttributes", true);
-        c.addComment("JobsGUI.Rows", "Defines size in rows of GUI");
-        JobsGUIRows = c.get("JobsGUI.Rows", 5);
-        c.addComment("JobsGUI.BackButtonSlot", "Defines back button slot in GUI");
-        JobsGUIBackButton = c.get("JobsGUI.BackButtonSlot", 37);
-        c.addComment("JobsGUI.NextButtonSlot", "Defines next button slot in GUI");
-        JobsGUINextButton = c.get("JobsGUI.NextButtonSlot", 45);
-        c.addComment("JobsGUI.StartPosition", "Defines start position in gui from which job icons will be shown");
-        JobsGUIStartPosition = c.get("JobsGUI.StartPosition", 11);
-        c.addComment("JobsGUI.GroupAmount", "Defines by how many jobs we need to group up");
-        JobsGUIGroupAmount = c.get("JobsGUI.GroupAmount", 7);
-        c.addComment("JobsGUI.SkipAmount", "Defines by how many slots we need to skip after group");
-        JobsGUISkipAmount = c.get("JobsGUI.SkipAmount", 2);
+
+        c.addComment("JobsGUI.AddEdge", "Should browse gui contain edge so only up to 28 middle slots are being used");
+        JobsGUIAddEdge = c.get("JobsGUI.AddEdge", true);
+
+        c.addComment("JobsGUI.RowCount", "Defines GUI row count. If set to 0 then size will auto adjust to fit in as many icons as possible");
+        
+        JobsGUIRows = CMINumber.clamp(c.get("JobsGUI.RowCount", 0), 0, 6);
+        if (JobsGUIRows > 0 && JobsGUIRows < 3 && JobsGUIAddEdge)
+            JobsGUIRows = 3;
+        
+//        c.addComment("JobsGUI.BackButtonSlot", "Defines back button slot in GUI");
+//        JobsGUIBackButton = c.get("JobsGUI.BackButtonSlot", 37);
+//        c.addComment("JobsGUI.NextButtonSlot", "Defines next button slot in GUI");
+//        JobsGUINextButton = c.get("JobsGUI.NextButtonSlot", 45);
+//        c.addComment("JobsGUI.StartPosition", "Defines start position in gui from which job icons will be shown");
+//        JobsGUIStartPosition = c.get("JobsGUI.StartPosition", 11);
+//        c.addComment("JobsGUI.GroupAmount", "Defines by how many jobs we need to group up");
+//        JobsGUIGroupAmount = c.get("JobsGUI.GroupAmount", 7);
+//        c.addComment("JobsGUI.SkipAmount", "Defines by how many slots we need to skip after group");
+//        JobsGUISkipAmount = c.get("JobsGUI.SkipAmount", 2);
 
         c.addComment("JobsGUI.InfoButton.Slot", "Slot for info button. Set it to 0 if you want to disable it", "Locale can be customized in locale file under gui->infoLore section");
         InfoButtonSlot = c.get("JobsGUI.InfoButton.Slot", 9);
@@ -1284,46 +1303,48 @@ public class GeneralConfigManager {
     }
 
     public int getJobsGUIRows() {
-        if (JobsGUIRows < 1)
-            JobsGUIRows = 1;
         return JobsGUIRows;
     }
 
-    public int getJobsGUIBackButton() {
-        if (JobsGUIBackButton < 1)
-            JobsGUIBackButton = 1;
+//    public int getJobsGUIBackButton() {
+//        if (JobsGUIBackButton < 1)
+//            JobsGUIBackButton = 1;
+//
+//        int mult = JobsGUIRows * 9;
+//        if (JobsGUIBackButton > mult)
+//            JobsGUIBackButton = mult;
+//
+//        return JobsGUIBackButton - 1;
+//    }
+//
+//    public int getJobsGUINextButton() {
+//        if (JobsGUINextButton < 1)
+//            JobsGUINextButton = 1;
+//
+//        int mult = JobsGUIRows * 9;
+//        if (JobsGUINextButton > mult)
+//            JobsGUINextButton = mult;
+//
+//        return JobsGUINextButton - 1;
+//    }
+//
+//    public int getJobsGUIStartPosition() {
+//        if (JobsGUIBackButton < 1)
+//            JobsGUIBackButton = 1;
+//
+//        return JobsGUIStartPosition - 1;
+//    }
+//
+//    public int getJobsGUIGroupAmount() {
+//        return JobsGUIGroupAmount;
+//    }
+//
+//    public int getJobsGUISkipAmount() {
+//        return JobsGUISkipAmount;
+//    }
 
-        int mult = JobsGUIRows * 9;
-        if (JobsGUIBackButton > mult)
-            JobsGUIBackButton = mult;
-
-        return JobsGUIBackButton - 1;
-    }
-
-    public int getJobsGUINextButton() {
-        if (JobsGUINextButton < 1)
-            JobsGUINextButton = 1;
-
-        int mult = JobsGUIRows * 9;
-        if (JobsGUINextButton > mult)
-            JobsGUINextButton = mult;
-
-        return JobsGUINextButton - 1;
-    }
-
-    public int getJobsGUIStartPosition() {
-        if (JobsGUIBackButton < 1)
-            JobsGUIBackButton = 1;
-
-        return JobsGUIStartPosition - 1;
-    }
-
-    public int getJobsGUIGroupAmount() {
-        return JobsGUIGroupAmount;
-    }
-
-    public int getJobsGUISkipAmount() {
-        return JobsGUISkipAmount;
+    public boolean isJobsGUIAddEdge() {
+        return JobsGUIAddEdge;
     }
 
     public double getGeneralMulti(CurrencyType type) {

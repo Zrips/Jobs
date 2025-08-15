@@ -533,9 +533,11 @@ public class ConfigManager {
 
         for (YmlMaker conf : jobFiles) {
             Job job = loadJobs(conf.getConfig().getConfigurationSection(""));
-            if (job != null) {
-                map.put(job.getName(), job);
-            }
+            if (job == null)
+                continue;
+
+            map.put(job.getName(), job);
+
         }
 
         List<Job> jobs = new ArrayList<>();
