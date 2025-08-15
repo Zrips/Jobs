@@ -959,9 +959,7 @@ public class PlayerManager {
             return;
         for (int newLevel = oldLevel + 1; newLevel <= untilLevel; newLevel++) {
             List<String> commands = getCommandsOnLevelUp(jPlayer, prog, newLevel);
-            commands.stream().forEach(cmd -> {
-                CMIScheduler.runTask(plugin, () -> plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd));
-            });
+            commands.stream().forEach(cmd -> CMIScheduler.runTask(plugin, () -> plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd)));
         }
     }
 
