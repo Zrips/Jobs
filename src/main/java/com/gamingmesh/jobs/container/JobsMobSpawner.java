@@ -1,5 +1,7 @@
 package com.gamingmesh.jobs.container;
 
+import net.Zrips.CMILib.CMILib;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -49,7 +51,7 @@ public class JobsMobSpawner {
 
     public static boolean isSpawnerEntity(Entity entity) {
         if (Version.isCurrentEqualOrHigher(Version.v1_15_R1)) {
-            return CMIPersistentDataContainer.get(entity).hasKey(getMobSpawnerMetadata());
+            return CMIPersistentDataContainer.get(entity).getKeys().contains(new NamespacedKey(CMILib.getInstance(), getMobSpawnerMetadata()));
         }
         return entity.hasMetadata(getMobSpawnerMetadata());
     }
@@ -64,7 +66,8 @@ public class JobsMobSpawner {
 
     public static void setSpawnerMeta(Entity entity) {
         if (Version.isCurrentEqualOrHigher(Version.v1_15_R1)) {
-            CMIPersistentDataContainer.get(entity).set(getMobSpawnerMetadata(), true);
+            byte bool = 1;
+            CMIPersistentDataContainer.get(entity).set(getMobSpawnerMetadata(), bool);
         } else {
             entity.setMetadata(getMobSpawnerMetadata(), new FixedMetadataValue(Jobs.getInstance(), true));
         }
