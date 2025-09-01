@@ -121,7 +121,7 @@ public class GeneralConfigManager {
         BossBarEnabled = false, ActionBarEnabled, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
         LoggingUse, payForCombiningItems, payForStackedEntities, payForAbove = false,
-        payForEachVTradeItem, allowEnchantingBoostedItems, preventShopItemEnchanting, useCustomFishingOnly = false;
+        payForEachVTradeItem, allowEnchantingBoostedItems, preventShopItemEnchanting, useCustomFishingOnly = false, boostPersistenceEnabled = true;
     public MessageToggleState BossBarsMessageDefault = MessageToggleState.Rapid;
     public MessageToggleState ActionBarsMessageDefault = MessageToggleState.Rapid;
     public MessageToggleState ChatTextMessageDefault = MessageToggleState.Batched;
@@ -250,6 +250,10 @@ public class GeneralConfigManager {
         return saveOnDisconnect;
     }
 
+    public boolean isBoostPersistenceEnabled() {
+        return boostPersistenceEnabled;
+    }
+
     public boolean MultiServerCompatability() {
         return MultiServerCompatability;
     }
@@ -367,6 +371,12 @@ public class GeneralConfigManager {
             "Player data is always periodically auto-saved and autosaved during a clean shutdown.",
             "Only enable this if you have a multi-server setup, or have a really good reason for enabling this.", "Turning this on will decrease database performance.");
         saveOnDisconnect = c.get("save-on-disconnect", false);
+
+        c.addComment("boost-persistence", "Should job boosts persist across server restarts?",
+            "When enabled, boosts applied via /jobs boost command will be saved and restored after server restart.",
+            "This ensures that timed boosts continue for their full duration even if the server restarts.",
+            "Set to false if this feature causes issues with your server setup.");
+        boostPersistenceEnabled = c.get("boost-persistence", true);
 
         c.addComment("selectionTool", "Tool used when selecting bounds for restricted area.");
         getSelectionTool = c.get("selectionTool", "golden_hoe");
