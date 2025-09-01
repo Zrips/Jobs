@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Boost;
+import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -73,6 +74,7 @@ public class Placeholder {
         user_jobs_clean,
 
         user_boost_$1_$2("jname/number", "money/exp/points"),
+        user_boost_time_$1_$2("jname/number", "money/exp/points"),
         user_pboost_$1_$2("jname/number", "money/exp/points"),
         user_isin_$1("jname/number"),
         user_canjoin_$1("jname/number"),
@@ -559,6 +561,14 @@ public class Placeholder {
                 case user_boost_$1_$2:
                     Boost boost = Jobs.getPlayerManager().getFinalBonus(user, job, true, true);
                     return (vals.size() < 2 || j == null) ? "" : simplifyDouble(boost.getFinal(CurrencyType.getByName(vals.get(1)), false, true));
+                case user_boost_time_$1_$2:
+                    if (vals.size() < 2 || job == null)
+                        return "";
+                    CurrencyType currencyType = CurrencyType.getByName(vals.get(1));
+                    BoostMultiplier boostMult = job.getBoost();
+                    Long expireTime = boostMult != null && boostMult.isValid(currencyType) ? boostMult.getTime(currencyType) : null;
+                    long timeRemaining = expireTime != null ? expireTime - System.currentTimeMillis() : 0;
+                    return timeRemaining > 0 ? CMITimeManager.to24hourShort(timeRemaining) : "";
                 case user_pboost_$1_$2:
                     boost = Jobs.getPlayerManager().getFinalBonus(user, job, true, true);
                     return (vals.size() < 2 || j == null) ? "" : simplifyDouble(boost.getFinal(CurrencyType.getByName(vals.get(1)), false, true) * 100D);
