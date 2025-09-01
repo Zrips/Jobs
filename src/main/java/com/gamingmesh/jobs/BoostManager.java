@@ -158,27 +158,4 @@ public final class BoostManager {
 
         saveBoosts();
     }
-
-    public static void clearJobBoosts(Job job) {
-        if (job == null)
-            return;
-
-        for (CurrencyType type : CurrencyType.values()) {
-            job.addBoost(type, 0);
-        }
-
-        if (Jobs.getGCManager().isBoostPersistenceEnabled())
-            saveBoosts();
-    }
-
-    public static void clearAllBoosts() {
-        for (Job job : Jobs.getJobs()) {
-            for (CurrencyType type : CurrencyType.values()) {
-                job.addBoost(type, 0);
-            }
-        }
-
-        if (Jobs.getGCManager().isBoostPersistenceEnabled())
-            saveBoosts();
-    }
 }
