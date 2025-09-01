@@ -45,6 +45,7 @@ import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.actions.PotionItemActionInfo;
 import com.gamingmesh.jobs.container.JobsTop.topStats;
 import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.BoostManager;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMINumber;
@@ -115,8 +116,8 @@ public class Job {
         int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, Map<String, JobItems> jobItems,
         Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
         this(jobName, jobDisplayName, fullName, jobShortName, jobColour, maxExpEquation, displayMethod, maxLevel,
-            vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
-            jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
+                vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
+                jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
 
 //        this.jobItems = jobItems;
         this.description = description;
@@ -159,6 +160,12 @@ public class Job {
      */
     public void addBoost(CurrencyType type, double point) {
         boost.add(type, point);
+        // Notify boost manager to save the updated boosts
+        try {
+            BoostManager.onBoostAdded();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -181,6 +188,12 @@ public class Job {
         }
 
         boost.add(type, point, System.currentTimeMillis() + (duration * 1000L));
+        // Notify boost manager to save the updated boosts
+        try {
+            BoostManager.onBoostAdded();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     public void setBoost(BoostMultiplier boost) {
@@ -199,7 +212,7 @@ public class Job {
      */
     public boolean isSame(Job job) {
         return job != null && (id == job.getId() || jobName.equalsIgnoreCase(job.getName())
-            || fullName.equalsIgnoreCase(job.getJobFullName()) || fullName.equalsIgnoreCase(job.getName()));
+                || fullName.equalsIgnoreCase(job.getJobFullName()) || fullName.equalsIgnoreCase(job.getName()));
     }
 
     /**
@@ -342,8 +355,8 @@ public class Job {
             }
 
             return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
-                (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
-                jobInfo.getName().equalsIgnoreCase(action.getName());
+                    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
+                    jobInfo.getName().equalsIgnoreCase(action.getName());
         };
 
         String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
@@ -718,7 +731,7 @@ public class Job {
             int target = new Random(System.nanoTime()).nextInt(100);
             for (Quest one : ls) {
                 if (one.isEnabled() && one.getChance() >= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))
-                    && one.isInLevelRange(level)) {
+                        && one.isInLevelRange(level)) {
                     return one;
                 }
             }
