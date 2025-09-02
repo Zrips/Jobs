@@ -76,6 +76,8 @@ public class Placeholder {
         user_boost_$1_$2("jname/number", "money/exp/points"),
         user_boost_time_$1_$2("jname/number", "money/exp/points"),
         user_pboost_$1_$2("jname/number", "money/exp/points"),
+        global_boost_$1_$2("jname/number", "money/exp/points"),
+        global_boost_time_$1_$2("jname/number", "money/exp/points"),
         user_isin_$1("jname/number"),
         user_canjoin_$1("jname/number"),
         user_jlevel_$1("jname/number"),
@@ -572,6 +574,20 @@ public class Placeholder {
                 case user_pboost_$1_$2:
                     boost = Jobs.getPlayerManager().getFinalBonus(user, job, true, true);
                     return (vals.size() < 2 || j == null) ? "" : simplifyDouble(boost.getFinal(CurrencyType.getByName(vals.get(1)), false, true) * 100D);
+                case global_boost_$1_$2:
+                    if (vals.size() < 2 || job == null)
+                        return "";
+                    CurrencyType gboostCurrencyType = CurrencyType.getByName(vals.get(1));
+                    BoostMultiplier globalBoost = job.getBoost();
+                    return globalBoost != null ? simplifyDouble(globalBoost.get(gboostCurrencyType)) : "0";
+                case global_boost_time_$1_$2:
+                    if (vals.size() < 2 || job == null)
+                        return "";
+                    CurrencyType gboostTimeCurrencyType = CurrencyType.getByName(vals.get(1));
+                    BoostMultiplier globalBoostTime = job.getBoost();
+                    Long globalExpireTime = globalBoostTime != null && globalBoostTime.isValid(gboostTimeCurrencyType) ? globalBoostTime.getTime(gboostTimeCurrencyType) : null;
+                    long globalTimeRemaining = globalExpireTime != null ? globalExpireTime - System.currentTimeMillis() : 0;
+                    return globalTimeRemaining > 0 ? CMITimeManager.to24hourShort(globalTimeRemaining) : "";
                 case user_isin_$1:
                     return job == null ? "no" : convert(user.isInJob(job));
                 case user_job_$1:
