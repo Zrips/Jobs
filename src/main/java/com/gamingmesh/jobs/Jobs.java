@@ -941,6 +941,13 @@ public final class Jobs extends JavaPlugin {
 
         dao.loadPlayerData();
 
+        // Load active boosts from file
+        try {
+            BoostManager.loadBoosts();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
         // Schedule
         if (getGCManager().enableSchedule) {
             try {
@@ -961,6 +968,13 @@ public final class Jobs extends JavaPlugin {
 
         if (dao != null && Jobs.getGeneralConfigManager().ExploreSaveIntoDatabase)
             dao.saveExplore();
+
+        // Save active boosts before shutdown
+        try {
+            BoostManager.saveBoosts();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 
         BlockOwnerShip.save(blockOwnerShipsMaterial);
 
