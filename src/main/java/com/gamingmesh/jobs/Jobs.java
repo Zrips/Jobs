@@ -976,7 +976,7 @@ public final class Jobs extends JavaPlugin {
             e.printStackTrace();
         }
 
-        BlockOwnerShip.save(blockOwnerShipsMaterial);
+        BlockOwnerShip.onDisable();
 
         if (saveTask != null)
             saveTask.shutdown();

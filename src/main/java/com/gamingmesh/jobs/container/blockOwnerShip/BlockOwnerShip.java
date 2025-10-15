@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -88,7 +87,7 @@ public class BlockOwnerShip {
     }
 
     public ownershipFeedback register(Player player, Block block) {
-        if (type != BlockTypes.getFromCMIMaterial(CMIMaterial.get(block))) {
+        if (type != BlockTypes.getFromCMIMaterial(CMIMaterial.get(block.getType()))) {
             return ownershipFeedback.invalid;
         }
 
@@ -269,7 +268,9 @@ public class BlockOwnerShip {
             if (one.getBlock() == null)
                 continue;
 
-            one.getBlock().removeMetadata(metadataName, plugin);
+            Block block = one.getBlock();
+            if (block != null)
+                block.removeMetadata(metadataName, plugin);
 
             Map<String, UUID> oldRecord = ownerMapByLocation.get(one.getWorldName());
             if (oldRecord != null)
@@ -290,7 +291,9 @@ public class BlockOwnerShip {
             if (!one.getKey().equalsIgnoreCase(location))
                 continue;
 
-            one.getValue().getBlock().removeMetadata(metadataName, plugin);
+            Block block = one.getValue().getBlock();
+            if (block != null)
+                block.removeMetadata(metadataName, plugin);
 
             ls.remove(one.getKey());
 
@@ -379,33 +382,30 @@ public class BlockOwnerShip {
 
     static CMITask saveTask = null;
 
-    public static void saveDelay() {
+    public static void onDisable() {
 
-        if (saveTask != null)
-            return;
-
-        // Limit to one save every minute max
-        saveTask = CMIScheduler.runTaskLater(Jobs.getInstance(), () -> {
-            saveAsync(Jobs.getInstance().getBlockOwnerShips().values());
-            saveTask = null;
-        }, 60 * 20L);
-    }
-
-    @Deprecated
-    public static void save(HashMap<CMIMaterial, BlockOwnerShip> blockOwnerShipsMaterial) {
         if (saveTask != null) {
             saveTask.cancel();
             saveTask = null;
         }
-        saveAsync(blockOwnerShipsMaterial.values());
+
+        save(new ArrayList<>(Jobs.getInstance().getBlockOwnerShips().values()));
     }
 
-    private static void saveAsync(Collection<BlockOwnerShip> blockOwnerShips) {
+    public static void saveDelay() {
 
-        Collection<BlockOwnerShip> copy = new ArrayList<>(blockOwnerShips);
+        if (saveTask != null)
+            return;
+        // Limit to one save every minute max
+        saveTask = CMIScheduler.runLaterAsync(Jobs.getInstance(), () -> {
+            save(new ArrayList<>(Jobs.getInstance().getBlockOwnerShips().values()));
+            saveTask = null;
+        }, 60 * 20L);
+    }
 
-        CompletableFuture.runAsync(() -> {
+    private static void save(Collection<BlockOwnerShip> copy) {
 
+        try {
             File f = new File(Jobs.getInstance().getDataFolder(), "blockOwnerShips.yml");
 
             ConfigReader cfg = null;
@@ -428,7 +428,7 @@ public class BlockOwnerShip {
 
                 cfg.getC().set(path, null);
 
-                for (Entry<UUID, HashMap<String, blockLoc>> one : ownership.blockOwnerShips.entrySet()) {
+                for (Entry<UUID, HashMap<String, blockLoc>> one : ownership.getBlockOwnerShips().entrySet()) {
                     StringBuilder full = new StringBuilder();
 
                     for (String oneL : one.getValue().keySet()) {
@@ -444,7 +444,9 @@ public class BlockOwnerShip {
 
             cfg.save();
 
-        });
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isReassignDisabled() {

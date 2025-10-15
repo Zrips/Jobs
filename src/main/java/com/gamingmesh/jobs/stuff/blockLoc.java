@@ -1,5 +1,7 @@
 package com.gamingmesh.jobs.stuff;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -27,7 +29,7 @@ public class blockLoc {
     }
 
     public String getWorldName() {
-        return w != null ? w.getName() : worldName != null ? worldName : "__";
+        return getWorld() != null ? getWorld().getName() : worldName != null ? worldName : "__";
     }
 
     public void setX(int x) {
@@ -77,12 +79,12 @@ public class blockLoc {
         }
     }
 
-    public Block getBlock() {
+    public @Nullable Block getBlock() {
         Location loc = getLocation();
         return loc == null ? null : loc.getBlock();
     }
 
-    public Location getLocation() {
+    public @Nullable Location getLocation() {
         if (getWorldName() == null && w == null)
             return null;
 
@@ -104,7 +106,7 @@ public class blockLoc {
         this.disabled = disabled;
     }
 
-    public World getWorld() {
+    public @Nullable World getWorld() {
         if (w == null && worldName != null)
             w = CMIWorld.getWorld(worldName);
         return w;
