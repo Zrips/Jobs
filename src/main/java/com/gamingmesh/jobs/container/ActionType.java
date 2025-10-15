@@ -51,7 +51,8 @@ public enum ActionType {
     BAKE(ActionSubType.MATERIAL),
     BUCKET(ActionSubType.MATERIAL),
     BRUSH(ActionSubType.BLOCK, ActionSubType.MATERIAL),
-    VAX(ActionSubType.BLOCK, ActionSubType.PROTECTED);
+    WAX(ActionSubType.BLOCK, ActionSubType.PROTECTED),
+    SCRAPE(ActionSubType.BLOCK, ActionSubType.PROTECTED);
 
     private String name;
 
@@ -83,6 +84,10 @@ public enum ActionType {
     public static ActionType getByName(String name) {
         if (name != null) {
             name = name.replace("_", "");
+            
+            // Temp fix to rename vax to wax
+            if (name.equalsIgnoreCase("vax"))
+                name = "wax";
 
             for (ActionType one : ActionType.values()) {
                 if (one.name.equalsIgnoreCase(name))
