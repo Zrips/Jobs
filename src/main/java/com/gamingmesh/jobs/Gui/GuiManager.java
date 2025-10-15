@@ -365,7 +365,7 @@ public class GuiManager {
 
         final List<actionList> actionList = new ArrayList<>();
 
-        int chunkSize = 2;
+        int chunkSize = 10;
 
         for (ActionType actionType : ActionType.values()) {
             List<JobInfo> info = job.getJobInfo(actionType);

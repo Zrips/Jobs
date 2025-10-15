@@ -38,6 +38,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Gui.GuiItem;
@@ -116,8 +117,8 @@ public class Job {
         int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, Map<String, JobItems> jobItems,
         Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
         this(jobName, jobDisplayName, fullName, jobShortName, jobColour, maxExpEquation, displayMethod, maxLevel,
-                vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
-                jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
+            vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
+            jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
 
 //        this.jobItems = jobItems;
         this.description = description;
@@ -212,7 +213,7 @@ public class Job {
      */
     public boolean isSame(Job job) {
         return job != null && (id == job.getId() || jobName.equalsIgnoreCase(job.getName())
-                || fullName.equalsIgnoreCase(job.getJobFullName()) || fullName.equalsIgnoreCase(job.getName()));
+            || fullName.equalsIgnoreCase(job.getJobFullName()) || fullName.equalsIgnoreCase(job.getName()));
     }
 
     /**
@@ -355,8 +356,8 @@ public class Job {
             }
 
             return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
-                    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
-                    jobInfo.getName().equalsIgnoreCase(action.getName());
+                (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
+                jobInfo.getName().equalsIgnoreCase(action.getName());
         };
 
         String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
@@ -731,7 +732,7 @@ public class Job {
             int target = new Random(System.nanoTime()).nextInt(100);
             for (Quest one : ls) {
                 if (one.isEnabled() && one.getChance() >= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))
-                        && one.isInLevelRange(level)) {
+                    && one.isInLevelRange(level)) {
                     return one;
                 }
             }
@@ -828,7 +829,7 @@ public class Job {
         this.legacyId = legacyId;
     }
 
-    public void updateTop(@Nonnull UUID uuid, int level, double experience) {
+    public void updateTop(@NotNull UUID uuid, int level, double experience) {
         topList.updateAsync(uuid, level, experience);
     }
 

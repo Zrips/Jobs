@@ -66,8 +66,7 @@ public class JobsMobSpawner {
 
     public static void setSpawnerMeta(Entity entity) {
         if (Version.isCurrentEqualOrHigher(Version.v1_15_R1)) {
-            byte bool = 1;
-            CMIPersistentDataContainer.get(entity).set(getMobSpawnerMetadata(), bool);
+            CMIPersistentDataContainer.get(entity).set(getMobSpawnerMetadata(), (byte) 1);
         } else {
             entity.setMetadata(getMobSpawnerMetadata(), new FixedMetadataValue(Jobs.getInstance(), true));
         }

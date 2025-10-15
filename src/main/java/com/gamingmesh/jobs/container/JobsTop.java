@@ -13,8 +13,8 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gamingmesh.jobs.Jobs;
 
@@ -66,7 +66,7 @@ public class JobsTop {
         return globalTop.getStats(uuid);
     }
 
-    public static void updateTops(@Nonnull Job job, @Nonnull JobsPlayer jPlayer, int level, double experience) {
+    public static void updateTops(@NotNull Job job, @NotNull JobsPlayer jPlayer, int level, double experience) {
         if (jPlayer == null)
             return;
         job.updateTop(jPlayer.getUniqueId(), level, experience);
@@ -99,13 +99,13 @@ public class JobsTop {
         }
     }
 
-    public synchronized void updateAsync(@Nonnull UUID uuid, int level, double experience) {
+    public synchronized void updateAsync(@NotNull UUID uuid, int level, double experience) {
         CompletableFuture.runAsync(() -> {
             update(uuid, level, experience);
         });
     }
 
-    public synchronized void update(@Nonnull UUID uuid, int level, double experience) {
+    public synchronized void update(@NotNull UUID uuid, int level, double experience) {
         if (uuid == null)
             return;
         synchronized (this) {
@@ -131,13 +131,13 @@ public class JobsTop {
         }
     }
 
-    public synchronized void removeAsync(@Nonnull UUID uuid) {
+    public synchronized void removeAsync(@NotNull UUID uuid) {
         CompletableFuture.runAsync(() -> {
             remove(uuid);
         });
     }
 
-    public @Nullable topStats getStats(@Nonnull UUID uuid) {
+    public @Nullable topStats getStats(@NotNull UUID uuid) {
         if (uuid == null)
             return null;
         return uuidToStats.get(uuid);

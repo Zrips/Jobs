@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.MessageToggleState;

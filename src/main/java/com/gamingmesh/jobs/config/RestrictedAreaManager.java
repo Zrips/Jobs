@@ -235,14 +235,16 @@ public class RestrictedAreaManager {
             conf.set("restrictedareas.area1.point2", "150;100;150");
             conf.set("restrictedareas.area1.jobs", Arrays.asList("digger-0-100"));
 
-            conf.set("restrictedareas.area2.enabled", false);
-            for (CurrencyType one : CurrencyType.values()) {
-                conf.set("restrictedareas.area2.multipliers." + CMIText.firstToUpperCase(one.toString()), CMINumber.random(-10, 10) / 10D);
+            if (Bukkit.getWorlds().size() > 1) {
+                conf.set("restrictedareas.area2.enabled", false);
+                for (CurrencyType one : CurrencyType.values()) {
+                    conf.set("restrictedareas.area2.multipliers." + CMIText.firstToUpperCase(one.toString()), CMINumber.random(-10, 10) / 10D);
+                }
+                conf.set("restrictedareas.area2.world", Bukkit.getWorlds().get(1).getName());
+                conf.set("restrictedareas.area2.point1", "-100;0;-100");
+                conf.set("restrictedareas.area2.point2", "-150;100;-150");
+                conf.set("restrictedareas.area2.jobs", Arrays.asList("all-5-15"));
             }
-            conf.set("restrictedareas.area2.world", Bukkit.getWorlds().get(1).getName());
-            conf.set("restrictedareas.area2.point1", "-100;0;-100");
-            conf.set("restrictedareas.area2.point2", "-150;100;-150");
-            conf.set("restrictedareas.area2.jobs", Arrays.asList("all-5-15"));
         }
 
         ConfigurationSection areaSection = conf.getConfigurationSection("restrictedareas");
