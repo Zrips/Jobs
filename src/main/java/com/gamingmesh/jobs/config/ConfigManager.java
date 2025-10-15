@@ -1094,6 +1094,11 @@ public class ConfigManager {
             for (ActionType actionType : ActionType.values()) {
                 ConfigurationSection typeSection = jobSection.getConfigurationSection(actionType.getName());
                 List<JobInfo> jobInfo = new ArrayList<>();
+
+                // Crude fix for incorrect wax name
+                if (typeSection == null && actionType.equals(ActionType.WAX))
+                    typeSection = jobSection.getConfigurationSection("Vax");
+
                 if (typeSection != null) {
                     if (!typeSection.getStringList("materials").isEmpty()) {
                         for (String mat : typeSection.getStringList("materials")) {

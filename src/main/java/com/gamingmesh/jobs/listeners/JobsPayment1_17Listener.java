@@ -3,7 +3,6 @@ package com.gamingmesh.jobs.listeners;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,7 +18,6 @@ import com.gamingmesh.jobs.container.ActionType;
 
 import net.Zrips.CMILib.Items.CMIMC;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class JobsPayment1_17Listener implements Listener {
 
@@ -84,9 +82,7 @@ public class JobsPayment1_17Listener implements Listener {
             !cmatCmiMaterial.containsCriteria(CMIMC.EXPOSED) ||
             cmatCmiMaterial.containsCriteria(CMIMC.WAXED))
             return;
-        
-        CMIDebug.d("scraping", clicked.getType());
-        
+
         Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new BlockActionInfo(clicked, ActionType.SCRAPE), clicked);
     }
 }
