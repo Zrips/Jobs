@@ -1,6 +1,6 @@
 package com.gamingmesh.jobs;
 
-public class permissionInfo {
+public class JobsPermissionInfo {
 
     private long time = 0L;
     private boolean state = false;
@@ -10,7 +10,7 @@ public class permissionInfo {
         return time;
     }
 
-    public permissionInfo setTime(long time) {
+    public JobsPermissionInfo setTime(long time) {
         this.time = time;
         return this;
     }
@@ -19,7 +19,7 @@ public class permissionInfo {
         return state;
     }
 
-    public permissionInfo setState(boolean state) {
+    public JobsPermissionInfo setState(boolean state) {
         this.state = state;
         return this;
     }
@@ -28,7 +28,7 @@ public class permissionInfo {
         return value;
     }
 
-    public permissionInfo setValue(double value) {
+    public JobsPermissionInfo setValue(double value) {
         this.value = value;
         return this;
     }

@@ -34,7 +34,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.permissionInfo;
+import com.gamingmesh.jobs.JobsPermissionInfo;
+import com.gamingmesh.jobs.PermissionManager;
 import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
@@ -87,8 +88,6 @@ public class JobsPlayer {
     private Map<String, Log> logList = new HashMap<>();
 
     private long seen = System.currentTimeMillis();
-
-    private Map<String, permissionInfo> permissionsCache = new HashMap<>();
 
     private final Map<String, Map<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
@@ -975,7 +974,7 @@ public class JobsPlayer {
         isOnline = false;
         blockOwnerShipInform = null;
 
-        permissionsCache.clear();
+        PermissionManager.removePermissionCache(getUniqueId());
 
         Jobs.getPlayerManager().addPlayerToCache(this);
     }
@@ -1018,16 +1017,16 @@ public class JobsPlayer {
         this.seen = seen;
     }
 
-    public Map<String, permissionInfo> getPermissionsCache() {
-        return permissionsCache;
+    public Map<String, JobsPermissionInfo> getPermissionsCache() {
+        return PermissionManager.getPermissionsCache(this.getUniqueId()).getPermissionsCache();
     }
 
-    public permissionInfo getPermissionsCache(String perm) {
-        return permissionsCache.getOrDefault(perm, new permissionInfo());
+    public JobsPermissionInfo getPermissionsCache(String perm) {
+        return PermissionManager.getPermissionsCache(this.getUniqueId()).getPermissionsCache(perm);
     }
 
-    public void addToPermissionsCache(String permission, permissionInfo permInfo) {
-        permissionsCache.put(permission, permInfo);
+    public void addToPermissionsCache(String permission, JobsPermissionInfo permInfo) {
+        PermissionManager.getPermissionsCache(this.getUniqueId()).addToPermissionsCache(permission, permInfo);
     }
 
     /**

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -28,11 +29,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobsPermissionCache;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class PermissionManager {
 
     private final Map<String, Integer> permDelay = new HashMap<>();
+
+    private static Map<UUID, JobsPermissionCache> permissionsCache = new HashMap<>();
 
     private enum prm {
         jobs_use(remade("jobs.use"), 5),
@@ -164,7 +168,7 @@ public class PermissionManager {
 
         double amount = Double.NEGATIVE_INFINITY;
 
-        permissionInfo permInfo = jPlayer.getPermissionsCache(perm);
+        JobsPermissionInfo permInfo = getPermissionsCache(jPlayer.getUniqueId(), perm);
 
         if (force || getDelay(perm) + permInfo.getTime() < System.currentTimeMillis()) {
 
@@ -200,7 +204,7 @@ public class PermissionManager {
         if (player == null)
             return false;
 
-        permissionInfo permInfo = jPlayer.getPermissionsCache(perm);
+        JobsPermissionInfo permInfo = getPermissionsCache(jPlayer.getUniqueId(), perm);
 
         if (getDelay(perm) + permInfo.getTime() < System.currentTimeMillis()) {
             permInfo.setState(player.hasPermission(perm));
@@ -211,4 +215,15 @@ public class PermissionManager {
         return permInfo.getState();
     }
 
+    public static JobsPermissionCache getPermissionsCache(UUID uuid) {
+        return permissionsCache.computeIfAbsent(uuid, k -> new JobsPermissionCache());
+    }
+
+    public static JobsPermissionInfo getPermissionsCache(UUID uuid, String perm) {
+        return getPermissionsCache(uuid).getPermissionsCache(perm);
+    }
+
+    public static void removePermissionCache(UUID uuid) {
+        permissionsCache.remove(uuid);
+    }
 }
