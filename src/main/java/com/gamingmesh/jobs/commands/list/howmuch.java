@@ -207,7 +207,6 @@ public class howmuch implements Cmd {
             Language.sendMessage(sender, "command.version.output.nopayment", "[target]", name);
         else
             LC.info_Spliter.sendMessage(sender);
-            LC.info_Spliter.sendMessage(sender);
 
         return true;
     }
