@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.hooks;
 
+import com.gamingmesh.jobs.hooks.Logically.TreeChopListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -169,6 +170,16 @@ public enum JobsHook {
                 return;
 
             JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager().registerEvents(new JobsCustomFishingPaymentListener(), JavaPlugin.getPlugin(Jobs.class));
+            printListenerMessage(this);
+        }
+    },
+    Logically {
+        @Override
+        public void registerListener() {
+            if (!isPresent())
+                return;
+
+            Jobs.getInstance().getServer().getPluginManager().registerEvents(new TreeChopListener(), Jobs.getInstance());
             printListenerMessage(this);
         }
     };
