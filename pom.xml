@@ -192,6 +192,13 @@
             <version>2.3.4</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Logically -->
+        <dependency>
+            <groupId>com.github.justADeni</groupId>
+            <artifactId>LogicallyAPI</artifactId>
+            <version>1.15.4</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 	<repositories>
 		<repository>
