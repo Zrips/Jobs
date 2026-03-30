@@ -37,6 +37,7 @@ public enum ActionType {
 	PLACE(CMIMaterial.BRICKS, ActionSubType.BLOCK, ActionSubType.PROTECTED),
 	KILL(CMIMaterial.DIAMOND_SWORD, ActionSubType.ENTITY),
 	MMKILL("MMKill", CMIMaterial.WOODEN_SWORD, ActionSubType.ENTITY, ActionSubType.CUSTOM),
+	FORCEKILL("ForceKill", CMIMaterial.IRON_SWORD, ActionSubType.ENTITY),
 	FISH(CMIMaterial.FISHING_ROD, ActionSubType.MATERIAL),
 	PYROFISHINGPRO("PyroFishingPro", CMIMaterial.PUFFERFISH, ActionSubType.CUSTOM),
 	CUSTOMFISHING("CustomFishing", CMIMaterial.TROPICAL_FISH, ActionSubType.CUSTOM),
