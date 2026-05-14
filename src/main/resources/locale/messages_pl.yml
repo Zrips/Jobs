@@ -268,7 +268,7 @@ command:
     output:
       message: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP'
       max-level: '     &cMaks. poziom   -   %jobname%'
-    bossBarOutput: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP%gain%'
+    bossBarOutput: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP%gain%  $%money%'
     bossBarGain: ' &7(&f%gain%&7)'
     bar1: '&e▏'
     bar2: '&2▏'

@@ -256,7 +256,7 @@ command:
     output:
       Level: '&7Nivel &f%joblevel% &7de &f%jobname%&7: &f%jobxp%&7/&f%jobmaxxp%&7xp'
       maxLevel: '    &2Max    &7Nivel &f%joblevel% &7de &f%jobname%'
-    bossBarOutput: 'Nvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% Exp%gain%'
+    bossBarOutput: 'Nvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% Exp%gain%  $%money%'
     bossBarGain: ' &7(&f%gain%&7)'
     barEmpty: '&7▏'
     barFull: '&2▏'
