@@ -191,6 +191,13 @@
 			<version>2.3.4</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- RoseStacker -->
+		<dependency>
+			<groupId>dev.rosewood</groupId>
+			<artifactId>rosestacker</artifactId>
+			<version>1.5.40</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -232,6 +239,11 @@
 		<repository>
 			<id>bg-repo</id>
 			<url>https://repo.bg-software.com/repository/api/</url>
+		</repository>
+		<!-- RoseStacker -->
+		<repository>
+			<id>rosewood-repo</id>
+			<url>https://repo.rosewooddev.io/repository/public/</url>
 		</repository>
 		<!-- MyPet -->
 		<!--		<repository>-->
