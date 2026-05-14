@@ -107,7 +107,9 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7С уровня: %from% \n&7До уровня: %until%"
+      hoverLevelLimits: "&7С уровня: %from%\ 
+
+        &7До уровня: %until%"
   edititembonus:
     help:
       info: Редактировать бонусы работ.
@@ -259,7 +261,7 @@ command:
     output:
       message: 'Уровень %joblevel% для %jobname%: %jobxp%/%jobmaxxp% оп.'
       max-level: '     &cМакс. уровень   -   %jobname%'
-    bossBarOutput: 'Ур. %joblevel% %jobname%: %jobxp%/%jobmaxxp% оп.%gain%'
+    bossBarOutput: 'Ур. %joblevel% %jobname%: %jobxp%/%jobmaxxp% оп.%gain% $%money%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -486,7 +488,11 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Нажмите, чтобы пропустить этот квест'
       skips: '&7Осталось пропусков: &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7Новый квест через: [time]"
+      hover: "&f[jobName]\ 
+
+        [desc]\ 
+
+        &7Новый квест через: [time]"
   fire:
     help:
       info: Уволить игрока с работы.

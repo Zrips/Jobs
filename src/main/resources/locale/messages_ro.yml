@@ -107,7 +107,9 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7De la nivelul: %from% \n&7Până la nivelul: %until%"
+      hoverLevelLimits: "&7De la nivelul: %from%\ 
+
+        &7Până la nivelul: %until%"
   edititembonus:
     help:
       info: Editează majorarea itemului bonus
@@ -259,7 +261,7 @@ command:
     output:
       message: 'Nivel %joblevel% pentru %jobname%: %jobxp%/%jobmaxxp% experiență'
       max-level: '     &cNivel maxim   -   %jobname%'
-    bossBarOutput: 'Nivel %joblevel% %jobname%: %jobxp%/%jobmaxxp% experiență%gain%'
+    bossBarOutput: 'Nivel %joblevel% %jobname%: %jobxp%/%jobmaxxp% experiență%gain% $%money%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -486,7 +488,11 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Apasă pentru a trece peste această misiune'
       skips: '&2Numar rămas de "treceri peste": &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7Misiune nouă în: [time]"
+      hover: "&f[jobName]\ 
+
+        [desc]\ 
+
+        &7Misiune nouă în: [time]"
   fire:
     help:
       info: Concediază jucătorul de la acest job.

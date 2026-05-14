@@ -107,7 +107,9 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7Od levelu: %from% \n&7Do levelu: %until%"
+      hoverLevelLimits: "&7Od levelu: %from%\ 
+
+        &7Do levelu: %until%"
   edititembonus:
     help:
       info: Upravit bonus předmětu
@@ -259,7 +261,7 @@ command:
     output:
       message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
       max-level: '     &cMax level   -   %jobname%'
-    bossBarOutput: 'Level %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarOutput: 'Level %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain% $%money%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -486,7 +488,11 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Klikni pro preskoceni questu'
       skips: '&7Leva preskoci: &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7Novy quest za: [time]"
+      hover: "&f[jobName]\ 
+
+        [desc]\ 
+
+        &7Novy quest za: [time]"
   fire:
     help:
       info: Vyhodit hrace z prace.

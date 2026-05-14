@@ -108,7 +108,9 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7Z levelu: %from% \n&7Do levelu: %until%"
+      hoverLevelLimits: "&7Z levelu: %from%\ 
+
+        &7Do levelu: %until%"
   edititembonus:
     help:
       info: Edytuj boost bonusowego przedmiotu
@@ -268,7 +270,7 @@ command:
     output:
       message: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP'
       max-level: '     &cMaks. poziom   -   %jobname%'
-    bossBarOutput: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP%gain%'
+    bossBarOutput: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP%gain% $%money%'
     bossBarGain: ' &7(&f%gain%&7)'
     bar1: '&e▏'
     bar2: '&2▏'
@@ -498,7 +500,11 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Kliknij aby pominąć to zadanie'
       skips: '&7Pozostałe pominięcia: &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7Nowe zadanie za: [time]"
+      hover: "&f[jobName]\ 
+
+        [desc]\ 
+
+        &7Nowe zadanie za: [time]"
   fire:
     help:
       info: Zwolnij gracza z pracy.

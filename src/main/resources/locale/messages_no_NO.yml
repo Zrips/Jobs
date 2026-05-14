@@ -107,7 +107,9 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7Fra nivå: %from% \n&7Til nivå: %until%"
+      hoverLevelLimits: "&7Fra nivå: %from%\ 
+
+        &7Til nivå: %until%"
   edititembonus:
     help:
       info: Rediger gjenstandsboost-bonus
@@ -259,7 +261,7 @@ command:
     output:
       message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
       max-level: '     &cMax level   -   %jobname%'
-    bossBarOutput: 'Level %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP%gain%'
+    bossBarOutput: 'Level %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP%gain% $%money%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -486,7 +488,11 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Klikk for å hoppe over denne oppgaven'
       skips: '&7Hvor mange ganger du kan hoppe over igjen: &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7Nytt oppdrag igjen: [time]"
+      hover: "&f[jobName]\ 
+
+        [desc]\ 
+
+        &7Nytt oppdrag igjen: [time]"
   fire:
     help:
       info: Fjern spilleren fra jobben.

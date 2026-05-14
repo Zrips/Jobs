@@ -107,7 +107,9 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7Szinttől: %from%\n&7Szintig: %until%"
+      hoverLevelLimits: "&7Szinttől: %from%
+
+        &7Szintig: %until%"
   edititembonus:
     help:
       info: Tárgybónusz szerkesztése.
@@ -259,7 +261,7 @@ command:
     output:
       message: ' lvl%joblevel% %jobname%: %jobxp%/%jobmaxxp% xp'
       max-level: '     &cMax szint   -   %jobname%'
-    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain% $%money%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -486,7 +488,11 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Kattints, hogy hagyja ki ezt a küldetést'
       skips: '&7Maradt ugrások: &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7Következő küldetés: [time]"
+      hover: "&f[jobName]\ 
+
+        [desc]\ 
+
+        &7Következő küldetés: [time]"
   fire:
     help:
       info: Játékos kirúgása a munkából.

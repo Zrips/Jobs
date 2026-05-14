@@ -107,7 +107,9 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7Do nível: %from% \n&7Até o nível: %until%"
+      hoverLevelLimits: "&7Do nível: %from%\ 
+
+        &7Até o nível: %until%"
   edititembonus:
     help:
       info: Editar bônus de aumento de item
@@ -259,7 +261,7 @@ command:
     output:
       message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
       max-level: '     &cMax level   -   %jobname%'
-    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain% $%money%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -486,7 +488,11 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Clique para pular esta missão'
       skips: '&7Pulos restantes: &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7Nova missão em: [time]"
+      hover: "&f[jobName]\ 
+
+        [desc]\ 
+
+        &7Nova missão em: [time]"
   fire:
     help:
       info: Demitir o jogador de uma profissão.

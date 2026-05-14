@@ -107,7 +107,9 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7Vanaf niveau: %from% \n&7Tot niveau: %until%"
+      hoverLevelLimits: "&7Vanaf niveau: %from%\ 
+
+        &7Tot niveau: %until%"
   edititembonus:
     help:
       info: Verander de itembonus
@@ -259,7 +261,7 @@ command:
     output:
       message: 'Niveau %joblevel% voor %jobname%: %jobxp%/%jobmaxxp% xp'
       max-level: '     &cMax niveau   -   %jobname%'
-    bossBarOutput: 'Niveau %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarOutput: 'Niveau %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain% $%money%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -486,7 +488,11 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Klik op deze quest over te slaan'
       skips: '&7hoeveelheid overslaan: &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7Nieuwe quest na: [time]"
+      hover: "&f[jobName]\ 
+
+        [desc]\ 
+
+        &7Nieuwe quest na: [time]"
   fire:
     help:
       info: Ontsla de speler van de baan.
