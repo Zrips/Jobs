@@ -246,7 +246,7 @@ command:
     output:
       Level: '&7職業 &f%jobname% &7等級 &f%joblevel%&7： &f%jobxp%&7/&f%jobmaxxp%&7xp'
       maxLevel: '    &2最高    &7等級 &f%joblevel% &7於 &f%jobname%'
-    bossBarOutput: 等級 %joblevel% %jobname%： %jobxp%/%jobmaxxp% xp%gain% %money%
+    bossBarOutput: 等級 %joblevel% %jobname%： %jobxp%/%jobmaxxp% xp%gain% $%money%
     bossBarGain: ' &7(&f%gain%&7)'
     barEmpty: '&7▏'
     barFull: '&2▏'

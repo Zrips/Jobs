@@ -107,9 +107,7 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7Da livello: %from%
-
-        &7Fino al livello: %until%"
+      hoverLevelLimits: "&7Da livello: %from%\n&7Fino al livello: %until%"
   edititembonus:
     help:
       info: Modifica bonus potenziamento oggetto
@@ -286,13 +284,13 @@ command:
       Paid: '&eHai pagato &6%amount% &eper questo articolo '
   archive:
     help:
-      info: Mostra tutti i lavori salvati nell'archivio dall'utente.
+      info: Mostra tutti i lavori salvati nell'archivio dall'utente. 
       args: '[playername]'
     error:
       nojob: Non ci sono lavori salvati.
   give:
     help:
-      info: Fornisce l'elemento in base al nome del lavoro e al nome della categoria dell'elemento. Il nome del giocatore è facoltativo
+      info: Fornisce l'elemento in base al nome del lavoro e al nome della categoria dell'elemento. Il nome del giocatore è facoltativo 
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
       notonline: '&4Il giocatore con quel nome non è online! '
@@ -300,7 +298,7 @@ command:
   info:
     help:
       title: '&2*** &eLavori&2 ***'
-      info: Mostra quanto viene pagato ogni lavoro e per cosa.
+      info: Mostra quanto viene pagato ogni lavoro e per cosa. 
       penalty: '&eQuesto lavoro ha una penalità del &c[penalty]% &eperché ci sono troppi giocatori che ci lavorano. '
       bonus: '&eQuesto lavoro ha un bonus del &2[bonus]% &eperché non ci sono abbastanza giocatori che ci lavorano. '
       args: '[jobname] [action]'
@@ -407,7 +405,7 @@ command:
       args: '[jobfullname]'
     error:
       alreadyin: Sei già nel lavoro %jobname%.
-      fullslots: Non puoi unirti al lavoro %jobname%, non ci sono spazi disponibili.
+      fullslots: Non puoi unirti al lavoro %jobname%, non ci sono spazi disponibili. 
       maxjobs: Hai già aderito a troppi lavori.
       rejoin: '&cImpossibile partecipare a questo lavoro. Aspetta [time]'
     rejoin: '&aFai clic per unirti di nuovo a questo lavoro: '
@@ -488,11 +486,7 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Fai clic per saltare questa missione'
       skips: '&7Salta sinistra: &f[skips]'
-      hover: "&f[jobName]\ 
-
-        [desc]\ 
-
-        &7Nuova missione in: [time]"
+      hover: "&f[jobName] \n[desc] \n&7Nuova missione in: [time]"
   fire:
     help:
       info: Licenzia il giocatore dal lavoro.

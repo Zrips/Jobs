@@ -107,9 +107,7 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7From level: %from%\ 
-
-        &7Until level: %until%"
+      hoverLevelLimits: "&7From level: %from% \n&7Until level: %until%"
   edititembonus:
     help:
       info: Edit item boost bonus
@@ -261,7 +259,7 @@ command:
     output:
       message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
       max-level: '     &cMax level   -   %jobname%'
-    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain% $%money%'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -488,11 +486,7 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Click to skip this quest'
       skips: '&7Left skips: &f[skips]'
-      hover: "&f[jobName]\ 
-
-        [desc]\ 
-
-        &7New quest in: [time]"
+      hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
     help:
       info: Fire the player from the job.

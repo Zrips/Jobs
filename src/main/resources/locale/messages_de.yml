@@ -107,9 +107,7 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7Von Level: %from%\ 
-
-        &7Bis Level: %until%"
+      hoverLevelLimits: "&7Von Level: %from% \n&7Bis Level: %until%"
   edititembonus:
     help:
       info: Itemboostbonus bearbeiten
@@ -489,11 +487,7 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Klicke um die Quest zu überspringen.'
       skips: '&7So oft darfst du noch überspringen: &f[skips]'
-      hover: "&f[jobName]\ 
-
-        [desc]\ 
-
-        &7Neue Quest in: [time]"
+      hover: "&f[jobName] \n[desc] \n&7Neue Quest in: [time]"
   fire:
     help:
       info: Entlasse den Spieler aus diesem Beruf.

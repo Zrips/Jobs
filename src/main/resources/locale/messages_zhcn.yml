@@ -107,7 +107,7 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7从经验等级: %from%\ \n&7直到经验等级: %until%"
+      hoverLevelLimits: "&7从经验等级: %from% \n&7直到经验等级: %until%"
   edititembonus:
     help:
       info: 更改物品加成
@@ -486,11 +486,7 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7点击跳过该任务'
       skips: '&7剩余跳过次数: &f[skips]'
-      hover: "&f[jobName]\ 
-
-        [desc]\ 
-
-        &7下个新任务: [time]"
+      hover: "&f[jobName] \n[desc] \n&7下个新任务: [time]"
   fire:
     help:
       info: 将玩家从指定职业开除.
