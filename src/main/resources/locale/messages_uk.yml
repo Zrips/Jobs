@@ -259,7 +259,7 @@ command:
     output:
       message: 'Рівень %joblevel% для %jobname%: %jobxp%/%jobmaxxp% дос.'
       max-level: '     &cМакс. рівень   -   %jobname%'
-    bossBarOutput: 'Рів. %joblevel% %jobname%: %jobxp%/%jobmaxxp% дос.%gain% $%money%'
+    bossBarOutput: 'Рів. %joblevel% %jobname%: %jobxp%/%jobmaxxp% дос.%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:

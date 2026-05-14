@@ -259,7 +259,7 @@ command:
     output:
       message: 'Livello %joblevel% per %jobname%: %jobxp%/%jobmaxxp% xp'
       max-level: '     &cLivello Max   -   %jobname%'
-    bossBarOutput: 'Livello %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain% $%money%'
+    bossBarOutput: 'Livello %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
