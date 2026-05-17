@@ -888,6 +888,7 @@ public final class Jobs extends JavaPlugin {
 		JobsHook.PyroFishingPro.registerListener();
 		JobsHook.mcMMO.registerListener();
 		JobsHook.MythicMobs.registerListener();
+		JobsHook.RoseStacker.registerListener();
 
 		CMIMessages.consoleMessage("&eListeners registered successfully");
 	}

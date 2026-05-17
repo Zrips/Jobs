@@ -29,12 +29,22 @@ public class BossBarManager {
         if (Version.getCurrent().isLower(Version.v1_9_R1) || player == null)
             return;
 
-        for (JobProgression oneJob : player.getJobProgression()) {
-            if (oneJob.getLastExperience() != 0 || oneJob.getLastMoney() != 0) {
-                ShowJobProgression(player, oneJob, oneJob.getLastExperience(), oneJob.getLastMoney());
-            }
+        synchronized (player.getUpdateBossBarFor()) {
+            if (player.getUpdateBossBarFor().contains("pending"))
+                return;
+            player.getUpdateBossBarFor().add("pending");
         }
-        player.getUpdateBossBarFor().clear();
+
+        CMIScheduler.runTask(Jobs.getInstance(), () -> {
+            synchronized (player.getUpdateBossBarFor()) {
+                player.getUpdateBossBarFor().remove("pending");
+            }
+            for (JobProgression oneJob : player.getJobProgression()) {
+                if (oneJob.getLastExperience() != 0 || oneJob.getLastMoney() != 0) {
+                    ShowJobProgression(player, oneJob, oneJob.getLastExperience(), oneJob.getLastMoney());
+                }
+            }
+        });
     }
 
     public void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
