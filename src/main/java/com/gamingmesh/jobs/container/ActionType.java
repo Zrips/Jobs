@@ -39,7 +39,6 @@ public enum ActionType {
 	MMKILL("MMKill", CMIMaterial.WOODEN_SWORD, ActionSubType.ENTITY, ActionSubType.CUSTOM),
 	FISH(CMIMaterial.FISHING_ROD, ActionSubType.MATERIAL),
 	PYROFISHINGPRO("PyroFishingPro", CMIMaterial.PUFFERFISH, ActionSubType.CUSTOM),
-	PYROFISHINGPRO_HOTSPOT("PyroFishingPro-Hotspot", CMIMaterial.PUFFERFISH, ActionSubType.CUSTOM),
 	CUSTOMFISHING("CustomFishing", CMIMaterial.TROPICAL_FISH, ActionSubType.CUSTOM),
 	CRAFT(CMIMaterial.CRAFTING_TABLE, ActionSubType.MATERIAL),
 	VTRADE("VTrade", CMIMaterial.EMERALD, ActionSubType.MATERIAL),
