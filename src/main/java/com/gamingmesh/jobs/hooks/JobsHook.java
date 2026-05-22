@@ -12,7 +12,6 @@ import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs5;
 import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs5Listener;
 import com.gamingmesh.jobs.hooks.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.hooks.blockTracker.BlockTrackerManager;
-import com.gamingmesh.jobs.hooks.pyroFishingPro.PyroFishingProListener;
 import com.gamingmesh.jobs.hooks.stackMob.StackMobManager;
 import com.gamingmesh.jobs.hooks.wildStacker.WildStackerHandler;
 import com.gamingmesh.jobs.listeners.JobsCustomFishingPaymentListener;
@@ -141,13 +140,13 @@ public enum JobsHook {
     },
     PyroFishingPro {
         @Override
-        public void registerListener() {
+        protected boolean init() {
 
             if (!isPresent())
-                return;
+                return false;
 
-            JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager().registerEvents(new PyroFishingProListener(), JavaPlugin.getPlugin(Jobs.class));
             printListenerMessage(this);
+            return true;
         }
     },
     CustomFishing {

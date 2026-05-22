@@ -449,6 +449,11 @@ exampleJob:
     CustomTier:
       income: 1.0
       experience: 1.0
+  # Catching CUSTOM fish of the PyroFishingPro plugin's Hotspot argument
+  PyroFishingPro-Hotspot:
+    CustomTier:
+      income: 1.0
+      experience: 1.0
   # Catching CUSTOM fish of the CustomFishing plugin
   CustomFishing:
     CustomFishId:

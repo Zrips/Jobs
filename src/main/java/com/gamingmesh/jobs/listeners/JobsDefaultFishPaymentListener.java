@@ -1,6 +1,6 @@
 package com.gamingmesh.jobs.listeners;
 
-import org.bukkit.entity.EntityType;
+import me.arsmagica.API.PyroFishCatchEvent;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +13,6 @@ import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.actions.PyroFishingProInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.hooks.JobsHook;
-import com.gamingmesh.jobs.hooks.pyroFishingPro.PyroFishingProListener;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.player.UserManager;
@@ -55,12 +54,37 @@ public class JobsDefaultFishPaymentListener implements Listener {
             }
         }
 
-        if (JobsHook.PyroFishingPro.isEnabled() && PyroFishingProListener.getFish() != null) {
-            Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProListener.getFish(), ActionType.PYROFISHINGPRO), event.getCaught());
-            return;
-        }
-
         Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH), event.getCaught());
+    }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPyroFishCatch(PyroFishCatchEvent event) {
+        Player player = event.a();
+
+        if (player == null)
+            return;
+
+        if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+            return;
+
+        // check if in creative
+        if (!JobsPaymentListener.payIfCreative(player))
+            return;
+
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getWorld().getName()))
+            return;
+
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle() && !player.getVehicle().getType().toString().contains("BOAT"))
+            return;
+
+        if (!JobsPaymentListener.payForItemDurabilityLoss(player))
+            return;
+
+        if (event.isHotspot()) {
+            Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(event.getTier(), ActionType.PYROFISHINGPRO_HOTSPOT));
+        } else {
+            Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(event.getTier(), ActionType.PYROFISHINGPRO));
+        }
     }
 }
