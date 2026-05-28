@@ -122,7 +122,7 @@ public class PlayerManager {
             int id = playerUUIDMap.get(info.getUuid()).getID();
             if (Jobs.getGCManager().isInformDuplicates()) {
                 CMIMessages.consoleMessage("&7Duplicate! &5" + info.getName() + " &7same UUID for 2 entries in database. Please remove of one them from users table id1: &2" + id + " &7id2: &2" + info
-                    .getID());
+                        .getID());
             }
             if (id < info.getID()) {
                 return;
@@ -151,7 +151,8 @@ public class PlayerManager {
             }
             playersNameCache.putIfAbsent(jPlayer.getName().toLowerCase(), jPlayer);
         } else {
-            // Add player to cache independent if there was other record by this name, we should use latest record
+            // Add player to cache independent if there was other record by this name, we
+            // should use latest record
             playersNameCache.put(jPlayer.getName().toLowerCase(), jPlayer);
         }
 
@@ -182,8 +183,8 @@ public class PlayerManager {
     }
 
     /**
-     * Returns the player identifier by its name. This will returns
-     * -1 if the player is not cached.
+     * Returns the player identifier by its name. This will returns -1 if the player
+     * is not cached.
      *
      * @param name the player name
      * @return the identifier
@@ -194,8 +195,8 @@ public class PlayerManager {
     }
 
     /**
-     * Returns the player identifier by its uuid. This will returns
-     * -1 if the player is not cached.
+     * Returns the player identifier by its uuid. This will returns -1 if the player
+     * is not cached.
      *
      * @param uuid player {@link UUID}
      * @return the identifier
@@ -206,8 +207,8 @@ public class PlayerManager {
     }
 
     /**
-     * Returns the {@link PlayerInfo} for the given name. This will returns
-     * null if the player is not cached.
+     * Returns the {@link PlayerInfo} for the given name. This will returns null if
+     * the player is not cached.
      *
      * @param name the player name
      * @return {@link PlayerInfo}
@@ -231,8 +232,8 @@ public class PlayerManager {
     }
 
     /**
-     * Returns the {@link PlayerInfo} for the given uuid. This will returns
-     * null if the player is not cached.
+     * Returns the {@link PlayerInfo} for the given uuid. This will returns null if
+     * the player is not cached.
      *
      * @param uuid player {@link UUID}
      * @return {@link PlayerInfo}
@@ -242,9 +243,9 @@ public class PlayerManager {
     }
 
     /**
-     * Handles join of new player synchronously. This can be called
-     * within an asynchronous operation in order to load the player
-     * from database if it is not cached into memory.
+     * Handles join of new player synchronously. This can be called within an
+     * asynchronous operation in order to load the player from database if it is not
+     * cached into memory.
      *
      * @param player {@link Player}
      */
@@ -335,11 +336,12 @@ public class PlayerManager {
      */
     public void saveAll() {
         /*
-         * Saving is a three step process to minimize synchronization locks when called asynchronously.
+         * Saving is a three step process to minimize synchronization locks when called
+         * asynchronously.
          *
-         * 1) Safely copy list for saving.
-         * 2) Perform save on all players on copied list.
-         * 3) Garbage collect the real list to remove any offline players with saved data
+         * 1) Safely copy list for saving. 2) Perform save on all players on copied
+         * list. 3) Garbage collect the real list to remove any offline players with
+         * saved data
          */
         for (JobsPlayer jPlayer : new ArrayList<>(playersUUID.values()))
             jPlayer.save();
@@ -387,8 +389,7 @@ public class PlayerManager {
     /**
      * Gets the player job info for specific player if exist.
      * <p>
-     * This can return null sometimes if the given player
-     * is not cached into memory.
+     * This can return null sometimes if the given player is not cached into memory.
      *
      * @param player {@link Player}
      * @return {@link JobsPlayer} the player job info of the player
@@ -400,8 +401,7 @@ public class PlayerManager {
     /**
      * Gets the player job info for specific player uuid if exist.
      * <p>
-     * This can return null sometimes if the given player
-     * is not cached into memory.
+     * This can return null sometimes if the given player is not cached into memory.
      *
      * @param uuid the player uuid
      * @return {@link JobsPlayer} the player job info of the player
@@ -414,8 +414,7 @@ public class PlayerManager {
     /**
      * Get the player job info for specific player name if exist.
      * <p>
-     * This can return null sometimes if the given player
-     * is not cached into memory.
+     * This can return null sometimes if the given player is not cached into memory.
      *
      * @param playerName name - the player name who's job you're getting
      * @return {@link JobsPlayer} the player job info of the player
@@ -427,16 +426,16 @@ public class PlayerManager {
     /**
      * Gets the player job offline data for specific {@link PlayerInfo}
      *
-     * @param info {@link PlayerInfo}
-     * @param jobs the list of jobs data from database
-     * @param points {@link PlayerPoints}
-     * @param logs the map of logs
+     * @param info         {@link PlayerInfo}
+     * @param jobs         the list of jobs data from database
+     * @param points       {@link PlayerPoints}
+     * @param logs         the map of logs
      * @param archivedJobs {@link ArchivedJobs}
-     * @param limits {@link PaymentData}
+     * @param limits       {@link PaymentData}
      * @return {@link JobsPlayer}
      */
     public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points,
-        Map<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
+            Map<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
         if (info == null)
             return null;
 
@@ -511,7 +510,7 @@ public class PlayerManager {
      * Causes player to join to the given job.
      *
      * @param jPlayer {@link JobsPlayer}
-     * @param job {@link Job}
+     * @param job     {@link Job}
      */
     public void joinJob(JobsPlayer jPlayer, Job job) {
         if (jPlayer == null)
@@ -555,9 +554,32 @@ public class PlayerManager {
      * Causes player to leave the given job.
      *
      * @param jPlayer {@link JobsPlayer}
-     * @param job {@link Job}
+     * @param job     {@link Job}
      */
     public boolean leaveJob(JobsPlayer jPlayer, Job job) {
+        if (!canLeave(jPlayer, job))
+            return false;
+
+        Jobs.getJobsDAO().recordToArchive(jPlayer, job);
+
+        return cleanupLeavingJob(jPlayer, job);
+    }
+
+    /**
+     * Causes player to leave the given job and doesn't archive the data
+     *
+     * @param jPlayer {@link JobsPlayer}
+     * @param job     {@link Job}
+     */
+    public boolean deletePlayerJob(JobsPlayer jPlayer, Job job) {
+
+        if (!canLeave(jPlayer, job))
+            return false;
+
+        return cleanupLeavingJob(jPlayer, job);
+    }
+
+    private boolean canLeave(JobsPlayer jPlayer, Job job) {
         if (jPlayer == null || !jPlayer.isInJob(job))
             return false;
 
@@ -567,16 +589,14 @@ public class PlayerManager {
         if (jobsLeaveEvent.isCancelled())
             return false;
 
-        Jobs.getJobsDAO().recordToArchive(jPlayer, job);
-
-        return cleanupLeavingJob(jPlayer, job);
+        return true;
     }
 
     /**
      * Does the needed cleanup for player to leave the given job.
      *
      * @param jPlayer {@link JobsPlayer}
-     * @param job {@link Job}
+     * @param job     {@link Job}
      */
     private boolean cleanupLeavingJob(JobsPlayer jPlayer, Job job) {
 
@@ -615,25 +635,6 @@ public class PlayerManager {
     }
 
     /**
-     * Causes player to leave the given job and doesn't archive the data
-     *
-     * @param jPlayer {@link JobsPlayer}
-     * @param job {@link Job}
-     */
-    public boolean deletePlayerJob(JobsPlayer jPlayer, Job job) {
-        if (jPlayer == null || !jPlayer.isInJob(job))
-            return false;
-
-        JobsLeaveEvent jobsLeaveEvent = new JobsLeaveEvent(jPlayer, job);
-        plugin.getServer().getPluginManager().callEvent(jobsLeaveEvent);
-        // If event is canceled, don't do anything
-        if (jobsLeaveEvent.isCancelled())
-            return false;
-
-        return cleanupLeavingJob(jPlayer, job);
-    }
-
-    /**
      * Deletes all job data for a player from all jobs
      *
      * @param jPlayer {@link JobsPlayer}
@@ -649,8 +650,8 @@ public class PlayerManager {
      * Transfers player job to a new one
      *
      * @param jPlayer {@link JobsPlayer}
-     * @param oldjob - the old job
-     * @param newjob - the new job
+     * @param oldjob  - the old job
+     * @param newjob  - the new job
      */
     public boolean transferJob(JobsPlayer jPlayer, Job oldjob, Job newjob) {
         if (!jPlayer.transferJob(oldjob, newjob) || !Jobs.getJobsDAO().quitJob(jPlayer, oldjob))
@@ -667,8 +668,8 @@ public class PlayerManager {
      * Promotes player in their job
      *
      * @param jPlayer {@link JobsPlayer}
-     * @param job - the job
-     * @param levels - number of levels to promote
+     * @param job     - the job
+     * @param levels  - number of levels to promote
      */
     public void promoteJob(JobsPlayer jPlayer, Job job, int levels) {
         promoteJob(jPlayer, job, levels, false);
@@ -678,8 +679,8 @@ public class PlayerManager {
      * Promotes player in their job
      *
      * @param jPlayer {@link JobsPlayer}
-     * @param job - the job
-     * @param levels - number of levels to promote
+     * @param job     - the job
+     * @param levels  - number of levels to promote
      */
     public void promoteJob(JobsPlayer jPlayer, Job job, int levels, boolean performCommands) {
 
@@ -699,8 +700,8 @@ public class PlayerManager {
      * Demote player in their job
      *
      * @param jPlayer {@link JobsPlayer}
-     * @param job - the job
-     * @param levels - number of levels to demote
+     * @param job     - the job
+     * @param levels  - number of levels to demote
      */
     public void demoteJob(JobsPlayer jPlayer, Job job, int levels) {
         jPlayer.demoteJob(job, levels);
@@ -712,8 +713,8 @@ public class PlayerManager {
     /**
      * Adds experience to the player
      *
-     * @param jPlayer {@link JobsPlayer}
-     * @param job - the job
+     * @param jPlayer    {@link JobsPlayer}
+     * @param job        - the job
      * @param experience - experience gained
      */
     public void addExperience(JobsPlayer jPlayer, Job job, double experience) {
@@ -737,8 +738,8 @@ public class PlayerManager {
     /**
      * Removes experience from the player
      *
-     * @param jPlayer {@link JobsPlayer}
-     * @param job {@link Job}
+     * @param jPlayer    {@link JobsPlayer}
+     * @param job        {@link Job}
      * @param experience - experience gained
      */
     public void removeExperience(JobsPlayer jPlayer, Job job, double experience) {
@@ -758,8 +759,8 @@ public class PlayerManager {
     /**
      * Broadcasts level up about a player
      *
-     * @param jPlayer {@link JobsPlayer}
-     * @param job {@link Job}
+     * @param jPlayer  {@link JobsPlayer}
+     * @param job      {@link Job}
      * @param oldLevel
      */
     public void performLevelUp(JobsPlayer jPlayer, Job job, int oldLevel) {
@@ -799,13 +800,13 @@ public class PlayerManager {
 
         // LevelUp event
         JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(
-            jPlayer,
-            job,
-            prog.getLevel(),
-            Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
-            Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
-            Jobs.getGCManager().soundLevelup,
-            Jobs.getGCManager().soundTitleChange);
+                jPlayer,
+                job,
+                prog.getLevel(),
+                Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
+                Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
+                Jobs.getGCManager().soundLevelup,
+                Jobs.getGCManager().soundTitleChange);
 
         plugin.getServer().getPluginManager().callEvent(levelUpEvent);
 
@@ -854,7 +855,7 @@ public class PlayerManager {
                     Color c2 = Util.getColor(r.nextInt(17) + 1);
 
                     FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1)
-                        .withFade(c2).with(type).trail(r.nextBoolean()).build();
+                            .withFade(c2).with(type).trail(r.nextBoolean()).build();
                     fm.addEffect(effect);
 
                     fm.setPower(r.nextInt(2) + 1);
@@ -873,7 +874,7 @@ public class PlayerManager {
 
         if (levelUpEvent.getOldTitle() != null)
             message = message.replace("%titlename%", levelUpEvent.getOldTitle()
-                .getChatColor().toString() + levelUpEvent.getOldTitle().getName());
+                    .getChatColor().toString() + levelUpEvent.getOldTitle().getName());
 
         message = message.replace("%playername%", jPlayer.getName());
         message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
@@ -883,7 +884,7 @@ public class PlayerManager {
             for (String line : message.split("\n")) {
                 if (Jobs.getGCManager().isBroadcastingLevelups()) {
                     if (Jobs.getGCManager().BroadcastingLevelUpLevels.contains(oldLevel + 1)
-                        || Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
+                            || Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
                         plugin.getComplement().broadcastMessage(line);
                 } else if (player != null) {
                     if (Jobs.getGCManager().LevelChangeActionBar)
@@ -905,12 +906,13 @@ public class PlayerManager {
 
             // user would skill up
             message = Jobs.getLanguage().getMessage("message.skillup." + (Jobs.getGCManager().isBroadcastingSkillups()
-                ? "broadcast" : "nobroadcast"));
+                    ? "broadcast"
+                    : "nobroadcast"));
 
             message = message.replace("%playername%", jPlayer.getName());
             message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
             message = message.replace("%titlename%", levelUpEvent.getNewTitle()
-                .getChatColor().toString() + levelUpEvent.getNewTitle().getName());
+                    .getChatColor().toString() + levelUpEvent.getNewTitle().getName());
 
             message = Language.updateJob(message, job);
 
@@ -965,8 +967,8 @@ public class PlayerManager {
     /**
      * Performs command on level up
      *
-     * @param jPlayer {@link JobsPlayer}
-     * @param prog {@link JobProgression}
+     * @param jPlayer  {@link JobsPlayer}
+     * @param prog     {@link JobProgression}
      * @param oldLevel
      */
     public void performCommandOnLevelUp(JobsPlayer jPlayer, JobProgression prog, int oldLevel) {
@@ -981,9 +983,9 @@ public class PlayerManager {
             if ((command.getLevelFrom() == 0 && command.getLevelUntil() == 0) || (newLevel >= command.getLevelFrom() && newLevel <= command.getLevelUntil())) {
                 for (String commandString : new ArrayList<>(command.getCommands())) {
                     commandString = commandString.replace("[player]", jPlayer.getName())
-                        .replace("[playerName]", jPlayer.getName())
-                        .replace("[oldlevel]", Integer.toString(newLevel - 1))
-                        .replace("[newlevel]", Integer.toString(newLevel));
+                            .replace("[playerName]", jPlayer.getName())
+                            .replace("[oldlevel]", Integer.toString(newLevel - 1))
+                            .replace("[newlevel]", Integer.toString(newLevel));
 
                     commandString = Language.updateJob(commandString, prog.getJob());
 
@@ -997,8 +999,8 @@ public class PlayerManager {
     /**
      * Performs command for each level
      *
-     * @param jPlayer {@link JobsPlayer}
-     * @param prog {@link JobProgression}
+     * @param jPlayer  {@link JobsPlayer}
+     * @param prog     {@link JobProgression}
      * @param oldLevel
      */
     public void performCommandOnLevelUp(JobsPlayer jPlayer, JobProgression prog, int oldLevel, int untilLevel) {
@@ -1013,7 +1015,7 @@ public class PlayerManager {
     /**
      * Checks whenever the given jobs player is under the max allowed jobs.
      *
-     * @param jPlayer {@link JobsPlayer}
+     * @param jPlayer      {@link JobsPlayer}
      * @param currentCount the current jobs size
      * @return true if the player is under the given jobs size
      */
@@ -1097,7 +1099,7 @@ public class PlayerManager {
         if (Jobs.getGCManager().boostedItemsInMainHand) {
             ItemStack iih = CMIItemStack.getItemInMainHand(player);
             if (iih != null && Jobs.getGCManager().boostedItemsSlotSpecific && (!CMIMaterial.isArmor(iih.getType()) || CMIMaterial.isShield(iih.getType())) || !Jobs
-                .getGCManager().boostedItemsSlotSpecific) {
+                    .getGCManager().boostedItemsSlotSpecific) {
                 jitems.add(getJobsItemByNbt(CMIItemStack.getItemInMainHand(player)));
             }
         }
@@ -1106,7 +1108,7 @@ public class PlayerManager {
         if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand) {
             ItemStack iih = CMIItemStack.getItemInOffHand(player);
             if (iih != null && Jobs.getGCManager().boostedItemsSlotSpecific && (!CMIMaterial.isArmor(iih.getType()) || CMIMaterial.isShield(iih.getType())) || !Jobs
-                .getGCManager().boostedItemsSlotSpecific) {
+                    .getGCManager().boostedItemsSlotSpecific) {
                 jitems.add(getJobsItemByNbt(player.getInventory().getItemInOffHand()));
             }
         }
@@ -1121,24 +1123,24 @@ public class PlayerManager {
                     continue;
 
                 if (Jobs.getGCManager().boostedItemsSlotSpecific) {
-                    //Boots
+                    // Boots
                     if (i == 0 && (!CMIMaterial.isArmor(item.getType()) || CMIMaterial.isArmor(item.getType()) && !CMIMaterial.isBoots(item.getType()))) {
                         continue;
                     }
 
-                    //Leggings
+                    // Leggings
                     if (i == 1 && (!CMIMaterial.isArmor(item.getType()) || CMIMaterial.isArmor(item.getType()) && !CMIMaterial.isLeggings(item.getType()))) {
                         continue;
                     }
 
-                    //Chestplate
+                    // Chestplate
                     if (i == 2 && (!CMIMaterial.isArmor(item.getType()) || CMIMaterial.isArmor(item.getType()) && !CMIMaterial.isChestplate(item.getType()))) {
                         continue;
                     }
 
                     // Helmet slot
                     if (i == 3 && !CMIMaterial.isArmor(item.getType()) && (CMIMaterial.isWeapon(item.getType()) || CMIMaterial.isTool(item.getType())) || i == 3 && CMIMaterial.isArmor(item.getType())
-                        && !CMIMaterial.isHelmet(item.getType())) {
+                            && !CMIMaterial.isHelmet(item.getType())) {
                         continue;
                     }
                 }

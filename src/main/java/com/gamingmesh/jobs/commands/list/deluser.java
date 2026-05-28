@@ -25,20 +25,24 @@ public class deluser implements Cmd {
             Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args[0]);
             return true;
         }
-        Player pSender = (Player) sender;
-        java.util.UUID uuid = pSender.getUniqueId();
 
-        if (!Util.ADMINCONFIRM.contains(uuid)) {
-            Util.ADMINCONFIRM.add(uuid);
+        if (sender instanceof Player) {
 
-            CMIScheduler.runTaskLater(plugin, () -> Util.ADMINCONFIRM.remove(uuid), 20 * Jobs.getGCManager().ConfirmExpiryTime);
+            Player pSender = (Player) sender;
+            java.util.UUID uuid = pSender.getUniqueId();
 
-            Language.sendMessage(sender, "command.deluser.confirmationNeed", "%playername%", args[0],
-                    "[time]", Jobs.getGCManager().ConfirmExpiryTime);
-            return true;
+            if (!Util.ADMINCONFIRM.contains(uuid)) {
+                Util.ADMINCONFIRM.add(uuid);
+
+                CMIScheduler.runTaskLater(plugin, () -> Util.ADMINCONFIRM.remove(uuid), 20 * Jobs.getGCManager().ConfirmExpiryTime);
+
+                Language.sendMessage(sender, "command.deluser.confirmationNeed", "%playername%", args[0],
+                        "[time]", Jobs.getGCManager().ConfirmExpiryTime);
+                return true;
+            }
+
+            Util.LEAVECONFIRM.remove(uuid);
         }
-
-        Util.LEAVECONFIRM.remove(uuid);
 
         try {
             Player player = jPlayer.getPlayer();
@@ -60,4 +64,3 @@ public class deluser implements Cmd {
         return true;
     }
 }
-
