@@ -63,7 +63,7 @@ public class Boost {
             if (bm == null)
                 continue;
 
-            if (one == BoostOf.NearSpawner || one == BoostOf.PetPay)
+            if (one == BoostOf.NearSpawner || one == BoostOf.PetPay || one == BoostOf.McMMO)
                 continue;
 
             if (bm.isValid(type)) {
@@ -84,12 +84,22 @@ public class Boost {
                     r = (r + 1) * (bm.get(type) + 1);
                     r -= 1;
                 }
+
+                bm = map.get(BoostOf.McMMO);
+                if (bm != null && bm.isValid(type) && bm.get(type) != 0) {
+                    r = (r + 1) * (bm.get(type) + 1);
+                    r -= 1;
+                }
             } else {
                 BoostMultiplier bm = map.get(BoostOf.NearSpawner);
                 if (bm != null && bm.isValid(type)) {
                     r += bm.get(type);
                 }
                 bm = map.get(BoostOf.PetPay);
+                if (bm != null && bm.isValid(type)) {
+                    r += bm.get(type);
+                }
+                bm = map.get(BoostOf.McMMO);
                 if (bm != null && bm.isValid(type)) {
                     r += bm.get(type);
                 }
