@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestProgression;
@@ -54,7 +55,7 @@ public class resetquest implements Cmd {
             quests = jPlayer.getQuestProgressions(job);
 
         if (quests.isEmpty()) {
-            Language.sendMessage(sender, "command.resetquest.output.noQuests");
+            JLC.command_resetquest_output_noQuests.sendMessage(sender);
             return true;
         }
 
