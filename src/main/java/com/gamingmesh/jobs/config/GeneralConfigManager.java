@@ -527,7 +527,7 @@ public class GeneralConfigManager {
 				"Tool and weapon items will be ignored if those are equiped in players armor slots", "None tool or weapon items will be allowed in players head slot");
 		boostedItemsSlotSpecific = c.get("boosted-items-slot-specific", true);
 
-		c.addComment("multiply-boosted-extra-values", "Extra boost values for nearSpawner and petPay will be multiplied by sum of other boost values",
+		c.addComment("multiply-boosted-extra-values", "Extra boost values for nearSpawner, petPay, and mcMMO will be multiplied by sum of other boost values",
 				"When set to true and for example nearSpawner set to -0.98 aka 2% of original payment with other bonuses which should double payment will result in you getting 4% instead of corrent 102% payment",
 				"If set to false all bonus are sumed to one");
 		multiplyBoostedExtraValues = c.get("multiply-boosted-extra-values", false);
