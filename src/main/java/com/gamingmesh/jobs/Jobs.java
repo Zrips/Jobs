@@ -107,8 +107,10 @@ import com.gamingmesh.jobs.listeners.JobsPayment1_20Listener;
 import com.gamingmesh.jobs.listeners.JobsPayment1_9Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentVisualizationListener;
+import com.gamingmesh.jobs.listeners.Paper1_20_5Listeners;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.listeners.PlayerSignEdit1_20Listeners;
+import com.gamingmesh.jobs.listeners.upTo1_13Listeners;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
@@ -874,9 +876,17 @@ public final class Jobs extends JavaPlugin {
 		if (Version.isCurrentEqualOrHigher(Version.v1_17_R1))
 			pm.registerEvents(new JobsPayment1_17Listener(), getInstance());
 
-		if (Version.isCurrentEqualOrHigher(Version.v1_20_R1)) {
+		if (Version.isCurrentEqualOrHigher(Version.v1_20_0)) {
 			pm.registerEvents(new PlayerSignEdit1_20Listeners(), getInstance());
 			pm.registerEvents(new JobsPayment1_20Listener(), getInstance());
+		}
+		
+		if (Version.isCurrentLower(Version.v1_14_0)) {
+		    pm.registerEvents(new upTo1_13Listeners(), getInstance());
+		}
+		
+		if (Version.isPaperBranch() && Version.isCurrentEqualOrHigher(Version.v1_20_5)) {
+		    pm.registerEvents(new Paper1_20_5Listeners(), getInstance());
 		}
 
 		if (getGCManager().useBlockProtection) {

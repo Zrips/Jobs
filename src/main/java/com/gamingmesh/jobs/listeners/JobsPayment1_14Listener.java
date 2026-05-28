@@ -10,15 +10,19 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockCookEvent;
+import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityTransformEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.actions.EntityActionInfo;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsMobSpawner;
@@ -28,6 +32,37 @@ public final class JobsPayment1_14Listener implements Listener {
 
     // BlockCookEvent does not have "cooking owner"
     private final Map<UUID, List<PlayerCamp>> campPlayers = new HashMap<>();
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityTransformEvent(EntityBreedEvent event) {
+
+        if (!Jobs.getGCManager().useBreederFinder || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+            return;
+
+        if (!(event.getBreeder() instanceof Player)) 
+            return;        
+
+        processBreeding( event.getEntity(),  (Player) event.getBreeder());        
+    }
+
+    public static void processBreeding(LivingEntity animal, Player player) {
+        if (player == null)
+            return;
+
+        // check if in creative
+        if (!JobsPaymentListener.payIfCreative(player))
+            return;
+
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
+
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
+
+        // pay
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(animal, ActionType.BREED));
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityTransformEvent(EntityTransformEvent event) {

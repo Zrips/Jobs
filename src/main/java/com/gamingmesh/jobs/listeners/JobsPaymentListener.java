@@ -1586,29 +1586,14 @@ public final class JobsPaymentListener implements Listener {
         if (!Jobs.getGCManager().useBreederFinder || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
             return;
 
-        if (!event.getSpawnReason().toString().equalsIgnoreCase("BREEDING") && !event.getSpawnReason().toString().equalsIgnoreCase("EGG"))
+        if (!event.getSpawnReason().toString().equalsIgnoreCase("EGG"))
             return;
 
         LivingEntity animal = event.getEntity();
 
         Player player = Util.getClosestPlayer(animal.getLocation());
 
-        if (player == null)
-            return;
-
-        // check if in creative
-        if (!payIfCreative(player))
-            return;
-
-        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-            return;
-
-        // check if player is riding
-        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-            return;
-
-        // pay
-        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(animal, ActionType.BREED));
+        JobsPayment1_14Listener.processBreeding(animal, player);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

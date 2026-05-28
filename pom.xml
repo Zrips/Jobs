@@ -24,6 +24,12 @@
 			<version>1.21.11-R0.2-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+			<groupId>io.papermc.paper</groupId>
+			<artifactId>paper-api</artifactId> 
+			<version>1.21.11-R0.1-SNAPSHOT</version> <!-- use latest -->
+			<scope>provided</scope>
+		</dependency>
 		<!-- Mojang Authlib -->
 		<dependency>
 			<groupId>com.mojang</groupId>
@@ -153,7 +159,7 @@
 		<dependency>
 			<groupId>com.github.Zrips</groupId>
 			<artifactId>CMILib</artifactId>
-			<version>1.5.6.3</version>
+			<version>1.5.9.6</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
