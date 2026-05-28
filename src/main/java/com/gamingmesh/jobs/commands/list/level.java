@@ -85,11 +85,11 @@ public class level implements Cmd {
                     total = (oldLevel + amount);
 
                     if (prog.setLevel(total)) {
-                        JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job, prog.getLevel(),
-                            Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
-                            Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
-                            Jobs.getGCManager().soundLevelup,
-                            Jobs.getGCManager().soundTitleChange);
+                        JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job, oldLevel, prog.getLevel(),
+                                Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
+                                Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
+                                Jobs.getGCManager().soundLevelup,
+                                Jobs.getGCManager().soundTitleChange);
 
                         plugin.getServer().getPluginManager().callEvent(levelUpEvent);
 
@@ -113,7 +113,7 @@ public class level implements Cmd {
                 Player player = jPlayer.getPlayer();
                 if (player != null)
                     Language.sendMessage(player, "command.level.output.target", job, "%level%", prog.getLevel(),
-                        "%exp%", CurrencyType.EXP.format(prog.getExperience()));
+                            "%exp%", CurrencyType.EXP.format(prog.getExperience()));
 
                 Language.sendMessage(sender, "general.admin.success");
             } else

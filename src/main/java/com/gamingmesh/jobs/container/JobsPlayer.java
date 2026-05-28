@@ -222,7 +222,7 @@ public class JobsPlayer {
     /**
      * Checks whenever this player is under limit for specific {@link CurrencyType}
      * 
-     * @param type {@link CurrencyType}
+     * @param type   {@link CurrencyType}
      * @param amount amount of points
      * @return true if it is under
      */
@@ -329,7 +329,7 @@ public class JobsPlayer {
      * Attempts to get the boost from specific job and {@link CurrencyType}
      * 
      * @param jobName
-     * @param type {@link CurrencyType}
+     * @param type    {@link CurrencyType}
      * @see #getBoost(String, CurrencyType, boolean)
      * @return amount of boost
      */
@@ -341,8 +341,8 @@ public class JobsPlayer {
      * Attempts to get the boost from specific job and {@link CurrencyType}
      * 
      * @param jobName
-     * @param type {@link CurrencyType}
-     * @param force whenever we should update now or wait until scheduled time
+     * @param type    {@link CurrencyType}
+     * @param force   whenever we should update now or wait until scheduled time
      * @return amount of boost
      */
     public double getBoost(String jobName, CurrencyType type, boolean force) {
@@ -513,6 +513,7 @@ public class JobsPlayer {
 
     /**
      * get the userName
+     * 
      * @return the userName
      */
     @Deprecated
@@ -543,6 +544,7 @@ public class JobsPlayer {
 
     /**
      * get the playerUUID
+     * 
      * @return the playerUUID
      */
     @Deprecated
@@ -650,6 +652,7 @@ public class JobsPlayer {
 
     /**
      * Player leaves a job
+     * 
      * @param job - the job left
      */
     public boolean leaveJob(Job job) {
@@ -657,7 +660,7 @@ public class JobsPlayer {
             if (progression.remove(getJobProgression(job))) {
 
                 if (!Jobs.getGCManager().jobsTopIncludesArchivedStats)
-                  job.removeFromTop(getUniqueId());
+                    job.removeFromTop(getUniqueId());
 
                 JobsTop.updateGlobalTop(this);
 
@@ -673,6 +676,7 @@ public class JobsPlayer {
 
     /**
      * Attempts to leave all jobs from this player.
+     * 
      * @return true if success
      */
     public boolean leaveAllJobs() {
@@ -687,7 +691,8 @@ public class JobsPlayer {
 
     /**
      * Promotes player in job
-     * @param job - the job being promoted
+     * 
+     * @param job    - the job being promoted
      * @param levels - number of levels to promote
      */
     public void promoteJob(Job job, int levels) {
@@ -700,8 +705,8 @@ public class JobsPlayer {
             return;
 
         int oldLevel = prog.getLevel(),
-            newLevel = oldLevel + levels,
-            maxLevel = job.getMaxLevel(this);
+                newLevel = oldLevel + levels,
+                maxLevel = job.getMaxLevel(this);
 
         if (maxLevel > 0 && newLevel > maxLevel)
             newLevel = maxLevel;
@@ -712,7 +717,8 @@ public class JobsPlayer {
 
     /**
      * Demotes player in job
-     * @param job - the job being deomoted
+     * 
+     * @param job    - the job being deomoted
      * @param levels - number of levels to demote
      */
     public void demoteJob(Job job, int levels) {
@@ -734,7 +740,8 @@ public class JobsPlayer {
 
     /**
      * Sets player to a specific level
-     * @param job - the job
+     * 
+     * @param job   - the job
      * @param level - the level
      */
     private void setLevel(Job job, int level) {
@@ -747,11 +754,11 @@ public class JobsPlayer {
 
         if (level != oldLevel) {
             if (prog.setLevel(level)) {
-                JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(this, job, prog.getLevel(),
-                    Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
-                    Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
-                    Jobs.getGCManager().soundLevelup,
-                    Jobs.getGCManager().soundTitleChange);
+                JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(this, job, oldLevel, prog.getLevel(),
+                        Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
+                        Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
+                        Jobs.getGCManager().soundLevelup,
+                        Jobs.getGCManager().soundTitleChange);
 
                 plugin.getServer().getPluginManager().callEvent(levelUpEvent);
             }
@@ -765,6 +772,7 @@ public class JobsPlayer {
 
     /**
      * Player leaves a job
+     * 
      * @param oldjob - the old job
      * @param newjob - the new job
      */
@@ -840,7 +848,7 @@ public class JobsPlayer {
                     builder.append(Jobs.getGCManager().modifyChatSeparator);
                 }
                 processesChat(method, builder, prog.getLevel(), Jobs.getTitleManager().getTitle(prog.getLevel(),
-                    prog.getJob().getName()), prog.getJob());
+                        prog.getJob().getName()), prog.getJob());
             }
         } else {
             Job nonejob = Jobs.getNoneJob();
@@ -995,6 +1003,7 @@ public class JobsPlayer {
 
     /**
      * Whether or not player is online
+     * 
      * @return true if online, otherwise false
      */
     public boolean isOnline() {
@@ -1450,6 +1459,7 @@ public class JobsPlayer {
 
     /**
      * Returns the max allowed owner ship for the given block type.
+     * 
      * @param type {@link BlockTypes}
      * @return max allowed owner ship
      */

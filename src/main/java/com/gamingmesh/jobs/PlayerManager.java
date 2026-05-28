@@ -802,6 +802,7 @@ public class PlayerManager {
         JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(
                 jPlayer,
                 job,
+                oldLevel,
                 prog.getLevel(),
                 Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
                 Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
