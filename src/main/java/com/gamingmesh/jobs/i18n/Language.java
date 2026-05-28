@@ -74,6 +74,7 @@ public class Language {
 
     /**
      * Get the message with the correct key
+     * 
      * @param key - the key of the message
      * @return the message
      */
@@ -135,6 +136,21 @@ public class Language {
                 break;
 
             msg = msg.replace(String.valueOf(variables[i]), String.valueOf(variables[i + 1]));
+
+            String replaceKey = String.valueOf(variables[i]);
+            String replaceValue = String.valueOf(variables[i + 1]);
+
+            msg = msg.replace(replaceKey, replaceValue);
+
+            // Support [playerName] <-> %playerName%
+            if (replaceKey.startsWith("[") && replaceKey.endsWith("]")) {
+                String altKey = "%" + replaceKey.substring(1, replaceKey.length() - 1) + "%";
+                msg = msg.replace(altKey, replaceValue);
+            } else if (replaceKey.startsWith("%") && replaceKey.endsWith("%")) {
+                String altKey = "[" + replaceKey.substring(1, replaceKey.length() - 1) + "]";
+                msg = msg.replace(altKey, replaceValue);
+            }
+
             i++;
         }
 
@@ -143,6 +159,7 @@ public class Language {
 
     /**
      * Get the message with the correct key
+     * 
      * @param key - the key of the message
      * @return the message
      */

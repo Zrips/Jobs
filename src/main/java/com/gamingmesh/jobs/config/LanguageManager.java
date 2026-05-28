@@ -31,7 +31,8 @@ public class LanguageManager {
      * loads from Jobs/locale/messages_en.yml
      */
     void load() {
-        // This should be present to copy over default locale files into locale folder if file doesn't exist. Grabs all files from plugin file.
+        // This should be present to copy over default locale files into locale folder
+        // if file doesn't exist. Grabs all files from plugin file.
         languages = new ArrayList<>();
         try {
             languages.addAll(Util.getFilesFromPackage("locale", "messages_", "yml"));
@@ -43,7 +44,7 @@ public class LanguageManager {
             YmlMaker langFile = new YmlMaker(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
             langFile.saveDefaultConfig();
         }
-        //Up to here.
+        // Up to here.
 
         String ls = Jobs.getGCManager().localeString;
         if (ls.isEmpty())
@@ -61,7 +62,8 @@ public class LanguageManager {
         for (String lang : languages) {
             File f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 
-            // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
+            // Fail safe if file get corrupted and being created with corrupted data, we
+            // need to recreate it
             if ((f.length() / 1024) > 1024) {
                 f.delete();
                 f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
@@ -79,9 +81,9 @@ public class LanguageManager {
             Jobs.getGCManager().getCommandArgs().clear();
 
             c.addHeaderComments(new ArrayList<String>(Arrays.asList(
-                "%playername% or %playerdisplayname% can be used to include ether players original name or his display name which can be colored and use players nick name")));
+                    "%playername% or %playerdisplayname% can be used to include ether players original name or his display name which can be colored and use players nick name")));
 
-            c.get("economy.error.nomoney", "&cSorry, no money left in national bank!");
+//            c.get("economy.error.nomoney", "&cSorry, no money left in national bank!");
             c.get("limitedItem.error.levelup", "&cYou need to level up in [jobname] to use this item!");
             c.get("general.info.toplineseparator", "&7*********************** &6%playerdisplayname% &7***********************");
             c.get("general.info.separator", "&7*******************************************************");
@@ -112,8 +114,8 @@ public class LanguageManager {
             c.get("general.error.noHelpPage", "&cThere is no help page by this number!");
             c.get("general.error.job", "&cThe job you selected does not exist!");
             c.get("general.error.jobname", "&cCan't find job by this name!");
-            c.addComment("general.error.noinfoByPlayer", "Only %playername% can be used here");
-            c.get("general.error.noinfoByPlayer", "&cNo information found by [%playername%] player name!");
+//            c.addComment("general.error.noinfoByPlayer", "Only %playername% can be used here");
+//            c.get("general.error.noinfoByPlayer", "&cNo information found by [%playername%] player name!");
             c.get("general.error.worldisdisabled", "&cYou can't use command in this world!");
 
             c.get("general.error.newRegistration", "&eRegistered new ownership for [block] &7[current]&e/&f[max]");
@@ -180,7 +182,7 @@ public class LanguageManager {
             c.get("command.bonus.output.finalExplanation", " &eDoes not include Petpay and Near spawner bonus/penalty");
 
             c.get("command.convert.help.info",
-                "Converts the database system from one system to another. If you are currently running SQLite, this will convert it to MySQL and vice versa.");
+                    "Converts the database system from one system to another. If you are currently running SQLite, this will convert it to MySQL and vice versa.");
             c.get("command.convert.help.args", "");
 
             c.get("command.limit.help.info", "Shows payment limits for jobs");
@@ -221,7 +223,7 @@ public class LanguageManager {
             c.get("command.resetquest.help.args", "[playername] [jobname]");
             Jobs.getGCManager().getCommandArgs().put("resetquest", Arrays.asList("[playername]", "[jobname]"));
             c.get("command.resetquest.output.reseted", "&eQuest has been reset for: &2%playerdisplayname%");
-            c.get("command.resetquest.output.noQuests", "&eCan't find any quests");
+//            c.get("command.resetquest.output.noQuests", "&eCan't find any quests");
 
             c.get("command.points.help.info", "Shows how much points does a player have.");
             c.get("command.points.help.args", "[playername]");
@@ -459,8 +461,8 @@ public class LanguageManager {
 
             c.get("command.skipquest.help.info", "Skip defined quest and get new one");
             c.get("command.skipquest.help.args", "[jobname] [questname] (playerName)");
-            c.get("command.skipquest.output.questSkipForCost", "&2You skipped the quest and paid:&e %amount%$");
-            c.get("command.skipquest.confirmationNeed", "&cAre you sure you want to skip&e [questName]&c quest? Type the command again within&6 [time] seconds &cto confirm!");
+//            c.get("command.skipquest.output.questSkipForCost", "&2You skipped the quest and paid:&e %amount%$");
+//            c.get("command.skipquest.confirmationNeed", "&cAre you sure you want to skip&e [questName]&c quest? Type the command again within&6 [time] seconds &cto confirm!");
             Jobs.getGCManager().getCommandArgs().put("skipquest", Arrays.asList("[jobname]", "[questname]", "[playername]"));
 
             c.get("command.quests.help.info", "List available quests");
@@ -588,8 +590,8 @@ public class LanguageManager {
             c.get("command.deluser.help.args", "[playername]");
             Jobs.getGCManager().getCommandArgs().put("deluser", Arrays.asList("[playername]"));
             c.get("command.deluser.output.target", "You have been removed from the jobs database.");
-            c.get("command.deluser.confirmationNeed", "&cAre you sure you want to delete &e[playername]&c from the database? This cannot be reversed! Type the command again within&6 [time] seconds &cto confirm!");
-
+            c.get("command.deluser.confirmationNeed",
+                    "&cAre you sure you want to delete &e[playername]&c from the database? This cannot be reversed! Type the command again within&6 [time] seconds &cto confirm!");
 
             c.get("command.grantxp.help.info", "Grants the player X experience in a job.");
             c.get("command.grantxp.help.args", "[playername] [jobname] [xp]");
@@ -691,10 +693,19 @@ public class LanguageManager {
             c.get("signs.secondline.info", "&0Info");
             c.get("signs.secondline.archive", "&0Archive");
 
-            //c.get("scoreboard.clear", "&eIf you want to remove scoreboard, type &2/jobs top clear");
+            // c.get("scoreboard.clear", "&eIf you want to remove scoreboard, type &2/jobs
+            // top clear");
             c.get("scoreboard.topline", "&2Top &e%jobname%");
             c.get("scoreboard.gtopline", "&2Global top list");
             c.get("scoreboard.line", "&2%number%. &e%playerdisplayname% &e(&6%level%&e)");
+
+            // Going with ENUM's for simpler tracking of locale lines
+            for (JLC one : JLC.values()) {
+                c.get(one.getPath(), one.getText());
+                if (!one.getComments().isEmpty()) {
+                    c.addComment(one.getPath(), one.getComments().toArray(new String[0]));
+                }
+            }
 
             signKeys.clear();
             signKeys.addAll(c.getC().getConfigurationSection("signs.secondline").getKeys(false));
