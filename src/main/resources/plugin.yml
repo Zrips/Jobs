@@ -137,6 +137,9 @@ permissions:
   jobs.command.demote:
     description: Grants access to the demote command
     default: op
+  jobs.command.deluser:
+    description: Grants access to the deluser command
+    default: op
   jobs.command.grantxp:
     description: Grants access to the grantxp command
     default: op

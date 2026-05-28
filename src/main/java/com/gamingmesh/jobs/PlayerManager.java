@@ -569,6 +569,17 @@ public class PlayerManager {
 
         Jobs.getJobsDAO().recordToArchive(jPlayer, job);
 
+        return cleanupLeavingJob(jPlayer, job);
+    }
+
+    /**
+     * Does the needed cleanup for player to leave the given job.
+     *
+     * @param jPlayer {@link JobsPlayer}
+     * @param job {@link Job}
+     */
+    private boolean cleanupLeavingJob(JobsPlayer jPlayer, Job job) {
+
         // let the user leave the job
         if (!jPlayer.leaveJob(job))
             return false;
@@ -599,6 +610,37 @@ public class PlayerManager {
     public void leaveAllJobs(JobsPlayer jPlayer) {
         for (JobProgression job : new ArrayList<>(jPlayer.getJobProgression()))
             leaveJob(jPlayer, job.getJob());
+
+        jPlayer.leaveAllJobs();
+    }
+
+    /**
+     * Causes player to leave the given job and doesn't archive the data
+     *
+     * @param jPlayer {@link JobsPlayer}
+     * @param job {@link Job}
+     */
+    public boolean deletePlayerJob(JobsPlayer jPlayer, Job job) {
+        if (jPlayer == null || !jPlayer.isInJob(job))
+            return false;
+
+        JobsLeaveEvent jobsLeaveEvent = new JobsLeaveEvent(jPlayer, job);
+        plugin.getServer().getPluginManager().callEvent(jobsLeaveEvent);
+        // If event is canceled, don't do anything
+        if (jobsLeaveEvent.isCancelled())
+            return false;
+
+        return cleanupLeavingJob(jPlayer, job);
+    }
+
+    /**
+     * Deletes all job data for a player from all jobs
+     *
+     * @param jPlayer {@link JobsPlayer}
+     */
+    public void deleteAllJobs(JobsPlayer jPlayer) {
+        for (JobProgression job : new ArrayList<>(jPlayer.getJobProgression()))
+            deletePlayerJob(jPlayer, job.getJob());
 
         jPlayer.leaveAllJobs();
     }
@@ -924,7 +966,7 @@ public class PlayerManager {
      * Performs command on level up
      *
      * @param jPlayer {@link JobsPlayer}
-     * @param job {@link Job}
+     * @param prog {@link JobProgression}
      * @param oldLevel
      */
     public void performCommandOnLevelUp(JobsPlayer jPlayer, JobProgression prog, int oldLevel) {
@@ -956,7 +998,7 @@ public class PlayerManager {
      * Performs command for each level
      *
      * @param jPlayer {@link JobsPlayer}
-     * @param job {@link Job}
+     * @param prog {@link JobProgression}
      * @param oldLevel
      */
     public void performCommandOnLevelUp(JobsPlayer jPlayer, JobProgression prog, int oldLevel, int untilLevel) {
@@ -971,7 +1013,7 @@ public class PlayerManager {
     /**
      * Checks whenever the given jobs player is under the max allowed jobs.
      *
-     * @param player {@link JobsPlayer}
+     * @param jPlayer {@link JobsPlayer}
      * @param currentCount the current jobs size
      * @return true if the player is under the given jobs size
      */

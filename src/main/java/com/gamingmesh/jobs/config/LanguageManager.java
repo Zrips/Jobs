@@ -584,6 +584,13 @@ public class LanguageManager {
             Jobs.getGCManager().getCommandArgs().put("demote", Arrays.asList("[playername]", "[jobname]", "[levels]"));
             c.get("command.demote.output.target", "You have been demoted %levelslost% levels in %jobname%.");
 
+            c.get("command.deluser.help.info", "Delete a player from the jobs database.");
+            c.get("command.deluser.help.args", "[playername]");
+            Jobs.getGCManager().getCommandArgs().put("deluser", Arrays.asList("[playername]"));
+            c.get("command.deluser.output.target", "You have been removed from the jobs database.");
+            c.get("command.deluser.confirmationNeed", "&cAre you sure you want to delete &e[playername]&c from the database? This cannot be reversed! Type the command again within&6 [time] seconds &cto confirm!");
+
+
             c.get("command.grantxp.help.info", "Grants the player X experience in a job.");
             c.get("command.grantxp.help.args", "[playername] [jobname] [xp]");
             Jobs.getGCManager().getCommandArgs().put("grantxp", Arrays.asList("[playername]", "[jobname]", "[xp]"));
