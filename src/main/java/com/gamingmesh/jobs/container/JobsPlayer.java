@@ -592,6 +592,9 @@ public class JobsPlayer {
             synchronized (progression) {
                 progression.add(new JobProgression(job, this, level, exp));
             }
+
+            JobsTop.updateGlobalTop(this);
+
             reloadMaxExperience();
             reloadLimits();
             reloadHonorific();
@@ -653,8 +656,10 @@ public class JobsPlayer {
         synchronized (progression) {
             if (progression.remove(getJobProgression(job))) {
 
-                job.removeFromTop(getUniqueId());
-                JobsTop.updateGlobalTop(getUniqueId(), getJobProgression());
+                if (!Jobs.getGCManager().jobsTopIncludesArchivedStats)
+                  job.removeFromTop(getUniqueId());
+
+                JobsTop.updateGlobalTop(this);
 
                 reloadMaxExperience();
                 reloadLimits();

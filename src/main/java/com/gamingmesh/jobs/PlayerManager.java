@@ -55,6 +55,7 @@ import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsMobSpawner;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.JobsTop;
 import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
@@ -285,6 +286,8 @@ public class PlayerManager {
 
             Jobs.getJobsDAO().loadLog(jPlayer);
 
+            JobsTop.updateGlobalTop(jPlayer);
+
             return jPlayer;
         });
     }
@@ -490,6 +493,8 @@ public class PlayerManager {
 
             jPlayer.setArchivedJobs(aj);
         }
+
+        JobsTop.updateGlobalTop(jPlayer);
 
         return jPlayer;
     }

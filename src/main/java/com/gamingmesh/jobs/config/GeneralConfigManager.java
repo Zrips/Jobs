@@ -84,6 +84,8 @@ public class GeneralConfigManager {
 
 	public List<String> JobsTopHiddenPlayers;
 
+	public boolean jobsTopIncludesArchivedStats;
+
 	public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime, blockOwnershipRange, globalblocktimer, globalBlockBreakTimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
 			SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays, levelLossPercentageFromMax, levelLossPercentage, ToplistInScoreboardInterval;
 
@@ -1134,6 +1136,9 @@ public class GeneralConfigManager {
 		c.addComment("Commands.PageRow.JobsTop.HiddenPlayers", "List of player names who should be excluded from /jobs top & /jobs gtop");
 		JobsTopHiddenPlayers = c.get("Commands.PageRow.JobsTop.HiddenPlayers", Arrays.asList("Zrips"));
 		CMIList.toLowerCase(JobsTopHiddenPlayers);
+
+		c.addComment("Commands.PageRow.JobsTop.IncludeArchivedStats", "Whether to include archived level/experience in /jobs top & /jobs gtop");
+		jobsTopIncludesArchivedStats = c.get("Commands.PageRow.JobsTop.IncludeArchivedStats", false);
 
 		c.addComment("Commands.PageRow.Placeholders.AmountToShow", "Defines amount of placeholders to be shown in one page for /jobs placeholders");
 		PlaceholdersPage = c.get("Commands.PageRow.Placeholders.AmountToShow", 10);
