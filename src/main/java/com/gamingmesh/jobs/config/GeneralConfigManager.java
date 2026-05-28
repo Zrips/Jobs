@@ -551,7 +551,7 @@ public class GeneralConfigManager {
 		c.addComment("pay-for-above", "When enabled we will try to pay player for blocks above broken ones. This only applies to sugarcane, bamboo, kelp and weeping_vines");
 		payForAbove = c.get("pay-for-above", false);
 
-		c.addComment("pay-for-stacked-entities", "Allows to pay for stacked entities for each one. Requires StackMob or WildStacker.");
+		c.addComment("pay-for-stacked-entities", "Allows to pay for stacked entities for each one. Requires StackMob, WildStacker or RoseStacker.");
 		payForStackedEntities = c.get("pay-for-stacked-entities", false);
 
 		c.addComment("allow-pay-for-durability-loss", "Allows, when losing maximum durability of item then it does not pay the player until it is repaired.",

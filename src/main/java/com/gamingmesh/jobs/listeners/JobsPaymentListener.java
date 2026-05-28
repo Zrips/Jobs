@@ -358,6 +358,10 @@ public final class JobsPaymentListener implements Listener {
                 for (int i = 0; i < JobsHook.getWildStackerManager().getEntityAmount((LivingEntity) entity) - 1; i++) {
                     Jobs.action(jDamager, new CustomKillInfo(typeString, ActionType.SHEAR));
                 }
+            } else if (JobsHook.RoseStacker.isEnabled()) {
+                for (int i = 0; i < JobsHook.getRoseStackerManager().getEntityAmount((LivingEntity) entity) - 1; i++) {
+                    Jobs.action(jDamager, new CustomKillInfo(typeString, ActionType.SHEAR));
+                }
             } else if (JobsHook.StackMob.isEnabled() && JobsHook.getStackMobManager().isStacked((LivingEntity) entity)) {
                 StackEntity stack = JobsHook.getStackMobManager().getStackEntity((LivingEntity) entity);
                 if (stack != null) {
@@ -581,6 +585,10 @@ public final class JobsPaymentListener implements Listener {
         if (Jobs.getGCManager().payForStackedEntities) {
             if (JobsHook.WildStacker.isEnabled()) {
                 for (int i = 0; i < JobsHook.getWildStackerManager().getEntityAmount(animal) - 1; i++) {
+                    Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
+                }
+            } else if (JobsHook.RoseStacker.isEnabled()) {
+                for (int i = 0; i < JobsHook.getRoseStackerManager().getEntityAmount(animal) - 1; i++) {
                     Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
                 }
             } else if (JobsHook.StackMob.isEnabled() && JobsHook.getStackMobManager().isStacked(animal)) {
