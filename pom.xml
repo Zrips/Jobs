@@ -6,7 +6,7 @@
 
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>5.2.6.4</version>
+	<version>5.2.6.5</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
