@@ -25,10 +25,12 @@ public class JobsTop {
 
     private static JobsTop globalTop = new JobsTop();
 
-    public static void updateGlobalTop(UUID uuid, List<JobProgression> progress) {
+    public static void updateGlobalTop(JobsPlayer jPlayer) {
         CompletableFuture.runAsync(() -> {
             int level = 0;
             double experience = 0;
+
+            List<JobProgression> progress = jPlayer.getJobProgression();
 
             synchronized (progress) {
                 for (JobProgression prog : progress) {
@@ -39,10 +41,23 @@ public class JobsTop {
                 }
             }
 
+            if (Jobs.getGCManager().jobsTopIncludesArchivedStats) {
+                Set<JobProgression> archivedProgress = jPlayer.getArchivedJobs().getArchivedJobs();
+
+                synchronized (archivedProgress) {
+                    for (JobProgression prog : archivedProgress) {
+                        if (prog.getLevel() == 1 && prog.getExperience() == 0)
+                            continue;
+                        level += prog.getLevel();
+                        experience += prog.getExperience();
+                    }
+                }
+            }
+
             if (level == 0 && experience == 0) {
-                globalTop.remove(uuid);
+                globalTop.remove(jPlayer.getUniqueId());
             } else
-                globalTop.update(uuid, level, experience);
+                globalTop.update(jPlayer.getUniqueId(), level, experience);
         });
     }
 
@@ -70,7 +85,7 @@ public class JobsTop {
         if (jPlayer == null)
             return;
         job.updateTop(jPlayer.getUniqueId(), level, experience);
-        JobsTop.updateGlobalTop(jPlayer.getUniqueId(), jPlayer.getJobProgression());
+        JobsTop.updateGlobalTop(jPlayer);
     }
 
     private final NavigableMap<Integer, NavigableMap<Double, Set<UUID>>> rankingMap = new TreeMap<>(Comparator.reverseOrder());

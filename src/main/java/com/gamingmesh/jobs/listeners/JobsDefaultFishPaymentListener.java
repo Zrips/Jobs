@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.listeners;
 
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,9 +54,17 @@ public class JobsDefaultFishPaymentListener implements Listener {
             }
         }
 
-        if (JobsHook.PyroFishingPro.isEnabled() && PyroFishingProListener.getFish() != null) {
-            Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProListener.getFish(), ActionType.PYROFISHINGPRO), event.getCaught());
-            return;
+        if (JobsHook.PyroFishingPro.isEnabled()) {
+            boolean catchPyroFish = false;
+            if (PyroFishingProListener.getFish() != null) {
+                Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProListener.getFish(), ActionType.PYROFISHINGPRO), event.getCaught());
+                catchPyroFish = true;
+            }
+            if (PyroFishingProListener.getHotspotFish() != null) {
+                Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProListener.getHotspotFish(), ActionType.PYROFISHINGPRO));
+                catchPyroFish = true;
+            }
+            if (catchPyroFish) return;
         }
 
         Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH), event.getCaught());

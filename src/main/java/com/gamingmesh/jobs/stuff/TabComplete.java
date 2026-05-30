@@ -69,7 +69,7 @@ public final class TabComplete implements TabCompleter {
 
                             if (job != null) {
                                 for (Quest q : job.getQuests()) {
-                                    temp.add(q.getQuestName());
+                                    temp.add(q.getQuestName().replace(" ", ""));
                                 }
                             }
 

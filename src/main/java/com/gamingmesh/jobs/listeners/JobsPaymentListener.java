@@ -358,6 +358,10 @@ public final class JobsPaymentListener implements Listener {
                 for (int i = 0; i < JobsHook.getWildStackerManager().getEntityAmount((LivingEntity) entity) - 1; i++) {
                     Jobs.action(jDamager, new CustomKillInfo(typeString, ActionType.SHEAR));
                 }
+            } else if (JobsHook.RoseStacker.isEnabled()) {
+                for (int i = 0; i < JobsHook.getRoseStackerManager().getEntityAmount((LivingEntity) entity) - 1; i++) {
+                    Jobs.action(jDamager, new CustomKillInfo(typeString, ActionType.SHEAR));
+                }
             } else if (JobsHook.StackMob.isEnabled() && JobsHook.getStackMobManager().isStacked((LivingEntity) entity)) {
                 StackEntity stack = JobsHook.getStackMobManager().getStackEntity((LivingEntity) entity);
                 if (stack != null) {
@@ -581,6 +585,10 @@ public final class JobsPaymentListener implements Listener {
         if (Jobs.getGCManager().payForStackedEntities) {
             if (JobsHook.WildStacker.isEnabled()) {
                 for (int i = 0; i < JobsHook.getWildStackerManager().getEntityAmount(animal) - 1; i++) {
+                    Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
+                }
+            } else if (JobsHook.RoseStacker.isEnabled()) {
+                for (int i = 0; i < JobsHook.getRoseStackerManager().getEntityAmount(animal) - 1; i++) {
                     Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
                 }
             } else if (JobsHook.StackMob.isEnabled() && JobsHook.getStackMobManager().isStacked(animal)) {
@@ -1310,10 +1318,11 @@ public final class JobsPaymentListener implements Listener {
         if (killer.hasMetadata("NPC"))
             return;
 
-        if (Jobs.getGCManager().MythicMobsEnabled && JobsHook.getMythicMobsManager() != null
-            && JobsHook.getMythicMobsManager().isMythicMob(lVictim)) {
-            return;
-        }
+        // If MythicMobs handles this mob (custom mob or vanilla override), skip KILL to avoid
+        // double payment with MMKill. ForceKill is still dispatched further below, which allows
+        // server admins to reward kills on vanilla-override mobs by their vanilla entity type.
+        boolean isMythicMobEntity = Jobs.getGCManager().MythicMobsEnabled && JobsHook.getMythicMobsManager() != null
+            && JobsHook.getMythicMobsManager().isMythicMob(lVictim);
 
         Player pDamager = null;
 
@@ -1373,21 +1382,30 @@ public final class JobsPaymentListener implements Listener {
         if (notNpc && jDamager.getName().equalsIgnoreCase(((Player) lVictim).getName()))
             return;
 
-        if (Jobs.getGCManager().payForStackedEntities) {
-            if (JobsHook.WildStacker.isEnabled()) {
-                for (int i = 0; i < JobsHook.getWildStackerManager().getEntityAmount(lVictim) - 1; i++) {
-                    Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
-                }
-            } else if (JobsHook.StackMob.isEnabled() && JobsHook.getStackMobManager().isStacked(lVictim)) {
-                StackEntity stack = JobsHook.getStackMobManager().getStackEntity(lVictim);
-                if (stack != null) {
-                    Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
-                    return;
+        if (!isMythicMobEntity) {
+            if (Jobs.getGCManager().payForStackedEntities) {
+                if (JobsHook.WildStacker.isEnabled()) {
+                    for (int i = 0; i < JobsHook.getWildStackerManager().getEntityAmount(lVictim) - 1; i++) {
+                        Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
+                        Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.FORCEKILL), killer, lVictim);
+                    }
+                } else if (JobsHook.StackMob.isEnabled() && JobsHook.getStackMobManager().isStacked(lVictim)) {
+                    StackEntity stack = JobsHook.getStackMobManager().getStackEntity(lVictim);
+                    if (stack != null) {
+                        Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
+                        Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.FORCEKILL), killer, lVictim);
+                        return;
+                    }
                 }
             }
+
+            Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
         }
 
-        Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
+        // ForceKill always fires regardless of MythicMobs status, using the vanilla entity type name.
+        // This allows rewarding kills on MythicMobs vanilla-override mobs (e.g. a Zombie with custom
+        // loot) by configuring them under ForceKill: instead of Kill: or MMKill:.
+        Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.FORCEKILL), killer, lVictim);
 
         // Payment for killing player with particular job, except NPC's
         if (notNpc) {
@@ -1568,29 +1586,14 @@ public final class JobsPaymentListener implements Listener {
         if (!Jobs.getGCManager().useBreederFinder || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
             return;
 
-        if (!event.getSpawnReason().toString().equalsIgnoreCase("BREEDING") && !event.getSpawnReason().toString().equalsIgnoreCase("EGG"))
+        if (!event.getSpawnReason().toString().equalsIgnoreCase("EGG"))
             return;
 
         LivingEntity animal = event.getEntity();
 
         Player player = Util.getClosestPlayer(animal.getLocation());
 
-        if (player == null)
-            return;
-
-        // check if in creative
-        if (!payIfCreative(player))
-            return;
-
-        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-            return;
-
-        // check if player is riding
-        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-            return;
-
-        // pay
-        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(animal, ActionType.BREED));
+        JobsPayment1_14Listener.processBreeding(animal, player);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

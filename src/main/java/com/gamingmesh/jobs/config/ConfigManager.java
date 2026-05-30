@@ -182,7 +182,7 @@ public class ConfigManager {
         CMIMaterial material = CMIMaterial.NONE;
 
         if (actionType.hasSubType(ActionSubType.BLOCK) ||
-            actionType.hasSubType(ActionSubType.MATERIAL)) {
+                actionType.hasSubType(ActionSubType.MATERIAL)) {
 
             material = CMIMaterial.get(myKey + (subType));
 
@@ -246,20 +246,20 @@ public class ConfigManager {
             // These actions MUST be blocks
             if (actionType.hasSubType(ActionSubType.BLOCK) && !actionType.hasSubType(ActionSubType.MATERIAL) && (!material.isBlock() || material.getMaterial().toString().equalsIgnoreCase("AIR"))) {
                 CMIMessages.consoleMessage("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
-                    + " (" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
+                        + " (" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
                 return null;
             }
 
             // START HACK
-            /* 
-             * Historically, GLOWING_REDSTONE_ORE would ONLY work as REDSTONE_ORE, and putting
-             * GLOWING_REDSTONE_ORE in the configuration would not work.  Unfortunately, this is 
-             * completely backwards and wrong.
+            /*
+             * Historically, GLOWING_REDSTONE_ORE would ONLY work as REDSTONE_ORE, and
+             * putting GLOWING_REDSTONE_ORE in the configuration would not work.
+             * Unfortunately, this is completely backwards and wrong.
              * 
-             * To maintain backwards compatibility, all instances of REDSTONE_ORE should normalize
-             * to GLOWING_REDSTONE_ORE, and warn the user to change their configuration.  In the
-             * future this hack may be removed and anybody using REDSTONE_ORE will have their
-             * configurations broken.
+             * To maintain backwards compatibility, all instances of REDSTONE_ORE should
+             * normalize to GLOWING_REDSTONE_ORE, and warn the user to change their
+             * configuration. In the future this hack may be removed and anybody using
+             * REDSTONE_ORE will have their configurations broken.
              */
             if (material == CMIMaterial.REDSTONE_ORE && actionType == ActionType.BREAK && Version.isCurrentLower(Version.v1_13_R1)) {
                 CMIMessages.consoleMessage("Job " + jobName + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
@@ -501,9 +501,9 @@ public class ConfigManager {
 
         cfg.saveToBackup(false);
         cfg.header(Arrays.asList("-----------------------------------------------------",
-            "Jobs have been moved into jobs subfolder",
-            "Old jobs content was saved into backup folder",
-            "-----------------------------------------------------"));
+                "Jobs have been moved into jobs subfolder",
+                "Old jobs content was saved into backup folder",
+                "-----------------------------------------------------"));
         cfg.save();
 
         return true;
@@ -517,7 +517,7 @@ public class ConfigManager {
 
         if (jobFiles.isEmpty()) {
             File[] files = jobsPathFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml")
-                && !name.equalsIgnoreCase(EXAMPLEJOBNAME + ".yml"));
+                    && !name.equalsIgnoreCase(EXAMPLEJOBNAME + ".yml"));
             if (files != null) {
                 for (File file : files) {
                     jobFiles.add(new YmlMaker(jobsPathFolder, file));
@@ -617,7 +617,7 @@ public class ConfigManager {
                 continue;
 
             Job job = new Job(jobConfigName)
-                .setDisplayName(jobSection.getString("displayName"));
+                    .setDisplayName(jobSection.getString("displayName"));
 
             String jobFullName = jobSection.getString("fullname");
             if (jobFullName == null) {
@@ -800,7 +800,8 @@ public class ConfigManager {
                         guiItem = material.newItemStack();
 
                     if (!informedGUI) {
-                        CMIMessages.consoleMessage("&5Update " + jobConfigName + " jobs gui item section to use `ItemStack` instead of `Item` sections format. More information inside _EXAMPLE job file");
+                        CMIMessages
+                                .consoleMessage("&5Update " + jobConfigName + " jobs gui item section to use `ItemStack` instead of `Item` sections format. More information inside _EXAMPLE job file");
                         informedGUI = true;
                     }
 
@@ -998,7 +999,7 @@ public class ConfigManager {
 
                         if (!informedLimited) {
                             CMIMessages.consoleMessage("&5Update " + jobConfigName
-                                + " jobs limited items section to use `ItemStack` instead of `id` sections format. More information inside _EXAMPLE job file");
+                                    + " jobs limited items section to use `ItemStack` instead of `id` sections format. More information inside _EXAMPLE job file");
                             informedLimited = true;
                         }
 
@@ -1052,7 +1053,6 @@ public class ConfigManager {
 
                         for (String oneObjective : sqsection.getStringList("Objectives")) {
                             List<QuestObjective> objectives = QuestObjective.get(oneObjective, jobFullName);
-
                             quest.addObjectives(objectives);
                         }
 
@@ -1118,8 +1118,8 @@ public class ConfigManager {
 
                             int id = keyValue.getId();
                             String type = keyValue.getType(),
-                                subType = keyValue.getSubType(),
-                                meta = keyValue.getMeta();
+                                    subType = keyValue.getSubType(),
+                                    meta = keyValue.getMeta();
 
                             double income = 0D;
                             if (sep.length >= 2) {
@@ -1149,7 +1149,7 @@ public class ConfigManager {
                             }
 
                             jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, 1,
-                                -1, typeSection.getCurrentPath(), null, null, null));
+                                    -1, typeSection.getCurrentPath(), null, null, null));
                         }
                         job.setJobInfo(actionType, jobInfo);
                     }
@@ -1170,8 +1170,8 @@ public class ConfigManager {
 
                         int id = keyValue.getId();
                         String type = keyValue.getType(),
-                            subType = keyValue.getSubType(),
-                            meta = keyValue.getMeta();
+                                subType = keyValue.getSubType(),
+                                meta = keyValue.getMeta();
 
                         double income = section.getDouble("income");
                         income = updateValue(CurrencyType.MONEY, income);
@@ -1187,7 +1187,7 @@ public class ConfigManager {
                             untilLevel = section.getInt("until-level");
                             if (untilLevel < fromlevel) {
                                 log.warning("Job " + jobConfigName + " has an invalid until-level in " + actionType.getName() + " for type property: " + key
-                                    + "! It will be not set.");
+                                        + "! It will be not set.");
                                 untilLevel = -1;
                             }
                         }
@@ -1203,7 +1203,7 @@ public class ConfigManager {
                             itemSoftPointsLimit = section.getInt("softPointsLimit");
 
                         jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, fromlevel,
-                            untilLevel, section.getCurrentPath(), itemSoftIncomeLimit, itemSoftExpLimit, itemSoftPointsLimit));
+                                untilLevel, section.getCurrentPath(), itemSoftIncomeLimit, itemSoftExpLimit, itemSoftPointsLimit));
                     }
                 }
                 job.setJobInfo(actionType, jobInfo);

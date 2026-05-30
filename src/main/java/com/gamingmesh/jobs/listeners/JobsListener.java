@@ -92,6 +92,7 @@ import net.Zrips.CMILib.Items.ArmorTypes;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
@@ -147,7 +148,7 @@ public class JobsListener implements Listener {
 		if (mat.isAir())
 			return;
 
-		if (mat.isWater())
+		if (mat.isWater() || CMIMaterial.isWater(event.getBlock().getType()))
 			return;
 
 		Jobs.getExploitManager().remove(event.getToBlock());

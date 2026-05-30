@@ -876,6 +876,23 @@ public abstract class JobsDAO {
         return map;
     }
 
+    public void delUser(UUID uuid) {
+        JobsConnection conn = getConnection();
+        if (conn == null)
+            return;
+
+        PreparedStatement prest = null;
+        try {
+            prest = conn.prepareStatement("DELETE FROM `" + DBTables.UsersTable.getTableName() + "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ? ;");
+            prest.setString(1, uuid.toString());
+            prest.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(prest);
+        }
+    }
+
     public void cleanUsers() {
         if (!Jobs.getGCManager().DBCleaningUsersUse)
             return;
