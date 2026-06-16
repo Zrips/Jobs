@@ -1,4 +1,3 @@
----
 economy:
   error:
     nomoney: '&c你的账户资金不足!'
@@ -9,88 +8,58 @@ general:
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
-    time:
-      days: '&e%days% &6天 '
-      hours: '&e%hours% &6小时 '
-      mins: '&e%mins% &6分 '
-      secs: '&e%secs% &6秒 '
+    paymentType:
+      MONEY: 金币
+      EXP: 经验
+      POINTS: 点数
+    paymentTypeValued:
+      MONEY: '&2金币: %amount%'
+      EXP: '&e经验: %amount%'
+      POINTS: '&6点数: %amount%'
     invalidPage: '&c无效页面'
-    'true': '&2True'
-    'false': '&cFalse'
     blocks:
       furnace: 熔炉
       smoker: 烟熏炉
       blastfurnace: 高炉
       brewingstand: 酿造台
+    join: '&e点击加入职业'
+    leave: '&c点击离开职业'
   admin:
     error: '&c执行命令出错.'
     success: '&a你的命令执行成功.'
   error:
     noHelpPage: '&c帮助页面没有这个页数!'
-    notNumber: '&e请使用数字!'
     job: '&c你选择的职业不存在或未加入该职业'
-    noCommand: '&c未知指令!'
-    permission: '&c你没有权限这样做!'
-    noinfo: '&c没有找到信息!'
+    jobname: '&c找不到该职业!'
+    # Only %playername% can be used here
     noinfoByPlayer: '&c没有找到玩家 [%playername%] 的信息!'
-    ingame: '&c你只能在游戏中使用!'
-    fromconsole: '&c你只能在控制台使用这个指令!'
     worldisdisabled: '&c你不能在这个世界使用这个指令!'
     newRegistration: '&e为 [block] &7[current]&e/&f[max] 注册了新的所有者'
+    reenabledBlock: '&e已重新启用归属权限'
     noRegistration: '&c你已达到最大[block]数量!'
+    blockDisabled: '&6来自 &e[type] &6的收益已被禁用。&2[location]'
 command:
   help:
     output:
-      info: 输入 /jobs [cmd] ? 查看关于此命令的更多信息.
       cmdUsage: '&2用法: &7[command]'
-      label: Jobs
+      label: jobs
       cmdInfoFormat: '[command] &f- &2[description]'
       cmdFormat: '&7/[command] &f[arguments]'
       helpPageDescription: '&2* [description]'
-      title: '&e---&e ===== &6Jobs 插件 - &d汉化 Izzel_Aliz &e===== &e---'
-      page: '&e-----&e ====== 第 &6[1] &e页 - 共 &6[2] 页 &e====== &e-----'
-      fliperSimbols: '&e----------'
-      prevPage: '&2----<< &6上一页 '
-      prevPageOff: '&7----<< 上一页 '
-      nextPage: '&6 下一页 &2>>----'
-      nextPageOff: '&7 下一页 >>----'
-      pageCount: '&2[current]/[total]'
-      pageCountHover: '&e[totalEntries] 生物'
-      prevPageGui: '&6上一页 '
-      nextPageGui: '&6下一頁'
-  moneyboost:
+      title: '&e---&e ===== &6职业系统 插件&e===== &e---'
+  boost:
     help:
-      info: 加成玩家得到的游戏币
-      args: '[jobname]/all/reset [time]/[rate]'
+      info: 提升全体玩家的职业收益
+      args: exp/money/points [jobname]/all/reset [rate] [time]
     output:
-      allreset: 游戏币加成重置
-      jobsboostreset: '%jobname% 职业的游戏币加成重置'
-      nothingtoreset: 没有可重置的
-      boostalladded: 所有职业的游戏币获得加成了 %boost% 倍
-      boostadded: '%jobname% 职业的游戏币获得加成了 %boost% 倍'
-      infostats: '&c-----> &a游戏币获得 x%boost% 倍正在进行&c <-------'
-  pointboost:
-    help:
-      info: 加成玩家得到的点数
-      args: '[jobname]/all/reset [time]/[rate]'
-    output:
-      allreset: 点数加成重置
-      jobsboostreset: '%jobname% 职业的点数加成重置'
-      nothingtoreset: 没有可重置的
-      boostalladded: 所有职业的点数获得加成了 %boost% 倍
-      boostadded: '%jobname% 职业的点数获得加成了 %boost% 倍'
-      infostats: '&c-----> &a点数获得 x%boost% 倍正在进行&c <-------'
-  expboost:
-    help:
-      info: 加成玩家得到的经验
-      args: '[jobname]/all/reset [time]/[rate]'
-    output:
-      allreset: 经验加成重置
-      jobsboostreset: '%jobname% 职业的经验加成重置'
-      nothingtoreset: 没有可重置的
-      boostalladded: 所有职业的经验获得加成了 %boost% 倍
-      boostadded: '%jobname% 职业的经验获得加成了 %boost% 倍'
-      infostats: '&c-----> &a经验获得 x%boost% 倍正在进行&c <-------'
+      allreset: '&a所有增益效果已关闭'
+      alltypereset: '&a所有 &e%type% &a类型的增益已关闭'
+      jobsboostreset: '&a已为 &e%jobname% &a设置倍率 &e%boost%！'
+      jobstypeboostreset: '&a已为 &e%jobname% &a设置倍率 &e%boost%！'
+      nothingtoreset: 无需进行重置
+      boostadded: '&a已为 &e%jobname% &a添加倍率 &e%boost%！'
+      infostats: '&c-----> &a%type% 倍率 x%boost% 已启用&c <-------'
+      boostStats: '&6%payments% &e%jobname%'
   schedule:
     help:
       info: 启用给予的计划
@@ -127,6 +96,7 @@ command:
       area: ' &e地区加成: &2%money% &6%points% &e%exp%'
       mcmmo: ' &eMcMMO加成: &2%money% &6%points% &e%exp%'
       final: ' &e总计加成: &2%money% &6%points% &e%exp%'
+      specialPrefix: '&6*'
       finalExplanation: ' &e不包括宠物和附近生成加成'
   convert:
     help:
@@ -151,12 +121,26 @@ command:
       reachedpointslimit: '&4你达到了一段时间内的点数限制!'
       reachedpointslimit2: '&e你可以通过 &2/jobs limit &e查看你的限制'
       notenabled: '&e未启用限制'
+  resetexploreregion:
+    help:
+      info: 重置探索区域数据
+      args: world [worldname]
+    output:
+      notenabled: '&e该功能未启用。'
+      invalidname: '&e世界名称无效'
+      reseted: '&e已重置 &2%worldname% &e的探索区域数据'
   resetlimit:
     help:
       info: 重置玩家的报酬限制
       args: '[playername]'
     output:
       reseted: '&e玩家 &2%playername% &e的付款额度已经被重置了'
+  resetquesttotal:
+    help:
+      info: 重置玩家已完成任务计数
+      args: '[playername]/all'
+    output:
+      reseted: '&e已重置 &2%playerdisplayname% &e的任务完成记录'
   resetquest:
     help:
       info: 重置玩家的任务
@@ -204,40 +188,39 @@ command:
     help:
       info: 编辑当前任务.
       args: ''
-      list:
-        quest: '&e任务:'
-        jobs: '  -> [&e%jobname%&r]'
-        quests: '  -> [&e%questname%&r]'
-        actions: '    -> [&e%actionname%&r]'
-        objectives: '      -> [&e%objectivename%&r]'
-        objectiveRemove: '&c[X]'
-        objectiveAdd: '      -> &e[&2+&e]'
-      modify:
-        newValue: '&e输入新数值'
-        enter: '&e输入新的名称或点击'
-        hand: '&6手中'
-        handHover: '&6点击查看有关手中物品的详细信息'
-        or: '&e或 '
-        look: '&6正看着'
-        lookHover: '&6点击查看有关你正看着方块的详细信息'
+      output:
+        list: '&6[questName] &7- &f[jobName]'
+        name: '&e名称: &f'
+        job: ' &e职业: &f'
+        chance: ' &e概率: &f'
+        enabled: ' &e已启用: &f'
+        from: '&e最低等级: &f'
+        to: ' &e最高等级: &f'
+        objectives: 任务目标
+        rewards: 奖励指令
+        rewardAmount: ' &e数量: &f'
+        description: '&e描述'
+        areas: '&e限制区域'
   blockinfo:
     help:
-      info: 显示你正在看的方块的信息.
+      info: 显示你正在查看的方块信息.
       args: ''
     output:
-      name: ' &e方块名: &6%blockname%'
+      material: ' &e方块名称: &6%blockname%'
       id: ' &e方块ID: &6%blockid%'
-      data: ' &e方块数据: &6%blockdata%'
-      usage: ' &e使用: &6%first% &e或 &6%second%'
+      state: ' &e方块状态: &6%blockdata%'
+      deprecated: ' &e可用写法: &6%first% &eor &6%second%'
+      use: ' &e配置文件用法: &6%usage%'
   iteminfo:
     help:
-      info: 显示你拿着的物品的信息.
+      info: 显示你手持物品的信息.
       args: ''
     output:
-      name: ' &e物品名: &6%itemname%'
+      material: ' &e物品名称: &6%itemname%'
       id: ' &e物品ID: &6%itemid%'
       data: ' &e物品数据: &6%itemdata%'
-      usage: ' &e使用: &6%first% &e或 &6%second%'
+      deprecated: ' &e可用写法: &6%first% &eor &6%second%'
+      use: ' &e配置文件用法: &6%usage%'
   placeholders:
     help:
       info: 列出所有可用的变量
@@ -250,38 +233,48 @@ command:
     help:
       info: 显示插件可用的所有生物列表.
       args: ''
+  recalculatepermissions:
+    help:
+      info: 重置玩家权限缓存
+      args: (playername)
+    output:
+      reset: '&e已重置 &6[playername] &e的权限'
   stats:
     help:
-      info: 显示你目前职业的信息.
+      info: 显示当前职业信息
       args: '[playername]'
     error:
-      nojob: 请先加入一个职业.
+      nojob: 请先加入一个职业
     output:
-      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
-      max-level: '     &cMax level   -   %jobname%'
-    bossBarOutput: '等级 %joblevel% %jobname%: %jobxp%/%jobmaxxp% 经验值%gain%'
+      Level: '&7职业 &f%jobname% &7等级 &f%joblevel%&7：&f%jobxp%&7/&f%jobmaxxp%&7 经验'
+      maxLevel: '    &2已满级 &7职业 &f%jobname% &7等级 &f%joblevel%'
+    bossBarOutput: 等级 %joblevel% %jobname%：%jobxp%/%jobmaxxp% 经验值 %gain%
     bossBarGain: ' &7(&f%gain%&7)'
+    barEmpty: '&7▏'
+    barFull: '&2▏'
   shop:
     help:
-      info: 打开特殊商店.
+      info: 打开特殊商店
       args: ''
     info:
-      title: '&e------- &8 Jobs 商店 &e-------'
-      currentPoints: '&e你有: &6%currentpoints%'
-      price: '&e价格: &6%price%'
-      reqJobs: '&e职业需求:'
-      reqJobsList: '  &6%jobsname%&e: &eLV.%level%'
-      reqTotalLevel: '&6总等级需求: &e%totalLevel%'
+      title: '&e------- &8 职业商店 &e-------'
+      haveColor: '&2'
+      pointsPrice: '&e点数消耗：&c%currentpoints%&e/&6%price%'
+      moneyPrice: '&e金币消耗：&c%currentbalance%&e/&6%price%'
+      reqJobs: '&e职业需求：'
+      reqJobsList: '  &6%jobsname%&e：&e等级.%level%'
+      reqTotalLevel: '&6总等级需求：&e%totalLevel%'
       reqJobsColor: '&c'
       reqJobsLevelColor: '&4'
       reqTotalLevelColor: '&4'
-      cantOpen: '&c不能打开这个页面'
-      NoPermForItem: '&c你没有指定的权限使用此物品!'
-      NoPermToBuy: '&c你没有制定的权限购买此物品'
-      NoJobReqForitem: '&c你的职业 (&6%jobname%&e) 没有达到 (&6%joblevel%&e) 级'
-      NoPoints: '&c你没有足够的点数'
-      NoTotalLevel: '&c总职业等级太低, 需要 (%totalLevel%)'
-      Paid: '&e你支付了 &6%amount% &e购买此物品'
+      cantOpen: '&c无法打开此界面'
+      NoPermForItem: '&c你没有权限使用该物品'
+      NoPermToBuy: '&c你没有权限购买该物品'
+      NoJobReqForitem: '&c你的职业 (&6%jobname%&e) 未达到要求等级 (&6%joblevel%&e)'
+      NoPoints: '&c你的点数不足'
+      NoMoney: '&c你的金币不足'
+      NoTotalLevel: '&c总职业等级不足，需要 (%totalLevel%)'
+      Paid: '&e你花费 &6%amount% &e购买了该物品'
   archive:
     help:
       info: 查看保存的所有职业.
@@ -297,104 +290,124 @@ command:
       noitem: '&4没有找到此物品!'
   info:
     help:
-      title: '&2*** &eJobs&2 ***'
-      info: 显示一个职业的详细信息.
-      penalty: '&eThis job has a penalty of &c[penalty]% &ebecause there are too many players working in it.'
-      bonus: '&e这个职业拥有 &2[bonus]% &e加成因为就业人数较少.'
+      title: '&2*** &e职业系统&2 ***'
+      info: 查看单个职业的详细信息
+      penalty: '&e该职业当前人数过多，已开启惩罚机制，收益扣除 &c[penalty]% &e'
+      bonus: '&e该职业因从业人数较少，享有 &2[bonus]% &e收益加成'
       args: '[jobname] [action]'
-      actions: '&e所有可用的动作: &f%actions%'
-      max: ' - &e最高等级:&f '
-      newMax: ' &eMax level: &f[max]'
+      actions: '&e所有可用动作：&f%actions%'
+      max: ' - &e最高等级：&f '
+      newMax: ' &e满级：&f[max]'
+      jobName: '&7%jobdisplayname%'
       material: '&7%material%'
       levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &a级)'
       levelFrom: ' &a(从 &e%levelFrom% &a级)'
       levelUntil: ' &a(到 &e%levelUntil% &a级)'
-      money: ' &2%money%$'
+      money: ' &2%money%金币'
       points: ' &6%points% 点数'
       exp: ' &e%exp% 经验值'
     gui:
-      pickjob: '&e选择你的职业!'
-      jobinfo: '&e[jobname] 信息!'
-      actions: '&e可用的动作:'
+      pickjob: '&e选择你的职业！'
+      jobinfo: '&e[jobname] 信息！'
+      actions: '&e可用动作：'
       leftClick: '&e左键查看更多信息'
       middleClick: '&e鼠标中键退出该职业'
+      qClick: '&e按下Q键退出该职业'
       rightClick: '&e右键加入职业'
-      leftSlots: '&e剩余:&f '
-      working: '&2&n已经就业'
-      cantJoin: '&c无法加入该职业.'
-      max: '&e最高等级:&f '
-      back: '&e<<< 返回'
-      next: '&e下一页 >>>'
+      leftSlots: '&e剩余：&f '
+      working: '&2&n已加入该职业'
+      cantJoin: '&c无法加入该职业'
+      max: '&e最高等级：&f '
+      infoLore:
+      - '&7关闭'
     output:
       break:
-        info: '破坏'
+        info: 破坏
         none: '%jobname% 不会从破坏获得报酬'
-      tntbreak:
-        info: '爆破'
-        none: '%jobname% 不会从爆破获得报酬'
-      place:
-        info: '放置'
-        none: '%jobname% 不会从放置获得报酬'
       striplogs:
         info: '&e去皮原木'
         none: '%jobname% 不会从去皮原木获得报酬.'
+      tntbreak:
+        info: 爆破
+        none: '%jobname% 不会从爆破获得报酬'
+      place:
+        info: 放置
+        none: '%jobname% 不会从放置获得报酬'
       kill:
-        info: '击杀'
+        info: 击杀
         none: '%jobname% 不会从击杀获得报酬'
       mmkill:
-        info: '特殊击杀'
+        info: 特殊击杀
         none: '%jobname% 不会从特殊击杀获得报酬'
       fish:
-        info: '钓鱼'
+        info: 钓鱼
         none: '%jobname% 不会从钓鱼获得报酬'
+      pyrofishingpro:
+        info: '&ePyroFishingPro'
+        none: '%jobname% 执行PyroFishingPro相关操作无法获得金币。'
+      customfishing:
+        info: '&eCustomFishing'
+        none: '%jobname% 执行CustomFishing相关操作无法获得金币。'
       craft:
-        info: '合成'
+        info: 合成
         none: '%jobname% 不会从合成获得报酬'
-      smelt:
-        info: '熔炼'
-        none: '%jobname% 不会从熔炼获得报酬'
-      brew:
-        info: '酿造'
-        none: '%jobname% 不会从酿造获得报酬'
-      eat:
-        info: '吃'
-        none: '%jobname% 不会从进食获得报酬'
-      dye:
-        info: '染色'
-        none: '%jobname% 不会从染色获得报酬'
-      enchant:
-        info: '附魔'
-        none: '%jobname% 不会从附魔获得报酬'
       vtrade:
         info: '&e村民交易'
         none: '%jobname% 不会从与村民的交易中获得报酬.'
+      smelt:
+        info: 熔炼
+        none: '%jobname% 不会从熔炼获得报酬'
+      brew:
+        info: 酿造
+        none: '%jobname% 不会从酿造获得报酬'
+      enchant:
+        info: 附魔
+        none: '%jobname% 不会从附魔获得报酬'
       repair:
-        info: '修复'
+        info: 修复
         none: '%jobname% 不会从修复获得报酬'
       breed:
-        info: '繁育'
+        info: 繁育
         none: '%jobname% 不会从繁育获得报酬'
       tame:
-        info: '驯服'
+        info: 驯服
         none: '%jobname% 不会从驯服获得报酬'
-      milk:
-        info: '挤奶'
-        none: '%jobname% 不会从挤奶获得报酬'
+      dye:
+        info: 染色
+        none: '%jobname% 不会从染色获得报酬'
       shear:
-        info: '剪毛'
+        info: 剪毛
         none: '%jobname% 不会从剪毛获得报酬'
+      milk:
+        info: 挤奶
+        none: '%jobname% 不会从挤奶获得报酬'
       explore:
-        info: '探索'
+        info: 探索
         none: '%jobname% 不会从探索获得报酬'
-      custom-kill:
-        info: '自定义击杀'
-        none: '%jobname% 不会从自定义击杀获得报酬'
+      eat:
+        info: 吃
+        none: '%jobname% 不会从进食获得报酬'
+      customkill:
+        info: '&ecustom-kill'
+        none: '%jobname% does not get money for (custom-kill) action.'
       collect:
         info: '&e收集'
         none: '%jobname% 不会从收集方块中获得报酬.'
       bake:
         info: '&e烤焗'
         none: '%jobname% 不会从烹饪中获得报酬.'
+      bucket:
+        info: '&e用桶'
+        none: '%jobname% 执行用桶相关操作无法获得金币。'
+      brush:
+        info: '&e涂蜡刷'
+        none: '%jobname% 使用涂蜡刷无法获得金币。'
+      wax:
+        info: '&e涂蜡'
+        none: '%jobname% 执行涂蜡操作无法获得金币。'
+      scrape:
+        info: '&e除蜡'
+        none: '%jobname% 执行除蜡操作无法获得金币。'
   playerinfo:
     help:
       info: 查看玩家的职业信息.
@@ -458,25 +471,38 @@ command:
       jobHeader: '&2========== [jobname] ========='
       chooseJob: '&7&n&o选择该职业'
       chooseJobHover: '&7点击这里加入该职业'
+  ownedblocks:
+    help:
+      info: 查看方块归属
+      args: '[playername]'
+    output:
+      list: '&6[place]. &e[type] -> [location]'
+      listHover: '&6点击移除: [location]'
+      disabled: '&6(已禁用)'
+      disabledHover: '&6该方块因漏斗运作已被禁用收益'
   clearownership:
     help:
       info: 移除方块所有者
       args: '[playername]'
     output:
-      cleared: '&2删除了 &7[furnaces] &2个熔炉, &7[brewing] &2个酿造台, &7[smoker]&2 个烟熏炉和 &7[blast]&2 个高炉.'
+      cleared: '&2删除了 &7[furnaces] &2个熔炉、&7[brewing] &2个酿造台、&7[smoker] &2个烟熏炉以及 &7[blast]&2
+        个高炉。'
+      lost: '&c失去位于 &7[location] &c的 &7[type] &c方块归属权'
   skipquest:
     help:
-      info: 跳过任务以获得新任务
+      info: 跳过当前任务并获取新任务
       args: '[jobname] [questname] (playerName)'
     output:
-      questSkipForCost: '&2你支付了&e$%amount%&2跳过任务'
+      questSkipForCost: '&2你花费了&e$%amount%&2跳过任务'
+    confirmationNeed: '&c确定要跳过&e [questName]&c 任务吗？请在&6 [time] 秒内&c再次执行指令确认！'
   quests:
     help:
       info: 列出可接受的任务
       args: '[playername]'
     error:
       noquests: '&c暂时没有任务'
-    toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2)
+      &7***********************'
     status:
       changed: '&2任务状态已经更新为&r %status%'
       started: '&a进行中'
@@ -514,28 +540,27 @@ command:
       target: 你被雇佣为一名 %jobname%.
   top:
     help:
-      info: 依职业中最有经验的玩家.
+      info: 查看该职业经验排行
       args: '[jobname]/clear pageNumber'
     error:
-      nojob: 没有这个职业.
+      nojob: 不存在该职业
     output:
-      topline: '&a前&e %amount% &a个职业为 &e%jobname% &a的玩家'
-      list: '&e%number%&a. &e%playername% &a等级 &e%level% &awith&e %exp% &a经验'
-      prev: '&e<<<<< 上一页 &2|'
-      next: '&2|&e 下一页 >>>>'
-      show: '&2显示 &e[from] &2到 &e[until] &2的排行榜'
+      topline: '&a职业 &e%jobname% &a经验排行前&e %amount% &a名玩家'
+      list: '&e%number%&a. &e%playername% &a等级 &e%level% &a经验值 &e%exp%'
   gtop:
     help:
-      info: 显示全部职业中最有经验的玩家.
+      info: 查看全职业经验排行
       args: clear/pageNumber
-    error:
-      nojob: 没有找到任何信息, 你这是新服吧23333.
     output:
-      topline: '&a全部职业排行前&e %amount% &a的玩家'
-      list: '&e%number%&a. &e%playername% &aLV.&e%level% &awith&e %exp% &a经验'
-      prev: '&e<<<<< 上一页 &2|'
-      next: '&2|&e 下一页 >>>>'
-      show: '&2显示 &e[from] &2到 &e[until] &2的排行榜'
+      topline: '&a全职业经验排行前&e %amount% &a名玩家'
+      list: '&e%number%&a. &e%playername% &a等级 &e%level% &a经验值 &e%exp%'
+  gqtop:
+    help:
+      info: 查看任务完成数排行
+      args: clear/pageNumber
+    output:
+      topline: '&a任务完成数排行前&e %amount% &a名玩家'
+      list: '&e%number%&a. &e%playerdisplayname% &a等级 &e%level% &a完成数 &e%exp%'
   area:
     help:
       info: 编辑管制区域.
@@ -545,8 +570,9 @@ command:
     output:
       addedNew: '&e添加了新的管制区域, 加成 &6%bonus%'
       removed: '&e移除了管制区域 &6%name%'
-      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%'
-      wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
+      lists: '&7%number%&f. &7%areaname% &f%worldname% &7(&a%x1%:%y1%:%z1%&7/&e%x2%:%y2%:%z2%&7)
+        &2%money% &6%points% &e%exp%'
+      wgLists: '&7%number%&f. WorldGuard: &7%areaname% &2%money% &6%points% &e%exp%'
       noAreas: '&e没有保存的管制区域'
       noAreasByLoc: '&e这里没有管制区域'
       areaList: '&e这里的管制区域: &6%list%'
@@ -646,17 +672,40 @@ command:
       info: 重载配置.
   toggle:
     help:
-      info: 切换报酬显示 Boss血条 | 侧边栏.
+      info: 切换报酬显示形式（Boss血条/侧边栏）
       args: actionbar/bossbar
     output:
-      turnedoff: '&4这个特性被关闭!'
+      turnedoff: '&4该功能已关闭！'
       paid:
-        main: '&a你获得了:'
+        main: '&a你获得了：'
         money: '&e[amount] 游戏币'
         exp: '&7[exp] 经验'
         points: '&6[points] 点数'
-      'on': '&a切换为: &a开启'
-      'off': '&a切换为: &4关闭'
+        ACmoney: '&e+[amount]金币 '
+        ACexp: '&7+[exp]经验 '
+        ACpoints: '&6+[points]点数 '
+      Rapid: '&7[type]&a：&7即时显示'
+      Batched: '&7[type]&a：&f合并显示'
+      'Off': '&7[type]&a：&6关闭'
+  howmuch:
+    help:
+      info: 查看目标实体或方块可获取的收益
+      args: ''
+  version:
+    output:
+      payment: '&e[job] &f[action] &7[target] [exp] [money] [points]'
+      nopayment: '&7无法获取 ([target]) 的相关收益'
+      jobsVersion: '&e职业插件：&6[version]'
+      jobsVersionNew: '&e-> [newVersion]'
+      dbType: ' &7[db]'
+      newServer: '&e服务端：&6[version]'
+      Economy: '&e经济插件：&6[provider] '
+      newVault: '&eVault插件：&6[version] '
+      CMILib: '&eCMILib依赖：&6[version] '
+      cmilVersionNew: '&e-> [newVersion]'
+    help:
+      info: 查看插件版本信息
+      args: ''
 message:
   skillup:
     broadcast: '%playername% 获得了升级 %titlename% %jobname%.'
@@ -672,7 +721,7 @@ message:
   boostStarted: '&e职业加成时间已经开始!'
   boostStoped: '&e职业加成时间结束了!'
   crafting:
-    fullinventory: '你的背包满了!'
+    fullinventory: 你的背包满了!
 signs:
   List: '&0[number].&8[player]&7:&4[level]'
   questList: '&0[number].&8[player]&7:&4[quests]'
