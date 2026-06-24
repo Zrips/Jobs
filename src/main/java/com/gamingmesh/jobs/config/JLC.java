@@ -42,7 +42,7 @@ public enum JLC {
     command_limit_help_info("Shows payment limits for jobs"),
     command_limit_help_args("[playername]"),
     command_limit_output_moneytime("{gcp}Time left until money limit resets: {gcs}[time]"),
-    command_limi_output_moneyLimit("{gcp}Money limit: {gcs}[current]{gcp}/{gcs}[total]"),
+    command_limit_output_moneyLimit("{gcp}Money limit: {gcs}[current]{gcp}/{gcs}[total]"),
     command_limit_output_exptime("{gcp}Time left until Exp limit resets: {gcs}[time]"),
     command_limit_output_expLimit("{gcp}Exp limit: {gcs}[current]{gcp}/{gcs}[total]"),
     command_limit_output_pointstime("{gcp}Time left until Point limit resets: {gcs}[time]"),
