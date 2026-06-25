@@ -60,7 +60,8 @@ public enum ActionType {
 	BUCKET(CMIMaterial.BUCKET, ActionSubType.MATERIAL),
 	BRUSH(CMIMaterial.BRUSH, ActionSubType.BLOCK, ActionSubType.MATERIAL),
 	WAX(CMIMaterial.HONEYCOMB, ActionSubType.BLOCK, ActionSubType.PROTECTED),
-	SCRAPE(CMIMaterial.WOODEN_AXE, ActionSubType.BLOCK, ActionSubType.PROTECTED);
+	SCRAPE(CMIMaterial.WOODEN_AXE, ActionSubType.BLOCK, ActionSubType.PROTECTED),
+	EVENMOREFISH("EvenMoreFish", CMIMaterial.TROPICAL_FISH, ActionSubType.CUSTOM);
 
 	private String name;
 

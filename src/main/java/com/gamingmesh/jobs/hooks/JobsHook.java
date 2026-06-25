@@ -1,5 +1,7 @@
 package com.gamingmesh.jobs.hooks;
 
+import com.gamingmesh.jobs.listeners.JobsEvenMoreFishPaymentListener;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -191,6 +193,18 @@ public enum JobsHook {
                 return;
 
             JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager().registerEvents(new JobsCustomFishingPaymentListener(), JavaPlugin.getPlugin(Jobs.class));
+            printListenerMessage(this);
+        }
+    },
+    EvenMoreFish {
+        @Override
+        public void registerListener() {
+            if (!isPresent()) {
+                System.out.println("EvenMoreFish is not present.");
+                return;
+            }
+            System.out.println("Loading EvenMoreFish listener.");
+            Bukkit.getPluginManager().registerEvents(new JobsEvenMoreFishPaymentListener(), Jobs.getInstance());
             printListenerMessage(this);
         }
     };
