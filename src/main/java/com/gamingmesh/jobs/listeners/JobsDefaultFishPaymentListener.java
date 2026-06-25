@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.listeners;
 
+import com.oheers.fish.api.fishing.items.AbstractFishManager;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -65,6 +66,11 @@ public class JobsDefaultFishPaymentListener implements Listener {
                 catchPyroFish = true;
             }
             if (catchPyroFish) return;
+        }
+
+        // EvenMoreFish fires its own event, so ignore this event.
+        if (JobsHook.EvenMoreFish.isEnabled() && AbstractFishManager.getInstance().isFish(event.getCaught())) {
+            return;
         }
 
         Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH), event.getCaught());

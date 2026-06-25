@@ -896,10 +896,9 @@ public final class Jobs extends JavaPlugin {
 
         pm.registerEvents(new JobsChatEvent(getInstance()), getInstance());
 
-        JobsHook.PyroFishingPro.registerListener();
-        JobsHook.mcMMO.registerListener();
-        JobsHook.MythicMobs.registerListener();
-        JobsHook.RoseStacker.registerListener();
+        for (JobsHook hook : JobsHook.values()) {
+            hook.registerListener();
+        }
 
         CMIMessages.consoleMessage("&eListeners registered successfully");
     }
