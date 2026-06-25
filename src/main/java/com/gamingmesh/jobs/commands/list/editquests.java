@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobsCommands;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestObjective;
@@ -422,7 +423,7 @@ public class editquests implements Cmd {
                         Job j = Jobs.getJob(message);
 
                         if (j == null) {
-                            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.jobname"));
+                            JLC.general_error_jobname.sendMessage(sender);
                             return;
                         }
 

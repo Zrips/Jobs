@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.i18n.Language;
 
@@ -46,7 +47,7 @@ public class explored implements Cmd {
             if (ji != null)
                 Language.sendMessage(sender, "command.explored.list", "%place%", i + 1, "%playername%", ji.getName());
         }
-        Language.sendMessage(sender, "general.info.separator");
+        JLC.general_info_separator.sendMessage(sender);
 
         return true;
     }

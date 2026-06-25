@@ -11,7 +11,6 @@ import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestProgression;
-import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 
@@ -45,7 +44,7 @@ public class resetquest implements Cmd {
             jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
         if (jPlayer == null) {
-            Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : "");
+            JLC.general_error_noinfoByPlayer.sendMessage(sender, "%playername%", args.length > 0 ? args[0] : "");
             return true;
         }
 
@@ -60,7 +59,7 @@ public class resetquest implements Cmd {
         }
 
         jPlayer.resetQuests(quests);
-        Language.sendMessage(sender, "command.resetquest.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getName());
+        JLC.command_resetquest_output_reseted.sendMessage(sender, "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getName());
         return true;
     }
 }

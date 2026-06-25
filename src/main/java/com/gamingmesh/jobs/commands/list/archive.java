@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
@@ -31,7 +32,7 @@ public class archive implements Cmd {
 
         if (jPlayer == null) {
             if (args.length >= 1)
-                Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args[0]);
+                JLC.general_error_noinfoByPlayer.sendMessage(sender, "%playername%", args[0]);
             return null;
         }
 
@@ -41,20 +42,19 @@ public class archive implements Cmd {
             return null;
         }
 
-        Language.sendMessage(sender, "general.info.toplineseparator", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName());
+        JLC.general_info_toplineseparator.sendMessage(sender, "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName());
         for (JobProgression jobInfo : allJobs) {
             RawMessage rm = new RawMessage();
             if (jobInfo.canRejoin())
                 rm.addText(CMIChatColor.GREEN + "+" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo))
-                    .addHover(Jobs.getLanguage().getMessage("command.join.rejoin"))
-                    .addCommand("jobs join " + jobInfo.getJob().getName());
+                        .addHover(Jobs.getLanguage().getMessage("command.join.rejoin"))
+                        .addCommand("jobs join " + jobInfo.getJob().getName());
             else
                 rm.addText(CMIChatColor.RED + "-" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo))
-                    .addHover(Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", jobInfo.getRejoinTimeMessage()));
+                        .addHover(Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", jobInfo.getRejoinTimeMessage()));
             rm.show(sender);
         }
-
-        Language.sendMessage(sender, "general.info.separator");
+        JLC.general_info_separator.sendMessage(sender);
         return true;
     }
 }

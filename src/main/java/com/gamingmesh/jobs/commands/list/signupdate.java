@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.i18n.Language;
 
@@ -30,7 +31,7 @@ public class signupdate implements Cmd {
 
         Job oldjob = Jobs.getJob(args[0]);
         if (oldjob == null) {
-            Language.sendMessage(sender, "general.error.job");
+            JLC.general_error_job.sendMessage(sender);
             return null;
         }
 

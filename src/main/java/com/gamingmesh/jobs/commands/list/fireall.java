@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.dao.JobsDAO.DBTables;
@@ -38,13 +39,13 @@ public class fireall implements Cmd {
                 one.setSaved(true);
             }
 
-            Language.sendMessage(sender, "general.admin.success");
+            JLC.general_admin_success.sendMessage(sender);
             return true;
         }
 
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
         if (jPlayer == null) {
-            Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args[0]);
+            JLC.general_error_noinfoByPlayer.sendMessage(sender, "%playername%", args[0]);
             return true;
         }
 
@@ -58,7 +59,7 @@ public class fireall implements Cmd {
         if (player != null)
             Language.sendMessage(player, "command.fireall.output.target");
 
-        Language.sendMessage(sender, "general.admin.success");
+        JLC.general_admin_success.sendMessage(sender);
         return true;
     }
 }

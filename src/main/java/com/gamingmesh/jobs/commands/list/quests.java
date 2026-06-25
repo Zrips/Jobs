@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Quest;
@@ -160,7 +161,7 @@ public class quests implements Cmd {
             }
         }
 
-        sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
+        JLC.general_info_separator.sendMessage(sender);
         return true;
     }
 

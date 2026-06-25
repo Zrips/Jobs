@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.list.info;
 import com.gamingmesh.jobs.commands.list.playerinfo;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -57,7 +58,7 @@ public class JobsCommands implements CommandExecutor {
 
         if (sender instanceof Player && !Jobs.getGCManager().canPerformActionInWorld(((Player) sender).getWorld())
             && !sender.hasPermission("jobs.disabledworld.commands")) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.worldisdisabled"));
+            JLC.general_error_worldisdisabled.sendMessage(sender);
             return true;
         }
 
@@ -154,13 +155,13 @@ public class JobsCommands implements CommandExecutor {
         }
 
         if (page < 1) {
-            CMIActionBar.send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
+            CMIActionBar.send(sender, JLC.general_error_noHelpPage.getMessage());
             return true;
         }
 
         PageInfo pi = new PageInfo(10, commands.size(), page);
         if (page > pi.getTotalPages()) {
-            CMIActionBar.send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
+            CMIActionBar.send(sender, JLC.general_error_noHelpPage.getMessage());
             return true;
         }
 
@@ -268,7 +269,7 @@ public class JobsCommands implements CommandExecutor {
     public void jobInfoMessage(CommandSender sender, JobsPlayer player, Job job, String type, int page) {
         if (job == null) {
             // job doesn't exist
-            Language.sendMessage(sender, "general.error.job");
+            JLC.general_error_job.sendMessage(sender);
             return;
         }
 
@@ -320,7 +321,7 @@ public class JobsCommands implements CommandExecutor {
         PageInfo pi = new PageInfo(15, message.size(), page);
 
         if (page > pi.getTotalPages()) {
-            Language.sendMessage(sender, "general.info.invalidPage");
+            JLC.general_info_invalidPage.sendMessage(sender);
             return;
         }
 

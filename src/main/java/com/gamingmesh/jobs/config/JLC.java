@@ -19,12 +19,13 @@ public enum JLC {
     general_info_toplineseparator("{gcp}*********************** {gcs}[playerdisplayname] {gcp}***********************"),
     general_info_separator("{gcp}*******************************************************"),
     general_info_invalidPage("{gcw}Invalid page"),
+    general_info_join("{gcp}Click to join job"),
+    general_info_leave("{gcw}Click to leave job"),
+    
     general_info_blocks_furnace("Furnace"),
     general_info_blocks_smoker("Smoker"),
     general_info_blocks_blastfurnace("Blast furnace"),
     general_info_blocks_brewingstand("Brewing stand"),
-    general_info_join("{gcp}Click to join job"),
-    general_info_leave("{gcw}Click to leave job"),
 
     general_admin_error("{gcw}There was an error in the command."),
     general_admin_success("{gcp}Your command has been performed."),

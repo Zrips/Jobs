@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.i18n.Language;
@@ -41,10 +42,10 @@ public class points implements Cmd {
 
         PlayerPoints pointInfo = jPlayer.getPointsData();
 
-        Language.sendMessage(sender, "general.info.toplineseparator", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName());
+        JLC.general_info_toplineseparator.sendMessage(sender, "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName());
         Language.sendMessage(sender, "command.points.currentpoints", "%currentpoints%", (int) (pointInfo.getCurrentPoints() * 100) / 100D);
         Language.sendMessage(sender, "command.points.totalpoints", "%totalpoints%", (int) (pointInfo.getTotalPoints() * 100) / 100D);
-        Language.sendMessage(sender, "general.info.separator");
+        JLC.general_info_separator.sendMessage(sender);
         return true;
     }
 }

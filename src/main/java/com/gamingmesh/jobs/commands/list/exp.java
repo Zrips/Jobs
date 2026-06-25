@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -42,13 +43,13 @@ public class exp implements Cmd {
 
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
         if (jPlayer == null) {
-            Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args[0]);
+            JLC.general_error_noinfoByPlayer.sendMessage(sender, "%playername%", args[0]);
             return true;
         }
 
         Job job = Jobs.getJob(args[1]);
         if (job == null) {
-            Language.sendMessage(sender, "general.error.job");
+            JLC.general_error_job.sendMessage(sender);
             return true;
         }
 
@@ -87,7 +88,7 @@ public class exp implements Cmd {
             try {
                 amount = Double.parseDouble(args[3]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
+                JLC.general_admin_error.sendMessage(sender);
                 return true;
             }
         }
@@ -128,14 +129,14 @@ public class exp implements Cmd {
 
             if (!silent)
                 Language.sendMessage(player, "command.exp.output.target", job, "%level%", prog.getLevelFormatted(), "%exp%", prog
-                    .getExperience());
+                        .getExperience());
 
             if (!silentAdmin)
-                Language.sendMessage(sender, "general.admin.success");
+                JLC.general_admin_success.sendMessage(sender);
 
         } catch (Exception e) {
             if (!silentAdmin)
-                Language.sendMessage(sender, "general.admin.error");
+                JLC.general_admin_error.sendMessage(sender);
             e.printStackTrace();
         }
         return true;

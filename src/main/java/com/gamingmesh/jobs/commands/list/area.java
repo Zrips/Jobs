@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.config.RestrictedAreaManager;
 import com.gamingmesh.jobs.container.CuboidArea;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -60,7 +61,7 @@ public class area implements Cmd {
 
                 if (!wg && !Jobs.getSelectionManager().hasPlacedBoth(player)) {
                     Language.sendMessage(sender, "command.area.output.select",
-                        "%tool%", CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getName());
+                            "%tool%", CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getName());
                     return true;
                 }
                 if (wg && JobsHook.WorldGuard.isEnabled()) {
@@ -134,7 +135,7 @@ public class area implements Cmd {
                 return true;
             }
 
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
+            JLC.general_info_separator.sendMessage(sender);
             int i = 0;
             for (Entry<String, RestrictedArea> area : areas.entrySet()) {
                 i++;
@@ -142,28 +143,28 @@ public class area implements Cmd {
                 HashMap<CurrencyType, Double> multi = area.getValue().getMultipliers();
                 if (area.getValue().getWgName() == null) {
                     Language.sendMessage(sender, "command.area.output.lists",
-                        "%number%", i,
-                        "%areaname%", area.getValue().getName(),
-                        "%worldname%", cuboid.getWorldName(),
-                        "%x1%", cuboid.getLowPoint().getBlockX(),
-                        "%y1%", cuboid.getLowPoint().getBlockY(),
-                        "%z1%", cuboid.getLowPoint().getBlockZ(),
-                        "%x2%", cuboid.getHighPoint().getBlockX(),
-                        "%y2%", cuboid.getHighPoint().getBlockY(),
-                        "%z2%", cuboid.getHighPoint().getBlockZ(),
-                        "%money%", multi.get(CurrencyType.MONEY),
-                        "%points%", multi.get(CurrencyType.POINTS),
-                        "%exp%", multi.get(CurrencyType.EXP));
+                            "%number%", i,
+                            "%areaname%", area.getValue().getName(),
+                            "%worldname%", cuboid.getWorldName(),
+                            "%x1%", cuboid.getLowPoint().getBlockX(),
+                            "%y1%", cuboid.getLowPoint().getBlockY(),
+                            "%z1%", cuboid.getLowPoint().getBlockZ(),
+                            "%x2%", cuboid.getHighPoint().getBlockX(),
+                            "%y2%", cuboid.getHighPoint().getBlockY(),
+                            "%z2%", cuboid.getHighPoint().getBlockZ(),
+                            "%money%", multi.get(CurrencyType.MONEY),
+                            "%points%", multi.get(CurrencyType.POINTS),
+                            "%exp%", multi.get(CurrencyType.EXP));
                 } else {
                     Language.sendMessage(sender, "command.area.output.wgLists",
-                        "%number%", i,
-                        "%areaname%", area.getValue().getName(),
-                        "%money%", multi.get(CurrencyType.MONEY),
-                        "%points%", multi.get(CurrencyType.POINTS),
-                        "%exp%", multi.get(CurrencyType.EXP));
+                            "%number%", i,
+                            "%areaname%", area.getValue().getName(),
+                            "%money%", multi.get(CurrencyType.MONEY),
+                            "%points%", multi.get(CurrencyType.POINTS),
+                            "%exp%", multi.get(CurrencyType.EXP));
                 }
             }
-            Language.sendMessage(sender, "general.info.separator");
+            JLC.general_info_separator.sendMessage(sender);
             return true;
         }
 
