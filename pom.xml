@@ -204,6 +204,13 @@
 			<version>1.5.40</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- EvenMoreFish -->
+		<dependency>
+			<groupId>com.oheers.evenmorefish</groupId>
+			<artifactId>even-more-fish-api</artifactId>
+			<version>2.3.6</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -250,6 +257,11 @@
 		<repository>
 			<id>rosewood-repo</id>
 			<url>https://repo.rosewooddev.io/repository/public/</url>
+		</repository>
+		<!-- EvenMoreFish -->
+		<repository>
+			<id>evenmorefish-repo</id>
+			<url>https://repo.codemc.io/repository/EvenMoreFish/</url>
 		</repository>
 		<!-- MyPet -->
 		<!--		<repository>-->

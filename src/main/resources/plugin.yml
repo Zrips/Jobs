@@ -8,7 +8,22 @@ website: https://www.spigotmc.org/resources/4216/
 authors: [Zrips]
 contributors: [montlikadani]
 depend: [CMILib]
-softdepend: [Vault, Essentials, MythicMobs, WorldGuard, MyPet, PlaceholderAPI, EcoEnchants, WildStacker, RoseStacker, StackMob, PyroFishingPro, BlockTracker, CustomFishing]
+softdepend: [
+  Vault,
+  Essentials,
+  MythicMobs,
+  WorldGuard,
+  MyPet,
+  PlaceholderAPI,
+  EcoEnchants,
+  WildStacker,
+  RoseStacker,
+  StackMob,
+  PyroFishingPro,
+  BlockTracker,
+  CustomFishing,
+  EvenMoreFish
+]
 commands:
   jobs:
     description: Jobs
