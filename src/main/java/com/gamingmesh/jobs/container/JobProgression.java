@@ -31,6 +31,7 @@ public class JobProgression {
 	private JobsPlayer jPlayer;
 	private double experience;
 	private double lastExperience = 0;
+	private double lastMoney = 0;
 	private int level;
 	private transient int maxExperience = -1;
 	private long leftOn = 0;
@@ -298,6 +299,14 @@ public class JobProgression {
 
 	public void setLastExperience(double lastExperience) {
 		this.lastExperience = lastExperience;
+	}
+
+	public double getLastMoney() {
+		return lastMoney;
+	}
+
+	public void setLastMoney(double lastMoney) {
+		this.lastMoney = lastMoney;
 	}
 
 }
