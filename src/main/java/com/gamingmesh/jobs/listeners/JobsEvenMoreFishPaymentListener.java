@@ -1,7 +1,8 @@
 package com.gamingmesh.jobs.listeners;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.actions.EvenMoreFishInfo;
+import com.gamingmesh.jobs.actions.evenmorefish.EvenMoreFishFishInfo;
+import com.gamingmesh.jobs.actions.evenmorefish.EvenMoreFishRarityInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.oheers.fish.api.events.EMFFishCaughtEvent;
 import com.oheers.fish.api.events.EMFFishHuntEvent;
@@ -56,7 +57,8 @@ public class JobsEvenMoreFishPaymentListener implements Listener {
             return;
         }
 
-        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EvenMoreFishInfo(fish, ActionType.EVENMOREFISH));
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EvenMoreFishFishInfo(fish, ActionType.EVENMOREFISH));
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EvenMoreFishRarityInfo(fish, ActionType.EVENMOREFISH));
     }
 
 }
