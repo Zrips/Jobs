@@ -56,7 +56,6 @@ public class JobsEvenMoreFishPaymentListener implements Listener {
             return;
         }
 
-        System.out.println("EvenMoreFish fish: " + fish.getRarityKey().toString());
         Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EvenMoreFishInfo(fish, ActionType.EVENMOREFISH));
     }
 

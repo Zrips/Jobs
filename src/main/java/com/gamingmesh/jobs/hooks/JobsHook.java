@@ -200,10 +200,8 @@ public enum JobsHook {
         @Override
         public void registerListener() {
             if (!isPresent()) {
-                System.out.println("EvenMoreFish is not present.");
                 return;
             }
-            System.out.println("Loading EvenMoreFish listener.");
             Bukkit.getPluginManager().registerEvents(new JobsEvenMoreFishPaymentListener(), Jobs.getInstance());
             printListenerMessage(this);
         }
