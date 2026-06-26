@@ -24,9 +24,9 @@
 			<version>1.21.11-R0.2-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
-        <dependency>
+		<dependency>
 			<groupId>io.papermc.paper</groupId>
-			<artifactId>paper-api</artifactId> 
+			<artifactId>paper-api</artifactId>
 			<version>1.21.11-R0.1-SNAPSHOT</version> <!-- use latest -->
 			<scope>provided</scope>
 		</dependency>
@@ -247,7 +247,8 @@
 		<!-- PlaceholderAPI -->
 		<repository>
 			<id>placeholderapi</id>
-			<url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+			<url>
+				https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
 		</repository>
 		<repository>
 			<id>bg-repo</id>

@@ -1897,12 +1897,7 @@ public final class JobsPaymentListener implements Listener {
         if (jPlayer == null)
             return;
 
-        ExploreRespond respond = null;
-
-        if (Jobs.getGCManager().useNewExploration)
-            respond = Jobs.getChunkExplorationManager().chunkRespond(jPlayer.getUserId(), event.getNewChunk());
-        else
-            respond = Jobs.getExploreManager().chunkRespond(jPlayer.getUserId(), event.getNewChunk());
+        ExploreRespond respond = ExploreRespond.get(jPlayer, event.getNewChunk());
 
         if (!respond.isNewChunk())
             return;

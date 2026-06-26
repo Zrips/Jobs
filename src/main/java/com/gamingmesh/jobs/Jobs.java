@@ -125,7 +125,6 @@ import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
@@ -1119,7 +1118,7 @@ public final class Jobs extends JavaPlugin {
 
         // no job
         if (numjobs == 0) {
-            if (noneJob == null || noneJob.isWorldBlackListed(block, ent, victim))
+            if (noneJob == null || noneJob.isWorldBlackListed(jPlayer, block, ent, victim))
                 return;
 
             JobInfo jobinfo = noneJob.getJobInfo(info, 1);
@@ -1223,7 +1222,7 @@ public final class Jobs extends JavaPlugin {
         } else {
             List<Job> expiredJobs = new ArrayList<>();
             for (JobProgression prog : progression) {
-                if (prog.getJob().isWorldBlackListed(block, ent, victim))
+                if (prog.getJob().isWorldBlackListed(jPlayer, block, ent, victim))
                     continue;
 
                 if (jPlayer.isLeftTimeEnded(prog.getJob())) {
