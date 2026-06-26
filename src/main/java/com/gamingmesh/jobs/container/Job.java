@@ -49,6 +49,7 @@ import com.gamingmesh.jobs.stuff.Util;
 import com.gamingmesh.jobs.BoostManager;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.Items.CMIMaterial;
@@ -113,12 +114,13 @@ public class Job {
     }
 
     @Deprecated
-    public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
-        int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, Map<String, JobItems> jobItems,
-        Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
+    public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod,
+            int maxLevel,
+            int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, Map<String, JobItems> jobItems,
+            Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
         this(jobName, jobDisplayName, fullName, jobShortName, jobColour, maxExpEquation, displayMethod, maxLevel,
-            vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
-            jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
+                vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
+                jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
 
 //        this.jobItems = jobItems;
         this.description = description;
@@ -126,8 +128,8 @@ public class Job {
 
     @Deprecated
     public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
-        int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions,
-        Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, List<String> worldBlacklist) {
+            int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions,
+            Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, List<String> worldBlacklist) {
         this.jobName = jobName == null ? "" : jobName;
         this.fullName = fullName == null ? "" : fullName;
         this.jobShortName = jobShortName;
@@ -153,10 +155,11 @@ public class Job {
     }
 
     /**
-     * Adds specific amount of boost to the given currency type. If there was a boost
-     * added before with the same currency type, it will be overridden to the new one.
+     * Adds specific amount of boost to the given currency type. If there was a
+     * boost added before with the same currency type, it will be overridden to the
+     * new one.
      * 
-     * @param type the type of {@link CurrencyType}}
+     * @param type  the type of {@link CurrencyType}}
      * @param point the amount of boost to add
      */
     public void addBoost(CurrencyType type, double point) {
@@ -170,15 +173,15 @@ public class Job {
     }
 
     /**
-     * Adds specific amount of boost to the given currency type with the
-     * specified array of times. If there was a boost added before with
-     * the same currency type, it will be overridden to the new one.
+     * Adds specific amount of boost to the given currency type with the specified
+     * array of times. If there was a boost added before with the same currency
+     * type, it will be overridden to the new one.
      * <p>
-     * The array of integer need at least to contain 3 elements
-     * to calculate the time in milliseconds using {@link Calendar}.
+     * The array of integer need at least to contain 3 elements to calculate the
+     * time in milliseconds using {@link Calendar}.
      * 
-     * @param type the type of {@link CurrencyType}}
-     * @param point the amount of boost to add
+     * @param type     the type of {@link CurrencyType}}
+     * @param point    the amount of boost to add
      * @param duration boost duration in seconds
      */
     public void addBoost(CurrencyType type, double point, long duration) {
@@ -213,7 +216,7 @@ public class Job {
      */
     public boolean isSame(Job job) {
         return job != null && (id == job.getId() || jobName.equalsIgnoreCase(job.getName())
-            || fullName.equalsIgnoreCase(job.getJobFullName()) || fullName.equalsIgnoreCase(job.getName()));
+                || fullName.equalsIgnoreCase(job.getJobFullName()) || fullName.equalsIgnoreCase(job.getName()));
     }
 
     /**
@@ -320,6 +323,7 @@ public class Job {
 
     /**
      * Sets job info for action type
+     * 
      * @param type - The action type
      * @param info - the job info
      */
@@ -329,6 +333,7 @@ public class Job {
 
     /**
      * Gets the job info for the particular type
+     * 
      * @param type - The action type
      * @return Job info list
      */
@@ -338,6 +343,7 @@ public class Job {
 
     /**
      * Gets the job info list
+     * 
      * @return Job info list
      */
     public Map<ActionType, List<JobInfo>> getJobInfoList() {
@@ -356,8 +362,8 @@ public class Job {
             }
 
             return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
-                (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
-                jobInfo.getName().equalsIgnoreCase(action.getName());
+                    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
+                    jobInfo.getName().equalsIgnoreCase(action.getName());
         };
 
         String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
@@ -439,8 +445,8 @@ public class Job {
      * Gets the description
      * 
      * @return description
-     * @deprecated Description can be list instead
-     * of plain string, use {@link #getFullDescription()}
+     * @deprecated Description can be list instead of plain string, use
+     *             {@link #getFullDescription()}
      */
     @Deprecated
     public String getDescription() {
@@ -454,6 +460,7 @@ public class Job {
 
     /**
      * Get the Color of the job for chat
+     * 
      * @return the Color of the job for chat
      */
     public CMIChatColor getChatColor() {
@@ -467,6 +474,7 @@ public class Job {
 
     /**
      * Get the MaxExpEquation of the job
+     * 
      * @return the MaxExpEquation of the job
      */
     public Parser getMaxExpEquation() {
@@ -480,6 +488,7 @@ public class Job {
 
     /**
      * Function to return the appropriate max exp for this level
+     * 
      * @param level - current level
      * @return the correct max exp for this level
      */
@@ -492,6 +501,7 @@ public class Job {
 
     /**
      * Function to get the display method
+     * 
      * @return the display method
      */
     public DisplayMethod getDisplayMethod() {
@@ -542,6 +552,7 @@ public class Job {
 
     /**
      * Function to return the maximum level
+     * 
      * @return the max level
      * @return null - no max level
      */
@@ -556,6 +567,7 @@ public class Job {
 
     /**
      * Function to return the maximum slots
+     * 
      * @return the max slots
      * @return null - no max slots
      */
@@ -570,6 +582,7 @@ public class Job {
 
     /**
      * Get the permission nodes for this job
+     * 
      * @return Permissions for this job
      */
     public List<JobPermission> getPermissions() {
@@ -583,6 +596,7 @@ public class Job {
 
     /**
      * Get the command nodes for this job
+     * 
      * @return Commands for this job
      */
     public List<JobCommands> getCommands() {
@@ -596,6 +610,7 @@ public class Job {
 
     /**
      * Get the conditions for this job
+     * 
      * @return Conditions for this job
      */
     public List<JobConditions> getConditions() {
@@ -609,6 +624,7 @@ public class Job {
 
     /**
      * Get the limited item nodes for this job
+     * 
      * @return Limited items for this job
      */
     public Map<String, JobLimitedItems> getLimitedItems() {
@@ -631,7 +647,8 @@ public class Job {
     public void setBossbar(String bossbar) {
         this.bossbar = bossbar;
 
-        // Need to reset boss bar cache for all online players in case jobs config file was reloaded
+        // Need to reset boss bar cache for all online players in case jobs config file
+        // was reloaded
         for (Player player : Bukkit.getOnlinePlayers()) {
             JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
             if (jPlayer != null)
@@ -732,7 +749,7 @@ public class Job {
             int target = new Random(System.nanoTime()).nextInt(100);
             for (Quest one : ls) {
                 if (one.isEnabled() && one.getChance() >= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))
-                    && one.isInLevelRange(level)) {
+                        && one.isInLevelRange(level)) {
                     return one;
                 }
             }
@@ -763,7 +780,11 @@ public class Job {
     }
 
     public Job setWorldBlacklist(List<String> worldBlacklist) {
-        this.worldBlacklist = worldBlacklist != null ? worldBlacklist : null;
+        if (worldBlacklist != null) {
+            CMIList.toLowerCase(worldBlacklist);
+            this.worldBlacklist = worldBlacklist;
+        } else
+            this.worldBlacklist = new ArrayList<>();
         return this;
     }
 
@@ -781,19 +802,25 @@ public class Job {
     }
 
     public boolean isWorldBlackListed(Block block, Entity ent, LivingEntity lent) {
+        return isWorldBlackListed(null, block, ent, lent);
+    }
+
+    public boolean isWorldBlackListed(JobsPlayer jPlayer, Block block, Entity ent, LivingEntity lent) {
         if (block != null)
             return isWorldBlackListed(block.getWorld());
         if (ent != null)
             return isWorldBlackListed(ent.getWorld());
         if (lent != null)
             return isWorldBlackListed(lent.getWorld());
+        if (jPlayer != null && jPlayer.isOnline())
+            return isWorldBlackListed(jPlayer.getPlayer().getWorld());
         return false;
     }
 
     public boolean isWorldBlackListed(World world) {
         if (worldBlacklist.isEmpty())
             return reversedWorldBlacklist;
-        return world != null && worldBlacklist.contains(world.getName()) != reversedWorldBlacklist;
+        return world != null && worldBlacklist.contains(world.getName().toLowerCase()) != reversedWorldBlacklist;
     }
 
     public boolean isReversedWorldBlacklist() {

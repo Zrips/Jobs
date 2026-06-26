@@ -246,9 +246,9 @@ command:
     error:
       nojob: 请先加入一个职业
     output:
-      Level: '&7职业 &f%jobname% &7等级 &f%joblevel%&7：&f%jobxp%&7/&f%jobmaxxp%&7 经验'
-      maxLevel: '    &2已满级 &7职业 &f%jobname% &7等级 &f%joblevel%'
-    bossBarOutput: 等级 %joblevel% %jobname%：%jobxp%/%jobmaxxp% 经验值 %gain%
+      message: '职业 %jobname% 等级 %joblevel% ：当前经验 %jobxp% / 升级所需 %jobmaxxp%'
+      max-level: '     &c已达满级   -   %jobname%'
+    bossBarOutput: '等级 %joblevel% %jobname%：%jobxp%/%jobmaxxp% 经验 本次收益%gain% 金币$%money%'
     bossBarGain: ' &7(&f%gain%&7)'
     barEmpty: '&7▏'
     barFull: '&2▏'

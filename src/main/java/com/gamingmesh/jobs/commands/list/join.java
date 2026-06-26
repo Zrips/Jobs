@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -35,7 +36,7 @@ public class join implements Cmd {
         Job job = Jobs.getJob(args[0]);
         if (job == null) {
             // job does not exist
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+            JLC.general_error_job.sendMessage(sender);
             return true;
         }
 

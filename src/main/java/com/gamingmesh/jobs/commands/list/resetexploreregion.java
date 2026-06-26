@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.config.JLC;
 
 public class resetexploreregion implements Cmd {
 
@@ -18,13 +18,13 @@ public class resetexploreregion implements Cmd {
         }
 
         if (!Jobs.getGCManager().resetExploringData) {
-            Language.sendMessage(sender, "command.resetexploreregion.output.notenabled");
+            JLC.command_resetexploreregion_output_notenabled.sendMessage(sender);
             return true;
         }
 
         final String worldName = args[1];
         if (!worldName.matches(REGEX)) {
-            Language.sendMessage(sender, "command.resetexploreregion.output.invalidname");
+            JLC.command_resetexploreregion_output_invalidname.sendMessage(sender);
             return true;
         }
 
@@ -32,7 +32,7 @@ public class resetexploreregion implements Cmd {
             Jobs.getChunkExplorationManager().resetRegion(worldName);
         } else
             Jobs.getExploreManager().resetRegion(worldName);
-        Language.sendMessage(sender, "command.resetexploreregion.output.reseted", "%worldname%", worldName);
+        JLC.command_resetexploreregion_output_reseted.sendMessage(sender, "%worldname%", worldName);
         return true;
     }
 }

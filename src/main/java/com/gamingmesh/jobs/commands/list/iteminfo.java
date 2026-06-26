@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
@@ -40,7 +41,7 @@ public class iteminfo implements Cmd {
 	String dataString = data == 0 ? "" : "-" + data;
 
 	RawMessage rm = new RawMessage();
-	rm.addText(Jobs.getLanguage().getMessage("general.info.separator") + "\n");
+	rm.addText(JLC.general_info_separator.getMessage() + "\n");
 
 	rm.addText(Jobs.getLanguage().getMessage("command.iteminfo.output.material", "%itemname%", CMIMaterial.get(iih).getName()) + "\n");
 	rm.addSuggestion(CMIMaterial.get(iih).getName());
@@ -61,7 +62,7 @@ public class iteminfo implements Cmd {
 	    rm.addText(Jobs.getLanguage().getMessage("command.iteminfo.output.deprecated", "%first%", iih.getType().getId() + dataString, "%second%", iih.getType().name() + dataString) + "\n");
 	rm.addSuggestion(iih.getType().name() + dataString);
 
-	rm.addText(Jobs.getLanguage().getMessage("general.info.separator"));
+	rm.addText(JLC.general_info_separator.getMessage());
 	rm.show(sender);
 
 	return true;

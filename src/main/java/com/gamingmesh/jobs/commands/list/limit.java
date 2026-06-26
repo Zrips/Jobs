@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.economy.PaymentData;
@@ -39,7 +40,7 @@ public class limit implements Cmd {
         }
 
         if (disabled) {
-            Language.sendMessage(sender, "command.limit.output.notenabled");
+            JLC.command_limit_output_notenabled.sendMessage(sender);
             return true;
         }
 
@@ -65,8 +66,8 @@ public class limit implements Cmd {
 
                 Language.sendMessage(sender, "command.limit.output." + typeName + "time", "%time%", CMITimeManager.to24hourShort(limit.getLeftTime(type)));
                 Language.sendMessage(sender, "command.limit.output." + typeName + "Limit",
-                    "%current%", new DecimalFormat("##.##").format(limit.getAmount(type)),
-                    "%total%", JPlayer.getLimit(type));
+                        "%current%", new DecimalFormat("##.##").format(limit.getAmount(type)),
+                        "%total%", JPlayer.getLimit(type));
             }
         }
         return true;

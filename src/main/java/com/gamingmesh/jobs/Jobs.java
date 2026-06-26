@@ -125,7 +125,6 @@ import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
@@ -896,10 +895,9 @@ public final class Jobs extends JavaPlugin {
 
         pm.registerEvents(new JobsChatEvent(getInstance()), getInstance());
 
-        JobsHook.PyroFishingPro.registerListener();
-        JobsHook.mcMMO.registerListener();
-        JobsHook.MythicMobs.registerListener();
-        JobsHook.RoseStacker.registerListener();
+        for (JobsHook hook : JobsHook.values()) {
+            hook.registerListener();
+        }
 
         CMIMessages.consoleMessage("&eListeners registered successfully");
     }
@@ -1120,7 +1118,7 @@ public final class Jobs extends JavaPlugin {
 
         // no job
         if (numjobs == 0) {
-            if (noneJob == null || noneJob.isWorldBlackListed(block, ent, victim))
+            if (noneJob == null || noneJob.isWorldBlackListed(jPlayer, block, ent, victim))
                 return;
 
             JobInfo jobinfo = noneJob.getJobInfo(info, 1);
@@ -1224,7 +1222,7 @@ public final class Jobs extends JavaPlugin {
         } else {
             List<Job> expiredJobs = new ArrayList<>();
             for (JobProgression prog : progression) {
-                if (prog.getJob().isWorldBlackListed(block, ent, victim))
+                if (prog.getJob().isWorldBlackListed(jPlayer, block, ent, victim))
                     continue;
 
                 if (jPlayer.isLeftTimeEnded(prog.getJob())) {
@@ -1395,6 +1393,7 @@ public final class Jobs extends JavaPlugin {
                     getLoging().recordToLog(jPlayer, info, amounts);
                 }
 
+                prog.setLastMoney(prog.getLastMoney() + income);
                 if (prog.addExperience(expAmount))
                     getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
             }
@@ -1500,6 +1499,7 @@ public final class Jobs extends JavaPlugin {
             getLoging().recordToLog(jPlayer, info, payment.getPayment());
         }
 
+        prog.setLastMoney(prog.getLastMoney() + payment.get(CurrencyType.MONEY));
         if (prog.addExperience(expPayment))
             getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
     }

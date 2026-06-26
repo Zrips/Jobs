@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
@@ -30,7 +31,7 @@ public class leave implements Cmd {
         Player pSender = (Player) sender;
         Job job = Jobs.getJob(args[0]);
         if (job == null) {
-            Language.sendMessage(sender, "general.error.job");
+            JLC.general_error_job.sendMessage(sender);
             return true;
         }
 
@@ -61,7 +62,7 @@ public class leave implements Cmd {
         if (Jobs.getPlayerManager().leaveJob(jPlayer, job))
             Language.sendMessage(sender, "command.leave.success", job);
         else
-            Language.sendMessage(sender, "general.error.job");
+            JLC.general_error_job.sendMessage(sender);
 
         return true;
     }
