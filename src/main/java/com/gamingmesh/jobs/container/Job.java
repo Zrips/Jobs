@@ -28,8 +28,6 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.BiPredicate;
 
-import javax.annotation.Nonnull;
-
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -40,13 +38,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import com.gamingmesh.jobs.BoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Gui.GuiItem;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.actions.PotionItemActionInfo;
 import com.gamingmesh.jobs.container.JobsTop.topStats;
 import com.gamingmesh.jobs.stuff.Util;
-import com.gamingmesh.jobs.BoostManager;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMIList;
@@ -394,11 +392,11 @@ public class Job {
     }
 
     public String getJobFullName() {
-        return fullName;
+        return fullName == null ? getName() : fullName;
     }
 
     public Job setJobFullName(String fullName) {
-        this.fullName = fullName == null ? "" : fullName;
+        this.fullName = fullName;
         return this;
     }
 

@@ -863,7 +863,8 @@ public class ConfigManager {
                     String node = permissionSection.getString("permission");
                     boolean value = permissionSection.getBoolean("value", true);
                     int levelRequirement = permissionSection.getInt("level");
-                    jobPermissions.add(new JobPermission(node, value, levelRequirement));
+                    if (node != null)
+                        jobPermissions.add(new JobPermission(node, value, levelRequirement));
                 }
             }
             job.setPermissions(jobPermissions);
