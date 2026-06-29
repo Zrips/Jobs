@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.commands.list;
 
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
@@ -155,45 +156,27 @@ public class howmuch implements Cmd {
                 if (jobinfo == null)
                     continue;
 
-                double income = jobinfo.getIncome(prog.getLevel(), numjobs, jPlayer.maxJobsEquation);
-                double pointAmount = jobinfo.getPoints(prog.getLevel(), numjobs, jPlayer.maxJobsEquation);
-                double expAmount = jobinfo.getExperience(prog.getLevel(), numjobs, jPlayer.maxJobsEquation);
-
-                // Calculate income
-                if (income != 0D) {
-                    income = boost.getFinalAmount(CurrencyType.MONEY, income);
-
-                    if (Jobs.getGeneralConfigManager().useMinimumOveralPayment && income > 0) {
-                        double maxLimit = income * Jobs.getGeneralConfigManager().MinimumOveralPaymentLimit;
-
-                        if (income < maxLimit)
-                            income = maxLimit;
-                    }
-                }
-
-                // Calculate points
-                if (pointAmount != 0D) {
-                    pointAmount = boost.getFinalAmount(CurrencyType.POINTS, pointAmount);
-
-                    if (Jobs.getGeneralConfigManager().useMinimumOveralPoints && pointAmount > 0) {
-                        double maxLimit = pointAmount * Jobs.getGeneralConfigManager().MinimumOveralPointsLimit;
-
-                        if (pointAmount < maxLimit)
-                            pointAmount = maxLimit;
-                    }
-                }
-
-                // Calculate exp
-                if (expAmount != 0D) {
-                    expAmount = boost.getFinalAmount(CurrencyType.EXP, expAmount);
-
-                    if (Jobs.getGeneralConfigManager().useMinimumOveralExp && expAmount > 0) {
-                        double maxLimit = expAmount * Jobs.getGeneralConfigManager().minimumOveralExpLimit;
-
-                        if (expAmount < maxLimit)
-                            expAmount = maxLimit;
-                    }
-                }
+                Map<CurrencyType, Double> rewards = Jobs.calculateRewards(
+                    jPlayer,
+                    prog.getJob(),
+                    jobinfo,
+                    prog.getLevel(),
+                    numjobs,
+                    info,
+                    block,
+                    entity,
+                    entity instanceof LivingEntity ? (LivingEntity) entity : null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    boost,
+                    true,
+                    true
+                );
+                double income = rewards.getOrDefault(CurrencyType.MONEY, 0D);
+                double pointAmount = rewards.getOrDefault(CurrencyType.POINTS, 0D);
+                double expAmount = rewards.getOrDefault(CurrencyType.EXP, 0D);
                 payments++;
 
                 Language.sendMessage(sender, "command.version.output.payment", "[job]", prog.getJob().getDisplayName(), "[action]", one, "[target]", name,
