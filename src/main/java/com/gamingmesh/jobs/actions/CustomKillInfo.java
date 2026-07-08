@@ -31,7 +31,7 @@ public class CustomKillInfo extends BaseActionInfo {
 
     @Override
     public String getName() {
-	return name;
+	    return name;
     }
 
     @Override

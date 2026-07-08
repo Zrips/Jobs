@@ -217,7 +217,7 @@ public class Quest {
 
     // Grabs existing job-quest-objective in case this is reload and we can reuse same objective object to avoid issue
     private QuestObjective reuseOldObjectiveObject(QuestObjective objective) {
-        if (!Jobs.fullyLoaded)
+        if (!Jobs.fullyLoaded || objective == null)
             return objective;
 
         Job oldJob = Jobs.getJob(job.getName());

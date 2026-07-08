@@ -53,6 +53,9 @@ public final class Util {
 
     public static final List<UUID> LEAVECONFIRM = new ArrayList<>();
 
+    // for confirmation of irreversible admin commands such as deluser
+    public static final List<UUID> ADMINCONFIRM = new ArrayList<>();
+
     // for confirmation of skipping quest
     public static final List<UUID> SKIPCONFIRM = new ArrayList<>();
 

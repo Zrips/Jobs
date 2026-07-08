@@ -10,7 +10,9 @@ import me.arsmagica.API.PyroFishCatchEvent;
 
 public class PyroFishingProListener implements Listener {
     private static String lastFish;
+    private static String lastHotspotFish;
     private static long time = 0;
+    private static long hotspotTime = 0;
     private final Jobs jobs;
 
     public PyroFishingProListener() {
@@ -20,14 +22,26 @@ public class PyroFishingProListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPyroFishCatch(PyroFishCatchEvent event) {
-        lastFish = event.getTier();
-        time = System.currentTimeMillis();
+        if (event.isHotspot()) {
+            lastHotspotFish = event.getTier();
+            hotspotTime = System.currentTimeMillis();
+        } else {
+            lastFish = event.getTier();
+            time = System.currentTimeMillis();
+        }
+
     }
 
     public static String getFish() {
         if (time + 60 < System.currentTimeMillis())
             return null;
         return lastFish;
+    }
+
+    public static String getHotspotFish() {
+        if (hotspotTime + 60 < System.currentTimeMillis())
+            return null;
+        return lastHotspotFish;
     }
 
     public void registerListener() {

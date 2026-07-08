@@ -84,6 +84,8 @@ public class GeneralConfigManager {
 
 	public List<String> JobsTopHiddenPlayers;
 
+	public boolean jobsTopIncludesArchivedStats;
+
 	public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime, blockOwnershipRange, globalblocktimer, globalBlockBreakTimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
 			SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays, levelLossPercentageFromMax, levelLossPercentage, ToplistInScoreboardInterval;
 
@@ -525,7 +527,7 @@ public class GeneralConfigManager {
 				"Tool and weapon items will be ignored if those are equiped in players armor slots", "None tool or weapon items will be allowed in players head slot");
 		boostedItemsSlotSpecific = c.get("boosted-items-slot-specific", true);
 
-		c.addComment("multiply-boosted-extra-values", "Extra boost values for nearSpawner and petPay will be multiplied by sum of other boost values",
+		c.addComment("multiply-boosted-extra-values", "Extra boost values for nearSpawner, petPay, and mcMMO will be multiplied by sum of other boost values",
 				"When set to true and for example nearSpawner set to -0.98 aka 2% of original payment with other bonuses which should double payment will result in you getting 4% instead of corrent 102% payment",
 				"If set to false all bonus are sumed to one");
 		multiplyBoostedExtraValues = c.get("multiply-boosted-extra-values", false);
@@ -549,7 +551,7 @@ public class GeneralConfigManager {
 		c.addComment("pay-for-above", "When enabled we will try to pay player for blocks above broken ones. This only applies to sugarcane, bamboo, kelp and weeping_vines");
 		payForAbove = c.get("pay-for-above", false);
 
-		c.addComment("pay-for-stacked-entities", "Allows to pay for stacked entities for each one. Requires StackMob or WildStacker.");
+		c.addComment("pay-for-stacked-entities", "Allows to pay for stacked entities for each one. Requires StackMob, WildStacker or RoseStacker.");
 		payForStackedEntities = c.get("pay-for-stacked-entities", false);
 
 		c.addComment("allow-pay-for-durability-loss", "Allows, when losing maximum durability of item then it does not pay the player until it is repaired.",
@@ -1134,6 +1136,9 @@ public class GeneralConfigManager {
 		c.addComment("Commands.PageRow.JobsTop.HiddenPlayers", "List of player names who should be excluded from /jobs top & /jobs gtop");
 		JobsTopHiddenPlayers = c.get("Commands.PageRow.JobsTop.HiddenPlayers", Arrays.asList("Zrips"));
 		CMIList.toLowerCase(JobsTopHiddenPlayers);
+
+		c.addComment("Commands.PageRow.JobsTop.IncludeArchivedStats", "Whether to include archived level/experience in /jobs top & /jobs gtop");
+		jobsTopIncludesArchivedStats = c.get("Commands.PageRow.JobsTop.IncludeArchivedStats", false);
 
 		c.addComment("Commands.PageRow.Placeholders.AmountToShow", "Defines amount of placeholders to be shown in one page for /jobs placeholders");
 		PlaceholdersPage = c.get("Commands.PageRow.Placeholders.AmountToShow", 10);

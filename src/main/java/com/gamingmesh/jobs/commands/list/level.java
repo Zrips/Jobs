@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -61,12 +62,12 @@ public class level implements Cmd {
 
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(playerName);
         if (jPlayer == null) {
-            Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args[0]);
+            JLC.general_error_noinfoByPlayer.sendMessage(sender, "%playername%", args[0]);
             return true;
         }
 
         if (job == null) {
-            Language.sendMessage(sender, "general.error.job");
+            JLC.general_error_job.sendMessage(sender);
             return true;
         }
 
@@ -85,11 +86,11 @@ public class level implements Cmd {
                     total = (oldLevel + amount);
 
                     if (prog.setLevel(total)) {
-                        JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job, prog.getLevel(),
-                            Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
-                            Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
-                            Jobs.getGCManager().soundLevelup,
-                            Jobs.getGCManager().soundTitleChange);
+                        JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job, oldLevel, prog.getLevel(),
+                                Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
+                                Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
+                                Jobs.getGCManager().soundLevelup,
+                                Jobs.getGCManager().soundTitleChange);
 
                         plugin.getServer().getPluginManager().callEvent(levelUpEvent);
 
@@ -113,13 +114,13 @@ public class level implements Cmd {
                 Player player = jPlayer.getPlayer();
                 if (player != null)
                     Language.sendMessage(player, "command.level.output.target", job, "%level%", prog.getLevel(),
-                        "%exp%", CurrencyType.EXP.format(prog.getExperience()));
+                            "%exp%", CurrencyType.EXP.format(prog.getExperience()));
 
-                Language.sendMessage(sender, "general.admin.success");
+                JLC.general_admin_success.sendMessage(sender);
             } else
                 Language.sendMessage(sender, "command.level.error.nojob");
         } catch (Exception e) {
-            Language.sendMessage(sender, "general.admin.error");
+            JLC.general_admin_error.sendMessage(sender);
         }
         return true;
     }

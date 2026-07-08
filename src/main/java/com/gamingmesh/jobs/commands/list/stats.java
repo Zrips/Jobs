@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobsCommands;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
@@ -40,19 +41,19 @@ public class stats implements Cmd {
             return true;
         }
 
-        Language.sendMessage(sender, "general.info.toplineseparator", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName());
+        JLC.general_info_toplineseparator.sendMessage(sender, "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName());
 
         String leftClick = Jobs.getLanguage().getMessage("command.info.gui.leftClick");
 
         String pref = JobsCommands.LABEL + " " + info.class.getSimpleName() + " ";
 
         for (JobProgression jobProg : jPlayer.getJobProgression()) {
-            for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg,  jPlayer, sender instanceof Player).split("\n")) {
+            for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg, jPlayer, sender instanceof Player).split("\n")) {
                 new RawMessage().addText(msg).addHover(leftClick).addCommand(pref + jobProg.getJob().getName()).show(sender);
             }
         }
 
-        Language.sendMessage(sender, "general.info.separator");
+        JLC.general_info_separator.sendMessage(sender);
         return true;
     }
 }

@@ -2,20 +2,21 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.List;
 
-import com.gamingmesh.jobs.stuff.Util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
-import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class skipquest implements Cmd {
@@ -47,8 +48,6 @@ public class skipquest implements Cmd {
                     continue;
             }
 
-            if (!questName.isEmpty())
-                questName += " ";
             questName += one;
         }
 
@@ -56,7 +55,7 @@ public class skipquest implements Cmd {
             jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
         if (jPlayer == null) {
-            Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : "");
+            JLC.general_error_noinfoByPlayer.sendMessage(sender, "[playername]", args.length > 0 ? args[0] : "");
             return null;
         }
 
@@ -66,7 +65,7 @@ public class skipquest implements Cmd {
             quests = jPlayer.getQuestProgressions(job);
 
         if (quests == null || quests.isEmpty()) {
-            Language.sendMessage(sender, "command.resetquest.output.noQuests");
+            JLC.command_resetquest_output_noQuests.sendMessage(sender);
             return null;
         }
 
@@ -74,26 +73,28 @@ public class skipquest implements Cmd {
 
         for (QuestProgression one : quests) {
             Quest q = one.getQuest();
-
-            if (q.getQuestName().equalsIgnoreCase(questName) || q.getConfigName().equalsIgnoreCase(questName)) {
+            if (q.getQuestName().replace(" ", "").equalsIgnoreCase(questName) || q.getConfigName().equalsIgnoreCase(questName)) {
                 old = q;
                 break;
             }
         }
 
         if (old == null) {
-            return false;
+            JLC.quest_notFound.sendMessage(sender, "[name]", questName);
+            return null;
         }
 
         // Do not skip the completed quests
         for (QuestProgression q : quests) {
             if (q.getQuest().getQuestName().equals(old.getQuestName()) && q.isCompleted()) {
-                return false;
+                JLC.quest_completed.sendMessage(sender);
+                return null;
             }
         }
 
         if (Jobs.getGCManager().getDailyQuestsSkips() <= jPlayer.getSkippedQuests()) {
-            return false;
+            JLC.quest_reachedSkipLimit.sendMessage(sender, "[amount]", Jobs.getGCManager().getDailyQuestsSkips());
+            return null;
         }
 
         double amount = Jobs.getGCManager().skipQuestCost;
@@ -102,7 +103,7 @@ public class skipquest implements Cmd {
 
         if (amount > 0 && player != null) {
             if (!econ.getEconomy().hasMoney(player, amount)) {
-                Language.sendMessage(sender, "economy.error.nomoney");
+                JLC.economy_error_nomoney.sendMessage(sender);
                 return null;
             }
 
@@ -114,11 +115,9 @@ public class skipquest implements Cmd {
 
             if (!Util.SKIPCONFIRM.contains(uuid)) {
                 Util.SKIPCONFIRM.add(uuid);
-
                 CMIScheduler.runTaskLater(plugin, () -> Util.SKIPCONFIRM.remove(uuid), 20 * Jobs.getGCManager().ConfirmExpiryTime);
-
-                Language.sendMessage(sender, "command.skipquest.confirmationNeed", "[questName]",
-                    old.getQuestName(), "[time]", Jobs.getGCManager().ConfirmExpiryTime);
+                JLC.command_skipquest_confirmationNeed.sendMessage(sender, "[questName]", old.getQuestName(),
+                        "[time]", Jobs.getGCManager().ConfirmExpiryTime);
                 return true;
             }
 
@@ -131,7 +130,7 @@ public class skipquest implements Cmd {
             plugin.getServer().dispatchCommand(player, "jobs quests");
 
         if (amount > 0) {
-            Language.sendMessage(sender, "command.skipquest.output.questSkipForCost", "%amount%", amount);
+            JLC.command_skipquest_output_questSkipForCost.sendMessage(sender, "[amount]", Jobs.getEconomy().format(amount));
         }
 
         return true;

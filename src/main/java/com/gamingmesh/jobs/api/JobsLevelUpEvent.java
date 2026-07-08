@@ -18,15 +18,22 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
     private CMISound levelupSound;
     private CMISound titleChangeSound;
 
-    private int level;
+    private int newLevel;
+    private int oldLevel;
     private boolean cancelled = false;
 
+    @Deprecated
     public JobsLevelUpEvent(JobsPlayer jPlayer, Job job, int level, Title oldTitle, Title newTitle, CMISound levelupSound, CMISound titleChangeSound) {
+        this(jPlayer, job, level, level, oldTitle, newTitle, levelupSound, titleChangeSound);
+    }
+
+    public JobsLevelUpEvent(JobsPlayer jPlayer, Job job, int oldLevel, int newLevel, Title oldTitle, Title newTitle, CMISound levelupSound, CMISound titleChangeSound) {
         this.player = jPlayer;
         this.job = job;
         this.oldTitle = oldTitle;
         this.newTitle = newTitle;
-        this.level = level;
+        this.oldLevel = oldLevel;
+        this.newLevel = newLevel;
         this.setLevelupSound(levelupSound);
         this.setTitleChangeSound(titleChangeSound);
     }
@@ -73,7 +80,16 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
      * @return job progression level
      */
     public int getLevel() {
-        return level;
+        return newLevel;
+    }
+
+    /**
+     * Returns the old job progression level.
+     * 
+     * @return job progression level
+     */
+    public int getOldLevel() {
+        return oldLevel;
     }
 
     @Override

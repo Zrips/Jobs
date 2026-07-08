@@ -1,6 +1,6 @@
 package com.gamingmesh.jobs.listeners;
 
-import org.bukkit.entity.EntityType;
+import com.oheers.fish.api.fishing.items.AbstractFishManager;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,8 +55,21 @@ public class JobsDefaultFishPaymentListener implements Listener {
             }
         }
 
-        if (JobsHook.PyroFishingPro.isEnabled() && PyroFishingProListener.getFish() != null) {
-            Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProListener.getFish(), ActionType.PYROFISHINGPRO), event.getCaught());
+        if (JobsHook.PyroFishingPro.isEnabled()) {
+            boolean catchPyroFish = false;
+            if (PyroFishingProListener.getFish() != null) {
+                Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProListener.getFish(), ActionType.PYROFISHINGPRO), event.getCaught());
+                catchPyroFish = true;
+            }
+            if (PyroFishingProListener.getHotspotFish() != null) {
+                Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new PyroFishingProInfo(PyroFishingProListener.getHotspotFish(), ActionType.PYROFISHINGPRO));
+                catchPyroFish = true;
+            }
+            if (catchPyroFish) return;
+        }
+
+        // EvenMoreFish fires its own event, so ignore this event.
+        if (JobsHook.EvenMoreFish.isEnabled() && AbstractFishManager.getInstance().isFish(event.getCaught())) {
             return;
         }
 

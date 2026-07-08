@@ -30,6 +30,7 @@ import org.bukkit.OfflinePlayer;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
@@ -205,7 +206,7 @@ public class BufferedEconomy {
                         continue;
 
                     if (Jobs.getGCManager().UseServerAccount && !hasMoney) {
-                        CMIActionBar.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
+                        CMIActionBar.send(payment.getOfflinePlayer().getPlayer(), JLC.economy_error_nomoney.getMessage());
                         continue;
                     }
 

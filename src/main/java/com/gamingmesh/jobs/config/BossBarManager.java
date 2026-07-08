@@ -29,25 +29,39 @@ public class BossBarManager {
         if (Version.getCurrent().isLower(Version.v1_9_R1) || player == null)
             return;
 
-        for (JobProgression oneJob : player.getJobProgression()) {
-            if (oneJob.getLastExperience() != 0) {
-                ShowJobProgression(player, oneJob, oneJob.getLastExperience());
-            }
+        synchronized (player.getUpdateBossBarFor()) {
+            if (player.getUpdateBossBarFor().contains("pending"))
+                return;
+            player.getUpdateBossBarFor().add("pending");
         }
-        player.getUpdateBossBarFor().clear();
+
+        CMIScheduler.runTask(Jobs.getInstance(), () -> {
+            synchronized (player.getUpdateBossBarFor()) {
+                player.getUpdateBossBarFor().remove("pending");
+            }
+            for (JobProgression oneJob : player.getJobProgression()) {
+                if (oneJob.getLastExperience() != 0 || oneJob.getLastMoney() != 0) {
+                    ShowJobProgression(player, oneJob, oneJob.getLastExperience(), oneJob.getLastMoney());
+                }
+            }
+        });
     }
 
     public void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
+        ShowJobProgression(player, jobProg, expGain, 0D);
+    }
+
+    public void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain, double moneyGain) {
         if (Version.getCurrent().isLower(Version.v1_9_R1) || Jobs.getGCManager().BossBarsMessageDefault.equals(MessageToggleState.Off))
             return;
 
         if (ToggleBarHandling.getBossBarState(player.getUniqueId()).equals(MessageToggleState.Off))
             return;
 
-        showJobProgressionInTask(player, jobProg, expGain);
+        showJobProgressionInTask(player, jobProg, expGain, moneyGain);
     }
 
-    private static synchronized void showJobProgressionInTask(final JobsPlayer player, final JobProgression jobProg, double expGain) {
+    private static synchronized void showJobProgressionInTask(final JobsPlayer player, final JobProgression jobProg, double expGain, double moneyGain) {
         BossBar bar = null;
         BossBarInfo oldOne = null;
         for (BossBarInfo one : player.getBossBarInfo()) {
@@ -66,12 +80,18 @@ public class BossBarManager {
             gain = Jobs.getLanguage().getMessage("command.stats.bossBarGain", "%gain%", gain);
         }
 
+        String money = "";
+        if (moneyGain != 0) {
+            money = (moneyGain > 0 ? "+" : "") + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), moneyGain);
+        }
+
         String message = Jobs.getLanguage().getMessage("command.stats.bossBarOutput",
             "%joblevel%", jobProg.getLevelFormatted(),
             jobProg.getJob(),
             "%jobxp%", CurrencyType.EXP.format(jobProg.getExperience()),
             "%jobmaxxp%", jobProg.getMaxExperience(),
-            "%gain%", gain);
+            "%gain%", gain,
+            "%money%", money);
 
         if (bar == null) {
             bar = initBossBar(player, jobProg, message);
@@ -106,6 +126,7 @@ public class BossBarManager {
             }, Jobs.getGCManager().BossBarTimer * 20L));
 
         jobProg.setLastExperience(0D);
+        jobProg.setLastMoney(0D);
     }
 
     private static BossBar initBossBar(final JobsPlayer player, final JobProgression jobProg, String message) {
