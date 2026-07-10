@@ -1,16 +1,18 @@
 package com.gamingmesh.jobs.hooks.Logically;
 
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.actions.BlockActionInfo;
-import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.container.JobsPlayer;
-import com.github.justadeni.logically.api.StartChopTreeEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.actions.BlockActionInfo;
+import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.JobsPlayer;
+import com.github.justadeni.logically.api.StartChopTreeEvent;
+
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class TreeChopListener implements Listener {
 
@@ -28,7 +30,7 @@ public class TreeChopListener implements Listener {
         if (jPlayer == null)
             return;
 
-        Bukkit.getScheduler().runTask(Jobs.getInstance(), () -> {
+        CMIScheduler.runTask(Jobs.getInstance(), () -> {
             for (Block block : event.getLogs()) {
                 BlockActionInfo actionInfo = new BlockActionInfo(block, ActionType.BREAK);
                 Jobs.action(jPlayer, actionInfo, block);
