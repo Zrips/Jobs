@@ -22,7 +22,8 @@ softdepend: [
   PyroFishingPro,
   BlockTracker,
   CustomFishing,
-  EvenMoreFish
+  EvenMoreFish,
+  Logically
 ]
 commands:
   jobs:

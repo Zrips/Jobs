@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.hooks;
 
+import com.gamingmesh.jobs.hooks.Logically.TreeChopListener;
 import com.gamingmesh.jobs.listeners.JobsEvenMoreFishPaymentListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -203,6 +204,16 @@ public enum JobsHook {
                 return;
             }
             Bukkit.getPluginManager().registerEvents(new JobsEvenMoreFishPaymentListener(), Jobs.getInstance());
+            printListenerMessage(this);
+        }
+    },
+    Logically {
+        @Override
+        public void registerListener() {
+            if (!isPresent())
+                return;
+
+            Jobs.getInstance().getServer().getPluginManager().registerEvents(new TreeChopListener(), Jobs.getInstance());
             printListenerMessage(this);
         }
     };
