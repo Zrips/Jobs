@@ -21,7 +21,7 @@ public enum JLC {
     general_info_invalidPage("{gcw}Invalid page"),
     general_info_join("{gcp}Click to join job"),
     general_info_leave("{gcw}Click to leave job"),
-    
+
     general_info_blocks_furnace("Furnace"),
     general_info_blocks_smoker("Smoker"),
     general_info_blocks_blastfurnace("Blast furnace"),
@@ -163,5 +163,9 @@ public enum JLC {
         if (msg == null || msg.isEmpty())
             return;
         sender.sendMessage(msg);
+    }
+
+    public static String replacer(String text, String key, String value) {
+        return text.replace("%" + key + "%", value).replace("[" + key + "]", value);
     }
 }
