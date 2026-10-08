@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.List;
 
+import net.Zrips.CMILib.RawMessages.RawMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -51,8 +52,20 @@ public class skipquest implements Cmd {
             questName += one;
         }
 
-        if (jPlayer == null && sender instanceof Player)
-            jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+        if (sender instanceof Player) {
+            JobsPlayer jPlayerSender = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+
+            // sender isn't player: check if they have admin perms
+            if (jPlayer != null) {
+                if (!jPlayerSender.equals(jPlayer) && !sender.hasPermission("jobs.command.admin.skipquest" )) {
+                    new RawMessage().addText(LC.info_NoPermission.getLocale())
+                            .addHover("&2jobs.command.admin.skipquest").show(sender);
+                    return null;
+                }
+            } else { // player sent command themselves without a name argument
+                jPlayer = jPlayerSender;
+            }
+        }
 
         if (jPlayer == null) {
             JLC.general_error_noinfoByPlayer.sendMessage(sender, "[playername]", args.length > 0 ? args[0] : "");

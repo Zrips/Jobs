@@ -233,7 +233,10 @@ permissions:
     default: op
   jobs.command.admin.clearownership:
     description: Grants access to the ownedblocks command
-    default: op    
+    default: op
+  jobs.command.admin.skipquest:
+    description: Grants access to skipquest for other players
+    default: op
   jobs.command.itembonus:
     description: Grants access to the itembonus command
     default: true
