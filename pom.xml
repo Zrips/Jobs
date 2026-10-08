@@ -177,7 +177,7 @@
 		<dependency>
 			<groupId>de.keyle</groupId>
 			<artifactId>mypet-api</artifactId>
-			<version>4.0.0</version>
+			<version>4.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- PyroFishingPro -->
@@ -271,8 +271,8 @@
 		</repository>
 		<!-- MyPet -->
 		<repository>
-			<id>mypet-releases</id>
-			<url>https://repo.userderezzed.dev/releases</url>
+			<id>userderezzed-snapshots</id>
+			<url>https://repo.userderezzed.dev/snapshots</url>
 		</repository>
 	</repositories>
 	<!-- Builds Plugin -->
