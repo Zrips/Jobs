@@ -84,7 +84,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.SmithingInventory;
 import org.bukkit.inventory.StonecutterInventory;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
@@ -128,9 +127,7 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMC;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
-import net.Zrips.CMILib.PersistentData.CMIPersistentDataContainer;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 import uk.antiperson.stackmob.entity.StackEntity;
@@ -1954,16 +1951,26 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEvent(BlockPhysicsEvent event) {
+
         if (!Jobs.getGCManager().payForAbove)
             return;
+
         if (event.getBlock().getType().equals(Material.AIR))
             return;
         final Block block = event.getBlock();
 
         CMIMaterial mat = CMIMaterial.get(block);
 
-        if (!mat.equals(CMIMaterial.SUGAR_CANE) && !mat.equals(CMIMaterial.BAMBOO) && !mat.equals(CMIMaterial.KELP_PLANT) && !mat.equals(CMIMaterial.WEEPING_VINES) && !mat.equals(
-                CMIMaterial.WEEPING_VINES_PLANT))
+        if (!mat.equals(CMIMaterial.SUGAR_CANE)
+                && !mat.equals(CMIMaterial.BAMBOO)
+                && !mat.equals(CMIMaterial.KELP_PLANT)
+                && !mat.equals(CMIMaterial.WEEPING_VINES)
+                && !mat.equals(CMIMaterial.WEEPING_VINES_PLANT)
+                && !mat.equals(CMIMaterial.VINE)
+                && !mat.equals(CMIMaterial.CAVE_VINES)
+                && !mat.equals(CMIMaterial.CACTUS)
+                && !mat.equals(CMIMaterial.CHORUS_FLOWER)
+                && !mat.equals(CMIMaterial.CHORUS_PLANT))
             return;
 
         if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
@@ -1972,30 +1979,71 @@ public final class JobsPaymentListener implements Listener {
         if (event.getSourceBlock().equals(event.getBlock()))
             return;
 
-        if ((mat.equals(CMIMaterial.SUGAR_CANE) || mat.equals(CMIMaterial.BAMBOO) || mat.equals(CMIMaterial.KELP_PLANT)) &&
-                event.getBlock().getLocation().getBlockY() <= event.getSourceBlock().getLocation().getBlockY())
+        // Plants that grow upwards
+        if ((mat.equals(CMIMaterial.SUGAR_CANE)
+                || mat.equals(CMIMaterial.BAMBOO)
+                || mat.equals(CMIMaterial.KELP_PLANT)
+                || mat.equals(CMIMaterial.CACTUS))
+                && event.getBlock().getLocation().getBlockY() <= event.getSourceBlock().getLocation().getBlockY()) {
             return;
+        }
 
-        if ((mat.equals(CMIMaterial.WEEPING_VINES) || mat.equals(CMIMaterial.WEEPING_VINES_PLANT)) &&
-                event.getBlock().getLocation().getBlockY() >= event.getSourceBlock().getLocation().getBlockY())
+        // Chorus can grow upwards and sideways
+        if ((mat.equals(CMIMaterial.CHORUS_FLOWER) || mat.equals(CMIMaterial.CHORUS_PLANT))) {
+
+            int sourceX = event.getSourceBlock().getX();
+            int sourceY = event.getSourceBlock().getY();
+            int sourceZ = event.getSourceBlock().getZ();
+
+            int blockX = block.getX();
+            int blockY = block.getY();
+            int blockZ = block.getZ();
+
+            // Must be directly adjacent to the source block.
+            int distance = Math.abs(blockX - sourceX) + Math.abs(blockY - sourceY) + Math.abs(blockZ - sourceZ);
+
+            if (distance != 1)
+                return;
+
+            Block below = block.getLocation().clone().add(0, -1, 0).getBlock();
+            CMIMaterial belowMat = CMIMaterial.get(below);
+
+            if (belowMat.equals(CMIMaterial.CHORUS_PLANT))
+                return;
+        }
+
+        // Vines that grow downwards
+        if ((mat.equals(CMIMaterial.WEEPING_VINES) || mat.equals(CMIMaterial.WEEPING_VINES_PLANT) || mat.equals(CMIMaterial.VINE)
+                || mat.equals(CMIMaterial.CAVE_VINES))
+                && event.getBlock().getLocation().getBlockY() >= event.getSourceBlock().getLocation().getBlockY())
             return;
 
         Location loc = event.getSourceBlock().getLocation().clone();
+
         UUID uuid = breakCache.get(CMILocation.toString(loc, ":", true, true));
+
         if (uuid == null)
             return;
 
         BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
         FastPayment fp = Jobs.FASTPAYMENT.get(uuid);
+
         if (fp == null)
             return;
-        if (!fp.getInfo().getType().equals(ActionType.BREAK) || !fp.getInfo().getNameWithSub().equals(bInfo.getNameWithSub()))
+
+        // Should be using basic name comparison, as the block that is being broken may
+        // not be the same as the block above it (age differences), but it should still
+        // be the same type of block.
+        if (!fp.getInfo().getType().equals(ActionType.BREAK) || !fp.getInfo().getName().equals(bInfo.getName()))
             return;
 
         if (fp.getTime() > System.currentTimeMillis() - 50L && (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
-                fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub()))) {
+                fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()))) {
+
             Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob(), block, null, null);
+
             breakCache.put(CMILocation.toString(block.getLocation(), ":", true, true), uuid);
+
             fp.setTime(System.currentTimeMillis() + 45);
         }
     }
