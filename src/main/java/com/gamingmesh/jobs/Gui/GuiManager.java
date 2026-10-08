@@ -1,14 +1,10 @@
 package com.gamingmesh.jobs.Gui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -392,6 +388,7 @@ public class GuiManager {
 
         int level = prog != null ? prog.getLevel() : 1;
         int numjobs = jPlayer.getJobProgression().size();
+        Location previewLocation = player.getLocation();
         int nextButton = (rows * 9) - 1;
         int backButton = ((rows - 1) * 9);
 
@@ -439,17 +436,32 @@ public class GuiManager {
                     }
                 }
 
-                double income = jInfo.getIncome(level, numjobs, jPlayer.maxJobsEquation);
-
-                income = boost.getFinalAmount(CurrencyType.MONEY, income);
+                Material material = Material.matchMaterial(jInfo.getName());
+                Map<CurrencyType, Double> rewards = Jobs.calculateRewards(
+                    jPlayer,
+                    job,
+                    jInfo,
+                    level,
+                    numjobs,
+                    null,
+                    null,
+                    null,
+                    null,
+                    action.getType(),
+                    material,
+                    material == null ? jInfo.getName() : null,
+                    previewLocation,
+                    boost,
+                    true,
+                    false
+                );
+                double income = rewards.getOrDefault(CurrencyType.MONEY, 0D);
                 String incomeColor = income >= 0 ? "" : CMIChatColor.DARK_RED.toString();
 
-                double xp = jInfo.getExperience(level, numjobs, jPlayer.maxJobsEquation);
-                xp = boost.getFinalAmount(CurrencyType.EXP, xp);
+                double xp = rewards.getOrDefault(CurrencyType.EXP, 0D);
                 String xpColor = xp >= 0 ? "" : CMIChatColor.GRAY.toString();
 
-                double points = jInfo.getPoints(level, numjobs, jPlayer.maxJobsEquation);
-                points = boost.getFinalAmount(CurrencyType.POINTS, points);
+                double points = rewards.getOrDefault(CurrencyType.POINTS, 0D);
                 String pointsColor = points >= 0 ? "" : CMIChatColor.RED.toString();
 
                 if (income == 0D && points == 0D && xp == 0D)

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,6 +34,8 @@ import java.util.WeakHashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -50,6 +53,9 @@ import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.api.JobsInstancePaymentEvent;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
+import com.gamingmesh.jobs.api.modifier.JobsRewardModifier;
+import com.gamingmesh.jobs.api.modifier.JobsRewardModifierContext;
+import com.gamingmesh.jobs.api.modifier.JobsRewardModifierResult;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.BlockProtectionManager;
 import com.gamingmesh.jobs.config.BossBarManager;
@@ -180,6 +186,7 @@ public final class Jobs extends JavaPlugin {
 
     private static Job noneJob;
     private static Map<Job, Integer> usedSlots = new WeakHashMap<>();
+    private static final Map<String, JobsRewardModifier> rewardModifiers = new LinkedHashMap<>();
 
     public static BufferedPaymentThread paymentThread;
     private static DatabaseSaveThread saveTask;
@@ -438,6 +445,27 @@ public final class Jobs extends JavaPlugin {
      */
     public static Jobs getInstance() {
         return JavaPlugin.getPlugin(Jobs.class);
+    }
+
+    @SuppressWarnings("unused")
+    public static void registerRewardModifier(JobsRewardModifier modifier) {
+        if (modifier == null || modifier.id() == null || modifier.id().isEmpty())
+            return;
+
+        rewardModifiers.put(modifier.id().toLowerCase(Locale.ROOT), modifier);
+    }
+
+    @SuppressWarnings("unused")
+    public static void unregisterRewardModifier(String id) {
+        if (id == null)
+            return;
+
+        rewardModifiers.remove(id.toLowerCase(Locale.ROOT));
+    }
+
+    @SuppressWarnings("unused")
+    public static Map<String, JobsRewardModifier> getRewardModifiers() {
+        return Collections.unmodifiableMap(rewardModifiers);
     }
 
     /**
@@ -1017,6 +1045,8 @@ public final class Jobs extends JavaPlugin {
             CMIMessages.consoleMessage("&eClosed database connection");
         }
 
+        rewardModifiers.clear();
+
         CMIMessages.consoleMessage(suffix);
     }
 
@@ -1136,39 +1166,35 @@ public final class Jobs extends JavaPlugin {
 
             Boost boost = getPlayerManager().getFinalBonus(jPlayer, noneJob);
 
-            JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income, 0, pointAmount, block, ent, victim, info);
+            Map<CurrencyType, Double> modifiedRewards = calculateRewards(
+                jPlayer,
+                noneJob,
+                CurrencyType.generate(income, null, pointAmount),
+                info,
+                block,
+                ent,
+                victim,
+                null,
+                null,
+                null,
+                null,
+                null,
+                false,
+                false
+            );
+
+            JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, modifiedRewards.getOrDefault(CurrencyType.MONEY, 0D), 0,
+                modifiedRewards.getOrDefault(CurrencyType.POINTS, 0D), block, ent, victim, info);
             Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
             // If event is canceled, don't do anything
             if (jobsPrePaymentEvent.isCancelled()) {
                 income = 0D;
                 pointAmount = 0D;
             } else {
-                income = jobsPrePaymentEvent.getAmount();
-                pointAmount = jobsPrePaymentEvent.getPoints();
-            }
-
-            // Calculate income
-            if (income != 0D) {
-                income = boost.getFinalAmount(CurrencyType.MONEY, income);
-
-                if (gConfigManager.useMinimumOveralPayment && income > 0) {
-                    double maxLimit = income * gConfigManager.MinimumOveralPaymentLimit;
-
-                    if (income < maxLimit)
-                        income = maxLimit;
-                }
-            }
-
-            // Calculate points
-            if (pointAmount != 0D) {
-                pointAmount = boost.getFinalAmount(CurrencyType.POINTS, pointAmount);
-
-                if (gConfigManager.useMinimumOveralPoints && pointAmount > 0) {
-                    double maxLimit = pointAmount * gConfigManager.MinimumOveralPointsLimit;
-
-                    if (pointAmount < maxLimit)
-                        pointAmount = maxLimit;
-                }
+                Map<CurrencyType, Double> rewards = CurrencyType.generate(jobsPrePaymentEvent.getAmount(), null, jobsPrePaymentEvent.getPoints());
+                applyRewardBoosts(rewards, boost, true);
+                income = rewards.getOrDefault(CurrencyType.MONEY, 0D);
+                pointAmount = rewards.getOrDefault(CurrencyType.POINTS, 0D);
             }
 
             if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
@@ -1244,6 +1270,44 @@ public final class Jobs extends JavaPlugin {
                 if (income == 0D && pointAmount == 0D && expAmount == 0D)
                     continue;
 
+                Boost boost = getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
+
+                Map<CurrencyType, Double> modifiedRewards = calculateRewards(
+                    jPlayer,
+                    prog.getJob(),
+                    CurrencyType.generate(income, expAmount, pointAmount),
+                    info,
+                    block,
+                    ent,
+                    victim,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    false,
+                    false
+                );
+                income = modifiedRewards.getOrDefault(CurrencyType.MONEY, 0D);
+                pointAmount = modifiedRewards.getOrDefault(CurrencyType.POINTS, 0D);
+                expAmount = modifiedRewards.getOrDefault(CurrencyType.EXP, 0D);
+
+                JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), modifiedRewards, block, ent, victim, info);
+
+                Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
+                // If event is canceled, don't do anything
+                if (jobsPrePaymentEvent.isCancelled()) {
+                    income = 0D;
+                    pointAmount = 0D;
+                    expAmount = 0D;
+                } else {
+                    Map<CurrencyType, Double> rewards = CurrencyType.generate(jobsPrePaymentEvent.getAmount(), jobsPrePaymentEvent.getExp(), jobsPrePaymentEvent.getPoints());
+                    applyRewardBoosts(rewards, boost, true);
+                    income = rewards.getOrDefault(CurrencyType.MONEY, 0D);
+                    pointAmount = rewards.getOrDefault(CurrencyType.POINTS, 0D);
+                    expAmount = rewards.getOrDefault(CurrencyType.EXP, 0D);
+                }
+
                 if (gConfigManager.addXpPlayer()) {
                     Player player = jPlayer.getPlayer();
                     if (player != null) {
@@ -1268,58 +1332,6 @@ public final class Jobs extends JavaPlugin {
                             player.setExp(0);
                         } else
                             player.giveExp(expInt);
-                    }
-                }
-
-                Boost boost = getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
-
-                JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), CurrencyType.generate(income, expAmount, pointAmount), block, ent, victim, info);
-
-                Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
-                // If event is canceled, don't do anything
-                if (jobsPrePaymentEvent.isCancelled()) {
-                    income = 0D;
-                    pointAmount = 0D;
-                    expAmount = 0D;
-                } else {
-                    income = jobsPrePaymentEvent.getAmount();
-                    pointAmount = jobsPrePaymentEvent.getPoints();
-                    expAmount = jobsPrePaymentEvent.getExp();
-                }
-
-                // Calculate income
-                if (income != 0D) {
-                    income = boost.getFinalAmount(CurrencyType.MONEY, income);
-
-                    if (gConfigManager.useMinimumOveralPayment && income > 0) {
-                        double maxLimit = income * gConfigManager.MinimumOveralPaymentLimit;
-
-                        if (income < maxLimit)
-                            income = maxLimit;
-                    }
-                }
-
-                // Calculate points
-                if (pointAmount != 0D) {
-                    pointAmount = boost.getFinalAmount(CurrencyType.POINTS, pointAmount);
-
-                    if (gConfigManager.useMinimumOveralPoints && pointAmount > 0) {
-                        double maxLimit = pointAmount * gConfigManager.MinimumOveralPointsLimit;
-
-                        if (pointAmount < maxLimit)
-                            pointAmount = maxLimit;
-                    }
-                }
-
-                // Calculate exp
-                if (expAmount != 0D) {
-                    expAmount = boost.getFinalAmount(CurrencyType.EXP, expAmount);
-
-                    if (gConfigManager.useMinimumOveralExp && expAmount > 0) {
-                        double maxLimit = expAmount * gConfigManager.minimumOveralExpLimit;
-
-                        if (expAmount < maxLimit)
-                            expAmount = maxLimit;
                     }
                 }
 
@@ -1460,6 +1472,9 @@ public final class Jobs extends JavaPlugin {
 
         double expPayment = payment.get(CurrencyType.EXP);
 
+        calculateRewards(jPlayer, job, payment.getPayment(), info, block, ent, victim, null, null, null, null, null, false, false);
+        expPayment = payment.get(CurrencyType.EXP);
+
         JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), job, payment.getPayment(), block, ent, victim, info);
         Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
         // If event is canceled, don't do anything
@@ -1468,6 +1483,9 @@ public final class Jobs extends JavaPlugin {
 
         payment.set(CurrencyType.MONEY, jobsPrePaymentEvent.getAmount());
         payment.set(CurrencyType.POINTS, jobsPrePaymentEvent.getPoints());
+        payment.set(CurrencyType.EXP, jobsPrePaymentEvent.getExp());
+
+        expPayment = payment.get(CurrencyType.EXP);
 
         JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, expPayment, block, ent, victim, info);
         Bukkit.getServer().getPluginManager().callEvent(jobsExpGainEvent);
@@ -1509,6 +1527,89 @@ public final class Jobs extends JavaPlugin {
             return;
 
         payOut(jPlayer, payment.getPayment());
+    }
+
+    public static void applyRewardModifiers(JobsPlayer jPlayer, Job job, Map<CurrencyType, Double> rewards, Block block, Entity ent, LivingEntity victim, ActionInfo info) {
+        applyRewardModifiers(jPlayer, job, rewards, block, ent, victim, info, null, null, null);
+    }
+
+    public static void applyRewardModifiers(JobsPlayer jPlayer, Job job, Map<CurrencyType, Double> rewards, ActionType actionType, Material material, String entityKey, Location location) {
+        applyRewardModifiers(jPlayer, job, rewards, null, null, null, null, actionType, actionType == null ? null : actionType.name(), material, entityKey, location);
+    }
+
+    public static Map<CurrencyType, Double> calculateRewards(JobsPlayer jPlayer, Job job, JobInfo jobInfo, int level, int numjobs, ActionInfo info,
+        Block block, Entity ent, LivingEntity victim, ActionType actionType, Material material, String entityKey, Location location, Boost boost,
+        boolean applyBoosts, boolean applyMinimums) {
+        Map<CurrencyType, Double> rewards = CurrencyType.generate(
+            jobInfo.getIncome(level, numjobs, jPlayer.maxJobsEquation),
+            jobInfo.getExperience(level, numjobs, jPlayer.maxJobsEquation),
+            jobInfo.getPoints(level, numjobs, jPlayer.maxJobsEquation)
+        );
+        return calculateRewards(jPlayer, job, rewards, info, block, ent, victim, actionType, material, entityKey, location, boost, applyBoosts, applyMinimums);
+    }
+
+    public static Map<CurrencyType, Double> calculateRewards(JobsPlayer jPlayer, Job job, Map<CurrencyType, Double> rewards, ActionInfo info,
+        Block block, Entity ent, LivingEntity victim, ActionType actionType, Material material, String entityKey, Location location, Boost boost,
+        boolean applyBoosts, boolean applyMinimums) {
+        applyRewardModifiers(jPlayer, job, rewards, block, ent, victim, info, actionType, actionType == null ? null : actionType.name(), material, entityKey, location);
+
+        if (applyBoosts && boost != null) {
+            applyRewardBoosts(rewards, boost, applyMinimums);
+        }
+
+        return rewards;
+    }
+
+    private static void applyRewardBoosts(Map<CurrencyType, Double> rewards, Boost boost, boolean applyMinimums) {
+        applyRewardBoost(rewards, boost, CurrencyType.MONEY);
+        applyRewardBoost(rewards, boost, CurrencyType.POINTS);
+        applyRewardBoost(rewards, boost, CurrencyType.EXP);
+
+        if (applyMinimums) {
+            applyMinimumReward(rewards, CurrencyType.MONEY, gConfigManager.useMinimumOveralPayment, gConfigManager.MinimumOveralPaymentLimit);
+            applyMinimumReward(rewards, CurrencyType.POINTS, gConfigManager.useMinimumOveralPoints, gConfigManager.MinimumOveralPointsLimit);
+            applyMinimumReward(rewards, CurrencyType.EXP, gConfigManager.useMinimumOveralExp, gConfigManager.minimumOveralExpLimit);
+        }
+    }
+
+    private static void applyRewardBoost(Map<CurrencyType, Double> rewards, Boost boost, CurrencyType type) {
+        double amount = rewards.getOrDefault(type, 0D);
+        if (amount != 0D) {
+            rewards.put(type, boost.getFinalAmount(type, amount));
+        }
+    }
+
+    private static void applyMinimumReward(Map<CurrencyType, Double> rewards, CurrencyType type, boolean enabled, double limit) {
+        double amount = rewards.getOrDefault(type, 0D);
+        if (enabled && amount > 0) {
+            double maxLimit = amount * limit;
+            if (amount < maxLimit) {
+                rewards.put(type, maxLimit);
+            }
+        }
+    }
+
+    private static void applyRewardModifiers(JobsPlayer jPlayer, Job job, Map<CurrencyType, Double> rewards, Block block, Entity ent, LivingEntity victim, ActionInfo info,
+        Material material, String entityKey, Location location) {
+        applyRewardModifiers(jPlayer, job, rewards, block, ent, victim, info, null, null, material, entityKey, location);
+    }
+
+    private static void applyRewardModifiers(JobsPlayer jPlayer, Job job, Map<CurrencyType, Double> rewards, Block block, Entity ent, LivingEntity victim, ActionInfo info,
+        ActionType actionType, String actionName, Material material, String entityKey, Location location) {
+        if (rewardModifiers.isEmpty() || rewards == null || rewards.isEmpty())
+            return;
+
+        for (JobsRewardModifier modifier : rewardModifiers.values()) {
+            try {
+                JobsRewardModifierContext context = new JobsRewardModifierContext(jPlayer.getPlayer(), job, rewards, block, ent, victim, info, actionType, actionName, location, material, entityKey);
+                JobsRewardModifierResult result = modifier.modify(context);
+                if (result != null) {
+                    result.apply(rewards);
+                }
+            } catch (Throwable throwable) {
+                getPluginLogger().warning("Reward modifier '" + modifier.id() + "' failed: " + throwable.getMessage());
+            }
+        }
     }
 
     private static void payOut(JobsPlayer jPlayer, Map<CurrencyType, Double> payments) {

@@ -3,10 +3,13 @@ package com.gamingmesh.jobs.commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -369,22 +372,39 @@ public class JobsCommands implements CommandExecutor {
 
         int level = prog != null ? prog.getLevel() : 1;
         int numjobs = player.getJobCount();
+        Player onlinePlayer = player.getPlayer();
+        Location previewLocation = onlinePlayer == null ? null : onlinePlayer.getLocation();
 
         for (JobInfo info : job.getJobInfo(type)) {
 
             String materialName = info.getRealisticName();
 
-            double income = info.getIncome(level, numjobs, player.maxJobsEquation);
-
-            income = boost.getFinalAmount(CurrencyType.MONEY, income);
+            Material material = Material.matchMaterial(info.getName());
+            Map<CurrencyType, Double> rewards = Jobs.calculateRewards(
+                player,
+                job,
+                info,
+                level,
+                numjobs,
+                null,
+                null,
+                null,
+                null,
+                type,
+                material,
+                material == null ? info.getName() : null,
+                previewLocation,
+                boost,
+                true,
+                false
+            );
+            double income = rewards.getOrDefault(CurrencyType.MONEY, 0D);
             String incomeColor = income >= 0 ? "" : CMIChatColor.DARK_RED.toString();
 
-            double xp = info.getExperience(level, numjobs, player.maxJobsEquation);
-            xp = boost.getFinalAmount(CurrencyType.EXP, xp);
+            double xp = rewards.getOrDefault(CurrencyType.EXP, 0D);
             String xpColor = xp >= 0 ? "" : CMIChatColor.GRAY.toString();
 
-            double points = info.getPoints(level, numjobs, player.maxJobsEquation);
-            points = boost.getFinalAmount(CurrencyType.POINTS, points);
+            double points = rewards.getOrDefault(CurrencyType.POINTS, 0D);
             String pointsColor = xp >= 0 ? "" : CMIChatColor.RED.toString();
 
             if (income == 0D && points == 0D && xp == 0D)
