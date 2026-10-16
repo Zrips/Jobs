@@ -6,7 +6,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.util.Vector;
@@ -68,7 +67,7 @@ public class howmuch implements Cmd {
 
         for (JobProgression prog : progression) {
 
-            Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), entity, (LivingEntity) entity);
+            Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), entity, entity);
 
             for (ActionType one : prog.getJob().getJobInfoList().keySet()) {
                 ActionInfo info = null;
@@ -197,9 +196,9 @@ public class howmuch implements Cmd {
                 payments++;
 
                 Language.sendMessage(sender, "command.version.output.payment", "[job]", prog.getJob().getDisplayName(), "[action]", one, "[target]", name,
-                    "[exp]", Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", Util.format2Decimals(expAmount)),
-                    "[money]", Jobs.getLanguage().getMessage("command.info.help.money", "%money%", Util.format2Decimals(income)),
-                    "[points]", Jobs.getLanguage().getMessage("command.info.help.points", "%points%", Util.format2Decimals(pointAmount)));
+                        "[exp]", Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", Util.format2Decimals(expAmount)),
+                        "[money]", Jobs.getLanguage().getMessage("command.info.help.money", "%money%", Util.format2Decimals(income)),
+                        "[points]", Jobs.getLanguage().getMessage("command.info.help.points", "%points%", Util.format2Decimals(pointAmount)));
             }
         }
 

@@ -11,7 +11,6 @@ import com.gamingmesh.jobs.actions.EntityActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
 import io.papermc.paper.event.entity.EntityFertilizeEggEvent;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class Paper1_20_5Listeners implements Listener {
 
@@ -21,11 +20,8 @@ public class Paper1_20_5Listeners implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTurtleBreed(EntityFertilizeEggEvent event) {
 
-        CMIDebug.d("EntityFertilizeEggEvent", event.getBreeder(), event.getEntityType());
-
         if (!Jobs.getGCManager().useBreederFinder || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
             return;
-
 
         Player player = event.getBreeder();
 
@@ -44,7 +40,7 @@ public class Paper1_20_5Listeners implements Listener {
             return;
 
         LivingEntity animal = event.getEntity();
-        
+
         // pay
         Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(animal, ActionType.BREED));
     }

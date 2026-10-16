@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.listeners;
 
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +27,7 @@ public class JobsPayment1_20Listener implements Listener {
         if (!JobsPaymentListener.payIfCreative(player)) {
             return;
         }
-        
+
         if (!event.getBlock().getType().toString().contains("SUSPICIOUS_")) {
             return;
         }

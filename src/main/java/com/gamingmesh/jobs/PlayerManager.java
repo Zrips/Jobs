@@ -36,7 +36,6 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
@@ -72,7 +71,6 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -435,8 +433,7 @@ public class PlayerManager {
      * @param limits       {@link PaymentData}
      * @return {@link JobsPlayer}
      */
-    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points,
-            Map<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
+    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points, Map<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
         if (info == null)
             return null;
 
@@ -1190,11 +1187,11 @@ public class PlayerManager {
         return getFinalBonus(player, job, null, null, false, false);
     }
 
-    public Boost getFinalBonus(JobsPlayer player, Job job, Entity ent, LivingEntity victim) {
+    public Boost getFinalBonus(JobsPlayer player, Job job, Entity ent, Entity victim) {
         return getFinalBonus(player, job, ent, victim, false, false);
     }
 
-    public Boost getFinalBonus(JobsPlayer player, Job job, Entity ent, LivingEntity victim, boolean force, boolean getall) {
+    public Boost getFinalBonus(JobsPlayer player, Job job, Entity ent, Entity victim, boolean force, boolean getall) {
         Boost boost = new Boost();
 
         if (player == null || !player.isOnline() || job == null)

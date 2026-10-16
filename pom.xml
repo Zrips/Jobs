@@ -18,18 +18,18 @@
 
 	<dependencies>
 		<!-- Spigot API -->
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
-			<version>1.21.11-R0.2-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
+        <dependency>
 			<groupId>io.papermc.paper</groupId>
 			<artifactId>paper-api</artifactId>
-			<version>1.21.11-R0.1-SNAPSHOT</version> <!-- use latest -->
+			<version>26.3.build.181-stable</version>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>26.3-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 		<!-- Mojang Authlib -->
 		<dependency>
 			<groupId>com.mojang</groupId>
@@ -159,7 +159,7 @@
 		<dependency>
 			<groupId>com.github.Zrips</groupId>
 			<artifactId>CMILib</artifactId>
-			<version>1.5.9.6</version>
+			<version>1.6.0.4</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

@@ -108,6 +108,7 @@ import com.gamingmesh.jobs.listeners.JobsPayment1_9Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentVisualizationListener;
 import com.gamingmesh.jobs.listeners.Paper1_20_5Listeners;
+import com.gamingmesh.jobs.listeners.Paper26_3_Listeners;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.listeners.PlayerSignEdit1_20Listeners;
 import com.gamingmesh.jobs.listeners.upTo1_13Listeners;
@@ -885,8 +886,11 @@ public final class Jobs extends JavaPlugin {
             pm.registerEvents(new upTo1_13Listeners(), getInstance());
         }
 
-        if (Version.isPaperBranch() && Version.isCurrentEqualOrHigher(Version.v1_20_5)) {
-            pm.registerEvents(new Paper1_20_5Listeners(), getInstance());
+        if (Version.isPaperBranch()) {
+            if (Version.isCurrentEqualOrHigher(Version.v1_20_5))
+                pm.registerEvents(new Paper1_20_5Listeners(), getInstance());
+            if (Version.isCurrentEqualOrHigher(Version.v26_3_0))
+                pm.registerEvents(new Paper26_3_Listeners(), getInstance());
         }
 
         if (getGCManager().useBlockProtection) {

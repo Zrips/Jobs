@@ -189,6 +189,10 @@ public class ConfigManager {
             if (material == CMIMaterial.NONE)
                 material = CMIMaterial.get(myKey.replace(' ', '_').toUpperCase());
 
+            if (material == CMIMaterial.NONE && !subType.isEmpty()) {
+                material = CMIMaterial.get(subType.substring(1) + myKey);
+            }
+
             if (material == CMIMaterial.NONE) {
                 // try integer method
                 Integer matId = null;
@@ -202,7 +206,6 @@ public class ConfigManager {
                     CMIMessages.consoleMessage("Please use the Material name instead: " + material.toString() + "!");
                 }
             }
-
         }
 
         if (actionType == ActionType.STRIPLOGS && Version.isCurrentLower(Version.v1_13_R1))
@@ -226,7 +229,6 @@ public class ConfigManager {
                 break c;
             case "glowitemframe":
                 type = "GLOW_ITEM_FRAME";
-                id = 0;
                 meta = "0";
                 break c;
             case "painting":
@@ -238,6 +240,10 @@ public class ConfigManager {
                 type = "ARMOR_STAND";
                 id = 30;
                 meta = "1";
+                break c;
+            case "cushion":
+                type = "CUSHION";
+                meta = "0";
                 break c;
             default:
                 break;
@@ -286,7 +292,7 @@ public class ConfigManager {
             id = material.getId();
         } else if (actionType.hasSubType(ActionSubType.ENTITY) && !actionType.hasSubType(ActionSubType.CUSTOM)) {
             // check entities
-            CMIEntityType entity = CMIEntityType.getByName(myKey);
+            CMIEntityType entity = CMIEntityType.get(myKey);
 
             // Change pig zombie -> piglin in 1.16+
             if (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && entity == CMIEntityType.PIG_ZOMBIE) {
@@ -416,7 +422,6 @@ public class ConfigManager {
             if (entity != null) {
                 type = entity.toString();
             }
-
         }
 
         if (actionType == ActionType.TNTBREAK)

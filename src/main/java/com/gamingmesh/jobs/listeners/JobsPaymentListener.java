@@ -304,6 +304,16 @@ public final class JobsPaymentListener implements Listener {
         Jobs.action(jPlayer, new EntityActionInfo(entity, ActionType.MILK));
     }
 
+    public static String getSheepColor(Entity entity) {
+        if (!(entity instanceof Sheep))
+            return "";
+
+        Sheep sheep = (Sheep) entity;
+        if (sheep.getColor() == null)
+            return "";
+        return sheep.getColor().name();
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityShear(PlayerShearEntityEvent event) {
 
@@ -343,10 +353,7 @@ public final class JobsPaymentListener implements Listener {
         String typeString = null;
 
         if (event.getEntity() instanceof Sheep) {
-            Sheep sheep = (Sheep) event.getEntity();
-            if (sheep.getColor() == null)
-                return;
-            typeString = sheep.getColor().name();
+            typeString = getSheepColor(event.getEntity());
         } else if (event.getEntity() instanceof MushroomCow) {
             typeString = CMIEntityType.get(entity).toString();
         }
