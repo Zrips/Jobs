@@ -19,7 +19,7 @@ import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
-public class skipquest implements Cmd {
+public final class skipquest implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

@@ -20,7 +20,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
-public class bp implements Cmd {
+public final class bp implements Cmd {
 
     @SuppressWarnings("deprecation")
     @Override

@@ -11,7 +11,7 @@ import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
-public class convert implements Cmd {
+public final class convert implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {

@@ -14,7 +14,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 import net.Zrips.CMILib.Locale.LC;
 
-public class resetquesttotal implements Cmd {
+public final class resetquesttotal implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

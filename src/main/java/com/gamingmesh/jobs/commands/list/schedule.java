@@ -11,7 +11,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.i18n.Language;
 
-public class schedule implements Cmd {
+public final class schedule implements Cmd {
 
     @Override
     public Boolean perform(final Jobs plugin, final CommandSender sender, final String[] args) {

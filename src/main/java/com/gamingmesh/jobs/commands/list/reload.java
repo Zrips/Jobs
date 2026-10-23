@@ -7,7 +7,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.i18n.Language;
 
-public class reload implements Cmd {
+public final class reload implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

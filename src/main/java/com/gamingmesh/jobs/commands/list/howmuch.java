@@ -30,7 +30,7 @@ import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
-public class howmuch implements Cmd {
+public final class howmuch implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

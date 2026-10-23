@@ -14,7 +14,7 @@ import com.gamingmesh.jobs.i18n.Language;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
-public class fireall implements Cmd {
+public final class fireall implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

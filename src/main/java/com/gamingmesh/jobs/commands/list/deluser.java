@@ -12,7 +12,7 @@ import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
 
-public class deluser implements Cmd {
+public final class deluser implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {

@@ -15,7 +15,7 @@ import com.gamingmesh.jobs.i18n.Language;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
-public class archive implements Cmd {
+public final class archive implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

@@ -21,7 +21,7 @@ import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 
-public class edititembonus implements Cmd {
+public final class edititembonus implements Cmd {
 
     private enum actions {
         list, add, remove;

@@ -21,7 +21,7 @@ import net.Zrips.CMILib.Container.CMISort;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
-public class log implements Cmd {
+public final class log implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

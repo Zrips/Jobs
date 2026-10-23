@@ -22,7 +22,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Scoreboards.CMIScoreboard;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
-public class top implements Cmd {
+public final class top implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

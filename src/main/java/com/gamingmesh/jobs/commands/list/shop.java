@@ -8,7 +8,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 
 import net.Zrips.CMILib.Locale.LC;
 
-public class shop implements Cmd {
+public final class shop implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

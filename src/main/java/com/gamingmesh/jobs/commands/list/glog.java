@@ -21,7 +21,7 @@ import com.gamingmesh.jobs.stuff.Sorting;
 import net.Zrips.CMILib.Time.CMITimeManager;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
-public class glog implements Cmd {
+public final class glog implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

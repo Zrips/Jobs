@@ -23,7 +23,7 @@ import net.Zrips.CMILib.Locale.Snd;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
-public class ownedblocks implements Cmd {
+public final class ownedblocks implements Cmd {
 
 	@Override
 	public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

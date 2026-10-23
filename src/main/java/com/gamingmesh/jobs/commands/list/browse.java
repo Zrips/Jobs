@@ -16,7 +16,7 @@ import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
-public class browse implements Cmd {
+public final class browse implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, CommandSender sender, final String[] args) {

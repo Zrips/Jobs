@@ -24,7 +24,7 @@ import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
 
-public class editjobs implements Cmd {
+public final class editjobs implements Cmd {
 
     @SuppressWarnings("deprecation")
     @Override

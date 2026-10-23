@@ -8,7 +8,7 @@ import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
 
-public class resetlimit implements Cmd {
+public final class resetlimit implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

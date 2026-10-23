@@ -26,7 +26,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Time.CMITimeManager;
 
-public class quests implements Cmd {
+public final class quests implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
