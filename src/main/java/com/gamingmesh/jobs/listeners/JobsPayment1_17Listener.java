@@ -19,7 +19,7 @@ import com.gamingmesh.jobs.container.ActionType;
 import net.Zrips.CMILib.Items.CMIMC;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
-public class JobsPayment1_17Listener implements Listener {
+public final class JobsPayment1_17Listener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerWaxBlock(PlayerInteractEvent event) {

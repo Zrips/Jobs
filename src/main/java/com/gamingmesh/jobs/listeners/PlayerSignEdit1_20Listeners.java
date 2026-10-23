@@ -21,7 +21,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 
-public class PlayerSignEdit1_20Listeners implements Listener {
+public final class PlayerSignEdit1_20Listeners implements Listener {
 
     public PlayerSignEdit1_20Listeners() {
     }

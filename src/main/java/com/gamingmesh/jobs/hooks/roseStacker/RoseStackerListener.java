@@ -13,7 +13,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 import dev.rosewood.rosestacker.event.EntityStackMultipleDeathEvent;
 
-public class RoseStackerListener implements Listener {
+public final class RoseStackerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityStackMultipleDeath(EntityStackMultipleDeathEvent event) {

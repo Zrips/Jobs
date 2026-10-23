@@ -14,7 +14,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.stuff.Util;
 
-public class PistonProtectionListener implements Listener {
+public final class PistonProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockMove(BlockPistonExtendEvent event) {

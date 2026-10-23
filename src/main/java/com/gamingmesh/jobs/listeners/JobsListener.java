@@ -97,7 +97,7 @@ import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
-public class JobsListener implements Listener {
+public final class JobsListener implements Listener {
 
     private Jobs plugin;
 

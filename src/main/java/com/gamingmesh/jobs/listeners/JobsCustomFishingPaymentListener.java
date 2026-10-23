@@ -17,7 +17,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import net.momirealms.customfishing.api.event.FishingLootSpawnEvent;
 import net.momirealms.customfishing.api.mechanic.loot.LootType;
 
-public class JobsCustomFishingPaymentListener implements Listener {
+public final class JobsCustomFishingPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerCustomFishing(FishingLootSpawnEvent event) {

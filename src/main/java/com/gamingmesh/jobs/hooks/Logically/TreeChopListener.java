@@ -14,7 +14,7 @@ import com.github.justadeni.logically.api.StartChopTreeEvent;
 
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
-public class TreeChopListener implements Listener {
+public final class TreeChopListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onTreeChop(StartChopTreeEvent event) {

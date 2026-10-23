@@ -12,7 +12,7 @@ import com.gamingmesh.jobs.container.ActionType;
 
 import io.papermc.paper.event.entity.EntityFertilizeEggEvent;
 
-public class Paper1_20_5Listeners implements Listener {
+public final class Paper1_20_5Listeners implements Listener {
 
     public Paper1_20_5Listeners() {
     }

@@ -10,7 +10,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.stuff.Util;
 
-public class upTo1_13Listeners implements Listener {
+public final class upTo1_13Listeners implements Listener {
 
     public upTo1_13Listeners() {
     }

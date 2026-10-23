@@ -16,7 +16,7 @@ import com.gamingmesh.jobs.container.ActionType;
 import io.papermc.paper.event.entity.EntityBreakByEntityEvent;
 import io.papermc.paper.event.entity.EntityBreakEvent;
 
-public class Paper26_3_Listeners implements Listener {
+public final class Paper26_3_Listeners implements Listener {
 
     // Spigot classifies Cushion as HangingEntity type, use
     // HangingBreakByEntityEvent
