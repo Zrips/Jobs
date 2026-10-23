@@ -11,7 +11,7 @@ import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 
-public class recalculatepermissions implements Cmd {
+public final class recalculatepermissions implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

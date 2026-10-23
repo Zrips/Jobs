@@ -17,7 +17,7 @@ import com.gamingmesh.jobs.stuff.GiveItem;
 import net.Zrips.CMILib.Items.CMIAsyncHead;
 import net.Zrips.CMILib.Items.CMIItemStack;
 
-public class give implements Cmd {
+public final class give implements Cmd {
 
     private enum actions {
         items, limiteditems;

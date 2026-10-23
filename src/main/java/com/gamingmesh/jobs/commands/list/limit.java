@@ -17,7 +17,7 @@ import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Time.CMITimeManager;
 
-public class limit implements Cmd {
+public final class limit implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

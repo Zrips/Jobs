@@ -17,7 +17,7 @@ import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
-public class toggle implements Cmd {
+public final class toggle implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

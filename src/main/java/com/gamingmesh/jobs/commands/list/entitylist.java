@@ -10,7 +10,7 @@ import net.Zrips.CMILib.Container.CMIText;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
-public class entitylist implements Cmd {
+public final class entitylist implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

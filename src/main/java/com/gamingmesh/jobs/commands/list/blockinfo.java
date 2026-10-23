@@ -15,7 +15,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
 
-public class blockinfo implements Cmd {
+public final class blockinfo implements Cmd {
 
     @Override
     @SuppressWarnings("deprecation")

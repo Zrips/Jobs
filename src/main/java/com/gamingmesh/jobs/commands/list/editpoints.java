@@ -11,7 +11,7 @@ import com.gamingmesh.jobs.i18n.Language;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
-public class editpoints implements Cmd {
+public final class editpoints implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {

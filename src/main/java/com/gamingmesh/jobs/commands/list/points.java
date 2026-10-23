@@ -13,7 +13,7 @@ import com.gamingmesh.jobs.i18n.Language;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
-public class points implements Cmd {
+public final class points implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

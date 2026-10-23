@@ -16,7 +16,7 @@ import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 import net.milkbowl.vault.economy.Economy;
 
-public class version implements Cmd {
+public final class version implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

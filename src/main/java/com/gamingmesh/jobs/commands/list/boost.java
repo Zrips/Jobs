@@ -13,7 +13,7 @@ import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Time.CMITimeManager;
 import net.Zrips.CMILib.Time.timeModifier;
 
-public class boost implements Cmd {
+public final class boost implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {

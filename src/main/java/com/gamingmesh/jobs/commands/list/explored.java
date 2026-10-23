@@ -13,7 +13,7 @@ import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 
-public class explored implements Cmd {
+public final class explored implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {

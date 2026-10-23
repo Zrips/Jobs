@@ -13,7 +13,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
 
-public class exp implements Cmd {
+public final class exp implements Cmd {
 
     private enum Action {
         Set, Add, Take

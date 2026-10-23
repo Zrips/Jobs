@@ -6,7 +6,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.config.JLC;
 
-public class resetexploreregion implements Cmd {
+public final class resetexploreregion implements Cmd {
 
     private static String WORLD = "world";
     private static String REGEX = "^[0-9a-zA-Z_-]+$";

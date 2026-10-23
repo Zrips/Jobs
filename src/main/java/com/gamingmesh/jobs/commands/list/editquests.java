@@ -32,7 +32,7 @@ import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.RawMessages.RawMessageCommand;
 
-public class editquests implements Cmd {
+public final class editquests implements Cmd {
 
     private enum Action {
         list;

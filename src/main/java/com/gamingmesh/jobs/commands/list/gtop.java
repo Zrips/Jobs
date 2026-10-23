@@ -21,7 +21,7 @@ import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Scoreboards.CMIScoreboard;
 
-public class gtop implements Cmd {
+public final class gtop implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

@@ -14,7 +14,7 @@ import com.gamingmesh.jobs.container.QuestProgression;
 
 import net.Zrips.CMILib.Locale.LC;
 
-public class resetquest implements Cmd {
+public final class resetquest implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

@@ -35,7 +35,7 @@ import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
-public class JobsCommands implements CommandExecutor {
+public final class JobsCommands implements CommandExecutor {
 
     public static final String LABEL = "jobs";
 
