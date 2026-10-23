@@ -16,7 +16,7 @@ import org.bukkit.event.Listener;
  * Listener for EvenMoreFish fish.
  * Checks both hunting and fishing events.
  */
-public class JobsEvenMoreFishPaymentListener implements Listener {
+public final class JobsEvenMoreFishPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerCustomFishing(EMFFishCaughtEvent event) {

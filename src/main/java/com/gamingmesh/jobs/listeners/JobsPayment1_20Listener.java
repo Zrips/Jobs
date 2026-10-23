@@ -13,7 +13,7 @@ import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
-public class JobsPayment1_20Listener implements Listener {
+public final class JobsPayment1_20Listener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockDropItem(BlockDropItemEvent event) {
 

@@ -12,7 +12,7 @@ import com.gamingmesh.jobs.stuff.Util;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 @SuppressWarnings("deprecation")
-public class JobsChatEvent implements Listener {
+public final class JobsChatEvent implements Listener {
 
     private Jobs plugin;
 

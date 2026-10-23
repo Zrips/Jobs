@@ -39,7 +39,7 @@ import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Version.Version;
 
-public class JobsPaymentVisualizationListener implements Listener {
+public final class JobsPaymentVisualizationListener implements Listener {
 
     private Jobs plugin;
 

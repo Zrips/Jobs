@@ -12,7 +12,7 @@ import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsMobSpawner;
 
-public class JobsPayment1_16Listener implements Listener {
+public final class JobsPayment1_16Listener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityBucketed(PlayerBucketEntityEvent event) {
         Player player = event.getPlayer();

@@ -18,7 +18,7 @@ import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 
-public class McMMO1_X_listener implements Listener {
+public final class McMMO1_X_listener implements Listener {
 
     @EventHandler
     public void OnItemrepair(McMMOPlayerRepairCheckEvent event) {

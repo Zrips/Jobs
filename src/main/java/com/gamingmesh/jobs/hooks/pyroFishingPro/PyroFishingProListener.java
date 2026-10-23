@@ -8,7 +8,7 @@ import com.gamingmesh.jobs.Jobs;
 
 import me.arsmagica.API.PyroFishCatchEvent;
 
-public class PyroFishingProListener implements Listener {
+public final class PyroFishingProListener implements Listener {
     private static String lastFish;
     private static String lastHotspotFish;
     private static long time = 0;
