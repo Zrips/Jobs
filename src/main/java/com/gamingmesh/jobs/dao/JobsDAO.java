@@ -50,6 +50,7 @@ import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.stuff.Util;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Time.CMITimeManager;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -674,14 +675,17 @@ public abstract class JobsDAO {
                 int jobId = res.getInt(JobsTableFields.jobid.getCollumn());
                 if (jobId == 0) {
                     ls.add(new JobsDAOData(res.getString(JobsTableFields.job.getCollumn()), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
-                    converted = false;
+                    if (converted == null)
+                        converted = false;
                 } else {
                     // This should be removed when we switch over to id only method
-                    if (converted && res.getString(JobsTableFields.job.getCollumn()) == null || res.getString(JobsTableFields.job.getCollumn()).isEmpty())
+                    if ((converted == null || converted) && res.getString(JobsTableFields.job.getCollumn()) == null || res.getString(JobsTableFields.job.getCollumn()).isEmpty()) {
                         converted = false;
+                    }
 
                     Job job = Jobs.getJob(jobId);
                     if (job != null) {
+                        converted = true;
                         ls.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
                     }
                 }
@@ -765,9 +769,11 @@ public abstract class JobsDAO {
                 Job job = null;
                 if (jobid != 0) {
                     job = Jobs.getJob(jobid);
+                    converted = true;
                 } else {
                     job = Jobs.getJob(jobName);
-                    converted = false;
+                    if (converted == null)
+                        converted = false;
                 }
 
                 if (job == null)
@@ -1053,11 +1059,11 @@ public abstract class JobsDAO {
         }
     }
 
-    private boolean converted = true;
+    private Boolean converted = null;
 
     public void triggerTableIdUpdate() {
         // Lets convert old fields
-        if (converted)
+        if (converted == null || converted)
             return;
 
         CMIScheduler.runTaskLater(plugin, () -> {
@@ -1223,7 +1229,7 @@ public abstract class JobsDAO {
         JobsConnection conn = getConnection();
         if (conn == null)
             return;
-
+        
         PreparedStatement prestt = null;
         ResultSet res2 = null;
         try {

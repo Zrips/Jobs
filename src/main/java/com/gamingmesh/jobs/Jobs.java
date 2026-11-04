@@ -616,6 +616,18 @@ public final class Jobs extends JavaPlugin {
                     "&ePreloaded &6" + getPlayerManager().getPlayersCache().size() + " &eplayers data in &6" + ((int) ((System.currentTimeMillis() - time) / 1000.0D * 100.0D) / 100.0D));
     }
 
+    private static void updateJobNames() {
+        for (Job one : Jobs.getJobs()) {
+            dao.recordNewJobName(one, one.getId());
+        }
+    }
+
+    private static void updateWorldNames() {
+        for (JobsWorld one : Util.getJobsWorlds().values()) {
+            dao.recordNewWorld(one.getName(), one.getId());
+        }
+    }
+
     public static void convertDatabase() {
         try {
             List<Convert> archivelist = dao.convertDatabase();
@@ -625,12 +637,8 @@ public final class Jobs extends JavaPlugin {
 
             dao.truncateAllTables();
 
-            for (Job one : Jobs.getJobs()) {
-                dao.recordNewJobName(one, one.getId());
-            }
-            for (JobsWorld one : Util.getJobsWorlds().values()) {
-                dao.recordNewWorld(one.getName(), one.getId());
-            }
+            updateJobNames();
+            updateWorldNames();
 
             getPlayerManager().convertChacheOfPlayers(true);
 
@@ -865,16 +873,16 @@ public final class Jobs extends JavaPlugin {
 
         pm.registerEvents(new JobsPaymentVisualizationListener(getInstance()), getInstance());
 
-        if (Version.isCurrentEqualOrHigher(Version.v1_9_R1))
+        if (Version.isCurrentEqualOrHigher(Version.v1_9_0))
             pm.registerEvents(new JobsPayment1_9Listener(), getInstance());
 
-        if (Version.isCurrentEqualOrHigher(Version.v1_14_R1))
+        if (Version.isCurrentEqualOrHigher(Version.v1_14_0))
             pm.registerEvents(new JobsPayment1_14Listener(), getInstance());
 
-        if (Version.isCurrentEqualOrHigher(Version.v1_16_R3))
+        if (Version.isCurrentEqualOrHigher(Version.v1_16_4))
             pm.registerEvents(new JobsPayment1_16Listener(), getInstance());
 
-        if (Version.isCurrentEqualOrHigher(Version.v1_17_R1))
+        if (Version.isCurrentEqualOrHigher(Version.v1_17_0))
             pm.registerEvents(new JobsPayment1_17Listener(), getInstance());
 
         if (Version.isCurrentEqualOrHigher(Version.v1_20_0)) {
@@ -936,14 +944,14 @@ public final class Jobs extends JavaPlugin {
         getDBManager().getDB().loadAllJobsWorlds();
         getDBManager().getDB().loadAllJobsNames();
 
-        if (Version.isCurrentEqualOrLower(Version.v1_13_R1)) {
+        if (Version.isCurrentEqualOrLower(Version.v1_13_0)) {
             getInstance().getBlockOwnerShip(CMIMaterial.LEGACY_BREWING_STAND).ifPresent(BlockOwnerShip::load);
             getInstance().getBlockOwnerShip(CMIMaterial.LEGACY_BURNING_FURNACE).ifPresent(BlockOwnerShip::load);
         } else {
             getInstance().getBlockOwnerShip(CMIMaterial.FURNACE).ifPresent(BlockOwnerShip::load);
             getInstance().getBlockOwnerShip(CMIMaterial.BREWING_STAND).ifPresent(BlockOwnerShip::load);
         }
-        if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+        if (Version.isCurrentEqualOrHigher(Version.v1_14_0)) {
             getInstance().getBlockOwnerShip(CMIMaterial.BLAST_FURNACE).ifPresent(BlockOwnerShip::load);
             getInstance().getBlockOwnerShip(CMIMaterial.SMOKER).ifPresent(BlockOwnerShip::load);
         }
@@ -1423,7 +1431,7 @@ public final class Jobs extends JavaPlugin {
 
     // total xp calculation based by lvl
     private static int expToLevel(int level) {
-        if (Version.isCurrentEqualOrLower(Version.v1_7_R4)) {
+        if (Version.isCurrentEqualOrLower(Version.v1_7_10)) {
             if (level <= 16)
                 return 17 * level;
             else if (level <= 31)
@@ -1441,7 +1449,7 @@ public final class Jobs extends JavaPlugin {
 
     // xp calculation for one current lvl
     private static int deltaLevelToExp(int level) {
-        if (Version.isCurrentEqualOrLower(Version.v1_7_R4)) {
+        if (Version.isCurrentEqualOrLower(Version.v1_7_10)) {
             if (level <= 16)
                 return 17;
             else if (level <= 31)
