@@ -16,6 +16,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -1956,20 +1958,26 @@ public abstract class JobsDAO {
 
     public JobsPlayer loadFromDao(JobsPlayer jPlayer) {
         List<JobsDAOData> list = getAllJobs(jPlayer.getName(), jPlayer.getUniqueId());
-        jPlayer.progression.clear();
-        for (JobsDAOData jobdata : list) {
-            if (!plugin.isEnabled())
-                return null;
+        if (!plugin.isEnabled())
+            return null;
 
-            // add the job
-            Job job = Jobs.getJob(jobdata.getJobName());
-            if (job != null)
-                jPlayer.progression.add(new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience()));
-        }
-        jPlayer.reloadMaxExperience();
-        jPlayer.reloadLimits();
+        applyJobProgression(jPlayer, list);
+        jPlayer.setSaved(false);
         jPlayer.setUserId(Jobs.getPlayerManager().getPlayerId(jPlayer.getUniqueId()));
         return jPlayer;
+    }
+
+    public void applyJobProgression(JobsPlayer jPlayer, List<JobsDAOData> jobs) {
+        synchronized (jPlayer.progression) {
+            jPlayer.progression.clear();
+            for (JobsDAOData jobdata : jobs) {
+                Job job = Jobs.getJob(jobdata.getJobName());
+                if (job != null)
+                    jPlayer.progression.add(new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience()));
+            }
+        }
+        jPlayer.reloadMaxExperience();
+        jPlayer.reloadLimits(false);
     }
 
     @Deprecated
@@ -2010,9 +2018,10 @@ public abstract class JobsDAO {
     }
 
     private final ExecutorService service = Executors.newCachedThreadPool();
+    private final ConcurrentMap<Integer, CompletableFuture<Void>> progressionSaves = new ConcurrentHashMap<>();
 
     public void saveAsync(JobsPlayer player) {
-        this.service.execute(() -> save(player));
+        enqueueProgressionSave(player);
     }
 
     /**
@@ -2021,6 +2030,31 @@ public abstract class JobsDAO {
      * @param jobInfo - the information getting saved
      */
     public void save(JobsPlayer player) {
+        enqueueProgressionSave(player).join();
+    }
+
+    private CompletableFuture<Void> enqueueProgressionSave(JobsPlayer player) {
+        int userId = player.getUserId();
+        CompletableFuture<Void> queued;
+        synchronized (player.progression) {
+            List<ProgressionSave> jobs = new ArrayList<>(player.progression.size());
+            for (JobProgression progression : player.progression)
+                jobs.add(new ProgressionSave(progression));
+
+            queued = progressionSaves.compute(userId, (key, previous) -> {
+                if (previous == null)
+                    return CompletableFuture.runAsync(() -> saveProgression(userId, jobs), service);
+                return previous.handleAsync((result, error) -> {
+                    saveProgression(userId, jobs);
+                    return null;
+                }, service);
+            });
+        }
+        queued.whenComplete((result, error) -> progressionSaves.remove(userId, queued));
+        return queued;
+    }
+
+    private void saveProgression(int userId, List<ProgressionSave> jobs) {
         JobsConnection conn = getConnection();
         if (conn == null)
             return;
@@ -2029,19 +2063,33 @@ public abstract class JobsDAO {
             prest = conn.prepareStatement("UPDATE `" + getJobsTableName() + "` SET `" + JobsTableFields.level.getCollumn() + "` = ?, `" + JobsTableFields.experience.getCollumn()
                     + "` = ? WHERE `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.jobid.getCollumn() + "` = ? "
                     + "OR `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.jobid.getCollumn() + "` = ?;");
-            for (JobProgression progression : player.getJobProgression()) {
-                prest.setInt(1, progression.getLevel());
-                prest.setDouble(2, progression.getExperience());
-                prest.setInt(3, player.getUserId());
-                prest.setInt(4, progression.getJob().getId());
-                prest.setInt(5, player.getUserId());
-                prest.setInt(6, progression.getJob().getLegacyId());
+            for (ProgressionSave progression : jobs) {
+                prest.setInt(1, progression.level);
+                prest.setDouble(2, progression.experience);
+                prest.setInt(3, userId);
+                prest.setInt(4, progression.jobId);
+                prest.setInt(5, userId);
+                prest.setInt(6, progression.legacyJobId);
                 prest.execute();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             close(prest);
+        }
+    }
+
+    private static final class ProgressionSave {
+        private final int jobId;
+        private final int legacyJobId;
+        private final int level;
+        private final double experience;
+
+        private ProgressionSave(JobProgression progression) {
+            this.jobId = progression.getJob().getId();
+            this.legacyJobId = progression.getJob().getLegacyId();
+            this.level = progression.getLevel();
+            this.experience = progression.getExperience();
         }
     }
 

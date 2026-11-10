@@ -437,19 +437,28 @@ public class JobsPlayer {
      * Reloads limit for this player.
      */
     public void reload(CurrencyType type) {
+        reloadLimit(type);
+        setSaved(false);
+    }
+
+    private void reloadLimit(CurrencyType type) {
         Parser eq = Jobs.getGCManager().getLimit(type).getMaxEquation();
         eq.setVariable("totallevel", getTotalLevels());
 
         maxJobsEquation = CMINumber.clamp(Jobs.getPlayerManager().getMaxJobs(this), 0, 9999);
         limits.put(type, (int) eq.getValue());
-        setSaved(false);
     }
 
     public void reloadLimits() {
+        reloadLimits(true);
+    }
 
+    public void reloadLimits(boolean markDirty) {
         for (CurrencyType type : CurrencyType.values()) {
-            reload(type);
+            reloadLimit(type);
         }
+        if (markDirty)
+            setSaved(false);
     }
 
     public int getLimit(CurrencyType type) {

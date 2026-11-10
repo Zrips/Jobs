@@ -194,11 +194,8 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        if (Jobs.getGCManager().MultiServerCompatability()) {
-            CMIScheduler.runTaskLater(plugin, () -> Jobs.getPlayerManager().playerJoin(event.getPlayer()), 80L);
-        } else {
-            Jobs.getPlayerManager().playerJoin(event.getPlayer());
-        }
+        long delay = Jobs.getGCManager().MultiServerCompatability() ? 80L : 0L;
+        Jobs.getPlayerManager().playerJoin(event.getPlayer(), delay);
     }
 
 //    @EventHandler(priority = EventPriority.MONITOR)

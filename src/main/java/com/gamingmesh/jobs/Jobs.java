@@ -592,8 +592,12 @@ public final class Jobs extends JavaPlugin {
 
         // This goes in sync to avoid issues while loading data
         loadAllPlayersData();
+        loadOnlinePlayers();
+    }
+
+    private static void loadOnlinePlayers() {
         for (Player online : Bukkit.getServer().getOnlinePlayers())
-            getPlayerManager().playerJoin(online);
+            CMIScheduler.runAtEntity(getInstance(), online, () -> getPlayerManager().playerJoin(online));
     }
 
     public static void loadAllPlayersData() {
@@ -658,6 +662,7 @@ public final class Jobs extends JavaPlugin {
 
         reload();
         loadAllPlayersData();
+        loadOnlinePlayers();
     }
 
     /**
@@ -1119,7 +1124,7 @@ public final class Jobs extends JavaPlugin {
      * @param block   {@link Block}
      */
     public static void action(JobsPlayer jPlayer, ActionInfo info, Block block, Entity ent, LivingEntity victim) {
-        if (jPlayer == null)
+        if (jPlayer == null || (getGCManager().MultiServerCompatability() && !pManager.hasLoadedSession(jPlayer)))
             return;
 
         List<JobProgression> progression = jPlayer.getJobProgression();
