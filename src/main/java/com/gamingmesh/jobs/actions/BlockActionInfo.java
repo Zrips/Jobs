@@ -26,6 +26,6 @@ import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class BlockActionInfo extends MaterialActionInfo {
     public BlockActionInfo(Block block, ActionType type) {
-	super(block.getType(), CMIMaterial.getBlockData(block), type);
+        super(block.getType(), CMIMaterial.getBlockData(block), type);
     }
 }

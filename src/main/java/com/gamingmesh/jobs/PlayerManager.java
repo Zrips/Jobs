@@ -36,7 +36,6 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
@@ -45,6 +44,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
+import com.gamingmesh.jobs.config.JLC;
 import com.gamingmesh.jobs.container.ArchivedJobs;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.BoostMultiplier;
@@ -71,7 +71,6 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -434,8 +433,7 @@ public class PlayerManager {
      * @param limits       {@link PaymentData}
      * @return {@link JobsPlayer}
      */
-    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points,
-            Map<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
+    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points, Map<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
         if (info == null)
             return null;
 
@@ -776,10 +774,10 @@ public class PlayerManager {
 
             message = Language.updateJob(message, job);
 
-            message = message.replace("%playername%", jPlayer.getName());
-            message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
-            message = message.replace("%joblevel%", prog.getLevelFormatted());
-            message = message.replace("%lostLevel%", Integer.toString(oldLevel));
+            message = JLC.replacer(message, "playername", jPlayer.getName());
+            message = JLC.replacer(message, "playerdisplayname", jPlayer.getDisplayName());
+            message = JLC.replacer(message, "joblevel", prog.getLevelFormatted());
+            message = JLC.replacer(message, "lostLevel", Integer.toString(oldLevel));
 
             if (player != null && (Jobs.getGCManager().LevelChangeActionBar || Jobs.getGCManager().LevelChangeChat)) {
                 for (String line : message.split("\n")) {
@@ -874,12 +872,11 @@ public class PlayerManager {
         message = Language.updateJob(message, job);
 
         if (levelUpEvent.getOldTitle() != null)
-            message = message.replace("%titlename%", levelUpEvent.getOldTitle()
-                    .getChatColor().toString() + levelUpEvent.getOldTitle().getName());
+            message = JLC.replacer(message, "titlename", levelUpEvent.getOldTitle().getChatColor().toString() + levelUpEvent.getOldTitle().getName());
 
-        message = message.replace("%playername%", jPlayer.getName());
-        message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
-        message = message.replace("%joblevel%", prog.getLevelFormatted());
+        message = JLC.replacer(message, "playername", jPlayer.getName());
+        message = JLC.replacer(message, "playerdisplayname", jPlayer.getDisplayName());
+        message = JLC.replacer(message, "joblevel", prog.getLevelFormatted());
 
         if (Jobs.getGCManager().isBroadcastingLevelups() || Jobs.getGCManager().LevelChangeActionBar || Jobs.getGCManager().LevelChangeChat) {
             for (String line : message.split("\n")) {
@@ -910,9 +907,9 @@ public class PlayerManager {
                     ? "broadcast"
                     : "nobroadcast"));
 
-            message = message.replace("%playername%", jPlayer.getName());
-            message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
-            message = message.replace("%titlename%", levelUpEvent.getNewTitle()
+            message = JLC.replacer(message, "playername", jPlayer.getName());
+            message = JLC.replacer(message, "playerdisplayname", jPlayer.getDisplayName());
+            message = JLC.replacer(message, "titlename", levelUpEvent.getNewTitle()
                     .getChatColor().toString() + levelUpEvent.getNewTitle().getName());
 
             message = Language.updateJob(message, job);
@@ -1190,11 +1187,11 @@ public class PlayerManager {
         return getFinalBonus(player, job, null, null, false, false);
     }
 
-    public Boost getFinalBonus(JobsPlayer player, Job job, Entity ent, LivingEntity victim) {
+    public Boost getFinalBonus(JobsPlayer player, Job job, Entity ent, Entity victim) {
         return getFinalBonus(player, job, ent, victim, false, false);
     }
 
-    public Boost getFinalBonus(JobsPlayer player, Job job, Entity ent, LivingEntity victim, boolean force, boolean getall) {
+    public Boost getFinalBonus(JobsPlayer player, Job job, Entity ent, Entity victim, boolean force, boolean getall) {
         Boost boost = new Boost();
 
         if (player == null || !player.isOnline() || job == null)

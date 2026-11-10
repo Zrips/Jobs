@@ -25,18 +25,18 @@ public class ItemNameActionInfo extends BaseActionInfo {
     private String name;
 
     public ItemNameActionInfo(String name, ActionType type) {
-	super(type);
-	this.name = name;
+        super(type);
+        this.name = name;
     }
 
     @Override
     public String getName() {
-	return name;
+        return name;
     }
 
     @Override
     public String getNameWithSub() {
-	return name;
+        return name;
     }
 
 }

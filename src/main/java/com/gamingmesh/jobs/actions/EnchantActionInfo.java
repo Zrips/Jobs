@@ -26,22 +26,22 @@ public class EnchantActionInfo extends BaseActionInfo {
     private int level;
 
     public EnchantActionInfo(String name, int level, ActionType type) {
-	super(type);
-	this.name = name;
-	this.level = level;
+        super(type);
+        this.name = name;
+        this.level = level;
     }
 
     @Override
     public String getName() {
-	return name;
+        return name;
     }
 
     @Override
     public String getNameWithSub() {
-	return name + ":" + level;
+        return name + ":" + level;
     }
 
     public int getLevel() {
-	return level;
+        return level;
     }
 }

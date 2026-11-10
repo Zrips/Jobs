@@ -112,10 +112,7 @@ public class Job {
     }
 
     @Deprecated
-    public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod,
-            int maxLevel,
-            int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, Map<String, JobItems> jobItems,
-            Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
+    public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel, int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, Map<String, JobItems> jobItems, Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
         this(jobName, jobDisplayName, fullName, jobShortName, jobColour, maxExpEquation, displayMethod, maxLevel,
                 vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
                 jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
@@ -125,9 +122,7 @@ public class Job {
     }
 
     @Deprecated
-    public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
-            int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions,
-            Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, List<String> worldBlacklist) {
+    public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel, int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, List<String> worldBlacklist) {
         this.jobName = jobName == null ? "" : jobName;
         this.fullName = fullName == null ? "" : fullName;
         this.jobShortName = jobShortName;

@@ -1535,4 +1535,15 @@ public class JobsPlayer {
         return Jobs.getEconomy().getEconomy().withdrawPlayer(this.getName(), amount);
     }
 
+    public JobsPlayer get(Player player) {
+        return Jobs.getPlayerManager().getJobsPlayer(player);
+    }
+
+    public JobsPlayer get(UUID uuid) {
+        return Jobs.getPlayerManager().getJobsPlayer(uuid);
+    }
+
+    public JobsPlayer get(String name) {
+        return Jobs.getPlayerManager().getJobsPlayer(name);
+    }
 }

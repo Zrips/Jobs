@@ -16,7 +16,7 @@ import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class skipquest implements Cmd {
@@ -51,8 +51,20 @@ public class skipquest implements Cmd {
             questName += one;
         }
 
-        if (jPlayer == null && sender instanceof Player)
-            jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+        if (sender instanceof Player) {
+            JobsPlayer jPlayerSender = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+
+            // sender isn't player: check if they have admin perms
+            if (jPlayer != null) {
+                if (!jPlayerSender.equals(jPlayer) && !sender.hasPermission("jobs.command.admin.skipquest")) {
+                    new RawMessage().addText(LC.info_NoPermission.getLocale())
+                            .addHover("&2jobs.command.admin.skipquest").show(sender);
+                    return null;
+                }
+            } else { // player sent command themselves without a name argument
+                jPlayer = jPlayerSender;
+            }
+        }
 
         if (jPlayer == null) {
             JLC.general_error_noinfoByPlayer.sendMessage(sender, "[playername]", args.length > 0 ? args[0] : "");

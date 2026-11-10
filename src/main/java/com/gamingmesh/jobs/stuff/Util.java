@@ -37,6 +37,7 @@ import org.bukkit.util.BlockIterator;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.container.JobsWorld;
+import com.gamingmesh.jobs.listeners.Paper26_3_Listeners;
 
 import net.Zrips.CMILib.Container.CMIAttribute;
 import net.Zrips.CMILib.Enchants.CMIEnchantment;
@@ -396,6 +397,6 @@ public final class Util {
         // Enchantment without level e.g. silk_touch
         enchant.equalsIgnoreCase(enchantName) ||
         // Enchantment with level e.g. fire_aspect:1
-            enchant.equalsIgnoreCase(enchantName + ":" + actionInfo.getLevel()));
+                enchant.equalsIgnoreCase(enchantName + ":" + actionInfo.getLevel()));
     }
 }

@@ -3,41 +3,41 @@ package com.gamingmesh.jobs.container;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 
 public class FastPayment {
-	private JobsPlayer jPlayer;
-	private ActionInfo info;
-	private BufferedPayment payment;
-	private Job job;
-	private Long time;
+    private JobsPlayer jPlayer;
+    private ActionInfo info;
+    private BufferedPayment payment;
+    private Job job;
+    private long time = 0L;
 
     public FastPayment(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {
-	this.jPlayer = jPlayer;
-	this.info = info;
-	this.payment = payment;
-	this.job = job;
-	this.time = System.currentTimeMillis() + 45;
+        this.jPlayer = jPlayer;
+        this.info = info;
+        this.payment = payment;
+        this.job = job;
+        this.time = System.currentTimeMillis() + 45;
     }
 
     public JobsPlayer getPlayer() {
-	return jPlayer;
+        return jPlayer;
     }
 
     public ActionInfo getInfo() {
-	return info;
+        return info;
     }
 
     public BufferedPayment getPayment() {
-	return payment;
+        return payment;
     }
 
     public Job getJob() {
-	return job;
+        return job;
     }
 
     public Long getTime() {
-	return time;
+        return time;
     }
 
     public void setTime(Long time) {
-	this.time = time;
+        this.time = time;
     }
 }

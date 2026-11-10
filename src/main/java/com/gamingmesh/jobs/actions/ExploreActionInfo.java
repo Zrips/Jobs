@@ -25,17 +25,17 @@ public class ExploreActionInfo extends BaseActionInfo {
     private String place;
 
     public ExploreActionInfo(String place, ActionType type) {
-	super(type);
-	this.place = place;
+        super(type);
+        this.place = place;
     }
 
     @Override
     public String getName() {
-	return place;
+        return place;
     }
 
     @Override
     public String getNameWithSub() {
-	return getName();
+        return getName();
     }
 }

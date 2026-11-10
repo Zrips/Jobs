@@ -95,14 +95,14 @@ public class gtop implements Cmd {
                     "%playername%", jPlayer.getName(),
                     "%playerdisplayname%", jPlayer.getDisplayName(),
                     "%level%", stats.getLevel(),
-                    "%exp%", stats.getExperience()));
+                    "%exp%", Math.round(stats.getExperience() * 100.00)/100.00));
             else
                 ls.add(Jobs.getLanguage().getMessage("command.gtop.output.list",
                     "%number%", pi.getPositionForOutput(i),
                     "%playername%", jPlayer.getName(),
                     "%playerdisplayname%", jPlayer.getDisplayName(),
                     "%level%", stats.getLevel(),
-                    "%exp%", stats.getExperience()));
+                    "%exp%", Math.round(stats.getExperience() * 100.00)/100.00));
         }
 
         if (Jobs.getGCManager().ShowToplistInScoreboard && sender instanceof Player) {
