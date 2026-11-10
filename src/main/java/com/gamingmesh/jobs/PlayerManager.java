@@ -28,6 +28,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -80,6 +81,7 @@ public class PlayerManager {
     private final ConcurrentMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, JobsPlayer> playersNameCache = new ConcurrentHashMap<>();
     private final ConcurrentMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<>();
+    private final ConcurrentMap<UUID, PlayerSession> playerSessions = new ConcurrentHashMap<>();
 
     private final Map<UUID, PlayerInfo> playerUUIDMap = new LinkedHashMap<>();
     private final Map<Integer, PlayerInfo> playerIdMap = new LinkedHashMap<>();
@@ -109,6 +111,7 @@ public class PlayerManager {
     }
 
     public void clearCache() {
+        playerSessions.clear();
         playersUUIDCache.clear();
         playersNameCache.clear();
         playersUUID.clear();
@@ -249,58 +252,109 @@ public class PlayerManager {
      * @param player {@link Player}
      */
     public void playerJoin(Player player) {
-        JobsPlayer jPlayer = playersUUIDCache.get(player.getUniqueId());
+        playerJoin(player, 0L);
+    }
 
-        if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
-            CompletableFuture<JobsPlayer> future = CompletableFuture.supplyAsync(() -> {
-                JobsPlayer jobsPlayer = playersUUIDCache.get(player.getUniqueId());
-                jobsPlayer = jobsPlayer == null ? new JobsPlayer(player) : jobsPlayer;
+    public void playerJoin(Player player, long delay) {
+        if (!isCurrentPlayer(player))
+            return;
 
-                return loadPlayer(jobsPlayer).join();
-            });
+        UUID uuid = player.getUniqueId();
+        PlayerSession previous = playerSessions.get(uuid);
+        if (previous != null && previous.player == player)
+            return;
 
-            future.thenAccept(this::finalizeJoinPlayer);
+        PlayerSession session = new PlayerSession(player);
+        playerSessions.put(uuid, session);
+        if (delay > 0) {
+            CMIScheduler.runAtEntityLater(plugin, player, () -> loadSession(session), delay);
         } else {
-            finalizeJoinPlayer(jPlayer);
+            loadSession(session);
         }
     }
 
-    private static CompletableFuture<JobsPlayer> loadPlayer(JobsPlayer old) {
-        return CompletableFuture.supplyAsync(() -> {
-            JobsPlayer jPlayer = Jobs.getJobsDAO().loadFromDao(old);
+    private void loadSession(PlayerSession session) {
+        Player player = session.player;
+        UUID uuid = player.getUniqueId();
+        if (playerSessions.get(uuid) != session || !isCurrentPlayer(player)) {
+            playerSessions.remove(uuid, session);
+            return;
+        }
 
-            if (Jobs.getGCManager().MultiServerCompatability()) {
-                jPlayer.setArchivedJobs(Jobs.getJobsDAO().getArchivedJobs(jPlayer));
-                jPlayer.setPaymentLimit(Jobs.getJobsDAO().getPlayersLimits(jPlayer));
-                jPlayer.setPoints(Jobs.getJobsDAO().getPlayerPoints(jPlayer));
-            }
+        JobsPlayer cached = playersUUIDCache.get(uuid);
+        boolean multiServer = Jobs.getGCManager().MultiServerCompatability();
+        if (cached != null && !multiServer) {
+            finalizeJoinPlayer(session, cached);
+            return;
+        }
 
-            // Lets load quest progression
-            PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(jPlayer.getUniqueId());
-            if (info != null) {
-                jPlayer.setDoneQuests(info.getQuestsDone());
-                jPlayer.setQuestProgressionFromString(info.getQuestProgression());
+        JobsPlayer jPlayer = cached == null ? new JobsPlayer(player) : cached;
+        CompletableFuture.supplyAsync(() -> loadPlayerData(jPlayer, multiServer))
+            .whenComplete((data, error) -> {
+                if (error != null || data == null || !plugin.isEnabled()) {
+                    playerSessions.remove(uuid, session);
+                    if (error != null)
+                        plugin.getLogger().log(Level.WARNING, "Could not load Jobs data for " + uuid, error);
+                    return;
+                }
 
-                ToggleBarHandling.recordPlayerOptionsFromInt(jPlayer.getUniqueId(), info.getMessageOptions());
-            }
+                CMIScheduler.runAtEntity(plugin, player, () -> {
+                    if (playerSessions.get(uuid) != session || !isCurrentPlayer(player)) {
+                        playerSessions.remove(uuid, session);
+                        return;
+                    }
 
-            Jobs.getJobsDAO().loadLog(jPlayer);
-
-            JobsTop.updateGlobalTop(jPlayer);
-
-            return jPlayer;
-        });
+                    Jobs.getJobsDAO().applyJobProgression(jPlayer, data.progression);
+                    if (data.archivedJobs != null) {
+                        jPlayer.setArchivedJobs(data.archivedJobs);
+                        jPlayer.setPaymentLimit(data.paymentLimits);
+                        jPlayer.setPoints(data.points);
+                    }
+                    if (data.info != null) {
+                        jPlayer.setDoneQuests(data.info.getQuestsDone());
+                        jPlayer.setQuestProgressionFromString(data.info.getQuestProgression());
+                        ToggleBarHandling.recordPlayerOptionsFromInt(uuid, data.info.getMessageOptions());
+                    }
+                    JobsTop.updateGlobalTop(jPlayer);
+                    finalizeJoinPlayer(session, jPlayer);
+                });
+            });
     }
 
-    private void finalizeJoinPlayer(JobsPlayer jPlayer) {
+    private boolean isCurrentPlayer(Player player) {
+        return player.isOnline() && plugin.getServer().getPlayer(player.getUniqueId()) == player;
+    }
 
-        addPlayer(jPlayer);
-        autoJoinJobs(jPlayer.getPlayer());
+    private static LoadedPlayerData loadPlayerData(JobsPlayer jPlayer, boolean multiServer) {
+        JobsDAO dao = Jobs.getJobsDAO();
+        UUID uuid = jPlayer.getUniqueId();
+        List<JobsDAOData> progression = dao.getAllJobs(jPlayer.getName(), uuid);
+        PlayerInfo info = dao.loadPlayerData(uuid);
+        if (multiServer && info == null)
+            return null;
+
+        if (info != null)
+            jPlayer.setUserId(info.getID());
+        dao.loadLog(jPlayer);
+        if (!multiServer)
+            return new LoadedPlayerData(progression, info, null, null, null);
+
+        return new LoadedPlayerData(progression, info, dao.getArchivedJobs(jPlayer), dao.getPlayersLimits(jPlayer), dao.getPlayerPoints(jPlayer));
+    }
+
+    private void finalizeJoinPlayer(PlayerSession session, JobsPlayer jPlayer) {
+        playersUUID.put(jPlayer.getUniqueId(), jPlayer);
         jPlayer.onConnect();
         jPlayer.reloadHonorific();
         Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-
         addPlayerToCache(jPlayer);
+        session.jobsPlayer = jPlayer;
+        autoJoinJobs(session.player);
+    }
+
+    boolean hasLoadedSession(JobsPlayer jPlayer) {
+        PlayerSession session = playerSessions.get(jPlayer.getUniqueId());
+        return session != null && session.jobsPlayer == jPlayer;
     }
 
     /**
@@ -309,14 +363,47 @@ public class PlayerManager {
      * @param player {@link Player}
      */
     public void playerQuit(Player player) {
-        JobsPlayer jPlayer = getJobsPlayer(player);
+        UUID uuid = player.getUniqueId();
+        PlayerSession session = playerSessions.get(uuid);
+        if (session == null || session.player != player || !playerSessions.remove(uuid, session))
+            return;
+
+        JobsPlayer jPlayer = session.jobsPlayer;
         if (jPlayer == null)
             return;
 
         jPlayer.onDisconnect();
-        if (Jobs.getGCManager().saveOnDisconnect() || Jobs.getGCManager().MultiServerCompatability()) {
+        boolean multiServer = Jobs.getGCManager().MultiServerCompatability();
+        if (Jobs.getGCManager().saveOnDisconnect() || multiServer) {
             jPlayer.setSaved(false);
             jPlayer.save(true);
+        }
+        if (multiServer)
+            playersUUID.remove(uuid, jPlayer);
+    }
+
+    private static final class PlayerSession {
+        private final Player player;
+        private volatile JobsPlayer jobsPlayer;
+
+        private PlayerSession(Player player) {
+            this.player = player;
+        }
+    }
+
+    private static final class LoadedPlayerData {
+        private final List<JobsDAOData> progression;
+        private final PlayerInfo info;
+        private final ArchivedJobs archivedJobs;
+        private final PaymentData paymentLimits;
+        private final PlayerPoints points;
+
+        private LoadedPlayerData(List<JobsDAOData> progression, PlayerInfo info, ArchivedJobs archivedJobs, PaymentData paymentLimits, PlayerPoints points) {
+            this.progression = progression;
+            this.info = info;
+            this.archivedJobs = archivedJobs;
+            this.paymentLimits = paymentLimits;
+            this.points = points;
         }
     }
 
@@ -463,7 +550,7 @@ public class PlayerManager {
                 }
             }
             jPlayer.reloadMaxExperience();
-            jPlayer.reloadLimits();
+            jPlayer.reloadLimits(false);
         }
 
         if (points != null)
