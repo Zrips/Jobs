@@ -1260,6 +1260,9 @@ public final class JobsPaymentListener implements Listener {
         if (!(((Projectile) event.getDamager()).getShooter() instanceof Player))
             return;
 
+        if (((Player) ((Projectile) event.getDamager()).getShooter()).hasPermission("jobs.bypass.monsterdamage"))
+            return;
+
         entityLastDamager.put(ent.getUniqueId(), (Player) ((Projectile) event.getDamager()).getShooter());
 
         Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
@@ -1298,7 +1301,19 @@ public final class JobsPaymentListener implements Listener {
 
         if (Jobs.getGCManager().MonsterDamageUse) {
             boolean ignore = false;
+            if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
+                Entity rawDamager = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
+                Player bypassPlayer = null;
+                if (rawDamager instanceof Player)
+                    bypassPlayer = (Player) rawDamager;
+                else if (rawDamager instanceof Projectile && ((Projectile) rawDamager).getShooter() instanceof Player)
+                    bypassPlayer = (Player) ((Projectile) rawDamager).getShooter();
+
+                if (bypassPlayer != null && bypassPlayer.hasPermission("jobs.bypass.monsterdamage"))
+                    ignore = true;
+            }
             if (Jobs.getGCManager().MonsterDamageIgnoreBosses) {
+
                 CMIEntityType etype = CMIEntityType.get(lVictim.getType());
                 switch (etype) {
                 case ENDER_DRAGON:
