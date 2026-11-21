@@ -1125,8 +1125,14 @@ public final class Jobs extends JavaPlugin {
         List<JobProgression> progression = jPlayer.getJobProgression();
         int numjobs = progression.size();
 
-        if (!Jobs.getGCManager().useBlockProtectionBlockTracker && !Jobs.getExploitManager().isProtectionValidAddIfNotExists(jPlayer, info, block, true))
+        Player actionPlayer = jPlayer.getPlayer();
+        boolean bypassPlaceAndBreak = actionPlayer != null
+                && (info.getType() == ActionType.BREAK || info.getType() == ActionType.PLACE || info.getType() == ActionType.WAX)
+                && actionPlayer.hasPermission("jobs.bypass.placeandbreak");
+
+        if (!bypassPlaceAndBreak && !Jobs.getGCManager().useBlockProtectionBlockTracker && !Jobs.getExploitManager().isProtectionValidAddIfNotExists(jPlayer, info, block, true))
             return;
+
 
         // no job
         if (numjobs == 0) {

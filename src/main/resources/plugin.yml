@@ -255,3 +255,9 @@ permissions:
   jobs.noownershiptakeover:
     description: Will not take over existing block ownership 
     default: op
+  jobs.bypass.placeandbreak:
+    description: Bypasses place and break block timer anti-farm protection
+    default: false
+  jobs.bypass.monsterdamage:
+    description: Bypasses minimum monster damage percentage anti-farm protection
+    default: false
