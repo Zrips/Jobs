@@ -64,6 +64,7 @@ public class Placeholder {
 		user_quests,
 		user_seen,
 		user_totallevels,
+		user_totallevels_all,
 		user_issaved,
 		user_displayhonorific,
 		user_joinedjobcount,
@@ -459,6 +460,8 @@ public class Placeholder {
 				return CMITimeManager.to24hourShort(System.currentTimeMillis() - user.getSeen());
 			case user_totallevels:
 				return Integer.toString(user.getTotalLevels());
+			case user_totallevels_all:
+				return Integer.toString(user.getTotalLevelsIncludingArchived());
 			case user_points:
 				return dFormat.format(user.getPointsData().getCurrentPoints());
 			case user_points_fixed:

@@ -203,6 +203,17 @@ public class JobsPlayer {
         return i;
     }
 
+    /**
+     * @return the total level of all current and archived jobs for this player
+     */
+    public int getTotalLevelsIncludingArchived() {
+        int i = getTotalLevels();
+        for (JobProgression job : getArchivedJobs().getArchivedJobs()) {
+            i += job.getLevel();
+        }
+        return i;
+    }
+
     public void setPaymentLimit(PaymentData paymentLimits) {
         this.paymentLimits = paymentLimits;
     }
